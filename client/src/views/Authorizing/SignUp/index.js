@@ -3,8 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import * as routes from '../../constants/routes';
-import ErrorMessage from '../Error';
+import * as routes from '../../../constants/routes'
+import ErrorMessage from '../../ErrorPage';
 
 const SIGN_UP = gql`
   mutation($username: String!, $email: String!, $password: String!) {

@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 
 import EventItem from '../EventItem'
 // import EventDelete from '../EventDelete';
-import Loading from '../../Loading';
-import { getSession } from '../../Session/localQueries';
+import Loading from '@components/Loading';
+import { getSession } from '../../Authorizing/Session/localQueries'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -46,7 +46,8 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
   }
 `;
 
-const Events = ({ limit }) => (
+const limit = 10
+const Events = () => (
   <Query
     query={GET_PAGINATED_EVENTS_WITH_USERS}
     variables={{ limit }}

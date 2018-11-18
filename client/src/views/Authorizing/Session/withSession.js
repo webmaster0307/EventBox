@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_ME } from './queries';
-import Loading from '../Loading';
+import Loading from '@components/Loading';
 
 
 const withSession = Component => props => (

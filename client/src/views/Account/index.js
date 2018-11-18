@@ -1,8 +1,6 @@
 import React from 'react';
 import UpdateForm from './update'
-
-import withAuthorization from '../Session/withAuthorization';
-
+import withAuthorization from '../Authorizing/Session/withAuthorization';
 
 const AccountPage = () => (
   <div>

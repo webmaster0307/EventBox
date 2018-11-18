@@ -1,16 +1,16 @@
 import React from 'react';
-import { client } from '../../'
+import { client } from './'
 import { Router, Route, Switch, Link } from 'react-router-dom';
-
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import withSession from '../Session/withSession';
-
-import * as routes from '../../constants/routes';
-import history from '../../constants/history';
-import { Page404 } from '../Error';
-import SiderDemo from '../Layout';
 import gql from 'graphql-tag';
+
+import history from './constants/history';
+import * as routes from './constants/routes';
+import withSession from './views/Authorizing/Session/withSession'
+
+import { SignUpPage, SignInPage} from './views/Authorizing';
+import { Page404 } from './views/ErrorPage';
+
+import SiderDemo from './views/Layout';
 
 const setSession = gql`
   mutation($session: Session) {
@@ -26,7 +26,7 @@ const App = ({ session, refetch }) => {
       <div>
         {session && session.me ?
           <div>
-            <AuthorizedContainer session={session} refetch={refetch} /> 
+            <SiderDemo session={session} /> 
           </div>
           :
           <div>
@@ -41,13 +41,13 @@ const App = ({ session, refetch }) => {
 
 export default withSession(App);
 
-const AuthorizedContainer = ({session, refetch}) => (
-  <Switch>
-    <Route 
-      component={SiderDemo}
-    />
-  </Switch>
-)
+// const AuthorizedContainer = () => (
+//   <Switch>
+//     <Route 
+//       component={SiderDemo}
+//     />
+//   </Switch>
+// )
 
 const NavigationNonAuth = () => (
   <ul>

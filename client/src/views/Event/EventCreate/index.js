@@ -5,7 +5,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import ErrorMessage from '../../Error';
+import ErrorMessage from '../../ErrorPage';
 
 const CREATE_EVENT = gql`
   mutation($title: String!, $description: String!) {

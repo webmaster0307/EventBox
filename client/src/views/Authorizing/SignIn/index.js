@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 
 import { SignUpLink } from '../SignUp';
-import * as routes from '../../constants/routes';
-import ErrorMessage from '../Error';
+import * as routes from '../../../constants/routes'
+import ErrorMessage from '../../ErrorPage';
 
 const SIGN_IN = gql`
   mutation($username: String!, $password: String!) {

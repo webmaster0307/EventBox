@@ -1,6 +1,6 @@
 import React from 'react';
 
-import withAuthorization from '../Session/withAuthorization';
+import withAuthorization from '../Authorizing/Session/withAuthorization';
 
 const AdminPage = () => (
   <div>
