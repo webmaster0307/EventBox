@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom'
 import * as routes from '../../constants/routes';
-import ErrorMessage from '../Error';
+import ErrorMessage from '../ErrorPage';
 
 const UPDATE_ACCOUNT = gql`
   mutation($username: String!){

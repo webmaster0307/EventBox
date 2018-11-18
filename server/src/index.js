@@ -15,17 +15,18 @@ import resolvers from './resolvers';
 import models from './models';
 import loaders from './loaders';
 
-const port = process.env.SERVER_PORT || 5000;
+const port = process.env.SERVER_PORT || 8000;
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express();
 
+const whitelist = [ `http://${host}:${port}`, `http://${host}:2049`, `http://${host}:8080` ]
 const corsOptions = {
-  origin: `http://${host}:${port}`,
+  origin: [ `http://${host}:${port}`, `http://${host}:2049`, `http://${host}:8080` ],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 // cors
-app.use(cors());
+app.use(cors(corsOptions));
 // api fallback for SPA
 app.use(history({
   rewrites:[

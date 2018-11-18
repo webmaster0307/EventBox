@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Layout, Avatar, Menu, Dropdown } from 'antd';
 import { client } from '../../'
-import { signOut } from '../SignOut';
+import { signOut } from '@components/SignOut'
 
 const { Header } = Layout;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
-import * as routes from '../../constants/routes';
+import * as routes from '../../../constants/routes';
 import { GET_ME } from './queries';
 
 const withAuthorization = conditionFn => Component => props => (

@@ -1,9 +1,7 @@
-import Home from '../Home'
-import LandingPage from '../Landing';
+import Home from '../Account/Home'
+import { Events, EventCreate } from '../Event';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-import { EventCreate } from '../Event';
-
 
 export const routesComp = [
   {
@@ -27,7 +25,7 @@ export const routesComp = [
   {
     exact: true,
     path: '/events',
-    component: LandingPage,
+    component: Events,
     roles: ['admin', 'user']
   },
   {
