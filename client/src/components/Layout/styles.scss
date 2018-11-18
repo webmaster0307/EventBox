@@ -1,0 +1,16 @@
+.layout-logo {
+  &__wrapper {
+    height: 32px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all .3s ease-in;
+    &::after{
+      content: 'EventBox Dashboard'
+    }
+    &:hover {
+      color: #fff;   
+    }
+  }
+}

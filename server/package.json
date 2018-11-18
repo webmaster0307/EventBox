@@ -1,0 +1,47 @@
+{
+  "name": "eventbox-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "nodemonConfig": {
+    "ignore": [
+      "public/**"
+    ]
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
+    "test-server": "TEST_DATABASE=mytestdatabase npm start",
+    "test": "mocha --require babel-core/register 'src/**/*.spec.js'"
+  },
+  "keywords": [],
+  "author": "“Robin <hello@rwieruch.com”> (https://www.robinwieruch.de)",
+  "license": "ISC",
+  "dependencies": {
+    "@sindresorhus/slugify": "^0.6.0",
+    "apollo-server": "^2.0.0-rc.7",
+    "apollo-server-express": "^2.0.0-rc.7",
+    "bcryptjs": "^2.4.3",
+    "connect-history-api-fallback": "^1.5.0",
+    "cors": "^2.8.4",
+    "dataloader": "^1.4.0",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "graphql": "^14.0.0-rc.2",
+    "graphql-resolvers": "^0.2.2",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.6",
+    "morgan": "^1.9.1",
+    "pg": "^7.4.3",
+    "pm2": "^3.2.2"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.0"
+  }
+}

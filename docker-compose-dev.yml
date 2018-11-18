@@ -1,0 +1,59 @@
+version: "3"
+services:
+  #######################################################
+  #               Database dev begin
+  #######################################################
+  # mongodb: 
+  #   image: mongo:3.6.8-stretch
+  #   container_name: "mongodb"
+  #   environment:
+  #     - MONGO_DATA_DIR=/data/db
+  #     - MONGO_LOG_DIR=/dev/null
+  #   volumes:
+  #     - ./data/db:/data/db
+  #   expose: 
+  #     - 27017
+  #   ports:
+  #     - ${MONGO_PORT}:27017
+  #   command: mongod --smallfiles --logpath=/dev/null # --quiet
+  #######################################################
+  #               Server dev begin
+  #######################################################
+  server:
+    build: 
+      context: ./server
+    image: eventbox-server:v1
+    expose: 
+      - ${SERVER_PORT}
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      NODE_ENV: ${NODE_ENV}
+      TOKEN_SECRET: ${TOKEN_SECRET}
+    ports: 
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes: 
+      - ./server/src:/app/server/src
+    links: 
+      - mongodb
+    depends_on: 
+      - mongodb
+    command: npm start
+  #######################################################
+  #               Client dev begin
+  #######################################################
+  client:
+    build:
+      context: ./client
+    image: eventbox-client:v1
+    environment: 
+      - REACT_APP_PORT=${REACT_APP_PORT}
+    expose: 
+      - ${REACT_APP_PORT}
+    ports:
+      - ${REACT_APP_PORT}:3000
+    volumes: 
+      - ./client/src:/app/client/src
+      - ./client/public:/app/client/public
+    links: 
+      - server
+    command: npm start

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image:
+      eventbox-server:v1
+    env_file: 
+      - .env
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    restart: always
+    command: npm run start-prod
