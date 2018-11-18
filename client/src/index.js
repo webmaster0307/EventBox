@@ -12,7 +12,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state'
 
 import App from './App'
-import { signOut } from './views/Authorizing/SignOut';
+import { signOut } from '@components/SignOut'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag';
 // import 'antd/dist/antd.css';
