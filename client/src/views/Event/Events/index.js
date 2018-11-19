@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom'
+import { Table } from 'antd'
 
 import EventItem from '../EventItem'
 // import EventDelete from '../EventDelete';
@@ -14,6 +16,9 @@ const EVENT_CREATED = gql`
         id
         title
         description
+        images {
+          thumbnail
+        }
         createdAt
         user {
           id
@@ -32,6 +37,9 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
         id
         title
         description
+        images {
+          thumbnail
+        }
         createdAt
         user {
           id
@@ -157,19 +165,43 @@ class EventList extends Component {
     this.subscribeToMoreEvent();
   }
 
+  tableColumns = () => [
+    {
+      title: '',
+      dataIndex: 'images',
+      render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} /></div>
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      render: (text, record) => <Link to={`/events/detail/${record.id}`} >{text}</Link>
+    },
+    {
+      title: 'Owner',
+      dataIndex: 'user',
+      render: (text, record) => <div>{record.user.username}</div>
+    },
+    {
+      title: 'CreatedAt',
+      dataIndex: 'createdAt',
+      render: (text, record) => <div>{new Date(Number(record.createdAt)).toLocaleString()}</div>
+    }
+  ]
+
   render() {
     const { events } = this.props;
     return(
-      <Query query={getSession} >
-        {({ data }) => {
-          const { me } = data
-          return(
-            events.map(event => (
-              <EventItem key={event.id} event={event} me={me} />
-            ))
-          )
-        }}
-      </Query>
+      // <Query query={getSession} >
+      //   {({ data }) => {
+      //     const { me } = data
+      //     return(
+      //       events.map(event => (
+      //         <EventItem key={event.id} event={event} me={me} />
+      //       ))
+      //     )
+      //   }}
+      // </Query>
+      <Table dataSource={events} columns={this.tableColumns()} rowKey='id' />
     )
   }
 }

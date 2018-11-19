@@ -50,10 +50,13 @@ export default {
   Mutation: {
     createEvent: combineResolvers(
       isAuthenticated,
-      async (parent, { title, description }, { models, me }) => {
+      async (parent, { title, thumbnail, description }, { models, me }) => {
         const event = await models.Event.create({
           title,
           description,
+          images: {
+            thumbnail
+          },
           userId: me.id,
         });
 
