@@ -7,7 +7,7 @@ import history from './constants/history';
 import * as routes from './constants/routes';
 import withSession from './views/Authorizing/Session/withSession'
 
-import { SignUpPage, SignInPage} from './views/Authorizing';
+import { SignUpPage, SignInPage } from './views/Authorizing';
 import { Page404 } from './views/ErrorPage';
 
 import SiderDemo from './views/Layout';

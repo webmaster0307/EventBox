@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -44,7 +44,7 @@ class SignUpForm extends Component {
 
       await this.props.refetch();
 
-      this.props.history.push(routes.LANDING);
+      this.props.history.push(routes.HOME);
     });
 
     event.preventDefault();
@@ -117,6 +117,6 @@ const SignUpLink = () => (
   </p>
 );
 
-export default withRouter(SignUpPage);
+export default SignUpPage
 
 export { SignUpForm, SignUpLink };
