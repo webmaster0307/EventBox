@@ -11,14 +11,14 @@ import { onError } from 'apollo-link-error';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state'
 
-import App from './components/App';
-import { signOut } from './components/SignOut';
+import App from './App'
+import { signOut } from '@components/SignOut'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag';
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
-const port = process.env.REACT_APP_SERVER_PORT || 5000;
+const port = process.env.REACT_APP_SERVER_PORT || 8000;
 const host = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_HOST_NAME : 'localhost'
 
 const httpLink = new HttpLink({

@@ -23,6 +23,10 @@ let UserSchema = new Schema({
   events: {
     type: Schema.Types.ObjectId,
     ref: 'event'
+  },
+  jwtJti: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

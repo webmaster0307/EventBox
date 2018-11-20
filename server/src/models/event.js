@@ -17,6 +17,9 @@ let EventSchema = new Schema({
   slug: {
     type: String,
     default: ''
+  },
+  images: {
+    type: Object
   }
 }, {
     timestamps: true
