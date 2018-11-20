@@ -1,13 +1,23 @@
 import jwt from 'jsonwebtoken';
+import uuidV4 from 'uuid/v4'
 import { combineResolvers } from 'graphql-resolvers';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 import { isAuthenticated, isAdmin } from './authorization';
 
 const tokenExpired = 60 * 60 * 8 // 8 hours
 
-const createToken = async (user, secret) => {
+const createToken = async (models, user, secret) => {
   const { id, email, username, role } = user;
-  return await jwt.sign({ id, email, username, role }, secret, {
+  const jti = uuidV4()
+  const payLoad = {
+    iss: process.env.TOKEN_ISSUER || 'EVENTBOX',
+    id,
+    email,
+    username,
+    role,
+    jti
+  }
+  return await jwt.sign(payLoad, secret, {
     expiresIn: tokenExpired,
   });
 };
@@ -53,7 +63,7 @@ export default {
       }
 
       user = await models.User.create({username, email, password})
-      return { token: createToken(user, secret) };
+      return { token: createToken(models, user, secret) };
     },
 
     signIn: async (
@@ -74,7 +84,7 @@ export default {
         throw new AuthenticationError('Invalid password.');
       }
 
-      return { token: createToken(user, secret) };
+      return { token: createToken(models, user, secret) };
     },
 
     updateUser: combineResolvers(

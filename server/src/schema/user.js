@@ -29,5 +29,6 @@ export default gql`
     email: String!
     role: String
     events: [Event!]
+    jwtJti: String!
   }
 `;
