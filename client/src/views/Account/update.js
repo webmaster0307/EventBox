@@ -33,7 +33,7 @@ class UpdateAccountForm extends Component{
     updateUser().then(async ({ data }) => {
       this.setState({ username: '' });
       // console.log('data: ' ,data);
-      this.props.history.push(routes.LANDING);
+      this.props.history.push(routes.HOME);
     });
   };
 

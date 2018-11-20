@@ -50,16 +50,32 @@ export default {
   Mutation: {
     createEvent: combineResolvers(
       isAuthenticated,
-      async (parent, { title, description }, { models, me }) => {
+      async (parent, { title, thumbnail, description }, { models, me }) => {
         const event = await models.Event.create({
           title,
           description,
+          images: {
+            thumbnail
+          },
           userId: me.id,
         });
 
         pubsub.publish(EVENTS.EVENT.CREATED, {
           eventCreated: { event },
         });
+
+        return event;
+      },
+    ),
+    updateEvent: combineResolvers(
+      isAuthenticated,
+      isEventOwner,
+      async (parent, { id, title, thumbnail, description }, { models, me }) => {
+        const event = await models.Event.findByIdAndUpdate(
+          id, 
+          { title, images: {thumbnail}, description },
+          { new: true }
+        )
 
         return event;
       },

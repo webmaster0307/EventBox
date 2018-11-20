@@ -1,5 +1,5 @@
 import Home from '../Account/Home'
-import { Events, EventCreate } from '../Event';
+import { Events, EventCreate, EventDetail, EventUpdate } from '../Event';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 
@@ -33,7 +33,19 @@ export const routesComp = [
     path: '/events/create',
     component: EventCreate,
     roles: ['admin', 'user']
-  }
+  },
+  {
+    exact: true,
+    path: '/events/detail/:eventId',
+    component: EventDetail,
+    roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: '/events/update/:eventId',
+    component: EventUpdate,
+    roles: ['admin', 'user']
+  },
 ]
 
 export const routesMenu = [

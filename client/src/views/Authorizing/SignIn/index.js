@@ -45,7 +45,7 @@ class SignInForm extends Component {
       // console.log('props: ', this.props)
       await this.props.refetch();
 
-      this.props.history.push(routes.LANDING);
+      this.props.history.push(routes.HOME);
     });
 
     event.preventDefault();

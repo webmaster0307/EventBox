@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
 import ErrorMessage from '../../ErrorPage';
 
 const CREATE_EVENT = gql`
-  mutation($title: String!, $description: String!) {
-    createEvent(title: $title, description: $description) {
+  mutation($title: String!, $thumbnail: String!, $description: String!) {
+    createEvent(title: $title, thumbnail: $thumbnail, description: $description) {
       id
       title,
       description,
@@ -25,6 +25,7 @@ const CREATE_EVENT = gql`
 class EventCreate extends Component {
   state = {
     title: '',
+    thumbnail: '',
     editorState: EditorState.createEmpty(),
   };
 
@@ -49,8 +50,8 @@ class EventCreate extends Component {
   };
 
   render() {
-    const { title, editorState } = this.state;
-    const dataSubmit = { title, description: JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
+    const { title, thumbnail, editorState } = this.state;
+    const dataSubmit = { title, thumbnail, description: JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
 
     return (
       <Mutation
@@ -65,7 +66,15 @@ class EventCreate extends Component {
             <div style={{marginBottom: 12, minHeight: 24}}  >
               <span><label>Title </label></span>
               <input 
-                type='textarea' name='title' 
+                type='text' name='title' 
+                style={{height: 18, minWidth: 250}} 
+                onChange={this.handleChangeInput} 
+              />
+            </div>
+            <div style={{marginBottom: 12, minHeight: 24}}  >
+              <span><label>Thumbnail </label></span>
+              <input 
+                type='text' name='thumbnail' 
                 style={{height: 18, minWidth: 250}} 
                 onChange={this.handleChangeInput} 
               />
