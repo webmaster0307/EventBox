@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom'
-import { Table } from 'antd'
+import { Table, Icon } from 'antd'
 
 import EventItem from '../EventItem'
 // import EventDelete from '../EventDelete';
@@ -175,6 +175,11 @@ class EventList extends Component {
       title: 'Title',
       dataIndex: 'title',
       render: (text, record) => <Link to={`/events/detail/${record.id}`} >{text}</Link>
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      render: (id) => <Link to={`/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
     },
     {
       title: 'Owner',

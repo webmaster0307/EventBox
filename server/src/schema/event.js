@@ -8,6 +8,7 @@ export default gql`
 
   extend type Mutation {
     createEvent(title: String!, thumbnail: String!, description: String!): Event!
+    updateEvent(id: ID!, title: String!, thumbnail: String!, description: String!): Event!
     deleteEvent(id: ID!): Boolean!
   }
 

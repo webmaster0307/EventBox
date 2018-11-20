@@ -67,6 +67,19 @@ export default {
         return event;
       },
     ),
+    updateEvent: combineResolvers(
+      isAuthenticated,
+      isEventOwner,
+      async (parent, { id, title, thumbnail, description }, { models, me }) => {
+        const event = await models.Event.findByIdAndUpdate(
+          id, 
+          { title, images: {thumbnail}, description },
+          { new: true }
+        )
+
+        return event;
+      },
+    ),
 
     deleteEvent: combineResolvers(
       isAuthenticated,
