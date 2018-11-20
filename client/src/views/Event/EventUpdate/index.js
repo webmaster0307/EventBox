@@ -49,7 +49,8 @@ class EventItem extends Component{
     editorState: EditorState.createEmpty(),
     id: '',
     title: '',
-    thumbnail: ''
+    thumbnail: '',
+    buttonLoading: false
   }
 
   componentDidMount = async () => {
@@ -81,25 +82,29 @@ class EventItem extends Component{
     this.setState({[name]: value});
   }
 
-  handleUpdate = async () => {
+  handleUpdate = () => {
     const { id, title, thumbnail, editorState } = this.state
     let result
-    try {
-      result = await client.mutate({
-        mutation: updateEvent, 
-        variables: { id, title, thumbnail, description: JSON.stringify(convertToRaw(editorState.getCurrentContent())) } 
-      })
-    } catch (error) {
-      return message.error('Failed to update event')
-    }
-    // const { updateEvent } = result.data
-    console.log('event: ' ,result.data);
-    message.success('Update event successfully!')
+    this.setState({ buttonLoading: true}, async () => {
+      try {
+        result = await client.mutate({
+          mutation: updateEvent, 
+          variables: { id, title, thumbnail, description: JSON.stringify(convertToRaw(editorState.getCurrentContent())) } 
+        })
+      } catch (error) {
+        this.setState({buttonLoading: false});
+        return message.error('Failed to update event')
+      }
+      // const { updateEvent } = result.data
+      console.log('event: ' ,result.data);
+      message.success('Update event successfully!')
+      this.setState({buttonLoading: false});
+    });
   }
   
 
   render(){
-    const { loading, title, thumbnail, editorState } = this.state
+    const { loading, title, thumbnail, editorState, buttonLoading } = this.state
 
     return(
       <Spin spinning={loading} >
@@ -124,7 +129,7 @@ class EventItem extends Component{
         <div style={{maxWidth: 800, border: '1px solid #448aff', marginBottom: 12}} >
           <EditorWysiwyg editorState={editorState} onEditorStateChange={this.onEditorStateChange} />
         </div>
-        <Button type='primary' onClick={this.handleUpdate} >Update</Button>
+        <Button type='primary' loading={buttonLoading} onClick={this.handleUpdate} >Update</Button>
       </Spin>
     )
   }
