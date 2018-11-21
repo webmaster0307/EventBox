@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import { withRouter } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
+import { withRouter } from 'react-router-dom'
 
-import { SignUpLink } from '../SignUp';
-import * as routes from '../../../constants/routes'
-import ErrorMessage from '../../ErrorPage';
+import { SignUpLink } from '../SignUp'
+import * as routes from '@routes'
+import ErrorMessage from '../../ErrorPage'
 
 const SIGN_IN = gql`
   mutation($username: String!, $password: String!) {
@@ -13,7 +13,7 @@ const SIGN_IN = gql`
       token
     }
   }
-`;
+`
 
 const SignInPage = ({history, refetch}) => (
   <div>
@@ -25,36 +25,36 @@ const SignInPage = ({history, refetch}) => (
 
 const INITIAL_STATE = {
   username: '',
-  password: '',
-};
+  password: ''
+}
 
 class SignInForm extends Component {
   state = { ...INITIAL_STATE };
 
   onChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   };
 
   onSubmit = (event, signIn) => {
     signIn().then(async ({ data }) => {
-      this.setState({ ...INITIAL_STATE });
+      this.setState({ ...INITIAL_STATE })
 
-      localStorage.setItem('token', data.signIn.token);
+      localStorage.setItem('token', data.signIn.token)
       // console.log('data: ',data)
       // console.log('props: ', this.props)
-      await this.props.refetch();
+      await this.props.refetch()
 
-      this.props.history.push(routes.HOME);
-    });
+      this.props.history.push(routes.HOME)
+    })
 
-    event.preventDefault();
+    event.preventDefault()
   };
 
   render() {
-    const { username, password } = this.state;
+    const { username, password } = this.state
 
-    const isInvalid = password === '' || username === '';
+    const isInvalid = password === '' || username === ''
 
     return (
       <Mutation mutation={SIGN_IN} variables={{ username, password }}>
@@ -82,8 +82,8 @@ class SignInForm extends Component {
           </form>
         )}
       </Mutation>
-    );
+    )
   }
 }
 
-export default withRouter(SignInPage);
+export default withRouter(SignInPage)

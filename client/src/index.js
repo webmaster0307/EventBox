@@ -1,82 +1,80 @@
-import 'dotenv/config';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { getMainDefinition } from 'apollo-utilities';
-import { ApolloLink, split } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import 'dotenv/config'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { ApolloProvider } from 'react-apollo'
+import { ApolloClient } from 'apollo-client'
+import { getMainDefinition } from 'apollo-utilities'
+import { ApolloLink, split } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
+import { onError } from 'apollo-link-error'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
 
 import App from './App'
-import { signOut } from '@components/SignOut'
+import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
-const port = process.env.REACT_APP_SERVER_PORT || 8000;
+const port = process.env.REACT_APP_SERVER_PORT || 8000
 const host = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_HOST_NAME : 'localhost'
 
 const httpLink = new HttpLink({
-  uri: `/graphql`
-});
+  uri: '/graphql'
+})
 
 const wsLink = new WebSocketLink({
   uri: `ws://${host}:${port}/graphql`,
   options: {
-    reconnect: true,
-  },
-});
+    reconnect: true
+  }
+})
 
-const terminatingLink = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query);
-    return (
-      kind === 'OperationDefinition' && operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
+const terminatingLink = split(({ query }) => {
+  const { kind, operation } = getMainDefinition(query)
+  return (
+    kind === 'OperationDefinition' && operation === 'subscription'
+  )
+},
+wsLink,
+httpLink,)
 
 const authLink = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {}, localToken = localStorage.getItem('token') }) => {
     if (localToken) {
-      headers['x-token'] = localToken;
+      headers['x-token'] = localToken
     }
     return {
       headers
     }
-  });
+  })
   
-  return forward(operation);
-});
+  return forward(operation)
+})
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, statusCode, locations, path }) => {
-      console.log('message: ', message);
+      console.log('message: ', message)
       // console.log('statusCode: ', statusCode);
       if (statusCode === 401) {
-        signOut(client);
+        signOut(client)
       }
-    });
+    })
   }
 
   if (networkError) {
-    console.log('Network error: ', networkError);
+    console.log('Network error: ', networkError)
     
     if (networkError.statusCode === 401) {
-      signOut(client);
+      signOut(client)
     }
   }
-});
+})
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache()
 
 const stateLink = withClientState({
   cache,
@@ -107,9 +105,9 @@ const stateLink = withClientState({
           session : {
             me: {
               ...session.me,
-              __typename: "User"
+              __typename: 'User'
             },
-            __typename: "Session"
+            __typename: 'Session'
           }
         }
         cache.writeData({ data })
@@ -131,21 +129,19 @@ const stateLink = withClientState({
       email: String!
       role: String
     }
-  `,
-});
+  `
+})
 
-const link = ApolloLink.from([stateLink, authLink, errorLink, terminatingLink]);
+const link = ApolloLink.from([stateLink, authLink, errorLink, terminatingLink])
 
 export const client = new ApolloClient({
   link,
-  cache,
-});
+  cache
+})
 
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById('root'),
-);
+ReactDOM.render(<ApolloProvider client={client}>
+  <App />
+</ApolloProvider>,
+document.getElementById('root'),)
 
 // registerServiceWorker();

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import * as routes from '../../../constants/routes'
-import ErrorMessage from '../../ErrorPage';
+import * as routes from '@routes'
+import ErrorMessage from '../../ErrorPage'
 
 const SIGN_UP = gql`
   mutation($username: String!, $email: String!, $password: String!) {
@@ -12,42 +12,42 @@ const SIGN_UP = gql`
       token
     }
   }
-`;
+`
 
 const INITIAL_STATE = {
   username: '',
   email: '',
   password: '',
-  passwordConfirmation: '',
-};
+  passwordConfirmation: ''
+}
 
 const SignUpPage = ({ history, refetch }) => (
   <div>
     <h1>SignUp</h1>
     <SignUpForm history={history} refetch={refetch} />
   </div>
-);
+)
 
 class SignUpForm extends Component {
   state = { ...INITIAL_STATE };
 
   onChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   };
 
   onSubmit = (event, signUp) => {
     signUp().then(async ({ data }) => {
-      this.setState({ ...INITIAL_STATE });
+      this.setState({ ...INITIAL_STATE })
 
-      localStorage.setItem('token', data.signUp.token);
+      localStorage.setItem('token', data.signUp.token)
 
-      await this.props.refetch();
+      await this.props.refetch()
 
-      this.props.history.push(routes.HOME);
-    });
+      this.props.history.push(routes.HOME)
+    })
 
-    event.preventDefault();
+    event.preventDefault()
   };
 
   render() {
@@ -55,14 +55,14 @@ class SignUpForm extends Component {
       username,
       email,
       password,
-      passwordConfirmation,
-    } = this.state;
+      passwordConfirmation
+    } = this.state
 
     const isInvalid =
       password !== passwordConfirmation ||
       password === '' ||
       email === '' ||
-      username === '';
+      username === ''
 
     return (
       <Mutation
@@ -107,7 +107,7 @@ class SignUpForm extends Component {
           </form>
         )}
       </Mutation>
-    );
+    )
   }
 }
 
@@ -115,8 +115,8 @@ const SignUpLink = () => (
   <p>
     Don't have an account? <Link to={routes.SIGN_UP}>Sign Up</Link>
   </p>
-);
+)
 
 export default SignUpPage
 
-export { SignUpForm, SignUpLink };
+export { SignUpForm, SignUpLink }
