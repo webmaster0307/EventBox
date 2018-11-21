@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Editor as EditorWysiwyg} from 'react-draft-wysiwyg'
-import { convertFromRaw, EditorState } from 'draft-js';
+import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
+import { convertFromRaw, EditorState } from 'draft-js'
 import { client } from '../../../'
 import gql from 'graphql-tag'
 import { message, Spin } from 'antd'
@@ -39,7 +39,7 @@ class EventItem extends Component{
     this.setState({
       event: result.data.event,
       loading: false
-    });
+    })
   }
   
 

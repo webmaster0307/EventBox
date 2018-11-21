@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import DataLoader from 'dataloader';
 import { ApolloServer } from 'apollo-server-express';
 import { AuthenticationError } from 'apollo-server';
+import rp from 'request-promise'
 
 import schema from './schema';
 import resolvers from './resolvers';
@@ -73,6 +74,8 @@ const server = new ApolloServer({
   resolvers,
   // playground: process.env.NODE_ENV === 'development',
   formatError: error => {
+    // errorLogger(error)
+    
     const { extensions } = error 
     if(extensions && extensions.code === 'UNAUTHENTICATED'){
       // console.log('UNAUTHENTICATED')
@@ -148,9 +151,56 @@ app.get('/api/status', (req, res) => {
 });
 
 app.get('/api/auth', async (req, res) => {
-  const me = await getMe(req)
-  if(!me){
+  let me 
+  try {
+    me = await getMe(req)
+  } catch (error) {
     return res.send({status: 403, message: 'Permission denied'})
   }
   res.send({ status: 'ok', me})
 })
+
+const errorLogger = async (error) => {
+  const url = await rp({
+    method: 'POST',
+    uri: 'https://pastebin.com/api/api_post.php',
+    form: { 
+      api_dev_key: '3602972a4e65d3a560086a2849d02cb6',
+      api_user_key: '0213e2a399bb2eb2764fe875eb77385e',
+      api_option: 'paste',
+      api_paste_name: 'eventbox-dashboard (backend) GraphQL Error',
+      api_paste_code: JSON.stringify(error),
+      api_paste_format: 'javascript',
+      api_paste_private: 2,
+      api_paste_expire_date: '1M'
+    }
+  })
+  rp({
+    method: 'POST',
+    uri: 'https://hooks.slack.com/services/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',
+    body: JSON.stringify({
+      attachments: [
+        {
+          "fallback": "Required plain-text summary of the attachment.",
+          "color": "#36a64f",
+          "pretext": "GraphQL Error",
+          "author_name": "From: vinhnguyen1211 API",
+          "author_link": "https://github.com/legend1250/eventbox-dashboard",
+          "title": "Open error detail",
+          "title_link": url,
+          "text": "See error detail",
+          "fields": [
+            {
+              "title": "Priority",
+              "value": "High",
+              "short": false
+            }
+          ],
+          "footer": "Slack API",
+          "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
+          "ts": new Date().getTime()/1000
+        }
+      ]
+    })
+  })
+}

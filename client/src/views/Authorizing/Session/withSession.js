@@ -1,7 +1,7 @@
-import React from 'react';
-import { Query } from 'react-apollo';
-import { GET_ME } from './queries';
-import Loading from '@components/Loading';
+import React from 'react'
+import { Query } from 'react-apollo'
+import { GET_ME } from './queries'
+import { Loading } from '@components'
 
 
 const withSession = Component => props => (
@@ -19,6 +19,6 @@ const withSession = Component => props => (
       )
     }}
   </Query>
-);
+)
 
-export default withSession;
+export default withSession

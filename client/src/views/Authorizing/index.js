@@ -5,5 +5,5 @@ import './styles.scss'
 
 export {
   SignUpPage,
-  SignInPage,
+  SignInPage
 }

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+import React from 'react'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const GET_ALL_EVENTS_WITH_USERS = gql`
   query {
@@ -20,13 +20,13 @@ const GET_ALL_EVENTS_WITH_USERS = gql`
       }
     }
   }
-`;
+`
 
 const DELETE_EVENT = gql`
   mutation($id: ID!) {
     deleteEvent(id: $id)
   }
-`;
+`
 
 const EventDelete = ({ event }) => (
   <Mutation
@@ -37,8 +37,8 @@ const EventDelete = ({ event }) => (
         return alert('Failed to delete')
       }
       const data = cache.readQuery({
-        query: GET_ALL_EVENTS_WITH_USERS,
-      });
+        query: GET_ALL_EVENTS_WITH_USERS
+      })
 
       cache.writeQuery({
         query: GET_ALL_EVENTS_WITH_USERS,
@@ -46,13 +46,11 @@ const EventDelete = ({ event }) => (
           ...data,
           events: {
             ...data.events,
-            edges: data.events.edges.filter(
-              node => node.id !== event.id,
-            ),
-            pageInfo: data.events.pageInfo,
-          },
-        },
-      });
+            edges: data.events.edges.filter(node => node.id !== event.id,),
+            pageInfo: data.events.pageInfo
+          }
+        }
+      })
     }}
   >
     {(deleteEvent, { data, loading, error }) => (
@@ -61,6 +59,6 @@ const EventDelete = ({ event }) => (
       </button>
     )}
   </Mutation>
-);
+)
 
-export default EventDelete;
+export default EventDelete

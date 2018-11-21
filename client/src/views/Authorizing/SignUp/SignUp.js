@@ -1,9 +1,9 @@
 import React from 'react'
-import { client } from '../../../'
-import * as routes from '../../../constants/routes'
+import { client } from '@client'
+import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
-import { Card, Form, Input, Icon, Button, message, Spin } from 'antd';
-import gql from 'graphql-tag';
+import { Card, Form, Input, Icon, Button, message, Spin } from 'antd'
+import gql from 'graphql-tag'
 
 const FormItem = Form.Item
 
@@ -25,7 +25,7 @@ const SIGN_UP = gql`
       token
     }
   }
-`;
+`
 
 class SignUpForm extends React.Component{
 
@@ -48,9 +48,9 @@ class SignUpForm extends React.Component{
             return message.error(msg || 'Failed to sign up')
           }
           const { token } = result.data.signUp
-          localStorage.setItem('token', token);
-          await this.props.refetch();
-          this.props.history.push(routes.HOME);
+          localStorage.setItem('token', token)
+          await this.props.refetch()
+          this.props.history.push(routes.HOME)
           message.success('Sign up successfully!')
         })
       }
@@ -58,7 +58,7 @@ class SignUpForm extends React.Component{
   }
 
   validateToConfirm = (rule, value, callback) => {
-    this.props.form.validateFields(['confirm_password'], { force: true });
+    this.props.form.validateFields(['confirm_password'], { force: true })
     callback()
   }
 
@@ -148,7 +148,7 @@ class SignUpForm extends React.Component{
                 colon={false}
               >
                 {getFieldDecorator(name, {
-                  rules,
+                  rules
                 })(customRender)}
               </FormItem>
             )

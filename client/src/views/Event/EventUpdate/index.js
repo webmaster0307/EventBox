@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Editor as EditorWysiwyg} from 'react-draft-wysiwyg'
-import { convertFromRaw, EditorState, convertToRaw } from 'draft-js';
+import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
+import { convertFromRaw, EditorState, convertToRaw } from 'draft-js'
 import { client } from '../../../'
 import gql from 'graphql-tag'
 import { message, Spin, Button } from 'antd'
@@ -68,38 +68,43 @@ class EventItem extends Component{
       id: event.id,
       title: event.title,
       thumbnail: event.images.thumbnail
-    });
+    })
   }
 
   onEditorStateChange = (editorState) => {
     this.setState({
-      editorState,
-    });
+      editorState
+    })
   }
 
   handleChangeInput = e => {
     const { name, value } = e.target
-    this.setState({[name]: value});
+    this.setState({[name]: value})
   }
 
   handleUpdate = () => {
     const { id, title, thumbnail, editorState } = this.state
     let result
-    this.setState({ buttonLoading: true}, async () => {
+    this.setState({ buttonLoading: true }, async () => {
       try {
         result = await client.mutate({
           mutation: updateEvent, 
-          variables: { id, title, thumbnail, description: JSON.stringify(convertToRaw(editorState.getCurrentContent())) } 
+          variables: { 
+            id, 
+            title, 
+            thumbnail, 
+            description: JSON.stringify(convertToRaw(editorState.getCurrentContent())) 
+          } 
         })
       } catch (error) {
-        this.setState({buttonLoading: false});
+        this.setState({buttonLoading: false})
         return message.error('Failed to update event')
       }
       // const { updateEvent } = result.data
-      console.log('event: ' ,result.data);
+      console.log('event: ' ,result.data)
       message.success('Update event successfully!')
-      this.setState({buttonLoading: false});
-    });
+      this.setState({buttonLoading: false})
+    })
   }
   
 

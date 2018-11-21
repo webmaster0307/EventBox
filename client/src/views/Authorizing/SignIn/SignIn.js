@@ -1,7 +1,7 @@
 import React from 'react'
-import { client } from '../../../'
-import * as routes from '../../../constants/routes'
-import gql from 'graphql-tag';
+import { client } from '@client'
+import * as routes from '@routes'
+import gql from 'graphql-tag'
 import { withRouter } from 'react-router-dom'
 import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
 
@@ -25,7 +25,7 @@ const SIGN_IN = gql`
       token
     }
   }
-`;
+`
 
 class SignInForm extends React.Component{
 
@@ -42,16 +42,16 @@ class SignInForm extends React.Component{
         this.setState({loading: true}, async () => {
           let result
           try {
-            result = await client.mutate({mutation: SIGN_IN, variables: { username, password}})
+            result = await client.mutate({mutation: SIGN_IN, variables: { username, password }})
           } catch ({graphQLErrors}) {
             const msg = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
-            // this.setState({loading: false});
+            this.setState({loading: false})
             return message.error(msg)
           }
           const { token } = result.data.signIn
-          localStorage.setItem('token', token);
-          await this.props.refetch();
-          this.props.history.push(routes.HOME);
+          localStorage.setItem('token', token)
+          await this.props.refetch()
+          this.props.history.push(routes.HOME)
         })
       }
     })
@@ -74,12 +74,10 @@ class SignInForm extends React.Component{
                   message: 'Not correct format'
                 }
               ]
-            })(
-              <Input
-                prefix={<Icon type='user' />}
-                placeholder='Username or Email'
-              />
-            )}
+            })(<Input
+              prefix={<Icon type='user' />}
+              placeholder='Username or Email'
+            />)}
           </FormItem>
           <FormItem key='password'>
             {getFieldDecorator('password', {
@@ -90,13 +88,11 @@ class SignInForm extends React.Component{
                   message: 'Not correct'
                 }
               ]
-            })(
-              <Input
-                prefix={<Icon type='lock' />}
-                type='password'
-                placeholder='Password'
-              />
-            )}
+            })(<Input
+              prefix={<Icon type='lock' />}
+              type='password'
+              placeholder='Password'
+            />)}
           </FormItem>
           <FormItem>
             <Button

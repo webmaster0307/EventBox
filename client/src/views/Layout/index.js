@@ -1,24 +1,24 @@
 import React from 'react'
 import { client } from '../../'
-import { Route, Switch, Link, withRouter } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
+import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import { getSession } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
-import { Page404 } from '../ErrorPage';
+import { Page404 } from '../ErrorPage'
 import Header from './Header'
 import './styles.scss'
 
-const { Content, Footer, Sider } = Layout;
-const SubMenu = Menu.SubMenu;
+const { Content, Footer, Sider } = Layout
+const SubMenu = Menu.SubMenu
 
 class SiderDemo extends React.Component {
   
   state = {
-    collapsed: false,
+    collapsed: false
   }
 
   onCollapse = (collapsed) => {
-    this.setState({ collapsed });
+    this.setState({ collapsed })
   }
 
   handleGotoHome = () => {
@@ -27,16 +27,11 @@ class SiderDemo extends React.Component {
     }
   }
 
-  getSession = async () => {
-    let result
-    try {
-      result = await client.query({query: getSession})
-    } catch (error) {
-      console.log('error: ' ,error);
-      return
-    }
-    const { me } = result.data
-    console.log('me: ',me);
+  getSession = () => {
+    client.query({query: getSession}).then( result => {
+      const { me } = result.data
+      console.log('me: ',me)
+    })
   }
 
   render() {

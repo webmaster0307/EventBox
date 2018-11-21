@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
 import { client } from './'
-import { Router, Route, Switch, Link } from 'react-router-dom';
-import gql from 'graphql-tag';
+import { Router, Route, Switch, Link } from 'react-router-dom'
+import gql from 'graphql-tag'
 
-import history from './constants/history';
-import * as routes from './constants/routes';
+import history from './constants/history'
+import * as routes from './constants/routes'
 import withSession from './views/Authorizing/Session/withSession'
 
-import { SignUpPage, SignInPage } from './views/Authorizing';
-import { Page404 } from './views/ErrorPage';
+import { SignUpPage, SignInPage } from './views/Authorizing'
+import { Page404 } from './views/ErrorPage'
 
-import SiderDemo from './views/Layout';
+import SiderDemo from './views/Layout'
 
 const setSession = gql`
   mutation($session: Session) {
@@ -19,7 +19,7 @@ const setSession = gql`
 `
 
 const App = ({ session, refetch }) => {
-  client.mutate({ mutation: setSession, variables: { session }})
+  client.mutate({ mutation: setSession, variables: { session } })
 
   return(
     <Router history={history}>
@@ -39,7 +39,7 @@ const App = ({ session, refetch }) => {
   )
 }
 
-export default withSession(App);
+export default withSession(App)
 
 // const AuthorizedContainer = () => (
 //   <Switch>
@@ -58,7 +58,7 @@ const NavigationNonAuth = () => (
       <Link to={routes.SIGN_UP}>Sign Up</Link>
     </li>
   </ul>
-);
+)
 
 const UnauthorizedContainer = ({history, session, refetch}) => (
   <Switch>

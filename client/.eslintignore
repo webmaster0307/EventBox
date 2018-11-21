@@ -1,0 +1,5 @@
+/build
+/node_modules
+registerServiceWorker.js
+package.json
+jsconfig.json

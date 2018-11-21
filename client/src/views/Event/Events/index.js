@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import React, { Component, Fragment } from 'react'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { Table, Icon } from 'antd'
-
-import Loading from '@components/Loading';
+import { Loading } from '@components'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -24,7 +23,7 @@ const EVENT_CREATED = gql`
       }
     }
   }
-`;
+`
 
 const GET_PAGINATED_EVENTS_WITH_USERS = gql`
   query($cursor: String, $limit: Int!) {
@@ -49,7 +48,7 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
       }
     }
   }
-`;
+`
 
 const limit = 10
 const Events = () => (
@@ -64,16 +63,16 @@ const Events = () => (
             There are no events yet ... Try to create one by
             yourself.
           </div>
-        );
+        )
       }
 
-      const { events } = data;
+      const { events } = data
 
       if (loading || !events) {
-        return <Loading />;
+        return <Loading />
       }
 
-      const { edges, pageInfo } = events;
+      const { edges, pageInfo } = events
 
       return (
         <Fragment>
@@ -92,16 +91,16 @@ const Events = () => (
             </MoreEventsButton>
           )}
         </Fragment>
-      );
+      )
     }}
   </Query>
-);
+)
 
 const MoreEventsButton = ({
   limit,
   pageInfo,
   fetchMore,
-  children,
+  children
 }) => (
   <button
     type="button"
@@ -109,11 +108,11 @@ const MoreEventsButton = ({
       fetchMore({
         variables: {
           cursor: pageInfo.endCursor,
-          limit,
+          limit
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
-            return previousResult;
+            return previousResult
           }
 
           return {
@@ -121,17 +120,17 @@ const MoreEventsButton = ({
               ...fetchMoreResult.events,
               edges: [
                 ...previousResult.events.edges,
-                ...fetchMoreResult.events.edges,
-              ],
-            },
-          };
-        },
+                ...fetchMoreResult.events.edges
+              ]
+            }
+          }
+        }
       })
     }
   >
     {children}
   </button>
-);
+)
 
 class EventList extends Component {
   subscribeToMoreEvent = () => {
@@ -139,10 +138,10 @@ class EventList extends Component {
       document: EVENT_CREATED,
       updateQuery: (previousResult, { subscriptionData }) => {
         if (!subscriptionData.data) {
-          return previousResult;
+          return previousResult
         }
 
-        const { eventCreated } = subscriptionData.data;
+        const { eventCreated } = subscriptionData.data
 
         return {
           ...previousResult,
@@ -150,16 +149,16 @@ class EventList extends Component {
             ...previousResult.events,
             edges: [
               eventCreated.event,
-              ...previousResult.events.edges,
-            ],
-          },
-        };
-      },
-    });
+              ...previousResult.events.edges
+            ]
+          }
+        }
+      }
+    })
   };
 
   componentDidMount() {
-    this.subscribeToMoreEvent();
+    this.subscribeToMoreEvent()
   }
 
   tableColumns = () => [
@@ -191,7 +190,7 @@ class EventList extends Component {
   ]
 
   render() {
-    const { events } = this.props;
+    const { events } = this.props
     return(
       // <Query query={getSession} >
       //   {({ data }) => {
@@ -208,4 +207,4 @@ class EventList extends Component {
   }
 }
 
-export default Events;
+export default Events
