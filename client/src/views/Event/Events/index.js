@@ -4,10 +4,7 @@ import gql from 'graphql-tag';
 import { Link } from 'react-router-dom'
 import { Table, Icon } from 'antd'
 
-import EventItem from '../EventItem'
-// import EventDelete from '../EventDelete';
 import Loading from '@components/Loading';
-import { getSession } from '../../Authorizing/Session/localQueries'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -169,7 +166,7 @@ class EventList extends Component {
     {
       title: '',
       dataIndex: 'images',
-      render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} /></div>
+      render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} alt='thumbnail' /></div>
     },
     {
       title: 'Title',

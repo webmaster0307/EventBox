@@ -43,8 +43,10 @@ class SignInForm extends React.Component{
           let result
           try {
             result = await client.mutate({mutation: SIGN_IN, variables: { username, password}})
-          } catch (error) {
-            return message.error('Failed to login')
+          } catch ({graphQLErrors}) {
+            const msg = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+            // this.setState({loading: false});
+            return message.error(msg)
           }
           const { token } = result.data.signIn
           localStorage.setItem('token', token);

@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Editor as EditorWysiwyg} from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js';
-import EventDelete from '../EventDelete';
 import { client } from '../../../'
 import gql from 'graphql-tag'
 import { message, Spin } from 'antd'
-import { Query } from 'react-apollo';
 
 const getEventDetail = gql`
   query($eventId: ID!) {
@@ -46,7 +44,6 @@ class EventItem extends Component{
   
 
   render(){
-    const { eventId } = this.props.match.params
     const { loading, event } = this.state
     const eventDetail = event && EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)))
 

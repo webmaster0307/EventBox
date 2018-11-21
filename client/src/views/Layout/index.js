@@ -27,11 +27,16 @@ class SiderDemo extends React.Component {
     }
   }
 
-  getSession = () => {
-    client.query({query: getSession}).then( result => {
-      const { me } = result.data
-      console.log('me: ',me);
-    })
+  getSession = async () => {
+    let result
+    try {
+      result = await client.query({query: getSession})
+    } catch (error) {
+      console.log('error: ' ,error);
+      return
+    }
+    const { me } = result.data
+    console.log('me: ',me);
   }
 
   render() {

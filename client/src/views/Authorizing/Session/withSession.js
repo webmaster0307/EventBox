@@ -6,7 +6,11 @@ import Loading from '@components/Loading';
 
 const withSession = Component => props => (
   <Query query={GET_ME}>
-    {({ data, loading, refetch }) => {
+    {({ data, error, loading, refetch }) => {
+      if(error){
+        return(<div>Error</div>)
+      }
+      // console.log('error: ' ,error);
       if(loading){
         return <Loading />
       }
