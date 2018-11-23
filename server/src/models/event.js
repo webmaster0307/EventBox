@@ -7,6 +7,9 @@ let EventSchema = new Schema({
   title: {
     type: String
   },
+  shortDescription: {
+    type: String
+  },
   description: {
     type: String
   },

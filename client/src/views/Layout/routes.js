@@ -1,5 +1,7 @@
 import Home from '../Account/Home'
-import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
+import { Events, EventDetail } from '../Event'
+import EventCreate from '../Event/EventCreate/EventCreate'
+import EventUpdate from '../Event/EventUpdate/EventUpdate'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
 
@@ -83,7 +85,7 @@ export const routesMenu = [
       {
         title: 'Create',
         path: '/events/create',
-        icon: 'edit',
+        icon: 'form',
         breadcumbs: [ 'Events', 'Event create' ]
       }
     ]
