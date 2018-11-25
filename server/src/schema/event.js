@@ -7,8 +7,8 @@ export default gql`
   }
 
   extend type Mutation {
-    createEvent(title: String!, thumbnail: String!, description: String!): Event!
-    updateEvent(id: ID!, title: String!, thumbnail: String!, description: String!): Event!
+    createEvent(title: String!, thumbnail: String!, description: String!, shortDescription: String): Event!
+    updateEvent(id: ID!, title: String!, thumbnail: String!, description: String!, shortDescription: String): Event!
     deleteEvent(id: ID!): Boolean!
   }
 
@@ -25,8 +25,8 @@ export default gql`
   type Event {
     id: ID!
     title: String!
-    shortDescription: String!
     description: String!
+    shortDescription: String!
     slug: String!
     user: User!
     images: EventImages!

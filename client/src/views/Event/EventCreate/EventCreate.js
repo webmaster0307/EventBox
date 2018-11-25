@@ -1,10 +1,26 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Form, Input, Button, Icon } from 'antd'
+import { Form, Input, Button, Icon, message, BackTop } from 'antd'
 import { convertToRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import { formItemLayout, formRuleNotEmpty } from './constants'
+import { client } from '@client'
+import gql from 'graphql-tag'
 
+const CREATE_EVENT = gql`
+  mutation($title: String!, $thumbnail: String!, $description: String!, $shortDescription: String) {
+    createEvent(title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription) {
+      id
+      title,
+      description,
+      createdAt
+      user {
+        id
+        username
+      }
+    }
+  }
+`
 const FormItem = Form.Item
 
 class EventCreate extends Component{
@@ -16,9 +32,26 @@ class EventCreate extends Component{
     const { form } = this.props
     form.validateFields( (err, values) => {
       if(!err){
-        // console.log('values: ',values)
+        const { title, thumbnail, shortDescription } = values
+        client.mutate({ 
+          mutation: CREATE_EVENT, 
+          variables: { 
+            title, 
+            thumbnail,
+            shortDescription,
+            description: JSON.stringify(convertToRaw(this.editor.state.editorState.getCurrentContent()))
+          }
+        })
+          .then( ({data, errors}) => {
+            if(errors){
+              return message.error('Failed to create new event')
+            }
+            message.success('New event created successfully!')
+          })
+          .catch( () => {
+            return message.error('Failed to create new event')
+          })
       }
-      console.log('editor: ' ,JSON.stringify(convertToRaw(this.editor.state.editorState.getCurrentContent())))
     })
   }
 
@@ -38,8 +71,7 @@ class EventCreate extends Component{
     {
       name: 'shortDescription',
       title: 'Short Description',
-      customRender: <Input />,
-      rules: [formRuleNotEmpty]
+      customRender: <Input />
     }
   ]
 
@@ -47,47 +79,50 @@ class EventCreate extends Component{
     const { getFieldDecorator } = this.props.form
 
     return (
-      <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
-        {this.formFields().map(field => {
-          const { name, title, rules, customRender } = field
-          return(
-            <FormItem
-              key={name}
-              label={title}
-              colon={false}
-              {...formItemLayout}
-            >
-              {getFieldDecorator(name, {
-                rules
-              })(customRender)}
-            </FormItem>
-          )
-        })}
-        <FormItem
-          key='description'
-          label='Description'
-          colon={false}
-          {...formItemLayout}
-        >
-          <Editor
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
-            editorStyle={{border: '1px #E6E6E6 solid'}}
-            name='editor'
-            ref={editor => {this.editor = editor}}
-          />
-        </FormItem>
-        <FormItem>
-          <Button
-            type='primary'
-            block
-            htmlType='submit'
+      <div>
+        <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
+          {this.formFields().map(field => {
+            const { name, title, rules, customRender } = field
+            return(
+              <FormItem
+                key={name}
+                label={title}
+                colon={false}
+                {...formItemLayout}
+              >
+                {getFieldDecorator(name, {
+                  rules
+                })(customRender)}
+              </FormItem>
+            )
+          })}
+          <FormItem
+            key='description'
+            label='Description'
+            colon={false}
+            {...formItemLayout}
           >
-            <Icon type='form' />
-            Create Event
-          </Button>
-        </FormItem>
-      </Form>
+            <Editor
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              editorStyle={{border: '1px #E6E6E6 solid'}}
+              name='editor'
+              ref={editor => {this.editor = editor}}
+            />
+          </FormItem>
+          <FormItem>
+            <Button
+              type='primary'
+              block
+              htmlType='submit'
+            >
+              <Icon type='form' />
+              Create Event
+            </Button>
+          </FormItem>
+        </Form>
+        <BackTop />
+      </div>
     )
   }
 }

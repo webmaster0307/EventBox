@@ -7,19 +7,20 @@ let EventSchema = new Schema({
   title: {
     type: String
   },
-  shortDescription: {
-    type: String
+  slug: {
+    type: String,
+    default: ''
   },
   description: {
     type: String
   },
+  shortDescription: {
+    type: String,
+    default: ''
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'user'
-  },
-  slug: {
-    type: String,
-    default: ''
   },
   images: {
     type: Object
