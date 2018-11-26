@@ -16,7 +16,7 @@ import resolvers from './resolvers';
 import models from './models';
 import loaders from './loaders';
 
-const port = process.env.SERVER_PORT || 8000;
+const port = process.env.NGINX_PORT || 8000;
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express();
