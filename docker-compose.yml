@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: .docker/nginx.dockerfile
-    links:
-      - server
     depends_on:
       - server
     ports:
