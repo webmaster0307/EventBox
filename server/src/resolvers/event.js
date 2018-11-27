@@ -1,27 +1,27 @@
-import { combineResolvers } from 'graphql-resolvers';
+import { combineResolvers } from 'graphql-resolvers'
 
-import { isAuthenticated, isEventOwner } from './authorization';
+import { isAuthenticated, isEventOwner } from './authorization'
 
-import pubsub, { EVENTS } from '../subscription';
+import pubsub, { EVENTS } from '../subscription'
 
-const toCursorHash = string => Buffer.from(string).toString('base64');
+const toCursorHash = string => Buffer.from(string).toString('base64')
 
 const fromCursorHash = string =>
-  Buffer.from(string, 'base64').toString('ascii');
+  Buffer.from(string, 'base64').toString('ascii')
 
 export default {
   Query: {
     events: async (parent, { cursor, limit = 100 }, { models }) => {
       const cursorOptions = cursor
         ? {
-            createdAt: {
-              '$lt': fromCursorHash(cursor),
-            },
+          createdAt: {
+            '$lt': fromCursorHash(cursor)
           }
-        : {};
+        }
+        : {}
 
       const events = await models.Event.find({
-        ...cursorOptions,
+        ...cursorOptions
       }, null, {
         limit: limit + 1,
         sort: {
@@ -29,8 +29,8 @@ export default {
         }
       })
 
-      const hasNextPage = events.length > limit;
-      const edges = hasNextPage ? events.slice(0, -1) : events;
+      const hasNextPage = events.length > limit
+      const edges = hasNextPage ? events.slice(0, -1) : events
 
       return {
         edges,
@@ -38,13 +38,13 @@ export default {
           hasNextPage,
           endCursor: edges[edges.length - 1] ? toCursorHash(
             edges[edges.length - 1].createdAt.toString()
-          ) : '',
-        },
-      };
+          ) : ''
+        }
+      }
     },
 
     event: async (parent, { id }, { models }) =>
-      await models.Event.findById(id),
+      await models.Event.findById(id)
   },
 
   Mutation: {
@@ -57,45 +57,45 @@ export default {
           images: {
             thumbnail
           },
-          userId: me.id,
-        });
+          userId: me.id
+        })
 
         pubsub.publish(EVENTS.EVENT.CREATED, {
-          eventCreated: { event },
-        });
+          eventCreated: { event }
+        })
 
-        return event;
-      },
+        return event
+      }
     ),
     updateEvent: combineResolvers(
       isAuthenticated,
       isEventOwner,
       async (parent, { id, title, thumbnail, description }, { models, me }) => {
         const event = await models.Event.findByIdAndUpdate(
-          id, 
-          { title, images: {thumbnail}, description },
+          id,
+          { title, images: { thumbnail }, description },
           { new: true }
         )
 
-        return event;
-      },
+        return event
+      }
     ),
 
     deleteEvent: combineResolvers(
       isAuthenticated,
       isEventOwner,
-      async (parent, { id }, { models }) =>{
+      async (parent, { id }, { models }) => {
         try {
           const { errors } = await models.Event.findByIdAndDelete(id)
-          if(errors){
+          if (errors) {
             return false
           }
         } catch (error) {
           return false
         }
         return true
-      },
-    ),
+      }
+    )
   },
 
   Event: {
@@ -105,7 +105,7 @@ export default {
 
   Subscription: {
     eventCreated: {
-      subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED),
-    },
-  },
+      subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
+    }
+  }
 }

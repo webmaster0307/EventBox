@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 import slugify from '@sindresorhus/slugify'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 let EventSchema = new Schema({
   title: {
@@ -22,10 +22,10 @@ let EventSchema = new Schema({
     type: Object
   }
 }, {
-    timestamps: true
+  timestamps: true
 })
 
-EventSchema.pre('save', function(next){
+EventSchema.pre('save', function (next) {
   this.slug = slugify(this.title)
   next()
 })
@@ -34,4 +34,4 @@ EventSchema.pre('find', async (next) => {
   next()
 })
 
-export default mongoose.model('event', EventSchema);
+export default mongoose.model('event', EventSchema)

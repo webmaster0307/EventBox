@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server-express'
 
 export default gql`
   extend type Query {
@@ -31,4 +31,4 @@ export default gql`
     events: [Event!]
     jwtJti: String!
   }
-`;
+`
