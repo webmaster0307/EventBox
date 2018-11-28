@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-let ContactSchema = new Schema({
+let contactSchema = new Schema({
   eula: {
     type: String
   },
@@ -20,6 +20,8 @@ let ContactSchema = new Schema({
     required: true,
     default: true
   }
+}, {
+  timestamps: true
 })
 
-export default model('Contact', ContactSchema)
+export default model('contact', contactSchema)

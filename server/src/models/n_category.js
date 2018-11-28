@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-let CategorySchema = new Schema({
+let categorySchema = new Schema({
   name: {
     type: String,
     required: true
@@ -14,6 +14,8 @@ let CategorySchema = new Schema({
     required: true,
     default: true
   }
+}, {
+  timestamps: true
 })
 
-export default model('Category', CategorySchema)
+export default model('category', categorySchema)

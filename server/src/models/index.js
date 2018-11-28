@@ -1,13 +1,11 @@
 import mongoose from 'mongoose'
-// import User from './user'
-// import Event from './event'
 
-import Account from './n_account'
-import Category from './n_category'
-import Contact from './n_contact'
-import Department from './n_department'
-import DraftEvent from './n_draftEvent'
-import Event from './n_event'
+import account from './n_account'
+import category from './n_category'
+import contact from './n_contact'
+import department from './n_department'
+import draftEvent from './n_draftEvent'
+import event from './n_event'
 
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI, {
@@ -27,10 +25,10 @@ if (process.env.MONGODB_URI) {
 }
 
 export default {
-  Account,
-  Category,
-  Contact,
-  Department,
-  DraftEvent,
-  Event
+  account,
+  category,
+  contact,
+  department,
+  draftEvent,
+  event
 }

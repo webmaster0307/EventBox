@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose'
-import moment from 'moment'
+import slugify from '@sindresorhus/slugify'
 
-let EventSchema = new Schema({
-  name: {
+let eventSchema = new Schema({
+  title: {
     type: String,
     required: true
   },
@@ -14,24 +14,28 @@ let EventSchema = new Schema({
     type: String,
     required: true
   },
+  slug: {
+    type: String,
+    default: ''
+  },
+  images: {
+    type: Object
+  },
   location: {
     type: String,
     required: true
   },
-  createAt: {
-    type: Number,
-    required: true,
-    default: moment().unix()
-  },
   registerTimeFrom: {
-    type: Number
+    type: Date,
+    required: true
   },
   registerTimeTo: {
-    type: Number
-  },
-  ownerID: {
-    type: String,
+    type: Date,
     required: true
+  },
+  userID: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   approvedBy: {
     type: String
@@ -43,4 +47,13 @@ let EventSchema = new Schema({
   }
 })
 
-export default model('Event', EventSchema)
+eventSchema.pre('save', function (next) {
+  this.slug = slugify(this.title)
+  next()
+})
+
+eventSchema.pre('find', async (next) => {
+  next()
+})
+
+export default model('event', eventSchema)

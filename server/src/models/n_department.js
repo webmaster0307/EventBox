@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-let DepartmentSchema = new Schema({
+let departmentSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -14,6 +14,8 @@ let DepartmentSchema = new Schema({
     required: true,
     default: true
   }
+}, {
+  timestamps: true
 })
 
-export default model('Department', DepartmentSchema)
+export default model('department', departmentSchema)

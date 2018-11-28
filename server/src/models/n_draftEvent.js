@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import slugify from '@sindresorhus/slugify'
 
 let draftEventSchema = new Schema({
   name: {
@@ -10,20 +11,25 @@ let draftEventSchema = new Schema({
   description: {
     type: String
   },
+  slug: {
+    type: String,
+    default: ''
+  },
+  images: {
+    type: Object
+  },
   location: {
     type: String
   },
-  createAt: {
-    type: Number
-  },
   registerTimeFrom: {
-    type: Number
+    type: Date
   },
   registerTimeTo: {
-    type: Number
+    type: Date
   },
-  ownerID: {
-    type: String
+  userID: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   approvedBy: {
     type: String
@@ -33,6 +39,17 @@ let draftEventSchema = new Schema({
     required: true,
     default: true
   }
+}, {
+  timestamps: true
 })
 
-export default model('DraftEvent', draftEventSchema)
+draftEventSchema.pre('save', function (next) {
+  this.slug = slugify(this.title)
+  next()
+})
+
+draftEventSchema.pre('find', async (next) => {
+  next()
+})
+
+export default model('draftEvent', draftEventSchema)
