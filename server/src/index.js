@@ -21,20 +21,20 @@ const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'lo
 
 const app = express();
 
-const corsOptions = {
-  origin: [ `http://${host}:${port}`, `http://${host}:2048` ],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-// cors
-app.use(cors(corsOptions));
-// api fallback for SPA
-app.use(history({
-  rewrites:[
-      {from: /^\/api\/.*$/, to: function(context){
-          return context.parsedUrl.pathname;
-      }},
-  ]
-}))
+// const corsOptions = {
+//   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
+// // cors
+// app.use(cors(corsOptions));
+// // api fallback for SPA
+// app.use(history({
+//   rewrites:[
+//       {from: /^\/api\/.*$/, to: function(context){
+//           return context.parsedUrl.pathname;
+//       }},
+//   ]
+// }))
 // morgan logging
 morgan.token('decodeUrl', function (req, res) {
   return decodeURI(req.originalUrl)
@@ -50,10 +50,6 @@ morgan.token('decodeUrl', function (req, res) {
 app.use(
   morgan(`- :method :decodeUrl :status :response-time ms`)
 )
-
-// set view engine
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'html');
 
 const getMe = async req => {
   const token = req.headers['x-token'];
