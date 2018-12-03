@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { EditorState, convertToRaw  } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+import React, { Component } from 'react'
+import { EditorState, convertToRaw } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import ErrorMessage from '../../ErrorPage';
+import ErrorMessage from '../../ErrorPage'
 
 const CREATE_EVENT = gql`
   mutation($title: String!, $thumbnail: String!, $description: String!) {
@@ -20,38 +20,40 @@ const CREATE_EVENT = gql`
       }
     }
   }
-`;
+`
 
 class EventCreate extends Component {
   state = {
     title: '',
     thumbnail: '',
-    editorState: EditorState.createEmpty(),
+    editorState: EditorState.createEmpty()
   };
 
   onEditorStateChange = (editorState) => {
     this.setState({
-      editorState,
-    });
+      editorState
+    })
   };
 
   handleChangeInput = e => {
     const { name, value } = e.target
-    this.setState({[name]: value});
+    this.setState({[name]: value})
   }
 
   onSubmit = async (event, createEvent) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      await createEvent();
-      this.setState({ editorState: EditorState.createEmpty() });
+      await createEvent()
+      this.setState({ editorState: EditorState.createEmpty() })
     } catch (error) {}
   };
 
   render() {
-    const { title, thumbnail, editorState } = this.state;
-    const dataSubmit = { title, thumbnail, description: JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
+    const { title, thumbnail, editorState } = this.state
+    const dataSubmit = { title, thumbnail, 
+      description: JSON.stringify(convertToRaw(editorState.getCurrentContent()))
+    }
 
     return (
       <Mutation
@@ -93,7 +95,7 @@ class EventCreate extends Component {
           </form>
         )}
       </Mutation>
-    );
+    )
   }
 }
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Layout, Avatar, Menu, Dropdown } from 'antd';
+import { Layout, Avatar, Menu, Dropdown } from 'antd'
 import { client } from '../../'
-import { signOut } from '@components/SignOut'
+import { signOut } from '@components'
 
-const { Header } = Layout;
+const { Header } = Layout
 
 const LayoutHeader = props => (
   <Header 
@@ -27,7 +27,7 @@ class UserAvatar extends Component{
           <Avatar size='large' style={{cursor: 'pointer'}} />
         </Dropdown>
       </div>
-    );
+    )
   }
 }
 
@@ -41,4 +41,4 @@ const actions = (
       <span>Logout</span>
     </Menu.Item>
   </Menu>
-);
+)

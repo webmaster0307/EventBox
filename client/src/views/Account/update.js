@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 import { withRouter } from 'react-router-dom'
-import * as routes from '../../constants/routes';
-import ErrorMessage from '../ErrorPage';
+import * as routes from '@routes'
+import ErrorMessage from '../ErrorPage'
 
 const UPDATE_ACCOUNT = gql`
   mutation($username: String!){
@@ -23,24 +23,24 @@ class UpdateAccountForm extends Component{
   }
 
   onChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   }
 
   onSubmit = (event, updateUser) => {
-    event.preventDefault();
+    event.preventDefault()
 
     updateUser().then(async ({ data }) => {
-      this.setState({ username: '' });
+      this.setState({ username: '' })
       // console.log('data: ' ,data);
-      this.props.history.push(routes.HOME);
-    });
+      this.props.history.push(routes.HOME)
+    })
   };
 
   render() {
-    const { username } = this.state;
+    const { username } = this.state
 
-    const isInvalid = username === '';
+    const isInvalid = username === ''
 
     return (
       <Mutation mutation={UPDATE_ACCOUNT} variables={{ username }}>
@@ -61,7 +61,7 @@ class UpdateAccountForm extends Component{
           </form>
         )}
       </Mutation>
-    );
+    )
   }
 }
 

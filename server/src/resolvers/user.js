@@ -81,7 +81,7 @@ export default {
 
       const isValid = await user.validatePassword(password);
       if (!isValid) {
-        throw new AuthenticationError('Invalid password.');
+        throw new UserInputError('Invalid password.');
       }
 
       return { token: createToken(models, user, secret) };
