@@ -3,13 +3,14 @@ import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
 import { client } from '../../../'
 import gql from 'graphql-tag'
-import { message, Spin } from 'antd'
+import { message, Spin, BackTop } from 'antd'
 
 const getEventDetail = gql`
   query($eventId: ID!) {
     event(id: $eventId) {
       title
       description
+      shortDescription
       createdAt
       user {
         id
@@ -51,10 +52,12 @@ class EventItem extends Component{
       <Spin spinning={loading} >
         <h3>{event && event.user.username}</h3>
         <div><span>Title: <label>{event && event.title}</label></span></div>
-        <div style={{maxWidth: 800, border: '1px solid #448aff', marginBottom: 12}} >
+        <div><strong>{event && event.shortDescription}</strong></div>
+        <div style={{maxWidth: 800, border: '1px solid #E6E6E6', marginBottom: 12}} >
           <EditorWysiwyg editorState={eventDetail} readOnly toolbarHidden />
         </div>
         <div><small>Created at: {new Date(Number(event && event.createdAt)).toLocaleString()}</small></div>
+        <BackTop />
       </Spin>
       // <Query query={getEventDetail} variables={{eventId}} >
       //   {({data, loading}) => {

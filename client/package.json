@@ -15,7 +15,6 @@
     "babel-plugin-import": "^1.11.0",
     "draft-js": "^0.10.5",
     "draft-js-export-html": "^1.2.0",
-    "eslint": "^5.6.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",
@@ -48,7 +47,7 @@
     "linter-fix": "eslint . --fix"
   },
   "husky": {
-    "hooks": {  
+    "hooks": {
       "pre-commit": "lint-staged"
     }
   },

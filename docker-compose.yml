@@ -1,14 +1,31 @@
 version: '3'
 services:
-  server:
+  nginx:
     build:
-      context: ./
+      context: ./client
       dockerfile: ./Dockerfile
     image:
-      eventbox-server:v1
+      eventbox-server-nginx:v1
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
+    networks:
+      - eventbox-net
+  server:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    image:
+      eventbox-server:v2
     env_file: 
       - .env
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+    expose:
+      - ${SERVER_PORT}
+    networks:
+    - eventbox-net
     restart: always
     command: npm run start-prod
+networks:
+  eventbox-net:
+    driver: bridge

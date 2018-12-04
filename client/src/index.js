@@ -18,15 +18,14 @@ import gql from 'graphql-tag'
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
-const port = process.env.REACT_APP_SERVER_PORT || 8000
-const host = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_HOST_NAME : 'localhost'
+const prodMode = process.env.NODE_ENV === 'production'
 
 const httpLink = new HttpLink({
   uri: '/graphql'
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${host}:${port}/graphql`,
+  uri: `ws://${prodMode ? process.env.REACT_APP_GRAPHQL_SUBSCRIPTION : 'localhost:8000/graphql'}`,
   options: {
     reconnect: true
   }
