@@ -17,4 +17,8 @@ const linkSchema = gql`
   }
 `
 
-export default [linkSchema, userSchema, eventSchema]
+export default [
+  linkSchema,
+  userSchema,
+  eventSchema
+]

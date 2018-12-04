@@ -8,12 +8,10 @@ let contactSchema = new Schema({
     type: String
   },
   address: {
-    type: String,
-    required: true
+    type: String
   },
   phoneNumber: {
-    type: Array,
-    required: true
+    type: Array
   },
   isEnabled: {
     type: Boolean,

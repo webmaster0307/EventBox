@@ -6,8 +6,7 @@ let categorySchema = new Schema({
     required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   isEnabled: {
     type: Boolean,

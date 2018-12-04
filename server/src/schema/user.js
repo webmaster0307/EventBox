@@ -9,13 +9,29 @@ export default gql`
 
   extend type Mutation {
     signUp(
-      username: String!
       email: String!
+      username: String!
       password: String!
+      firstname: String
+      lastname: String
+      department: String
+      phoneNumber: Int
+      secret: String
     ): Token!
 
     signIn(username: String!, password: String!): Token!
-    updateUser(username: String!): User!
+    updateUser(
+      id: ID!
+      username: String!
+      password: String
+      firstname: String
+      lastname: String
+      department: String
+      phoneNumber: Int
+      secret: String
+      role: [String]
+      #events: [Event!]
+      ): User!
     deleteUser(id: ID!): Boolean!
   }
 
@@ -25,10 +41,14 @@ export default gql`
 
   type User {
     id: ID!
-    username: String!
     email: String!
-    role: String
+    username: String!
+    firstname: String
+    lastname: String
+    department: String
+    phoneNumber: Int
+    secret: String
+    role: [String]
     events: [Event!]
-    jwtJti: String!
   }
 `

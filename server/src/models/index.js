@@ -1,15 +1,16 @@
 import mongoose from 'mongoose'
 
-import account from './n_account'
-import category from './n_category'
-import contact from './n_contact'
-import department from './n_department'
-import draftEvent from './n_draftEvent'
-import event from './n_event'
+import user from './user'
+import category from './category'
+import contact from './contact'
+import department from './department'
+import draftEvent from './draftEvent'
+import event from './event'
 
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
+    useCreateIndex: true,
     // sets how many times to try reconnecting
     reconnectTries: Number.MAX_VALUE,
     // sets the delay between every retry (milliseconds)
@@ -25,7 +26,7 @@ if (process.env.MONGODB_URI) {
 }
 
 export default {
-  account,
+  user,
   category,
   contact,
   department,

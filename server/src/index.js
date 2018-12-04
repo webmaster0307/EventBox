@@ -68,7 +68,7 @@ const getMe = async req => {
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  // playground: process.env.NODE_ENV === 'development',
+  playground: process.env.NODE_ENV === 'development',
   formatError: error => {
     // errorLogger(error)
 
@@ -132,7 +132,7 @@ const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
 httpServer.listen({ port }, () => {
-  console.log(`Apollo Server starts on //${host}:${port}/graphql`)
+  console.log(`Apollo Server starts on ${host}:${port}/graphql`)
 })
 
 // app.get('/', (req, res) => {

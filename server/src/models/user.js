@@ -1,63 +1,81 @@
-import mongoose from 'mongoose'
-import bcrypt from 'bcryptjs'
+import { Schema, model } from 'mongoose'
+import { hash, compare } from 'bcryptjs'
 
-const Schema = mongoose.Schema
-
-let UserSchema = new Schema({
-  username: {
+let userSchema = new Schema({
+  email: {
     type: String,
     required: true
   },
-  email: {
-    type: String
+  username: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    required: true
   },
   password: {
     type: String,
     required: true
   },
-  role: {
+  firstname: {
     type: String,
-    enum: ['admin', 'operator', 'user'],
-    default: 'user'
+    required: true
+  },
+  lastname: {
+    type: String,
+    required: true
+  },
+  department: {
+    type: Schema.Types.ObjectId,
+    ref: 'department'
+  },
+  phoneNumber: {
+    type: Number
+  },
+  secret: {
+    type: String
+  },
+  role: {
+    type: Array,
+    default: ['user']
   },
   events: {
     type: Schema.Types.ObjectId,
     ref: 'event'
   },
-  jwtJti: {
-    type: String,
-    default: ''
+  isEnabled: {
+    type: Boolean,
+    required: true,
+    default: true
   }
 }, {
   timestamps: true
 })
 
 // pre-hook
-
-UserSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   this.password = await this.generatePasswordHash()
   return next()
 })
 
 // method
-UserSchema.methods.generatePasswordHash = async function () {
+userSchema.methods.generatePasswordHash = async function () {
   const saltRounds = 10
-  return await bcrypt.hash(this.password, saltRounds)
+  const data = await hash(this.password, saltRounds)
+  return data
 }
 
-UserSchema.methods.validatePassword = async function (password) {
-  return await bcrypt.compare(password, this.password)
+userSchema.methods.validatePassword = async function (password) {
+  const data = await compare(password, this.password)
+  return data
 }
 
 // statics
-
-UserSchema.statics.findByLogin = async function (username) {
+userSchema.statics.findByLogin = async function (username) {
   let user = await this.findOne({ username })
   if (!user) {
     user = await this.findOne({ email: username })
   }
-
   return user
 }
 
-export default mongoose.model('user', UserSchema)
+export default model('user', userSchema)

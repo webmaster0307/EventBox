@@ -2,18 +2,26 @@ import { Schema, model } from 'mongoose'
 import slugify from '@sindresorhus/slugify'
 
 let draftEventSchema = new Schema({
-  name: {
-    type: String
-  },
-  categoryId: {
-    type: String
-  },
-  description: {
+  title: {
     type: String
   },
   slug: {
     type: String,
     default: ''
+  },
+  description: {
+    type: String
+  },
+  shortDescription: {
+    type: String,
+    default: ''
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  },
+  categoryId: {
+    type: String
   },
   images: {
     type: Object
@@ -26,10 +34,6 @@ let draftEventSchema = new Schema({
   },
   registerTimeTo: {
     type: Date
-  },
-  userID: {
-    type: Schema.Types.ObjectId,
-    ref: 'user'
   },
   approvedBy: {
     type: String
