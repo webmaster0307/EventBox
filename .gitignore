@@ -2,4 +2,6 @@
 
 /server/src/public
 
+**/package-lock.json
+
 .env
