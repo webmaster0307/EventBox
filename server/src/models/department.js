@@ -4,8 +4,7 @@ const Schema = mongoose.Schema
 
 let departmentSchema = new Schema({
   name: {
-    type: String,
-    required: true
+    type: String
   },
   description: {
     type: String

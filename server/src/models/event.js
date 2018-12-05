@@ -5,8 +5,7 @@ const Schema = mongoose.Schema
 
 let eventSchema = new Schema({
   title: {
-    type: String,
-    required: true
+    type: String
   },
   slug: {
     type: String,
@@ -43,7 +42,8 @@ let eventSchema = new Schema({
     default: ''
   },
   approvedBy: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   isEnabled: {
     type: Boolean,

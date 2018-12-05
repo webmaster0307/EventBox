@@ -30,16 +30,20 @@ let draftEventSchema = new Schema({
     type: Object
   },
   location: {
-    type: String
+    type: String,
+    default: ''
   },
   regFrom: {
-    type: Date
+    type: Date,
+    default: ''
   },
   regTo: {
-    type: Date
+    type: Date,
+    default: ''
   },
   approvedBy: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   isEnabled: {
     type: Boolean,
