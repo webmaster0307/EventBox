@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
 
-import user from './user'
-import category from './category'
-import contact from './contact'
-import department from './department'
-import draftEvent from './draftEvent'
-import event from './event'
+import User from './user'
+import Category from './category'
+import Contact from './contact'
+import Department from './department'
+import Draftevent from './draftEvent'
+import Event from './event'
 
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI, {
@@ -26,10 +26,10 @@ if (process.env.MONGODB_URI) {
 }
 
 export default {
-  user,
-  category,
-  contact,
-  department,
-  draftEvent,
-  event
+  User,
+  Category,
+  Contact,
+  Department,
+  Draftevent,
+  Event
 }

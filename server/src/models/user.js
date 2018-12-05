@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose'
 import { hash, compare } from 'bcryptjs'
+
+const Schema = mongoose.Schema
 
 let userSchema = new Schema({
   email: {
@@ -18,11 +20,11 @@ let userSchema = new Schema({
   },
   firstname: {
     type: String,
-    required: true
+    default: ''
   },
   lastname: {
     type: String,
-    required: true
+    default: ''
   },
   department: {
     type: Schema.Types.ObjectId,
@@ -78,4 +80,4 @@ userSchema.statics.findByLogin = async function (username) {
   return user
 }
 
-export default model('user', userSchema)
+export default mongoose.model('user', userSchema)

@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose'
 import slugify from '@sindresorhus/slugify'
+
+const Schema = mongoose.Schema
 
 let draftEventSchema = new Schema({
   title: {
@@ -57,4 +59,4 @@ draftEventSchema.pre('find', async (next) => {
   next()
 })
 
-export default model('draftEvent', draftEventSchema)
+export default mongoose.model('draftEvent', draftEventSchema)

@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose'
 import slugify from '@sindresorhus/slugify'
+
+const Schema = mongoose.Schema
 
 let eventSchema = new Schema({
   title: {
@@ -30,15 +32,15 @@ let eventSchema = new Schema({
   },
   location: {
     type: String,
-    required: true
+    default: ''
   },
   regFrom: {
     type: Date,
-    required: true
+    default: ''
   },
   regTo: {
     type: Date,
-    required: true
+    default: ''
   },
   approvedBy: {
     type: String
@@ -61,4 +63,4 @@ eventSchema.pre('find', async (next) => {
   next()
 })
 
-export default model('event', eventSchema)
+export default mongoose.model('event', eventSchema)

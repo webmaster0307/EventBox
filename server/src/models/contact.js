@@ -1,4 +1,6 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose'
+
+const Schema = mongoose.Schema
 
 let contactSchema = new Schema({
   eula: {
@@ -22,4 +24,4 @@ let contactSchema = new Schema({
   timestamps: true
 })
 
-export default model('contact', contactSchema)
+export default mongoose.model('contact', contactSchema)

@@ -1,4 +1,6 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose'
+
+const Schema = mongoose.Schema
 
 let departmentSchema = new Schema({
   name: {
@@ -17,4 +19,4 @@ let departmentSchema = new Schema({
   timestamps: true
 })
 
-export default model('department', departmentSchema)
+export default mongoose.model('department', departmentSchema)

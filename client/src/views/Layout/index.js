@@ -46,7 +46,14 @@ class SiderDemo extends React.Component {
         >
           <div className="layout-logo__wrapper" onClick={this.handleGotoHome} />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            {routesMenu.filter(route => route.roles.includes(me.role)).map(item => {
+            {routesMenu.filter(route => {
+              for(let role of me.role){
+                if(route.roles.includes(role)){
+                  return true
+                }
+              }
+              return false
+            }).map(item => {
               if(item.subComponent){
                 return(
                   <SubMenu
@@ -86,7 +93,14 @@ class SiderDemo extends React.Component {
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Switch>
-                {routesComp.filter(route => route.component && route.roles.includes(me.role)).map(route => (
+                {routesComp.filter(route => {
+                  for(let role of me.role){
+                    if(route.roles.includes(role)){
+                      return route.component && true
+                    }
+                  }
+                  return false
+                }).map(route => (
                   <Route key={route.path} {...route} />
                 ))}
                 <Route component={Page404} />
