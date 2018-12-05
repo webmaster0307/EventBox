@@ -22,8 +22,8 @@ let eventSchema = new Schema({
     ref: 'user'
   },
   categoryId: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'category'
   },
   images: {
     type: Object
@@ -32,11 +32,11 @@ let eventSchema = new Schema({
     type: String,
     required: true
   },
-  registerTimeFrom: {
+  regFrom: {
     type: Date,
     required: true
   },
-  registerTimeTo: {
+  regTo: {
     type: Date,
     required: true
   },

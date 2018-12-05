@@ -21,7 +21,8 @@ let draftEventSchema = new Schema({
     ref: 'user'
   },
   categoryId: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'category'
   },
   images: {
     type: Object
@@ -29,10 +30,10 @@ let draftEventSchema = new Schema({
   location: {
     type: String
   },
-  registerTimeFrom: {
+  regFrom: {
     type: Date
   },
-  registerTimeTo: {
+  regTo: {
     type: Date
   },
   approvedBy: {
