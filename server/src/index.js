@@ -153,7 +153,10 @@ app.get('/api/auth', async (req, res) => {
   } catch (error) {
     return res.send({ status: 403, message: 'Permission denied' })
   }
-  res.send({ status: 'ok', me })
+  if(!me){
+    return res.send({status: 403, message: 'Permission denied'})
+  }
+  return res.send({ status: 'ok', me})
 })
 
 const errorLogger = async (error) => {
