@@ -26,10 +26,10 @@ if (process.env.MONGODB_URI) {
 }
 
 export default {
-  User,
   Category,
   Contact,
   Department,
   Draftevent,
-  Event
+  Event,
+  User
 }

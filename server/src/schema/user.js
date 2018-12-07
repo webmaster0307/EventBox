@@ -1,6 +1,23 @@
 import { gql } from 'apollo-server-express'
 
 export default gql`
+  type User {
+    id: ID!
+    email: String!
+    username: String!
+    firstname: String
+    lastname: String
+    department: String
+    phoneNumber: Int
+    secret: String
+    role: [String]
+    events: [Event!]
+  }
+
+  type Token {
+    token: String!
+  }
+
   extend type Query {
     me: User
     user(id: ID!): User
@@ -15,6 +32,7 @@ export default gql`
     ): Token!
 
     signIn(username: String!, password: String!): Token!
+
     updateUser(
       id: ID!
       username: String!
@@ -25,25 +43,7 @@ export default gql`
       phoneNumber: Int
       secret: String
       role: [String]
-      #events: [Event!]
       ): User!
     deleteUser(id: ID!): Boolean!
-  }
-
-  type Token {
-    token: String!
-  }
-
-  type User {
-    id: ID!
-    email: String!
-    username: String!
-    firstname: String
-    lastname: String
-    department: String
-    phoneNumber: Int
-    secret: String
-    role: [String]
-    events: [Event!]
   }
 `

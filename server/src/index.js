@@ -13,7 +13,7 @@ import rp from 'request-promise'
 
 import schema from './schema'
 import resolvers from './resolvers'
-import models from './models'
+import models from './models/index'
 import loaders from './loaders'
 
 const port = process.env.SERVER_PORT || 8000

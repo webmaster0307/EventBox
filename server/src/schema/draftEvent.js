@@ -7,15 +7,17 @@ export default gql`
     slug: String
     description: String
     shortDescription: String
-    user: User
+    userId: String
     categoryId: String
     images: EventImages
     location: String
     regFrom: String
     regTo: String
-    approvedBy: User
+    approvedBy: String
     createdAt: String
     updatedAt: String
+    user: User
+    approver: User
   }
 
   input optDraftEventInput {
@@ -23,23 +25,11 @@ export default gql`
     slug: String
     description: String
     shortDescription: String
-    user: InputUser
     categoryId: String
-    images: EventImagesInput
     location: String
     regFrom: String
     regTo: String
-    approvedBy: InputUser
-  }
-
-  input InputUser {
-    id: ID!
-    firstname: String
-    lastname: String
-  }
-
-  input EventImagesInput {
-    thumbnail: String
+    approvedBy: String
   }
 
   type DraftEventConnection {
