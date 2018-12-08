@@ -1,10 +1,6 @@
-import { ApolloError } from 'apollo-server-express'
-
-const newErr = (message, code) => new ApolloError(message, code)
-
 export default {
   Query: {
-    category: (root, { id }, { models }) => {
+    category: (root, { id }, { models, newErr }) => {
       try {
         return models.Category.findById(id)
       } catch (error) {
@@ -12,7 +8,7 @@ export default {
       }
     },
 
-    categories: (root, args, { models }) => {
+    categories: (root, args, { models, newErr }) => {
       try {
         return models.Category.find({ isEnabled: true })
       } catch (error) {
@@ -22,7 +18,7 @@ export default {
   },
 
   Mutation: {
-    addCategory: async (root, args, { models }) => {
+    createCategory: async (root, args, { models, newErr }) => {
       try {
         let newCategory = new models.Category(args)
         return await newCategory.save()
@@ -31,7 +27,7 @@ export default {
       }
     },
 
-    updateCategory: async (root, args, { models }) => {
+    updateCategory: async (root, args, { models, newErr }) => {
       try {
         // Update
         await models.Category.updateOne({ id: args.id }, args)
@@ -41,7 +37,7 @@ export default {
       }
     },
 
-    removeCategory: async (root, { id }, { models }) => {
+    deleteCategory: async (root, { id }, { models, newErr }) => {
       try {
         // Update
         await models.Category.updateOne({ id }, { isEnabled: false })

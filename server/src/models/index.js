@@ -4,7 +4,7 @@ import User from './user'
 import Category from './category'
 import Contact from './contact'
 import Department from './department'
-import Draftevent from './draftEvent'
+import DraftEvent from './draftEvent'
 import Event from './event'
 
 if (process.env.MONGODB_URI) {
@@ -29,7 +29,7 @@ export default {
   Category,
   Contact,
   Department,
-  Draftevent,
+  DraftEvent,
   Event,
   User
 }

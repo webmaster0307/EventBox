@@ -27,7 +27,7 @@ let draftEventSchema = new Schema({
     ref: 'category'
   },
   images: {
-    type: Object
+    type: Array
   },
   location: {
     type: String,

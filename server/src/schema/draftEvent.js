@@ -9,7 +9,7 @@ export default gql`
     shortDescription: String
     userId: String
     categoryId: String
-    images: EventImages
+    images: [String]
     location: String
     regFrom: String
     regTo: String
@@ -18,18 +18,6 @@ export default gql`
     updatedAt: String
     user: User
     approver: User
-  }
-
-  input optDraftEventInput {
-    title: String
-    slug: String
-    description: String
-    shortDescription: String
-    categoryId: String
-    location: String
-    regFrom: String
-    regTo: String
-    approvedBy: String
   }
 
   type DraftEventConnection {
@@ -43,8 +31,35 @@ export default gql`
   }
 
   extend type Mutation {
-    createDraftEvent(optional: optDraftEventInput): DraftEvent
-    updateDraftEvent(id: ID!, optional: optDraftEventInput): DraftEvent
+    createDraftEvent(
+      title: String
+      slug: String
+      description: String
+      shortDescription: String
+      userId: String
+      categoryId: String
+      images: [String]
+      location: String
+      regFrom: String
+      regTo: String
+      approvedBy: String
+    ): DraftEvent
+
+    updateDraftEvent(
+      id: ID!,
+      title: String
+      slug: String
+      description: String
+      shortDescription: String
+      userId: String
+      categoryId: String
+      images: [String]
+      location: String
+      regFrom: String
+      regTo: String
+      approvedBy: String
+    ): DraftEvent
+
     deleteDraftEvent(id: ID!): Boolean
   }
 `

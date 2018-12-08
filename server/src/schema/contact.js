@@ -6,14 +6,7 @@ export default gql`
     eula: String
     description: String
     address: String
-    phoneNumber: [Int]
-  }
-
-  input OptContactInput {
-    eula: String
-    description: String
-    address: String
-    phoneNumber: [Int]
+    phoneNumber: String
   }
 
   extend type Query {
@@ -21,8 +14,21 @@ export default gql`
   }
 
   extend type Mutation {
-    addContact(optional: OptContactInput): Contact
-    updateContact(id: ID!, optional: OptContactInput): Contact
-    removeContact(id: ID!): Boolean
+    createContact(
+      eula: String
+      description: String
+      address: String
+      phoneNumber: String
+    ): Contact
+
+    updateContact(
+      id: ID!,
+      eula: String
+      description: String
+      address: String
+      phoneNumber: String
+    ): Contact
+
+    deleteContact(id: ID!): Boolean
   }
 `

@@ -31,7 +31,10 @@ export default gql`
       password: String!
     ): Token!
 
-    signIn(username: String!, password: String!): Token!
+    signIn(
+      username: String!,
+      password: String!
+    ): Token!
 
     updateUser(
       id: ID!
@@ -43,7 +46,8 @@ export default gql`
       phoneNumber: Int
       secret: String
       role: [String]
-      ): User!
+    ): User!
+
     deleteUser(id: ID!): Boolean!
   }
 `

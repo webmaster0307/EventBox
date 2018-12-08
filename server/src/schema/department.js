@@ -13,8 +13,17 @@ export default gql`
   }
 
   extend type Mutation {
-    addDepartment(name: String!, description: String): Department
-    updateDepartment(id: ID!, name: String, description: String): Department
-    removeDepartment(id: ID!): Boolean
+    createDepartment(
+      name: String!,
+      description: String
+    ): Department
+
+    updateDepartment(
+      id: ID!,
+      name: String,
+      description: String
+    ): Department
+
+    deleteDepartment(id: ID!): Boolean
   }
 `

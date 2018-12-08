@@ -13,7 +13,7 @@ let contactSchema = new Schema({
     type: String
   },
   phoneNumber: {
-    type: Array
+    type: String
   },
   isEnabled: {
     type: Boolean,

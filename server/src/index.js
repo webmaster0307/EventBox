@@ -65,6 +65,8 @@ const getMe = async req => {
   }
 }
 
+const newErr = (message, code) => new ApolloError(message, code)
+
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
@@ -82,19 +84,17 @@ const server = new ApolloServer({
       }
     }
 
-    const message = error.message
-      .replace('SequelizeValidationError: ', '')
-      .replace('Validation error: ', '')
+    // const message = error.message
+    //   .replace('SequelizeValidationError: ', '')
+    //   .replace('Validation error: ', '')
 
-    return {
-      ...error,
-      message
-    }
+    return { message: error.message, httpCode: +error.extensions.code }
   },
   context: async ({ req, connection }) => {
     if (connection) {
       return {
         models,
+        newErr,
         loaders: {
           user: new DataLoader(keys =>
             loaders.user.batchUsers(keys, models)
