@@ -3,21 +3,28 @@ import { gql } from 'apollo-server-express'
 export default gql`
   type DraftEvent {
     id: ID!
-    title: String
-    slug: String
-    description: String
-    shortDescription: String
-    userId: String
-    categoryId: String
-    images: [String]
-    location: String
-    regFrom: String
-    regTo: String
-    approvedBy: String
-    createdAt: String
-    updatedAt: String
-    user: User
-    approver: User
+    thumbnail:          String
+    title:              String
+    location:           String
+    categoryId:         String
+    shortDescription:   String
+    description:        String
+    orgName:            String
+    orgDescription:     String
+    contactPhoneNumber: Int
+    contactEmail:       String
+    startTime:          Int
+    endTime:            Int
+    regFrom:            String
+    regTo:              String
+    amountOfTicket:     Int
+    slug:               String
+    ownerId:            String
+    approvedBy:         String
+    createdAt:          String
+    updatedAt:          String
+    user:               User
+    approver:           User
   }
 
   type DraftEventConnection {
@@ -32,32 +39,40 @@ export default gql`
 
   extend type Mutation {
     createDraftEvent(
-      title: String
-      slug: String
-      description: String
-      shortDescription: String
-      userId: String
-      categoryId: String
-      images: [String]
-      location: String
-      regFrom: String
-      regTo: String
-      approvedBy: String
+      thumbnail:          String
+      title:              String!
+      location:           String
+      categoryId:         String
+      shortDescription:   String
+      description:        String
+      orgName:            String
+      orgDescription:     String
+      contactPhoneNumber: Int
+      contactEmail:       String
+      startTime:          Int
+      endTime:            Int
+      regFrom:            Int
+      regTo:              Int
+      amountOfTicket:     Int
     ): DraftEvent
 
     updateDraftEvent(
-      id: ID!,
-      title: String
-      slug: String
-      description: String
-      shortDescription: String
-      userId: String
-      categoryId: String
-      images: [String]
-      location: String
-      regFrom: String
-      regTo: String
-      approvedBy: String
+      id: ID!
+      thumbnail:          String
+      title:              String
+      location:           String
+      categoryId:         String
+      shortDescription:   String
+      description:        String
+      orgName:            String
+      orgDescription:     String
+      contactPhoneNumber: Int
+      contactEmail:       String
+      startTime:          Int
+      endTime:            Int
+      regFrom:            Int
+      regTo:              Int
+      amountOfTicket:     Int
     ): DraftEvent
 
     deleteDraftEvent(id: ID!): Boolean

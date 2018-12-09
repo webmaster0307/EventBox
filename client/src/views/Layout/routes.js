@@ -5,6 +5,8 @@ import EventUpdate from '../Event/EventUpdate/EventUpdate'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
 
+import { CreateDraftEvent } from '../DraftEvent'
+
 export const routesComp = [
   {
     exact: true,
@@ -47,6 +49,18 @@ export const routesComp = [
     path: '/events/update/:eventId',
     component: EventUpdate,
     roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: '/draft-events',
+    component: Events,
+    roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: '/draft-events/create',
+    component: CreateDraftEvent,
+    roles: ['admin', 'user']
   }
 ]
 
@@ -87,6 +101,25 @@ export const routesMenu = [
         path: '/events/create',
         icon: 'form',
         breadcumbs: [ 'Events', 'Event create' ]
+      }
+    ]
+  },
+  {
+    title: 'Draft Events',
+    roles: ['admin', 'user'],
+    icon: 'file',
+    subComponent: [
+      {
+        title: 'List',
+        path: '/draft-events',
+        icon: 'bars',
+        breadcumbs: ['Draft Events', 'Draft event list']
+      },
+      {
+        title: 'Create',
+        path: '/draft-events/create',
+        icon: 'form',
+        breadcumbs: [ 'Draft Events', 'Create draft event' ]
       }
     ]
   }

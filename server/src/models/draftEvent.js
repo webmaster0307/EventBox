@@ -4,42 +4,62 @@ import slugify from '@sindresorhus/slugify'
 const Schema = mongoose.Schema
 
 let draftEventSchema = new Schema({
+  thumbnail: {
+    type: String
+  },
   title: {
     type: String
   },
-  slug: {
+  location: {
+    type: String,
+    default: ''
+  },
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: 'category'
+  },
+  shortDescription: {
     type: String,
     default: ''
   },
   description: {
     type: String
   },
-  shortDescription: {
-    type: String,
-    default: ''
+  orgName: {
+    type: String
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'user'
+  orgDescription: {
+    type: String
   },
-  categoryId: {
-    type: Schema.Types.ObjectId,
-    ref: 'category'
+  contactPhoneNumber: {
+    type: Number
   },
-  images: {
-    type: Array
+  contactEmail: {
+    type: String
   },
-  location: {
-    type: String,
-    default: ''
+  startTime: {
+    type: Number
+  },
+  endTime: {
+    type: Number
   },
   regFrom: {
-    type: Date,
-    default: ''
+    type: Number
   },
   regTo: {
-    type: Date,
+    type: Number
+  },
+  amountOfTicket:{
+    type: Number,
+    min: 0
+  },
+  slug: {
+    type: String,
     default: ''
+  },
+  ownerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   approvedBy: {
     type: Schema.Types.ObjectId,
