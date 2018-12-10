@@ -48,22 +48,13 @@ const Option = Select.Option
 // `
 
 class CreateDraftEvent extends Component {
-  state = {
-    loading: false,
-    thumbnail: '',
-    title:'',
-    location: '',
-    categoryId: '',
-    shortDesc: '',
-    description: '',
-    orgName: '',
-    orgDesc: '',
-    ctTelephone: '',
-    ctEmail: '',
-    eventTime: [],
-    regTime: [],
-    amountOfTicket: '',
-    editorState: EditorState.createEmpty()
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+      editorState: EditorState.createEmpty()
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   onEditorStateChange = (editorState) => {
@@ -74,8 +65,10 @@ class CreateDraftEvent extends Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.form.validateFields((values) => {
-      console.log('Received values of form: ', values)
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values)
+      }
     })
   }
 
@@ -89,44 +82,59 @@ class CreateDraftEvent extends Component {
       name: 'thumbnail',
       title: 'Thumbnail',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'title',
       title: 'Title',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'location',
       title: 'Location',
       customRender:
-        <div>
-          <Input />
-          <Select defaultValue="lucy" style={{ width: 120 }}>
-            <Option key='a' value="jack">Jack</Option>
-            <Option key='b' value="lucy">Lucy</Option>
-          </Select>
-          <Select defaultValue="lucy" style={{ width: 120 }}>
-            <Option key='a' value="jack">Jack</Option>
-            <Option key='b' value="lucy">Lucy</Option>
-          </Select>
-        </div>
+        <Input />,
+      rules: []
+    },
+    {
+      name: 'district',
+      title: 'District',
+      customRender:
+        <Select placeholder='Select district' style={{ width: 120 }}>
+          <Option key='a' value="jack">Jack</Option>
+          <Option key='b' value="lucy">Lucy</Option>
+        </Select>,
+      rules: []
+    },
+    {
+      name: 'city',
+      title: 'City',
+      customRender:
+        <Select placeholder='Select city' style={{ width: 120 }}>
+          <Option key='a' value="jack">Jack</Option>
+          <Option key='b' value="lucy">Lucy</Option>
+        </Select>,
+      rules: []
     },
     {
       name: 'categoryId',
       title: 'Category',
       customRender:
-        <Select defaultValue="lucy" style={{ width: 120 }}>
+        <Select placeholder='Select category' style={{ width: 120 }}>
           <Option key='a' value="jack">Jack</Option>
           <Option key='b' value="lucy">Lucy</Option>
-        </Select>
+        </Select>,
+      rules: []
     },
     {
       name: 'shortDesc',
       title: 'Short description',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     }
   ]
   formBody = () => [
@@ -134,25 +142,29 @@ class CreateDraftEvent extends Component {
       name: 'orgName',
       title: 'Organizer Name',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'orgDesc',
       title: 'Organizer description',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'ctTelephone',
       title: 'Telephone',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'ctEmail',
       title: 'Email',
       customRender:
-        <Input />
+        <Input />,
+      rules: []
     },
     {
       name: 'eventTime',
@@ -162,7 +174,8 @@ class CreateDraftEvent extends Component {
           showTime
           format="YYYY-MM-DD HH:mm:ss"
           placeholder="Select Time"
-        />
+        />,
+      rules: []
     },
     {
       name: 'regTime',
@@ -172,23 +185,17 @@ class CreateDraftEvent extends Component {
           showTime
           format="YYYY-MM-DD HH:mm:ss"
           placeholder="Select Time"
-        />
+        />,
+      rules: []
     }
   ]
 
   render() {
-    const {
-      editorState
-      // loading, thumbnail, title, location,
-      // categoryId, shortDesc, description, orgName, orgDesc,
-      // ctTelephone, ctEmail, eventTime, regTime
-    } = this.state
+    const { editorState } = this.state
     const { getFieldDecorator } = this.props.form
     return (
       <div>
-        <Form
-          onSubmit={this.handleSubmit} hideRequiredMark
-        >
+        <Form onSubmit={this.handleSubmit} hideRequiredMark>
           {this.formHeader().map(field => {
             const { name, title, rules, customRender } = field
             return (
@@ -221,19 +228,19 @@ class CreateDraftEvent extends Component {
             )
           })}
           <Divider />
+          <div>
+            <Editor
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              editorStyle={{border: '1px #E6E6E6 solid'}}
+              name='editor'
+              editorState={editorState}
+              onEditorStateChange={this.onEditorStateChange}
+            />
+            <Button htmlType='submit' type='primary'>Save</Button>
+            <Button type='danger'>Cancel</Button>
+          </div>
         </Form>
-        <div>
-          <Editor
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
-            editorStyle={{border: '1px #E6E6E6 solid'}}
-            name='editor'
-            editorState={editorState}
-            onEditorStateChange={this.onEditorStateChange}
-          />
-          <Button htmlType='submit' type='primary'>Save</Button>
-          <Button type='danger'>Cancel</Button>
-        </div>
       </div>
     )
   }
