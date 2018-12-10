@@ -49,7 +49,7 @@ const authLink = new ApolloLink((operation, forward) => {
       headers
     }
   })
-  
+
   return forward(operation)
 })
 
@@ -66,7 +66,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
   if (networkError) {
     console.log('Network error: ', networkError)
-    
+
     if (networkError.statusCode === 401) {
       signOut(client)
     }
@@ -141,6 +141,6 @@ export const client = new ApolloClient({
 ReactDOM.render(<ApolloProvider client={client}>
   <App />
 </ApolloProvider>,
-document.getElementById('root'),)
+document.getElementById('root'))
 
 // registerServiceWorker();

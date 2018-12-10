@@ -1,27 +1,101 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Form, Input, Select, DatePicker, Button } from 'antd'
-import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
-import { formItemLayout, formRuleNotEmpty } from './constants'
+import { Form, Input, Select, DatePicker, Button, Divider } from 'antd'
+import { EditorState } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import { formItemLayout } from './constants'
+// import gql from 'graphql-tag'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
+// const CREATE_DRAFT_EVENT = gql`
+//   mutation @client(
+//     $thumbnail: String
+//     $title: String!
+//     $location: String
+//     $categoryId: String
+//     $shortDesc: String
+//     $description: String
+//     $orgName: String
+//     $orgDesc: String
+//     $ctTelephone: Int
+//     $ctEmail: String
+//     $eventTime: [Int]
+//     $regTime: [Int]
+//     $amountOfTicket: Int
+//   ) {
+//     createDraftEvent (
+//       thumbnail: $thumbnail
+//       title:	$title
+//       location: $location
+//       categoryId: $categoryId
+//       shortDesc: $shortDesc
+//       description: $description
+//       orgName: $orgName
+//       orgDesc: $orgDesc
+//       ctTelephone: $ctTelephone
+//       ctEmail: $ctEmail
+//       eventTime: $eventTime
+//       regTime: $regTime
+//       amountOfTicket: $amountOfTicket
+//     ) {
+//       thumbnail title location categoryId shortDesc
+//       description orgName orgDesc ctTelephone
+//       ctEmail eventTime regTime amountOfTicket
+//     }
+//   }
+// `
+
 class CreateDraftEvent extends Component {
-  formItem = () => [
+  state = {
+    loading: false,
+    thumbnail: '',
+    title:'',
+    location: '',
+    categoryId: '',
+    shortDesc: '',
+    description: '',
+    orgName: '',
+    orgDesc: '',
+    ctTelephone: '',
+    ctEmail: '',
+    eventTime: [],
+    regTime: [],
+    amountOfTicket: '',
+    editorState: EditorState.createEmpty()
+  }
+
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState
+    })
+  }
+
+  handleSubmit (e) {
+    e.preventDefault()
+    this.props.form.validateFields((values) => {
+      console.log('Received values of form: ', values)
+    })
+  }
+
+  handleChangeInput (e) {
+    const { name, value } = e.target
+    this.setState({[name]: value})
+  }
+
+  formHeader = () => [
     {
       name: 'thumbnail',
       title: 'Thumbnail',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
       name: 'title',
       title: 'Title',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
       name: 'location',
@@ -37,8 +111,7 @@ class CreateDraftEvent extends Component {
             <Option key='a' value="jack">Jack</Option>
             <Option key='b' value="lucy">Lucy</Option>
           </Select>
-        </div>,
-      rules: [formRuleNotEmpty]
+        </div>
     },
     {
       name: 'categoryId',
@@ -47,94 +120,76 @@ class CreateDraftEvent extends Component {
         <Select defaultValue="lucy" style={{ width: 120 }}>
           <Option key='a' value="jack">Jack</Option>
           <Option key='b' value="lucy">Lucy</Option>
-        </Select>,
-      rules: [formRuleNotEmpty]
+        </Select>
     },
     {
-      name: 'shortDescription',
+      name: 'shortDesc',
       title: 'Short description',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'description',
-      title: 'Description',
-      customRender:
-        <EditorWysiwyg
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
-          editorStyle={{border: '1px #E6E6E6 solid'}}
-          name='editor'
-          // editorState={editorState}
-          // onEditorStateChange={this.onEditorStateChange}
-        />,
-      rules: [formRuleNotEmpty]
-    },
+        <Input />
+    }
+  ]
+  formBody = () => [
     {
       name: 'orgName',
       title: 'Organizer Name',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
-      name: 'orgDescription',
+      name: 'orgDesc',
       title: 'Organizer description',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
-      name: 'contactPhoneNumber',
+      name: 'ctTelephone',
       title: 'Telephone',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
-      name: 'contactEmail',
+      name: 'ctEmail',
       title: 'Email',
       customRender:
-        <Input />,
-      rules: [formRuleNotEmpty]
+        <Input />
     },
     {
-      name: 'startTime',
+      name: 'eventTime',
       title: 'Start time',
       customRender:
-        <DatePicker />,
-      rules: [formRuleNotEmpty]
+        <DatePicker
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="Select Time"
+        />
     },
     {
-      name: 'endTime',
+      name: 'regTime',
       title: 'End time',
       customRender:
-        <DatePicker />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'regFrom',
-      title: 'Register start',
-      customRender:
-        <DatePicker />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'regTo',
-      title: 'Register end',
-      customRender:
-        <DatePicker />,
-      rules: [formRuleNotEmpty]
+        <DatePicker
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="Select Time"
+        />
     }
   ]
 
   render() {
+    const {
+      editorState
+      // loading, thumbnail, title, location,
+      // categoryId, shortDesc, description, orgName, orgDesc,
+      // ctTelephone, ctEmail, eventTime, regTime
+    } = this.state
     const { getFieldDecorator } = this.props.form
     return (
       <div>
-        <Form>
-          {this.formItem().map(field => {
+        <Form
+          onSubmit={this.handleSubmit} hideRequiredMark
+        >
+          {this.formHeader().map(field => {
             const { name, title, rules, customRender } = field
             return (
               <FormItem
@@ -149,10 +204,36 @@ class CreateDraftEvent extends Component {
               </FormItem>
             )
           })}
+          <Divider />
+          {this.formBody().map(field => {
+            const { name, title, rules, customRender } = field
+            return (
+              <FormItem
+                key={name}
+                label={title}
+                colon={false}
+                {...formItemLayout}
+              >
+                {getFieldDecorator(name, {
+                  rules
+                })(customRender)}
+              </FormItem>
+            )
+          })}
+          <Divider />
+        </Form>
+        <div>
+          <Editor
+            wrapperClassName="demo-wrapper"
+            editorClassName="demo-editor"
+            editorStyle={{border: '1px #E6E6E6 solid'}}
+            name='editor'
+            editorState={editorState}
+            onEditorStateChange={this.onEditorStateChange}
+          />
           <Button htmlType='submit' type='primary'>Save</Button>
           <Button type='danger'>Cancel</Button>
-          <Button >Submit</Button>
-        </Form>
+        </div>
       </div>
     )
   }

@@ -18,7 +18,7 @@ let draftEventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'category'
   },
-  shortDescription: {
+  shortDesc: {
     type: String,
     default: ''
   },
@@ -28,26 +28,20 @@ let draftEventSchema = new Schema({
   orgName: {
     type: String
   },
-  orgDescription: {
+  orgDesc: {
     type: String
   },
-  contactPhoneNumber: {
+  ctTelePhone: {
     type: Number
   },
-  contactEmail: {
+  ctEmail: {
     type: String
   },
-  startTime: {
-    type: Number
+  eventTime: {
+    type: Array
   },
-  endTime: {
-    type: Number
-  },
-  regFrom: {
-    type: Number
-  },
-  regTo: {
-    type: Number
+  regTime: {
+    type: Array
   },
   amountOfTicket:{
     type: Number,

@@ -7,16 +7,14 @@ export default gql`
     title:              String
     location:           String
     categoryId:         String
-    shortDescription:   String
+    shortDesc:          String
     description:        String
     orgName:            String
-    orgDescription:     String
-    contactPhoneNumber: Int
-    contactEmail:       String
-    startTime:          Int
-    endTime:            Int
-    regFrom:            String
-    regTo:              String
+    orgDesc:            String
+    ctTelephone:        Int
+    ctEmail:            String
+    eventTime:          [Int]
+    regTime:            [Int]
     amountOfTicket:     Int
     slug:               String
     ownerId:            String
@@ -40,19 +38,17 @@ export default gql`
   extend type Mutation {
     createDraftEvent(
       thumbnail:          String
-      title:              String!
+      title:              String
       location:           String
       categoryId:         String
-      shortDescription:   String
+      shortDesc:          String
       description:        String
       orgName:            String
-      orgDescription:     String
-      contactPhoneNumber: Int
-      contactEmail:       String
-      startTime:          Int
-      endTime:            Int
-      regFrom:            Int
-      regTo:              Int
+      orgDesc:            String
+      ctTelephone:        Int
+      ctEmail:            String
+      eventTime:          [Int]
+      regTime:            [Int]
       amountOfTicket:     Int
     ): DraftEvent
 
@@ -62,16 +58,14 @@ export default gql`
       title:              String
       location:           String
       categoryId:         String
-      shortDescription:   String
+      shortDesc:          String
       description:        String
       orgName:            String
-      orgDescription:     String
-      contactPhoneNumber: Int
-      contactEmail:       String
-      startTime:          Int
-      endTime:            Int
-      regFrom:            Int
-      regTo:              Int
+      orgDesc:            String
+      ctTelephone:        Int
+      ctEmail:            String
+      eventTime:          [Int]
+      regTime:            [Int]
       amountOfTicket:     Int
     ): DraftEvent
 
