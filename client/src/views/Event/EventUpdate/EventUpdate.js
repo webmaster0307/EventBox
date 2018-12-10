@@ -57,6 +57,7 @@ class EventUpdate extends Component{
     buttonLoading: false,
     editorState: EditorState.createEmpty()
   }
+  editor = null
 
   componentDidMount = async () => {
     const { eventId } = this.props.match.params
@@ -94,7 +95,7 @@ class EventUpdate extends Component{
               title, 
               thumbnail,
               shortDescription,
-              description: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
+              description: JSON.stringify(convertToRaw(this.editor.state.editorState.getCurrentContent()))
             }
           })
             .then( ({data, errors}) => {
@@ -172,14 +173,16 @@ class EventUpdate extends Component{
             colon={false}
             {...formItemLayout}
           >
-            <EditorWysiwyg
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              editorStyle={{border: '1px #E6E6E6 solid'}}
-              name='editor'
-              editorState={editorState} 
-              onEditorStateChange={this.onEditorStateChange}
-            />
+            {!loading &&
+              <EditorWysiwyg
+                wrapperClassName="demo-wrapper"
+                editorClassName="demo-editor"
+                editorStyle={{border: '1px #E6E6E6 solid'}}
+                name='editor'
+                defaultEditorState={editorState}
+                ref={editor => {this.editor = editor}}
+              />
+            }
           </FormItem>
           <FormItem>
             <Button
