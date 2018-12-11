@@ -11,10 +11,15 @@ import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
 
+import { Provider } from 'mobx-react'
+
 import App from './App'
 import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
+
+import { Event } from './store'
+
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
@@ -138,8 +143,14 @@ export const client = new ApolloClient({
   cache
 })
 
+const stores = {
+  event: new Event()
+}
+
 ReactDOM.render(<ApolloProvider client={client}>
-  <App />
+  <Provider stores={stores} >
+    <App />
+  </Provider>
 </ApolloProvider>,
 document.getElementById('root'))
 
