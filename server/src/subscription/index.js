@@ -1,9 +1,9 @@
-import { PubSub } from 'apollo-server';
+import { PubSub } from 'apollo-server'
 
-import * as EVENT_EVENTS from './event';
+import * as EVENT_EVENTS from './event'
 
 export const EVENTS = {
-  EVENT: EVENT_EVENTS,
-};
+  EVENT: EVENT_EVENTS
+}
 
-export default new PubSub();
+export default new PubSub()

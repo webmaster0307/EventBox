@@ -1,7 +1,12 @@
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server-express'
 
-import userSchema from './user';
-import eventSchema from './event';
+
+import categorySchema from './category'
+import contactSchema from './contact'
+import departmentSchema from './department'
+import draftEventSchema from './draftEvent'
+import eventSchema from './event'
+import userSchema from './user'
 
 const linkSchema = gql`
   type Query {
@@ -15,6 +20,14 @@ const linkSchema = gql`
   type Subscription {
     _: Boolean
   }
-`;
+`
 
-export default [linkSchema, userSchema, eventSchema];
+export default [
+  linkSchema,
+  categorySchema,
+  contactSchema,
+  departmentSchema,
+  draftEventSchema,
+  eventSchema,
+  userSchema
+]

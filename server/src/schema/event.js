@@ -1,15 +1,25 @@
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server-express'
 
 export default gql`
-  extend type Query {
-    events(cursor: String, limit: Int): EventConnection!
-    event(id: ID!): Event
+  type Event {
+    id: ID!
+    title: String!
+    slug: String!
+    description: String!
+    shortDescription: String!
+    user: User!
+    categoryId: String
+    images: EventImages!
+    location: String
+    regFrom: String
+    regTo: String
+    approvedBy: User
+    createdAt: String!
+    updatedAt: String!
   }
 
-  extend type Mutation {
-    createEvent(title: String!, thumbnail: String!, description: String!, shortDescription: String): Event!
-    updateEvent(id: ID!, title: String!, thumbnail: String!, description: String!, shortDescription: String): Event!
-    deleteEvent(id: ID!): Boolean!
+  type EventImages {
+    thumbnail: String
   }
 
   type EventConnection {
@@ -22,27 +32,43 @@ export default gql`
     endCursor: String!
   }
 
-  type Event {
-    id: ID!
-    title: String!
-    description: String!
-    shortDescription: String!
-    slug: String!
-    user: User!
-    images: EventImages!
-    createdAt: String!
-    updatedAt: String!
+  type EventCreated {
+    event: Event!
   }
 
-  type EventImages {
-    thumbnail: String
+  extend type Query {
+    events(cursor: String, limit: Int): EventConnection!
+    event(id: ID!): Event
+  }
+
+  extend type Mutation {
+    createEvent(
+      title: String!
+      thumbnail: String!
+      description: String!
+      shortDescription: String
+      categoryId: String
+      location: String
+      regFrom: String
+      regTo: String
+    ): Event!
+
+    updateEvent(
+      id: ID!
+      title: String!
+      thumbnail: String!
+      description: String!
+      shortDescription: String
+      categoryId: String
+      location: String
+      regFrom: String
+      regTo: String
+    ): Event!
+
+    deleteEvent(id: ID!): Boolean!
   }
 
   extend type Subscription {
     eventCreated: EventCreated!
   }
-
-  type EventCreated {
-    event: Event!
-  }
-`;
+`

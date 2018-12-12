@@ -11,10 +11,15 @@ import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
 
+import { Provider } from 'mobx-react'
+
 import App from './App'
 import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
+
+import { Event } from './store'
+
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
@@ -49,7 +54,7 @@ const authLink = new ApolloLink((operation, forward) => {
       headers
     }
   })
-  
+
   return forward(operation)
 })
 
@@ -66,7 +71,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
   if (networkError) {
     console.log('Network error: ', networkError)
-    
+
     if (networkError.statusCode === 401) {
       signOut(client)
     }
@@ -138,9 +143,15 @@ export const client = new ApolloClient({
   cache
 })
 
+const stores = {
+  event: new Event()
+}
+
 ReactDOM.render(<ApolloProvider client={client}>
-  <App />
+  <Provider stores={stores} >
+    <App />
+  </Provider>
 </ApolloProvider>,
-document.getElementById('root'),)
+document.getElementById('root'))
 
 // registerServiceWorker();

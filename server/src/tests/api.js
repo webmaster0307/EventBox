@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const API_URL = 'http://localhost:8000/graphql';
+const API_URL = 'http://localhost:8000/graphql'
 
 export const signIn = async variables =>
   await axios.post(API_URL, {
@@ -11,8 +11,8 @@ export const signIn = async variables =>
         }
       }
     `,
-    variables,
-  });
+    variables
+  })
 
 export const me = async token =>
   await axios.post(
@@ -26,16 +26,16 @@ export const me = async token =>
             username
           }
         }
-      `,
+      `
     },
     token
       ? {
-          headers: {
-            'x-token': token,
-          },
+        headers: {
+          'x-token': token
         }
-      : null,
-  );
+      }
+      : null
+  )
 
 export const user = async variables =>
   axios.post(API_URL, {
@@ -49,8 +49,8 @@ export const user = async variables =>
         }
       }
     `,
-    variables,
-  });
+    variables
+  })
 
 export const users = async () =>
   axios.post(API_URL, {
@@ -63,8 +63,8 @@ export const users = async () =>
           role
         }
       }
-    `,
-  });
+    `
+  })
 
 export const signUp = async variables =>
   axios.post(API_URL, {
@@ -83,8 +83,8 @@ export const signUp = async variables =>
         }
       }
     `,
-    variables,
-  });
+    variables
+  })
 
 export const updateUser = async (variables, token) =>
   axios.post(
@@ -97,16 +97,16 @@ export const updateUser = async (variables, token) =>
           }
         }
       `,
-      variables,
+      variables
     },
     token
       ? {
-          headers: {
-            'x-token': token,
-          },
+        headers: {
+          'x-token': token
         }
-      : null,
-  );
+      }
+      : null
+  )
 
 export const deleteUser = async (variables, token) =>
   axios.post(
@@ -117,13 +117,13 @@ export const deleteUser = async (variables, token) =>
           deleteUser(id: $id)
         }
       `,
-      variables,
+      variables
     },
     token
       ? {
-          headers: {
-            'x-token': token,
-          },
+        headers: {
+          'x-token': token
         }
-      : null,
-  );
+      }
+      : null
+  )

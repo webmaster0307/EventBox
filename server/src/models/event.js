@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 import slugify from '@sindresorhus/slugify'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-let EventSchema = new Schema({
+let eventSchema = new Schema({
   title: {
     type: String
   },
@@ -22,20 +22,45 @@ let EventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: 'category'
+  },
   images: {
     type: Object
+  },
+  location: {
+    type: String,
+    default: ''
+  },
+  regFrom: {
+    type: Date,
+    default: ''
+  },
+  regTo: {
+    type: Date,
+    default: ''
+  },
+  approvedBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  },
+  isEnabled: {
+    type: Boolean,
+    required: true,
+    default: true
   }
 }, {
-    timestamps: true
+  timestamps: true
 })
 
-EventSchema.pre('save', function(next){
+eventSchema.pre('save', function (next) {
   this.slug = slugify(this.title)
   next()
 })
 
-EventSchema.pre('find', async (next) => {
+eventSchema.pre('find', async (next) => {
   next()
 })
 
-export default mongoose.model('event', EventSchema);
+export default mongoose.model('event', eventSchema)
