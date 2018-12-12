@@ -33,7 +33,7 @@ class EventCreate extends Component {
     this.setState({
       editorState
     })
-  };
+  }
 
   handleChangeInput = e => {
     const { name, value } = e.target
@@ -51,7 +51,7 @@ class EventCreate extends Component {
 
   render() {
     const { title, thumbnail, editorState } = this.state
-    const dataSubmit = { title, thumbnail, 
+    const dataSubmit = { title, thumbnail,
       description: JSON.stringify(convertToRaw(editorState.getCurrentContent()))
     }
 
@@ -67,18 +67,18 @@ class EventCreate extends Component {
             <h3>New Event</h3>
             <div style={{marginBottom: 12, minHeight: 24}}  >
               <span><label>Title </label></span>
-              <input 
-                type='text' name='title' 
-                style={{height: 18, minWidth: 250}} 
-                onChange={this.handleChangeInput} 
+              <input
+                type='text' name='title'
+                style={{height: 18, minWidth: 250}}
+                onChange={this.handleChangeInput}
               />
             </div>
             <div style={{marginBottom: 12, minHeight: 24}}  >
               <span><label>Thumbnail </label></span>
-              <input 
-                type='text' name='thumbnail' 
-                style={{height: 18, minWidth: 250}} 
-                onChange={this.handleChangeInput} 
+              <input
+                type='text' name='thumbnail'
+                style={{height: 18, minWidth: 250}}
+                onChange={this.handleChangeInput}
               />
             </div>
             <div style={{maxWidth: 800, border: '1px solid #448aff', marginBottom: 12}} >

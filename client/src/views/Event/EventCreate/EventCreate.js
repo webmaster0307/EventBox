@@ -25,6 +25,9 @@ const FormItem = Form.Item
 
 class EventCreate extends Component{
 
+  state = {
+    loading: false
+  }
   editor = null
 
   _handleCreatedEvent = event => {
@@ -33,24 +36,28 @@ class EventCreate extends Component{
     form.validateFields( (err, values) => {
       if(!err){
         const { title, thumbnail, shortDescription } = values
-        client.mutate({ 
-          mutation: CREATE_EVENT, 
-          variables: { 
-            title, 
-            thumbnail,
-            shortDescription,
-            description: JSON.stringify(convertToRaw(this.editor.state.editorState.getCurrentContent()))
-          }
-        })
-          .then( ({data, errors}) => {
-            if(errors){
-              return message.error('Failed to create new event')
+        this.setState({loading: true}, () => {
+          client.mutate({ 
+            mutation: CREATE_EVENT, 
+            variables: { 
+              title, 
+              thumbnail,
+              shortDescription,
+              description: JSON.stringify(convertToRaw(this.editor.state.editorState.getCurrentContent()))
             }
-            message.success('New event created successfully!')
           })
-          .catch( () => {
-            return message.error('Failed to create new event')
-          })
+            .then( ({data, errors}) => {
+              this.setState({loading: false})
+              if(errors){
+                return message.error('Failed to create new event')
+              }
+              message.success('New event created successfully!')
+            })
+            .catch( () => {
+              this.setState({loading: false})
+              return message.error('Failed to create new event')
+            })
+        })
       }
     })
   }
@@ -76,6 +83,7 @@ class EventCreate extends Component{
   ]
 
   render() {
+    const { loading } = this.state
     const { getFieldDecorator } = this.props.form
 
     return (
@@ -115,6 +123,7 @@ class EventCreate extends Component{
               type='primary'
               block
               htmlType='submit'
+              loading={loading}
             >
               <Icon type='form' />
               Create Event

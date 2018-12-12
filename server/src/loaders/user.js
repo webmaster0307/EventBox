@@ -6,6 +6,6 @@ export const batchUsers = async (keys, models) => {
     '_id': {
       $in: ids
     }
-  });
-  return keys.map(key => users.find(user => user.id === mongoose.Types.ObjectId(key).toString()));
-};
+  })
+  return keys.map(key => users.find(user => user.id === mongoose.Types.ObjectId(key).toString()))
+}

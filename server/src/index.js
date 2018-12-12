@@ -1,25 +1,25 @@
-import 'dotenv/config';
-import http from 'http';
+import 'dotenv/config'
+import http from 'http'
 import path from 'path'
-import cors from 'cors';
-import express from 'express';
+import cors from 'cors'
+import express from 'express'
 import history from 'connect-history-api-fallback'
 import morgan from 'morgan'
-import jwt from 'jsonwebtoken';
-import DataLoader from 'dataloader';
-import { ApolloServer } from 'apollo-server-express';
-import { AuthenticationError } from 'apollo-server';
+import jwt from 'jsonwebtoken'
+import DataLoader from 'dataloader'
+import { ApolloServer } from 'apollo-server-express'
+import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
 
-import schema from './schema';
-import resolvers from './resolvers';
-import models from './models';
-import loaders from './loaders';
+import schema from './schema'
+import resolvers from './resolvers'
+import models from './models/index'
+import loaders from './loaders'
 
-const port = process.env.SERVER_PORT || 8000;
+const port = process.env.SERVER_PORT || 8000
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
-const app = express();
+const app = express()
 
 // const corsOptions = {
 //   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],
@@ -52,28 +52,30 @@ app.use(
 )
 
 const getMe = async req => {
-  const token = req.headers['x-token'];
-  
+  const token = req.headers['x-token']
+
   if (token) {
     try {
-      return await jwt.verify(token, process.env.TOKEN_SECRET);
+      return await jwt.verify(token, process.env.TOKEN_SECRET)
     } catch (e) {
       throw new AuthenticationError(
-        'Your session expired. Sign in again.',
-      );
+        'Your session expired. Sign in again.'
+      )
     }
   }
-};
+}
+
+const newErr = (message, code) => new ApolloError(message, code)
 
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  // playground: process.env.NODE_ENV === 'development',
+  playground: process.env.NODE_ENV === 'development',
   formatError: error => {
     // errorLogger(error)
-    
-    const { extensions } = error 
-    if(extensions && extensions.code === 'UNAUTHENTICATED'){
+
+    const { extensions } = error
+    if (extensions && extensions.code === 'UNAUTHENTICATED') {
       // console.log('UNAUTHENTICATED')
       return {
         ...error,
@@ -81,30 +83,28 @@ const server = new ApolloServer({
         message: error.message
       }
     }
-    
-    const message = error.message
-      .replace('SequelizeValidationError: ', '')
-      .replace('Validation error: ', '');
 
-    return {
-      ...error,
-      message,
-    };
+    // const message = error.message
+    //   .replace('SequelizeValidationError: ', '')
+    //   .replace('Validation error: ', '')
+
+    return { message: error.message, httpCode: +error.extensions.code }
   },
   context: async ({ req, connection }) => {
     if (connection) {
       return {
         models,
+        newErr,
         loaders: {
           user: new DataLoader(keys =>
-            loaders.user.batchUsers(keys, models),
-          ),
-        },
-      };
+            loaders.user.batchUsers(keys, models)
+          )
+        }
+      }
     }
 
     if (req) {
-      const me = await getMe(req);
+      const me = await getMe(req)
 
       return {
         models,
@@ -112,46 +112,46 @@ const server = new ApolloServer({
         secret: process.env.TOKEN_SECRET,
         loaders: {
           user: new DataLoader(keys =>
-            loaders.user.batchUsers(keys, models),
-          ),
-        },
-      };
+            loaders.user.batchUsers(keys, models)
+          )
+        }
+      }
     }
-  },
-});
+  }
+})
 
-server.applyMiddleware({ 
-  app, 
-  path: '/graphql', 
+server.applyMiddleware({
+  app,
+  path: '/graphql',
   cors: {
     origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:8080` ]
-  } 
-});
+  }
+})
 
-const httpServer = http.createServer(app);
-server.installSubscriptionHandlers(httpServer);
+const httpServer = http.createServer(app)
+server.installSubscriptionHandlers(httpServer)
 
 httpServer.listen({ port }, () => {
-  console.log(`Apollo Server starts on //${host}:${port}/graphql`);
-});
+  console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+})
 
 // app.get('/', (req, res) => {
 //   res.render('index')
 // })
 
 app.get('/api/status', (req, res) => {
-  res.send({ 
-    status: 'ok', 
+  res.send({
+    status: 'ok',
     code: 200
-  });
-});
+  })
+})
 
 app.get('/api/auth', async (req, res) => {
-  let me 
+  let me
   try {
     me = await getMe(req)
   } catch (error) {
-    return res.send({status: 403, message: 'Permission denied'})
+    return res.send({ status: 403, message: 'Permission denied' })
   }
   if(!me){
     return res.send({status: 403, message: 'Permission denied'})
@@ -163,7 +163,7 @@ const errorLogger = async (error) => {
   const url = await rp({
     method: 'POST',
     uri: 'https://pastebin.com/api/api_post.php',
-    form: { 
+    form: {
       api_dev_key: '3602972a4e65d3a560086a2849d02cb6',
       api_user_key: '0213e2a399bb2eb2764fe875eb77385e',
       api_option: 'paste',
@@ -180,24 +180,24 @@ const errorLogger = async (error) => {
     body: JSON.stringify({
       attachments: [
         {
-          "fallback": "Required plain-text summary of the attachment.",
-          "color": "#36a64f",
-          "pretext": "GraphQL Error",
-          "author_name": "From: vinhnguyen1211 API",
-          "author_link": "https://github.com/legend1250/eventbox-dashboard",
-          "title": "Open error detail",
-          "title_link": url,
-          "text": "See error detail",
-          "fields": [
+          'fallback': 'Required plain-text summary of the attachment.',
+          'color': '#36a64f',
+          'pretext': 'GraphQL Error',
+          'author_name': 'From: vinhnguyen1211 API',
+          'author_link': 'https://github.com/legend1250/eventbox-dashboard',
+          'title': 'Open error detail',
+          'title_link': url,
+          'text': 'See error detail',
+          'fields': [
             {
-              "title": "Priority",
-              "value": "High",
-              "short": false
+              'title': 'Priority',
+              'value': 'High',
+              'short': false
             }
           ],
-          "footer": "Slack API",
-          "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
-          "ts": new Date().getTime()/1000
+          'footer': 'Slack API',
+          'footer_icon': 'https://platform.slack-edge.com/img/default_application_icon.png',
+          'ts': new Date().getTime() / 1000
         }
       ]
     })
