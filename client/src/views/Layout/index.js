@@ -61,7 +61,7 @@ class SiderDemo extends React.Component {
                     title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}
                   >
                     {item.subComponent.map(it => (
-                      <Menu.Item key={it.title} >
+                      <Menu.Item key={it.path} >
                         <Link to={it.path} >
                           <Icon type={it.icon} />
                           <span>{it.title}</span>
