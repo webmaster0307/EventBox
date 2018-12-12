@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Query } from 'react-apollo'
+// import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { Table, Icon } from 'antd'
-import { Loading } from '@components'
+import { Table, Icon, message } from 'antd'
+// import { Loading } from '@components'
+import { inject, observer } from 'mobx-react'
+// import { client } from '@client'
+// import { toJS } from 'mobx'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -25,112 +28,95 @@ const EVENT_CREATED = gql`
   }
 `
 
-const GET_PAGINATED_EVENTS_WITH_USERS = gql`
-  query($cursor: String, $limit: Int!) {
-    events(cursor: $cursor, limit: $limit)
-      @connection(key: "EventConnection") {
-      edges {
-        id
-        title
-        description
-        images {
-          thumbnail
-        }
-        createdAt
-        user {
-          id
-          username
-        }
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
+@inject('stores')
+@observer
+class Events extends Component {
+  
+  componentDidMount = () => {
+    const { event } = this.props.stores
+    const { error } = event.getEvents()
+    if(error){
+      return message.error(error)
     }
+    
+    // let result 
+    // try {
+    //   result = await client.query({ query: GET_PAGINATED_EVENTS_WITH_USERS, variables: { limit } })
+    // } catch ({graphQLErrors}) {
+    //   const msg = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+    //   return message.error(msg)
+    // }
+    // const { events } = result.data
+    // const { event } = this.props.stores
+    // console.log('event: ' ,events)
+    // event.updateEvents(events.edges)
   }
-`
+  
 
-const limit = 10
-const Events = () => (
-  <Query
-    query={GET_PAGINATED_EVENTS_WITH_USERS}
-    variables={{ limit }}
-  >
-    {({ data, loading, error, fetchMore, subscribeToMore }) => {
-      if (!data) {
-        return (
-          <div>
-            There are no events yet ... Try to create one by
-            yourself.
-          </div>
-        )
-      }
+  render(){
+    const { eventsLoading, events } = this.props.stores.event
+    // console.log('loading: ' ,this.props.stores.event.eventsLoading)
+    // console.log('events: ',toJS(this.props.stores.event.events))
 
-      const { events } = data
+    // const { edges, pageInfo } = events
 
-      if (loading || !events) {
-        return <Loading />
-      }
+    return (
+      <Fragment>
+        <EventList
+          events={events}
+          loading={eventsLoading}
+          // subscribeToMore={subscribeToMore}
+        />
 
-      const { edges, pageInfo } = events
+        {/* {pageInfo.hasNextPage && (
+          <MoreEventsButton
+            limit={limit}
+            pageInfo={pageInfo}
+            fetchMore={fetchMore}
+          >
+        More
+          </MoreEventsButton>
+        )} */}
+      </Fragment>
+    )
+  }
+}
 
-      return (
-        <Fragment>
-          <EventList
-            events={edges}
-            subscribeToMore={subscribeToMore}
-          />
+// const MoreEventsButton = ({
+//   limit,
+//   pageInfo,
+//   fetchMore,
+//   children
+// }) => (
+//   <button
+//     type="button"
+//     onClick={() =>
+//       fetchMore({
+//         variables: {
+//           cursor: pageInfo.endCursor,
+//           limit
+//         },
+//         updateQuery: (previousResult, { fetchMoreResult }) => {
+//           if (!fetchMoreResult) {
+//             return previousResult
+//           }
 
-          {pageInfo.hasNextPage && (
-            <MoreEventsButton
-              limit={limit}
-              pageInfo={pageInfo}
-              fetchMore={fetchMore}
-            >
-              More
-            </MoreEventsButton>
-          )}
-        </Fragment>
-      )
-    }}
-  </Query>
-)
-
-const MoreEventsButton = ({
-  limit,
-  pageInfo,
-  fetchMore,
-  children
-}) => (
-  <button
-    type="button"
-    onClick={() =>
-      fetchMore({
-        variables: {
-          cursor: pageInfo.endCursor,
-          limit
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult) {
-            return previousResult
-          }
-
-          return {
-            events: {
-              ...fetchMoreResult.events,
-              edges: [
-                ...previousResult.events.edges,
-                ...fetchMoreResult.events.edges
-              ]
-            }
-          }
-        }
-      })
-    }
-  >
-    {children}
-  </button>
-)
+//           return {
+//             events: {
+//               ...fetchMoreResult.events,
+//               edges: [
+//                 ...previousResult.events.edges,
+//                 ...fetchMoreResult.events.edges
+//               ]
+//             }
+//           }
+//         }
+//       })
+//     }
+//   >
+//     {children}
+//   </button>
+// )
 
 class EventList extends Component {
   subscribeToMoreEvent = () => {
@@ -158,7 +144,7 @@ class EventList extends Component {
   };
 
   componentDidMount() {
-    this.subscribeToMoreEvent()
+    // this.subscribeToMoreEvent()
   }
 
   tableColumns = () => [
@@ -190,7 +176,7 @@ class EventList extends Component {
   ]
 
   render() {
-    const { events } = this.props
+    const { events, loading } = this.props
     return(
       // <Query query={getSession} >
       //   {({ data }) => {
@@ -202,7 +188,7 @@ class EventList extends Component {
       //     )
       //   }}
       // </Query>
-      <Table dataSource={events} columns={this.tableColumns()} rowKey='id' />
+      <Table dataSource={events} columns={this.tableColumns()} rowKey='id' loading={loading} />
     )
   }
 }

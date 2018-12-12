@@ -4,6 +4,7 @@ import * as routes from '@routes'
 import gql from 'graphql-tag'
 import { withRouter } from 'react-router-dom'
 import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
+import queryString from 'query-string'
 
 const FormItem = Form.Item
 
@@ -32,6 +33,24 @@ class SignInForm extends React.Component{
   state = {
     loading: false
   }
+
+  componentDidMount = () => {
+    const { search } = this.props.location
+    if(search){
+      const { code } = queryString.parse(search)
+      var formData = new FormData()
+      formData.append('code', code)
+      fetch('http://cntttest.vanlanguni.edu.vn:18080/Cap21T4/LoginManagement/Account/GetInfo', {
+        method: 'POST',
+        body: formData
+      })
+        .then( res => res.json())
+        .then( res => {
+          console.log('res: ' ,res)
+        })
+    }
+  }
+  
 
   _handleSubmit = event => {
     event.preventDefault()
