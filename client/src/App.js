@@ -10,7 +10,7 @@ import withSession from './views/Authorizing/Session/withSession'
 import { SignUpPage, SignInPage } from './views/Authorizing'
 import { Page404 } from './views/ErrorPage'
 
-import SiderDemo from './views/Layout'
+import Container from './views/Layout/Container'
 
 const setSession = gql`
   mutation($session: Session) {
@@ -26,7 +26,7 @@ const App = ({ session, refetch }) => {
       <div>
         {session && session.me ?
           <div>
-            <SiderDemo session={session} /> 
+            <Container session={session} /> 
           </div>
           :
           <div>

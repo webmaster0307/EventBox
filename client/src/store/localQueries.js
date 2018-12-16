@@ -25,3 +25,29 @@ export const GET_PAGINATED_EVENTS_WITH_USERS = gql`
     }
   }
 `
+
+export const GET_EVENT_DETAIL = gql`
+query($eventId: ID!) {
+  event(id: $eventId) {
+    id
+    title
+    description
+    shortDescription
+    images {
+      thumbnail
+    }
+    createdAt
+    organizationName
+    organizationLogo 
+    organizationDescription
+    startTime
+    endTime
+    location
+    user {
+      id
+      username
+      email
+    }
+  }
+}
+`

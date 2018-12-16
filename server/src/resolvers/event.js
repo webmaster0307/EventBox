@@ -70,10 +70,17 @@ export default {
     updateEvent: combineResolvers(
       isAuthenticated,
       isEventOwner,
-      async (parent, { id, title, thumbnail, description, shortDescription }, { models, me }) => {
+      async (parent, args, { models, me }) => {
+        const { id, thumbnail, ...rest } = args
         const event = await models.Event.findByIdAndUpdate(
           id, 
-          { title, images: {thumbnail}, description, shortDescription },
+          { 
+            ...rest,
+            images: {
+              thumbnail
+            },
+            status: 'draft'
+          },
           { new: true }
         )
 

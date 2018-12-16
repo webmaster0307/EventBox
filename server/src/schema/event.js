@@ -17,6 +17,8 @@ export default gql`
     organizationName: String!
     organizationLogo: String
     organizationDescription: String
+    startTime: String
+    endTime: String
     status: String!
     createdAt: String!
     updatedAt: String!
@@ -73,6 +75,12 @@ export default gql`
       location: String
       regFrom: String
       regTo: String
+      organizationName: String!
+      organizationLogo: String
+      organizationDescription: String
+      startTime: String
+      endTime: String
+      location: String
     ): Event!
 
     deleteEvent(id: ID!): Boolean!

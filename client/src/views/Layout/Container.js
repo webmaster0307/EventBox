@@ -11,7 +11,7 @@ import './styles.scss'
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
-class SiderDemo extends React.Component {
+class Container extends React.Component {
   
   state = {
     collapsed: false
@@ -41,6 +41,7 @@ class SiderDemo extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
+          breakpoint='lg'
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
@@ -116,4 +117,4 @@ class SiderDemo extends React.Component {
   }
 }
 
-export default withRouter(SiderDemo)
+export default withRouter(Container)

@@ -3,9 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { Form, Button, message, BackTop } from 'antd'
 import { client } from '@client'
 import gql from 'graphql-tag'
-import DescriptionArea from './DescriptionArea'
-import OriganizationArea from './OrganizationArea'
-import DateHoldingArea from './DateHoldingArea'
+import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common' 
+import { EditorState } from 'draft-js'
 import { inject } from 'mobx-react'
 
 const CREATE_EVENT = gql`
@@ -21,8 +20,12 @@ const CREATE_EVENT = gql`
       startTime: $startTime, endTime: $endTime, location: $location
     ) {
       id
-      title,
-      description,
+      title
+      description
+      status
+      images {
+        thumbnail
+      }
       createdAt
       user {
         id
@@ -39,7 +42,11 @@ class EventCreate extends Component{
   state = {
     loading: false
   }
-  descriptionArea = null
+
+  componentDidMount = () => {
+    this.props.stores.event.editorEventCreate = EditorState.createEmpty()
+  }
+  
 
   _handleCreatedEvent = event => {
     event.preventDefault()

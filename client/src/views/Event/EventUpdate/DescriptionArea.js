@@ -1,14 +1,15 @@
 
 import React, { Component } from 'react'
 import { Input, Form, Row, Col, Divider } from 'antd'
-import { formRuleNotEmpty, formItemLayout } from './constants'
+import { formRuleNotEmpty, formItemLayout } from '../common/constants'
 import { Editor } from 'react-draft-wysiwyg'
-import { convertToRaw } from 'draft-js'
-import { inject } from 'mobx-react'
+import { convertFromRaw, EditorState, convertToRaw } from 'draft-js'
+import { inject, observer } from 'mobx-react'
 
 const FormItem = Form.Item
 
 @inject('stores')
+@observer
 class DescriptionArea extends Component{
 
   onEditorStateChange = (editorState) => {
@@ -37,6 +38,9 @@ class DescriptionArea extends Component{
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const { event } = this.props.stores.event
+    const { loading } = this.props
+    const editorState = event && EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)))
 
     return (
       <>
@@ -61,13 +65,16 @@ class DescriptionArea extends Component{
           colon={false}
           {...formItemLayout}
         >
-          <Editor
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
-            editorStyle={{border: '1px #E6E6E6 solid'}}
-            name='editor'
-            onEditorStateChange={this.onEditorStateChange}
-          />
+          {!loading && 
+            <Editor
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              editorStyle={{border: '1px #E6E6E6 solid', padding: 12}}
+              name='editor'
+              defaultEditorState={editorState}
+              onEditorStateChange={this.onEditorStateChange}
+            />
+          }
         </FormItem>
       </>
     )
