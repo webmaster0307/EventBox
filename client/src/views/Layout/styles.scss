@@ -6,11 +6,12 @@
     cursor: pointer;
     text-align: center;
     transition: all .3s ease-in;
+    color: #fff;
     &::after{
       content: 'EventBox Dashboard'
     }
     &:hover {
-      color: #fff;   
+      color: rgba($color: #fff, $alpha: .5);   
     }
   }
 }

@@ -45,6 +45,31 @@ let eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
+  organizationName: {
+    type: String,
+    default: ''
+  },
+  organizationLogo: {
+    type: String,
+    default: ''
+  },
+  organizationDescription: {
+    type: String,
+    default: ''
+  },
+  startTime: {
+    type: Date,
+    default: ''
+  },
+  endTime: {
+    type: Date,
+    default: ''
+  },
+  status: {
+    type: String,
+    enum: ['draft', 'in-review', 'rejected', 'active'],
+    default: 'draft'
+  },
   isEnabled: {
     type: Boolean,
     required: true,

@@ -14,6 +14,10 @@ export default gql`
     regFrom: String
     regTo: String
     approvedBy: User
+    organizationName: String!
+    organizationLogo: String
+    organizationDescription: String
+    status: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -51,6 +55,12 @@ export default gql`
       location: String
       regFrom: String
       regTo: String
+      organizationName: String!
+      organizationLogo: String
+      organizationDescription: String
+      startTime: String
+      endTime: String
+      location: String
     ): Event!
 
     updateEvent(
