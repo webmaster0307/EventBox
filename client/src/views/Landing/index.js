@@ -12,9 +12,11 @@ import Footer from './components/Layout/Footer'
 
 import { languageConfig } from './data.source'
 import './less/antMotionStyle.less'
+import { inject } from 'mobx-react'
 
 const { location } = window
 
+@inject('stores')
 class Landing extends React.Component {
   constructor(props) {
     super(props)
@@ -30,6 +32,8 @@ class Landing extends React.Component {
     await enquireScreen((b) => {
       this.setState({ isMobile: !!b })
     })
+    const { landing } = this.props.stores
+    console.log('isMobile: ' ,landing.isMobile)
 
     if (location.port) {
       setTimeout(() => {

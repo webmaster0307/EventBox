@@ -1,11 +1,11 @@
-// import { observable } from 'mobx'
-// // import { client } from '@client'
+import { observable } from 'mobx'
+// import { client } from '@client'
 
-// class Landing {
-//   @observable isMobile = false
-//   @observable show = true
-//   @observable isEnglish = true
-// }
+class Landing {
+  @observable isMobile = false
+  @observable show = true
+  @observable isEnglish = true
+}
 
 
-// export default Landing
+export default Landing
