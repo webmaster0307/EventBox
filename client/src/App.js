@@ -1,6 +1,6 @@
 import React from 'react'
 import { client } from './'
-import { Router, Route, Switch, Link } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
 
 import history from './constants/history'
@@ -9,6 +9,8 @@ import withSession from './views/Authorizing/Session/withSession'
 
 import { SignUpPage, SignInPage } from './views/Authorizing'
 import { Page404 } from './views/ErrorPage'
+
+import Landing from './views/Landing'
 
 import SiderDemo from './views/Layout'
 
@@ -26,11 +28,11 @@ const App = ({ session, refetch }) => {
       <div>
         {session && session.me ?
           <div>
-            <SiderDemo session={session} /> 
+            <SiderDemo session={session} />
           </div>
           :
           <div>
-            <NavigationNonAuth />
+            {/* <NavigationNonAuth /> */}
             <UnauthorizedContainer history={history} session={session} refetch={refetch} />
           </div>
         }
@@ -43,22 +45,22 @@ export default withSession(App)
 
 // const AuthorizedContainer = () => (
 //   <Switch>
-//     <Route 
+//     <Route
 //       component={SiderDemo}
 //     />
 //   </Switch>
 // )
 
-const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={routes.SIGN_IN}>Sign In</Link>
-    </li>
-    <li>
-      <Link to={routes.SIGN_UP}>Sign Up</Link>
-    </li>
-  </ul>
-)
+// const NavigationNonAuth = () => (
+//   <ul>
+//     <li>
+//       <Link to={routes.SIGN_IN}>Sign In</Link>
+//     </li>
+//     <li>
+//       <Link to={routes.SIGN_UP}>Sign Up</Link>
+//     </li>
+//   </ul>
+// )
 
 const UnauthorizedContainer = ({history, session, refetch}) => (
   <Switch>
@@ -74,8 +76,13 @@ const UnauthorizedContainer = ({history, session, refetch}) => (
     />
     <Route
       exact
-      path='/'
+      path={routes.HOME}
       component={() => <SignInPage refetch={refetch} history={history} />}
+    />
+    <Route
+      exact
+      path={routes.LANDING}
+      render={() => <Landing />}
     />
     <Route
       component={Page404}
