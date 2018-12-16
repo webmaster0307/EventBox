@@ -1,4 +1,5 @@
 import React from 'react'
+import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
@@ -8,29 +9,20 @@ import logo from '../../images/logo.svg'
 
 const Item = Menu.Item
 
+@inject('stores')
+@observer
 class Header extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      phoneOpen: false,
-      menuHeight: 0
-    }
-  }
-
   phoneClick = () => {
     const menu = findDOMNode(this.menu)
-    const phoneOpen = !this.state.phoneOpen
-    this.setState({
-      phoneOpen,
-      menuHeight: phoneOpen ? menu.scrollHeight : 0
-    })
+    this.props.stores.landing.handlePhoneClick(menu.scrollHeight)
   }
 
   render() {
-    const { isMobile, textData } = this.props
-    const { menuHeight, phoneOpen } = this.state
+    const {
+      isMobile, currentLangData, buttonText, phoneOpen, menuHeight
+    } = this.props.stores.landing
 
-    const navChildren = textData.navigationItems.map((item, i) => (
+    const navChildren = currentLangData.navigationItems.map((item, i) => (
       <Item key={i.toString()}>
         <Link to={item.path}>
           <span>
@@ -60,7 +52,7 @@ class Header extends React.Component {
             {isMobile && (
               <div
                 className='header0-mobile-menu'
-                onClick={() => {this.phoneClick()}}
+                onClick={() => this.phoneClick()}
               >
                 <em />
                 <em />
@@ -75,20 +67,20 @@ class Header extends React.Component {
             >
               <Menu
                 mode={isMobile ? 'inline' : 'horizontal'}
-                defaultSelectedKeys={['0']}
+                // defaultSelectedKeys={['0']}
                 theme={isMobile ? 'dark' : 'light'}
               >
+                {navChildren}
                 <Item>
                   <Button
                     type='primary'
                     onClick={() => {
-                      this.setState(() => this.props.switch())
+                      this.props.stores.landing.changeLanguage()
                     }}
                   >
-                    {this.props.buttonText}
+                    {buttonText}
                   </Button>
                 </Item>
-                {navChildren}
               </Menu>
             </TweenOne>
           </div>

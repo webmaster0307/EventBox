@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { Component, createElement } from 'react'
+import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
 import { Row, Col } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 
-class FirstSection extends React.PureComponent {
-  render() {
-    const { firstSection } = this.props.textData
 
-    const listChildren = firstSection.block.map(item => {
+@inject('stores')
+@observer
+class FirstSection extends Component {
+  render () {
+    const { firstSection } = this.props.stores.landing.currentLangData
+
+    const listChildren = firstSection.block.map((item, i) => {
       return (
         <Col
-          key={item.key} className='block'
+          key={i.toString()} className='block'
           md={8} xs={24}
         >
           <div className='icon'>
@@ -27,13 +31,13 @@ class FirstSection extends React.PureComponent {
         <div className='home-page content0'>
           <div className='title-wrapper'>
             {firstSection.title.map(item =>
-              React.createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
+              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: item.key,
                   className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
                 },
                 typeof item.text === 'string' && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-                  ? React.createElement('img', {
+                  ? createElement('img', {
                     src: item.text,
                     height: '100%',
                     alt: 'img'

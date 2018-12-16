@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as routes from '../../constants/routes'
+import * as routes from '../constants/routes'
 
 export const languageConfig = {
   English: {

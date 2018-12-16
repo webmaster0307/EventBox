@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { Component, createElement } from 'react'
+import { inject, observer } from 'mobx-react'
 import { Row, Col } from 'antd'
 import { TweenOneGroup } from 'rc-tween-one'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 
-class SecondSection extends React.PureComponent {
-  render() {
-    const { secondSection } = this.props.textData
+@inject('stores')
+@observer
+class SecondSection extends Component {
+  render () {
+    const { secondSection } = this.props.stores.landing.currentLangData
 
-    const childrenToRender = secondSection.block.map(item => {
+    const childrenToRender = secondSection.block.map((item, i) => {
       return (
         <Col
-          key={item.key} className='block'
+          key={i.toString()} className='block'
           md={6} xs={24}
         >
           <div className='content5-block-content'>
@@ -28,14 +31,14 @@ class SecondSection extends React.PureComponent {
         <div className='home-page content5 jpl17zkbjcf-editor_css'>
           <div key='title' className='title-wrapper'>
             {secondSection.title.map(item =>
-              React.createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
+              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: item.key,
                   className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
                 },
                 typeof item.text === 'string' &&
                 item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-                  ? React.createElement('img', {
+                  ? createElement('img', {
                     src: item.text,
                     alt: 'img'
                   })
@@ -53,7 +56,6 @@ class SecondSection extends React.PureComponent {
                 ease: 'easeInOutQuad'
               }}
               leave={{ y: '+=30', opacity: 0, ease: 'easeInOutQuad' }}
-              // playScale={0.3}
               component={Row}
             >
               {childrenToRender}

@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { Component, createElement } from 'react'
+import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
 import TweenOne from 'rc-tween-one'
 import { Row, Col } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 
-class ThirdSection extends React.PureComponent {
+@inject('stores')
+@observer
+class ThirdSection extends Component {
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100
 
-  render() {
-
-    const { isMobile } = this.props
-    const { thirdSection } = this.props.textData
+  render () {
+    const { isMobile, currentLangData } = this.props.stores.landing
+    const { thirdSection } = currentLangData
 
     let clearFloatNum = 0
 
@@ -75,13 +77,14 @@ class ThirdSection extends React.PureComponent {
         <div className='home-page content3'>
           <div className='title-wrapper'>
             {thirdSection.title.map((item, i) =>
-              React.createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
+              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: i.toString(),
                   className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
                 },
-                typeof item.text === 'string' && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-                  ? React.createElement('img', {
+                typeof item.text === 'string'
+                && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
+                  ? createElement('img', {
                     src: item.text,
                     alt: 'img'
                   })
