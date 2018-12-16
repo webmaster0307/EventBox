@@ -53,7 +53,7 @@ class EventItem extends Component{
         <h3>{event && event.user.username}</h3>
         <div><span>Title: <label>{event && event.title}</label></span></div>
         <div><strong>{event && event.shortDescription}</strong></div>
-        <div style={{maxWidth: 800, border: '1px solid #E6E6E6', marginBottom: 12}} >
+        <div style={{width: '100%', border: '1px solid #E6E6E6', marginBottom: 12}} >
           <EditorWysiwyg editorState={eventDetail} readOnly toolbarHidden />
         </div>
         <div><small>Created at: {new Date(Number(event && event.createdAt)).toLocaleString()}</small></div>

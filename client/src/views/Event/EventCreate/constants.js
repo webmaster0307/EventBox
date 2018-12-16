@@ -1,12 +1,12 @@
 const formItemLayout = {
-  labelCol: {
-    md: { span: 24 },
-    lg: { span: 4 }
-  },
-  wrapperCol: {
-    md: { span: 24 },
-    lg: { span: 18 }
-  }
+  // labelCol: {
+  //   md: { span: 24 },
+  //   lg: { span: 24 }
+  // },
+  // wrapperCol: {
+  //   md: { span: 24 },
+  //   lg: { span: 24 }
+  // }
 }
 
 const formRuleNotEmpty = {

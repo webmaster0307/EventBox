@@ -8,6 +8,9 @@ class Event {
   @observable eventsLoading = false
   @observable events = []
 
+  // editor
+  @observable editorEventCreate
+
   @action
   async getEvents(_events){
     this.eventsLoading = true

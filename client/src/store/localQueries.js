@@ -8,6 +8,7 @@ export const GET_PAGINATED_EVENTS_WITH_USERS = gql`
         id
         title
         description
+        status
         images {
           thumbnail
         }
