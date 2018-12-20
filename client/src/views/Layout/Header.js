@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Layout, Avatar, Menu, Dropdown } from 'antd'
-import { client } from '../../'
+import { client } from '@client'
 import { signOut } from '@components'
+import { Link } from 'react-router-dom'
 
 const { Header } = Layout
 
@@ -34,7 +35,7 @@ class UserAvatar extends Component{
 const actions = (
   <Menu>
     <Menu.Item>
-      <span>1st menu item</span>
+      <span><Link to='/'>Home</Link></span>
     </Menu.Item>
     <Menu.Divider />
     <Menu.Item onClick={() => signOut(client)} >
