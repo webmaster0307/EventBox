@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react'
 // import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { Table, Icon, message } from 'antd'
+import { Table, Icon, message, Tag } from 'antd'
 // import { Loading } from '@components'
 import { inject, observer } from 'mobx-react'
 // import { client } from '@client'
 // import { toJS } from 'mobx'
+import { basename } from '../../Layout/routes'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -15,6 +16,7 @@ const EVENT_CREATED = gql`
         id
         title
         description
+        status
         images {
           thumbnail
         }
@@ -156,12 +158,17 @@ class EventList extends Component {
     {
       title: 'Title',
       dataIndex: 'title',
-      render: (text, record) => <Link to={`/events/detail/${record.id}`} >{text}</Link>
+      render: (text, record) => <Link to={`${basename}/events/detail/${record.id}`} >{text}</Link>
     },
     {
       title: '',
       dataIndex: 'id',
-      render: (id) => <Link to={`/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
+      render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
+    },
+    {
+      title: 'status',
+      dataIndex: 'status',
+      render: status => <Tag color='geekblue'>{status}</Tag>
     },
     {
       title: 'Owner',

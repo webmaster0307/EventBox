@@ -8,4 +8,4 @@ const AdminPage = () => (
   </div>
 )
 
-export default withAuthorization(session => session && session.me && session.me.role === 'admin',)(AdminPage)
+export default withAuthorization(session => session && session.me && session.me.role.includes('admin'))(AdminPage)

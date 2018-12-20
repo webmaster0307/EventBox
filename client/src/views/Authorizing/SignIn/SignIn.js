@@ -2,20 +2,35 @@ import React from 'react'
 import { client } from '@client'
 import * as routes from '@routes'
 import gql from 'graphql-tag'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect, Link } from 'react-router-dom'
 import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
 import queryString from 'query-string'
+import { Query } from 'react-apollo'
+import { GET_SESSION } from '../Session/localQueries'
 
 const FormItem = Form.Item
 
 const SignIn = ({refetch}) => (
-  <div className='login-card__wrapper'>
-    <Card 
-      title='Sign In'
-    >
-      <SignInFormWrapped refetch={refetch} />
-    </Card>
-  </div>
+  <Query query={GET_SESSION} >
+    {({data}) => {
+      if(data && data.me){
+        return(
+          <Redirect to={routes.HOME} />
+        )
+      }
+      else{
+        return(
+          <div className='login-card__wrapper'>
+            <Card 
+              title='Sign In'
+            >
+              <SignInFormWrapped refetch={refetch} />
+            </Card>
+          </div>
+        )
+      }
+    }}
+  </Query>
 )
 
 export default SignIn
@@ -112,6 +127,11 @@ class SignInForm extends React.Component{
               type='password'
               placeholder='Password'
             />)}
+          </FormItem>
+          <FormItem>
+            <div>
+              <li><Link to='/' >Home</Link></li>
+            </div>
           </FormItem>
           <FormItem>
             <Button

@@ -2,7 +2,7 @@ import React from 'react'
 import { client } from '../../'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
-import { getSession } from '../Authorizing/Session/localQueries'
+import { GET_SESSION } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
 import { Page404 } from '../ErrorPage'
 import Header from './Header'
@@ -11,7 +11,7 @@ import './styles.scss'
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
-class SiderDemo extends React.Component {
+class Container extends React.Component {
   
   state = {
     collapsed: false
@@ -22,13 +22,13 @@ class SiderDemo extends React.Component {
   }
 
   handleGotoHome = () => {
-    if(this.props.history.pathname !== '/'){
-      this.props.history.push('/')
+    if(this.props.history.pathname !== '/dashboard'){
+      this.props.history.push('/dashboard')
     }
   }
 
   getSession = () => {
-    client.query({query: getSession}).then( result => {
+    client.query({query: GET_SESSION}).then( result => {
       const { me } = result.data
       console.log('me: ',me)
     })
@@ -41,6 +41,7 @@ class SiderDemo extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
+          breakpoint='lg'
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
@@ -116,4 +117,4 @@ class SiderDemo extends React.Component {
   }
 }
 
-export default withRouter(SiderDemo)
+export default withRouter(Container)

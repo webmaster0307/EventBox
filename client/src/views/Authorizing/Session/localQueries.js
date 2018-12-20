@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-const getSession = gql`
-  query getSession @client{
-    me {
+const GET_SESSION = gql`
+  query getSession {
+    me @client {
       id
       username
       email
@@ -12,5 +12,5 @@ const getSession = gql`
 `
 
 export {
-  getSession
+  GET_SESSION
 }

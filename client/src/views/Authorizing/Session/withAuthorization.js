@@ -3,10 +3,10 @@ import { Query } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 
 import * as routes from '@routes'
-import { GET_ME } from './queries'
+import { GET_SESSION } from '../../Authorizing/Session/localQueries'
 
 const withAuthorization = conditionFn => Component => props => (
-  <Query query={GET_ME}>
+  <Query query={GET_SESSION}>
     {({ data, networkStatus }) => {
       if (networkStatus < 7) {
         return null
