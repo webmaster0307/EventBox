@@ -7,58 +7,60 @@ import AdminPage from '../Admin'
 
 import { CreateDraftEvent } from '../DraftEvent'
 
+export const basename = '/dashboard'
+
 export const routesComp = [
   {
     exact: true,
-    path: '/',
+    path: `${basename}`,
     component: Home,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/admin',
+    path: `${basename}/admin`,
     component: AdminPage,
     roles: ['admin']
   },
   {
     exact: true,
-    path: '/account',
+    path: `${basename}/account`,
     component: AccountPage,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/events',
+    path: `${basename}/events`,
     component: Events,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/events/create',
+    path: `${basename}/events/create`,
     component: EventCreate,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/events/detail/:eventId',
+    path: `${basename}/events/detail/:eventId`,
     component: EventDetail,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/events/update/:eventId',
+    path: `${basename}/events/update/:eventId`,
     component: EventUpdate,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/draft-events',
+    path: `${basename}/draft-events`,
     component: Events,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: '/draft-events/create',
+    path: `${basename}/draft-events/create`,
     component: CreateDraftEvent,
     roles: ['admin', 'user']
   }
@@ -67,7 +69,7 @@ export const routesComp = [
 export const routesMenu = [
   {
     title: 'Admin',
-    path: '/admin',
+    path: `${basename}/admin`,
     roles: ['admin'],
     icon: 'star',
     breadcumbs: ['Administration']
@@ -79,7 +81,7 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'Information',
-        path: '/account',
+        path: `${basename}/account`,
         icon: 'idcard',
         breadcumbs: ['Account', 'Account information']
       }
@@ -92,13 +94,13 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'List',
-        path: '/events',
+        path: `${basename}/events`,
         icon: 'bars',
         breadcumbs: ['Events', 'Event list']
       },
       {
         title: 'Create',
-        path: '/events/create',
+        path: `${basename}/events/create`,
         icon: 'form',
         breadcumbs: [ 'Events', 'Event create' ]
       }
@@ -111,13 +113,13 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'List',
-        path: '/draft-events',
+        path: `${basename}/draft-events`,
         icon: 'bars',
         breadcumbs: ['Draft Events', 'Draft event list']
       },
       {
         title: 'Create',
-        path: '/draft-events/create',
+        path: `${basename}/draft-events/create`,
         icon: 'form',
         breadcumbs: [ 'Draft Events', 'Create draft event' ]
       }

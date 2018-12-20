@@ -3839,6 +3839,13 @@ enhanced-resolve@^4.1.0:
     memory-fs "^0.4.0"
     tapable "^1.0.0"
 
+enquire-js@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/enquire-js/-/enquire-js-0.2.1.tgz#f2478cf5808d42f54e8231f20fa133493e7f0fcb"
+  integrity sha512-4vbcWD0ncK6VQ5M5giOImQb2hFPrKDZH5U+uRX9S6e9vfC6Q5PX6A38PVS6RMnCdr/luDTtJjjLuJinH/+a+Lw==
+  dependencies:
+    enquire.js "^2.1.6"
+
 enquire.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/enquire.js/-/enquire.js-2.1.6.tgz#3e8780c9b8b835084c3f60e166dbc3c2a3c89814"
@@ -9754,7 +9761,7 @@ raf@3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
-raf@^3.4.0:
+raf@3.x, raf@^3.4.0, raf@~3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
@@ -10014,6 +10021,15 @@ rc-progress@~2.2.6:
     babel-runtime "6.x"
     prop-types "^15.5.8"
 
+rc-queue-anim@^1.6.10:
+  version "1.6.10"
+  resolved "https://registry.yarnpkg.com/rc-queue-anim/-/rc-queue-anim-1.6.10.tgz#9e6f526afa32a6f2bff13f94324496ab5ce4d3cd"
+  integrity sha512-gcfwhuvCVy+sTRcadMjQ47A8TOpcBy4iZ3TqoFObftkNAVdOFzlK6ElvkM3jz39FWIE0uohXH3aJ3YzcrZJQDg==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.6.0"
+    rc-tween-one "^2.2.8"
+
 rc-rate@~2.4.2:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/rc-rate/-/rc-rate-2.4.3.tgz#70434905faf84c9a0694bec4bdbd9b9a9099318f"
@@ -10024,6 +10040,17 @@ rc-rate@~2.4.2:
     prop-types "^15.5.8"
     rc-util "^4.3.0"
     react-lifecycles-compat "^3.0.4"
+
+rc-scroll-anim@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/rc-scroll-anim/-/rc-scroll-anim-2.5.6.tgz#ca1e1cbb2e871c1412866b7b358c1e0f469b594f"
+  integrity sha512-du+o4t2uMcPuDqc7JN+aKLcFZmtwNNCUu7mVLLPbaSnSkD30+Cfatf5NdxQv4UK7oATkjdrJnW3w7EUPIY+B7w==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.6.0"
+    raf "3.x"
+    rc-tween-one "^2.2.0"
+    tween-functions "1.x"
 
 rc-select@~8.4.0:
   version "8.4.4"
@@ -10178,6 +10205,17 @@ rc-trigger@^3.0.0-rc.2:
     rc-align "^2.4.1"
     rc-animate "^3.0.0-rc.1"
     rc-util "^4.4.0"
+
+rc-tween-one@^2.2.0, rc-tween-one@^2.2.18, rc-tween-one@^2.2.8:
+  version "2.2.18"
+  resolved "https://registry.yarnpkg.com/rc-tween-one/-/rc-tween-one-2.2.18.tgz#7fa386a53fd94edacb93f11c36bf822fa32e181a"
+  integrity sha512-WE9BRk+C+6pyOqNI8BX4JSaWkbl8ENtFZuaELGzYLl46q+x89E66NfCh0sZ4a0w/I/4zPhBxrCkyXNZOqIKkMA==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.6.1"
+    raf "~3.4.0"
+    style-utils "~0.1.13"
+    tween-functions "~1.2.0"
 
 rc-upload@~2.6.0:
   version "2.6.0"
@@ -11775,6 +11813,11 @@ style-loader@0.23.0:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
 
+style-utils@~0.1.13:
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/style-utils/-/style-utils-0.1.22.tgz#46a3f2cd4499603a46169352ac1ed01f23470aa0"
+  integrity sha512-WOCiagsn/TqMcbxKAP8+59WHQaszLzKGluzRCTO15VH2gboFRy8VAk2aTU8+YBu2oNJtf7AFNdqh5JkKUkOVpA==
+
 stylehacks@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/stylehacks/-/stylehacks-4.0.1.tgz#3186595d047ab0df813d213e51c8b94e0b9010f2"
@@ -12099,6 +12142,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tween-functions@1.x, tween-functions@~1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+  integrity sha1-GuOlDnxguz3vd06scHrLynO7w/8=
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
