@@ -7,6 +7,7 @@ import { Table, Icon, message } from 'antd'
 import { inject, observer } from 'mobx-react'
 // import { client } from '@client'
 // import { toJS } from 'mobx'
+import { basename } from '../../Layout/routes'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -156,12 +157,12 @@ class EventList extends Component {
     {
       title: 'Title',
       dataIndex: 'title',
-      render: (text, record) => <Link to={`/events/detail/${record.id}`} >{text}</Link>
+      render: (text, record) => <Link to={`${basename}/events/detail/${record.id}`} >{text}</Link>
     },
     {
       title: '',
       dataIndex: 'id',
-      render: (id) => <Link to={`/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
+      render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
     },
     {
       title: 'Owner',

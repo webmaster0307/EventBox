@@ -51,7 +51,7 @@ class Footer extends Component {
           >
             <div key='homepage' className='home-page'>
               <div className='copyright'>
-                {footer.copyright}
+                {/* {footer.copyright} */}
               </div>
             </div>
           </TweenOne>

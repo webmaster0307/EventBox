@@ -80,11 +80,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const cache = new InMemoryCache()
 
-const stateLink = withClientState({
+export const stateLink = withClientState({
   cache,
   defaults: {
     session: {
-      me: null
+      me: null,
+      __typename: 'User'
     },
     loading: false
   },
@@ -103,8 +104,8 @@ const stateLink = withClientState({
         cache.writeData({ data })
         return null
       },
-      setSession: ( _, { session }, { cache, getCacheKey }) => {
-        // console.log('session: ' ,session);
+      setSession: ( _, variables, { cache, getCacheKey }) => {
+        const { session } = variables
         const data = {
           session : {
             me: {
@@ -131,7 +132,7 @@ const stateLink = withClientState({
       id: ID!
       username: String!
       email: String!
-      role: String
+      role: [String]
     }
   `
 })

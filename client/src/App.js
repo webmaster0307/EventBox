@@ -25,18 +25,35 @@ const App = ({ session, refetch }) => {
 
   return(
     <Router history={history}>
-      <div>
-        {session && session.me ?
-          <div>
+      <Switch>
+        <Route
+          exact
+          path={routes.SIGN_UP}
+          component={() => <SignUpPage refetch={refetch} />}
+        />
+        <Route
+          exact
+          path={routes.SIGN_IN}
+          component={() => <SignInPage refetch={refetch} session={session} />}
+        />
+        <Route
+          exact
+          path={routes.HOME}
+          render={() => <Landing session={session} />}
+        />
+        <Route
+          exact
+          path={`${routes.DASHBOARD}*`}
+          render={() => session && session.me ? 
             <SiderDemo session={session} />
-          </div>
-          :
-          <div>
-            {/* <NavigationNonAuth /> */}
-            <UnauthorizedContainer history={history} session={session} refetch={refetch} />
-          </div>
-        }
-      </div>
+            :
+            <SignInPage refetch={refetch} session={session} /> 
+          }
+        />
+        <Route
+          component={Page404}
+        />
+      </Switch>
     </Router>
   )
 }
@@ -62,30 +79,30 @@ export default withSession(App)
 //   </ul>
 // )
 
-const UnauthorizedContainer = ({history, session, refetch}) => (
-  <Switch>
-    <Route
-      exact
-      path={routes.SIGN_UP}
-      component={() => <SignUpPage refetch={refetch} />}
-    />
-    <Route
-      exact
-      path={routes.SIGN_IN}
-      component={() => <SignInPage refetch={refetch} session={session} />}
-    />
-    <Route
-      exact
-      path={routes.HOME}
-      component={() => <SignInPage refetch={refetch} history={history} />}
-    />
-    <Route
-      exact
-      path={routes.LANDING}
-      render={() => <Landing />}
-    />
-    <Route
-      component={Page404}
-    />
-  </Switch>
-)
+// const UnauthorizedContainer = ({history, session, refetch}) => (
+//   <Switch>
+//     <Route
+//       exact
+//       path={routes.SIGN_UP}
+//       component={() => <SignUpPage refetch={refetch} />}
+//     />
+//     <Route
+//       exact
+//       path={routes.SIGN_IN}
+//       component={() => <SignInPage refetch={refetch} session={session} />}
+//     />
+//     <Route
+//       exact
+//       path={routes.HOME}
+//       component={() => <SignInPage refetch={refetch} history={history} />}
+//     />
+//     <Route
+//       exact
+//       path={routes.LANDING}
+//       render={() => <Landing />}
+//     />
+//     <Route
+//       component={Page404}
+//     />
+//   </Switch>
+// )
