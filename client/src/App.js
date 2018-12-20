@@ -4,7 +4,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
 
 import history from './constants/history'
-import * as routes from './constants/routes'
+import * as routes from '@routes'
 import withSession from './views/Authorizing/Session/withSession'
 
 import { SignUpPage, SignInPage } from './views/Authorizing'

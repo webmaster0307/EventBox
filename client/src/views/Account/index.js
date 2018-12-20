@@ -9,4 +9,4 @@ const AccountPage = () => (
   </div>
 )
 
-export default withAuthorization(session => session && session.me)(AccountPage,)
+export default withAuthorization(session => session && session.me)(AccountPage)
