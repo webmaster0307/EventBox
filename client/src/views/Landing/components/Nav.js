@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
 import { Menu, Affix, Button, Icon } from 'antd'
 
-import logo from '../../images/logo.svg'
+import logo from '../images/logo.svg'
 import { Query, ApolloConsumer } from 'react-apollo'
 import { signOut } from '@components'
-import { GET_SESSION } from '../../../Authorizing/Session/localQueries'
+import { GET_SESSION } from '../../Authorizing/Session/localQueries'
 
 const { Item, SubMenu } = Menu
 

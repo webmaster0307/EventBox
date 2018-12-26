@@ -6,7 +6,8 @@
     "paths": {
       "@components": ["./src/components/"],
       "@client": ["./src/index.js"],
-      "@routes": ["./src/constants/routes.js"]
+      "@routes": ["./src/constants/routes.js"],
+      "@gqlQueries": ["./src/stores/apollo/index.js"]
     }
   },
   "include": ["src"],
