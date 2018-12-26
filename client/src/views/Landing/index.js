@@ -2,12 +2,12 @@ import React from 'react'
 import { enquireScreen } from 'enquire-js'
 import { inject, observer } from 'mobx-react'
 
-import Nav from './components/Layout/Nav'
-import Banner from './components/Layout/Banner'
-import FirstSection from './components/Layout/FirstSection'
-import SecondSection from './components/Layout/SecondSection'
-import ThirdSection from './components/Layout/ThirdSection'
-import Footer from './components/Layout/Footer'
+import Nav from './components/Nav'
+import Banner from './components/Banner'
+import FirstSection from './components/FirstSection'
+import SecondSection from './components/SecondSection'
+import ThirdSection from './components/ThirdSection'
+import Footer from './components/Footer'
 
 import './less/antMotionStyle.less'
 

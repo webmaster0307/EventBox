@@ -4,7 +4,7 @@ import { Button, Icon } from 'antd'
 import QueueAnim from 'rc-queue-anim'
 import TweenOne from 'rc-tween-one'
 
-import biglogo from '../../images/biglogo.png'
+import LogoBlur from './LogoBlur'
 
 
 @inject('stores')
@@ -21,13 +21,14 @@ class Banner extends Component {
           delay={200}
         >
           <div className='banner0-title' key='title'>
-            {
+            {/* {
               typeof biglogo === 'string'
               && biglogo.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/) ? (
                   <img src={biglogo} width='100%' alt='img' />
                 ) : (
                   biglogo
-                )}
+                )} */}
+            <LogoBlur />
           </div>
           <div className='banner0-content' key='content'>
             {banner.introduction}

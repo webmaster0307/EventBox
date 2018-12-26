@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
 import { Menu, Affix, Button, Icon } from 'antd'
 
-import logo from '../../images/logo.svg'
+import logo from '../images/logo.svg'
 
 const Item = Menu.Item
 
