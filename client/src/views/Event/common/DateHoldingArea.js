@@ -97,6 +97,12 @@ class DateHoldingArea extends Component{
       title: 'Place',
       customRender: <Input placeholder='Where event take place' />,
       rules: [formRuleNotEmpty]
+    },
+    {
+      name: 'address',
+      title: 'Address',
+      customRender: <Input placeholder='Address of place' />,
+      rules: [formRuleNotEmpty]
     }
   ]
 

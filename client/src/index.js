@@ -18,7 +18,7 @@ import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
 
-import { Event } from './store'
+import { Event, Landing } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
@@ -80,11 +80,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const cache = new InMemoryCache()
 
-const stateLink = withClientState({
+export const stateLink = withClientState({
   cache,
   defaults: {
     session: {
-      me: null
+      me: null,
+      __typename: 'User'
     },
     loading: false
   },
@@ -103,8 +104,8 @@ const stateLink = withClientState({
         cache.writeData({ data })
         return null
       },
-      setSession: ( _, { session }, { cache, getCacheKey }) => {
-        // console.log('session: ' ,session);
+      setSession: ( _, variables, { cache, getCacheKey }) => {
+        const { session } = variables
         const data = {
           session : {
             me: {
@@ -131,7 +132,7 @@ const stateLink = withClientState({
       id: ID!
       username: String!
       email: String!
-      role: String
+      role: [String]
     }
   `
 })
@@ -144,7 +145,8 @@ export const client = new ApolloClient({
 })
 
 const stores = {
-  event: new Event()
+  event: new Event(),
+  landing: new Landing()
 }
 
 ReactDOM.render(<ApolloProvider client={client}>
