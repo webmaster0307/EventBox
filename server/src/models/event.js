@@ -33,6 +33,10 @@ let eventSchema = new Schema({
     type: String,
     default: ''
   },
+  address: {
+    type: String,
+    default: ''
+  },
   regFrom: {
     type: Date,
     default: ''

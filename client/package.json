@@ -63,7 +63,7 @@
   "lint-staged": {
     "*.{js,json}": [
       "eslint ./src --fix --quiet",
-      "git add"
+      "git add ."
     ]
   },
   "proxy": "http://localhost:8000",
