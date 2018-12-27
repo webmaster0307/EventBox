@@ -1,15 +1,15 @@
 #------------------------------------------------------
 #               Client build begin
 #------------------------------------------------------
-FROM node:8.12 as builder
+FROM node:alpine as builder
 
 RUN mkdir -p /app/client
 
 WORKDIR /app/client
 
 COPY ["./package.json", "./yarn.lock", "./"] 
-RUN npm install -g --silent yarn
-RUN yarn install
+
+RUN yarn install --prod
 
 COPY "./src" "./src"
 COPY "./public" "./public"
