@@ -2,7 +2,7 @@ import React from 'react'
 import { client } from '@client'
 import * as routes from '@routes'
 import gql from 'graphql-tag'
-import { withRouter, Redirect, Link } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
@@ -21,7 +21,7 @@ const SignIn = ({refetch}) => (
       else{
         return(
           <div className='login-card__wrapper'>
-            <Card 
+            <Card
               title='Sign In'
             >
               <SignInFormWrapped refetch={refetch} />
@@ -65,7 +65,6 @@ class SignInForm extends React.Component{
         })
     }
   }
-  
 
   _handleSubmit = event => {
     event.preventDefault()
@@ -127,11 +126,6 @@ class SignInForm extends React.Component{
               type='password'
               placeholder='Password'
             />)}
-          </FormItem>
-          <FormItem>
-            <div>
-              <li><Link to='/' >Home</Link></li>
-            </div>
           </FormItem>
           <FormItem>
             <Button

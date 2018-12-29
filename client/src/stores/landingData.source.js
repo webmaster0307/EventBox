@@ -1,13 +1,7 @@
 import React from 'react'
 
-import * as routes from '@routes'
-
 export const languageConfig = {
   English: {
-    navigationItems: [
-      { path: routes.SIGN_UP, text: 'SIGN UP', iconType: 'user-add' },
-      { path: routes.SIGN_IN, text: 'SIGN IN', iconType: 'login' }
-    ],
 
     banner: {
       introduction: 'Team 13\'s Event-box web application.',
@@ -176,12 +170,6 @@ export const languageConfig = {
   },
 
   Vietnamese: {
-    navigationItems: [
-      { key: '0', path: '/', text: 'MỤC 1' },
-      { key: '1', path: '/', text: 'MỤC 2' },
-      { key: '2', path: '/', text: 'MỤC 3' },
-      { key: '3', path: '/', text: 'MỤC 4' }
-    ],
 
     banner: {
       introduction: 'Sản phẩm ứng dụng website Event-box phát triển bởi nhóm 13.',

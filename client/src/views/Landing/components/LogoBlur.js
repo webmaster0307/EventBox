@@ -13,18 +13,16 @@ class LogoBlur extends Component {
       image: logo,
       w: 300,
       h: 300,
-      pixSize: 20,
-      pointSizeMin: 5,
+      pixSize: 40,
+      pointSizeMin: 11,
       isVisible: true,
 
       childNode: [],
       boxAnim: {}
     }
-    // this.sideBoxComp = null
-    // this.dom = null
     this.gather = true
     this.interval = true
-    this.intervalTime = 5000
+    this.intervalTime = 30*1000
   }
 
   componentDidMount() {
@@ -76,14 +74,14 @@ class LogoBlur extends Component {
               width: r,
               height: r,
               opacity: b,
-              backgroundColor: `rgb(${Math.round(Math.random() * 55 + 200)},0,0)`
+              backgroundColor: `rgb(${Math.round(Math.random() * 75 + 180)},0,0)`
             }}
             animation={{
               y: (Math.random() * 2 - 1) * 10 || 5,
               x: (Math.random() * 2 - 1) * 5 || 2.5,
               delay: Math.random() * 1000,
               repeat: -1,
-              duration: 3000,
+              duration: 3 * 1000,
               yoyo: true,
               ease: 'easeInOutQuad'
             }}
