@@ -7,6 +7,7 @@ import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
 import { GET_SESSION } from '../Session/localQueries'
+import { observer, inject } from 'mobx-react'
 
 const FormItem = Form.Item
 
@@ -42,7 +43,8 @@ const SIGN_IN = gql`
     }
   }
 `
-
+@inject('stores')
+@observer
 class SignInForm extends React.Component{
 
   state = {
@@ -85,6 +87,7 @@ class SignInForm extends React.Component{
           localStorage.setItem('token', token)
           await this.props.refetch()
           this.props.history.push(routes.HOME)
+          this.props.stores.landing.ocSignInModal('c')
         })
       }
     })

@@ -39,7 +39,7 @@ const App = ({ session, refetch }) => {
         <Route
           exact
           path={routes.HOME}
-          render={() => <Landing session={session} />}
+          render={() => <Landing refetch={refetch} session={session} />}
         />
         <Route
           exact

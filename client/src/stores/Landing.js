@@ -13,8 +13,8 @@ class Landing {
   @observable menuHeight = 0
   // For sign in modal
   @observable isSigningIn = false
-  @observable userName = ''
-  @observable passWord = ''
+  // For sign up modal
+  @observable isSigningUp = false
 
   @action
   checkScreen (r) {this.isMobile = r}
@@ -45,16 +45,23 @@ class Landing {
   }
 
   @action
-  ocSignInModal () {
-    if(this.isSigningIn) {
-      this.isSigningIn = false
-    } else {
+  ocSignInModal (cmd) {
+    if(cmd === 'o') {
       this.isSigningIn = true
+    } else {
+      this.isSigningIn = false
     }
   }
 
   @action
-  setValues (field, value) {this[field] = value}
+  ocSignUpModal (cmd) {
+    if(cmd === 'o') {
+      this.isSigningUp = true
+    } else {
+      this.isSigningUp = false
+    }
+  }
+
 }
 
 

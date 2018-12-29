@@ -28,10 +28,10 @@ class Header extends React.Component {
   handleMenuClick = ({ key }) => {
     switch (key) {
       case 'signin':
-        this.props.stores.landing.ocSignInModal()
+        this.props.stores.landing.ocSignInModal('o')
         break
       case 'signup':
-
+        this.props.stores.landing.ocSignUpModal('o')
         break
       default:
         this.props.stores.landing.changeLanguage()

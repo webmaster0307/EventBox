@@ -4,6 +4,7 @@ import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
 import { Card, Form, Input, Icon, Button, message, Spin } from 'antd'
 import gql from 'graphql-tag'
+import { inject, observer } from 'mobx-react'
 
 const FormItem = Form.Item
 
@@ -26,7 +27,8 @@ const SIGN_UP = gql`
     }
   }
 `
-
+@inject('stores')
+@observer
 class SignUpForm extends React.Component{
 
   state = {
@@ -52,6 +54,7 @@ class SignUpForm extends React.Component{
           await this.props.refetch()
           this.props.history.push(routes.HOME)
           message.success('Sign up successfully!')
+          this.props.stores.landing.ocSignUpModal('c')
         })
       }
     })

@@ -39,6 +39,7 @@ class SignInModal extends Component {
 
   render () {
     const { isSigningIn } = this.props.stores.landing
+    const { refetch } = this.props
     return (
       <Modal
         title={null}
@@ -47,9 +48,9 @@ class SignInModal extends Component {
         destroyOnClose
         visible={isSigningIn}
         bodyStyle={{background: '#f9f9f9'}}
-        onCancel={() => this.props.stores.landing.ocSignInModal()}
+        onCancel={() => this.props.stores.landing.ocSignInModal('c')}
       >
-        <SignInForm />
+        <SignInForm refetch={refetch} />
         <Divider>Or login by</Divider>
         <Row>
           {
@@ -91,8 +92,15 @@ class SignInModal extends Component {
             alignItems: 'center'
           }}
         >
-          <Button style={{alignSelf: 'center'}} type="primary">
-            Sign up here<Icon type="right" />
+          <Button
+            style={{alignSelf: 'center'}}
+            type='primary'
+            onClick={() => {
+              this.props.stores.landing.ocSignInModal('c')
+              this.props.stores.landing.ocSignUpModal('o')
+            }}
+          >
+            Sign up now!<Icon type='right' />
           </Button>
         </div>
       </Modal>
