@@ -15,13 +15,22 @@ import Footer from './components/Footer'
 import './less/antMotionStyle.less'
 const { location } = window
 
+let isMobile
+enquireScreen((b) => {
+  console.log(b)
+  isMobile = b
+})
+
 @inject('stores')
 @observer
 class Landing extends React.Component {
-  componentDidMount() {
-    const { landing } = this.props.stores
-    enquireScreen(b => landing.checkScreen(!!b))
-    if (location.port) setTimeout(() => landing.checkShow(true), 500)
+  componentWillMount () {
+    this.props.stores.landing.checkScreen(isMobile)
+  }
+
+  componentDidMount () {
+    enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
+    if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
   }
 
   render() {

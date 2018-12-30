@@ -11,7 +11,6 @@ import LogoBlur from './LogoBlur'
 @observer
 class Banner extends Component {
   render () {
-    const { banner } = this.props.stores.landing.currentLangData
     return (
       <div className='banner0'>
         <QueueAnim
@@ -31,10 +30,10 @@ class Banner extends Component {
             <LogoBlur />
           </div>
           <div className='banner0-content' key='content'>
-            {banner.introduction}
+            Team 13\'s Event-box web application.
           </div>
           <Button className='banner0-button' key='button' ghost>
-            {banner.button}
+            See more
           </Button>
         </QueueAnim>
         <TweenOne

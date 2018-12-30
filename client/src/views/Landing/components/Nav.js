@@ -15,10 +15,21 @@ const { Item, SubMenu } = Menu
 @inject('stores')
 @observer
 class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      phoneOpen: false,
+      menuHeight: 0
+    }
+  }
 
   phoneClick = () => {
     const menu = findDOMNode(this.menu)
-    this.props.stores.landing.handlePhoneClick(menu.scrollHeight)
+    const phoneOpen = !this.state.phoneOpen
+    this.setState({
+      phoneOpen,
+      menuHeight: phoneOpen ? menu.scrollHeight : 0
+    })
   }
 
   handleSignOut = () => {
@@ -40,9 +51,10 @@ class Header extends React.Component {
 
   render () {
     const {
-      isMobile, buttonText, phoneOpen, menuHeight
+      isMobile, buttonText
     } = this.props.stores.landing
-
+    const { menuHeight, phoneOpen } = this.state
+    const x = isMobile
     return (
       <ApolloConsumer>
         {client => (
@@ -50,7 +62,6 @@ class Header extends React.Component {
             {({data, error}) => {
               // apollo local state
               const { me } = data
-              // console.log('me: ',me)
 
               let navChildren = []
               if(me && !error){
@@ -108,7 +119,7 @@ class Header extends React.Component {
                       >
                         <img width="100%" src={logo} alt="img" />
                       </TweenOne>
-                      {isMobile && (
+                      {x && (
                         <div
                           className='header0-mobile-menu'
                           onClick={this.phoneClick}
