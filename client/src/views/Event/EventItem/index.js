@@ -1,25 +1,9 @@
 import React, { Component } from 'react'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
-import { client } from '../../../'
-import gql from 'graphql-tag'
+import { client } from '@client'
 import { message, Spin, BackTop } from 'antd'
-
-const getEventDetail = gql`
-  query($eventId: ID!) {
-    event(id: $eventId) {
-      title
-      description
-      shortDescription
-      createdAt
-      user {
-        id
-        username
-        email
-      }
-    }
-  }
-`
+import { event } from '@gqlQueries'
 
 class EventItem extends Component{
 
@@ -33,7 +17,7 @@ class EventItem extends Component{
     const { eventId } = this.props.match.params
     let result 
     try {
-      result = await client.query({query: getEventDetail, variables: { eventId }})
+      result = await client.query({query: event.GET_EVENT_DETAIL, variables: { eventId }})
     } catch (error) {
       return message.error('Failed to fetch event')
     }

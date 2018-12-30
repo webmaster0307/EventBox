@@ -56,8 +56,11 @@ export default {
       }
     },
 
-    event: async (parent, { id }, { models }) =>
+    event: combineResolvers(
+      isEventOwner,
+      async (parent, { id }, { models }) =>
       await models.Event.findById(id)
+    )
   },
 
   Mutation: {
@@ -81,7 +84,6 @@ export default {
       }
     ),
     updateEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, args, { models, me }) => {
         const { id, thumbnail, ...rest } = args
@@ -102,7 +104,6 @@ export default {
     ),
 
     deleteEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, { id }, { models }) => {
         try {

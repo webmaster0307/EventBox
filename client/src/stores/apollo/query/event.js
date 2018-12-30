@@ -13,6 +13,7 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
           thumbnail
         }
         createdAt
+        updatedAt
         user {
           id
           username

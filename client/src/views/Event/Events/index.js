@@ -166,7 +166,7 @@ class EventList extends Component {
       render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
     },
     {
-      title: 'status',
+      title: 'Status',
       dataIndex: 'status',
       render: status => <Tag color='geekblue'>{status}</Tag>
     },
@@ -176,9 +176,9 @@ class EventList extends Component {
       render: (text, record) => <div>{record.user.username}</div>
     },
     {
-      title: 'CreatedAt',
-      dataIndex: 'createdAt',
-      render: (text, record) => <div>{new Date(Number(record.createdAt)).toLocaleString()}</div>
+      title: 'Last updated',
+      dataIndex: 'updatedAt',
+      render: (updatedAt) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
     }
   ]
 
