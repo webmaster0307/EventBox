@@ -23,6 +23,7 @@ import { Event, Landing } from './stores'
 // import 'antd/dist/antd.css';
 import './atnd.less'
 
+
 const prodMode = process.env.NODE_ENV === 'production'
 
 const httpLink = new HttpLink({

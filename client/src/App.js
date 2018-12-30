@@ -12,7 +12,7 @@ import { Page404 } from './views/ErrorPage'
 
 import Landing from './views/Landing'
 
-import SiderDemo from './views/Layout/Container'
+import Container from './views/Layout/Container'
 
 const setSession = gql`
   mutation($session: Session) {
@@ -20,45 +20,54 @@ const setSession = gql`
   }
 `
 
-const App = ({ session, refetch }) => {
-  client.mutate({ mutation: setSession, variables: { session } })
+@withSession
+class App extends React.Component {
 
-  return(
-    <Router history={history}>
-      <Switch>
-        <Route
-          exact
-          path={routes.SIGN_UP}
-          component={() => <SignUpPage refetch={refetch} />}
-        />
-        <Route
-          exact
-          path={routes.SIGN_IN}
-          component={() => <SignInPage refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={routes.HOME}
-          render={() => <Landing session={session} />}
-        />
-        <Route
-          exact
-          path={`${routes.DASHBOARD}*`}
-          render={() => session && session.me ? 
-            <SiderDemo session={session} />
-            :
-            <SignInPage refetch={refetch} session={session} /> 
-          }
-        />
-        <Route
-          component={Page404}
-        />
-      </Switch>
-    </Router>
-  )
+  componentDidMount = () => {
+    const { session } = this.props
+    client.mutate({ mutation: setSession, variables: { session } })
+  }
+  
+  render(){
+    const { session, refetch } = this.props
+
+    return(
+      <Router history={history}>
+        <Switch>
+          <Route
+            exact
+            path={routes.SIGN_UP}
+            component={() => <SignUpPage refetch={refetch} />}
+          />
+          <Route
+            exact
+            path={routes.SIGN_IN}
+            component={() => <SignInPage refetch={refetch} session={session} />}
+          />
+          <Route
+            exact
+            path={routes.HOME}
+            render={() => <Landing refetch={refetch} session={session} />}
+          />
+          <Route
+            exact
+            path={`${routes.DASHBOARD}*`}
+            render={() => session && session.me ? 
+              <Container session={session} />
+              :
+              <SignInPage refetch={refetch} session={session} /> 
+            }
+          />
+          <Route
+            component={Page404}
+          />
+        </Switch>
+      </Router>
+    )
+  }
 }
 
-export default withSession(App)
+export default App
 
 // const AuthorizedContainer = () => (
 //   <Switch>

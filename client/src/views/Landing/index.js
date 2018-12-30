@@ -2,6 +2,9 @@ import React from 'react'
 import { enquireScreen } from 'enquire-js'
 import { inject, observer } from 'mobx-react'
 
+import SignInModal from './components/Authentication/SignIn'
+import SignUpModal from './components/Authentication/SignUp'
+
 import Nav from './components/Nav'
 import Banner from './components/Banner'
 import FirstSection from './components/FirstSection'
@@ -10,7 +13,6 @@ import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
 import './less/antMotionStyle.less'
-
 const { location } = window
 
 @inject('stores')
@@ -23,6 +25,7 @@ class Landing extends React.Component {
 
   render() {
     const { isShow } = this.props.stores.landing
+    const { refetch } = this.props
     const children = [
       <Nav id='Nav' key='Nav' />,
       <Banner id='Banner' key='Banner' />,
@@ -37,6 +40,8 @@ class Landing extends React.Component {
         className='templates-wrapper'
         ref={(d) => { this.dom = d }}
       >
+        <SignInModal refetch={refetch} />
+        <SignUpModal refetch={refetch} />
         {isShow && children}
       </div>
     )

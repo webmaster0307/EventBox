@@ -1,12 +1,12 @@
 .login-card {
   &__wrapper {
-    height: calc(100vh - 62px);
+    // height: calc(100vh - 62px);
     display: flex;
     align-items: center;
     justify-content: center;
 
     .ant-card {
-      margin-top: -200px;
+      // margin-top: -200px;
       width: 480px;
     }
   }
@@ -14,7 +14,7 @@
 
 .sign-up-card {
   &__wrapper {
-    height: calc(100vh - 62px);
+    // height: calc(100vh - 62px);
     display: flex;
     align-items: center;
     justify-content: center;
