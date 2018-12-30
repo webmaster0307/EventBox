@@ -7,10 +7,59 @@ import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 @inject('stores')
 @observer
 class SecondSection extends Component {
-  render () {
-    const { secondSection } = this.props.stores.landing.currentLangData
+  title = () => [
+    { key: '0', name: 'title', text: 'Customer case' },
+    {
+      key: '1', name: 'content',
+      text: 'Here is a case study of the case of the service.'
+    }
+  ]
 
-    const childrenToRender = secondSection.block.map((item, i) => {
+  block = () => [
+    {
+      key: '0',
+      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
+      text: 'Ant Design'
+    },
+    {
+      key: '1',
+      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
+      text: 'Ant Motion'
+    },
+    {
+      key: '3',
+      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
+      text: 'Ant Design'
+    },
+    {
+      key: '4',
+      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
+      text: 'Ant Motion'
+    },
+    {
+      key: '5',
+      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
+      text: 'Ant Design'
+    },
+    {
+      key: '6',
+      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
+      text: 'Ant Motion'
+    },
+    {
+      key: '7',
+      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
+      text: 'Ant Design'
+    },
+    {
+      key: '8',
+      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
+      text: 'Ant Motion'
+    }
+  ]
+
+  render () {
+    const childrenToRender = this.block().map((item, i) => {
       return (
         <Col
           key={i.toString()} className='block'
@@ -30,7 +79,7 @@ class SecondSection extends Component {
       <div className='home-page-wrapper content5-wrapper'>
         <div className='home-page content5 jpl17zkbjcf-editor_css'>
           <div key='title' className='title-wrapper'>
-            {secondSection.title.map(item =>
+            {this.title().map(item =>
               createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: item.key,

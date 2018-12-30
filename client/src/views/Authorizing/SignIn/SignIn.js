@@ -3,7 +3,7 @@ import { client } from '@client'
 import * as routes from '@routes'
 import gql from 'graphql-tag'
 import { withRouter, Redirect } from 'react-router-dom'
-import { Card, Form, Spin, Button, Input, Icon, message } from 'antd'
+import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
 import { GET_SESSION } from '../Session/localQueries'
@@ -11,23 +11,16 @@ import { observer, inject } from 'mobx-react'
 
 const FormItem = Form.Item
 
-const SignIn = ({refetch}) => (
+const SignIn = ({ refetch }) => (
   <Query query={GET_SESSION} >
-    {({data}) => {
-      if(data && data.me){
-        return(
+    {({ data }) => {
+      if (data && data.me){
+        return (
           <Redirect to={routes.HOME} />
         )
-      }
-      else{
-        return(
-          <div className='login-card__wrapper'>
-            <Card
-              title='Sign In'
-            >
-              <SignInFormWrapped refetch={refetch} />
-            </Card>
-          </div>
+      } else {
+        return (
+          <SignInFormWrapped refetch={refetch} />
         )
       }
     }}
@@ -98,50 +91,54 @@ class SignInForm extends React.Component{
     const { loading } = this.state
 
     return (
-      <Spin spinning={loading} >
-        <Form onSubmit={this._handleSubmit} >
-          <FormItem key='username'>
-            {getFieldDecorator('username', {
-              rules: [
-                {
-                  type: 'string',
-                  required: true,
-                  whitespace: true,
-                  message: 'Not correct format'
-                }
-              ]
-            })(<Input
-              prefix={<Icon type='user' />}
-              placeholder='Username or Email'
-            />)}
-          </FormItem>
-          <FormItem key='password'>
-            {getFieldDecorator('password', {
-              rules: [
-                {
-                  type: 'string',
-                  required: true,
-                  message: 'Not correct'
-                }
-              ]
-            })(<Input
-              prefix={<Icon type='lock' />}
-              type='password'
-              placeholder='Password'
-            />)}
-          </FormItem>
-          <FormItem>
-            <Button
-              type='primary'
-              block
-              htmlType='submit'
-            >
-              <Icon type='login' />
-              Login
-            </Button>
-          </FormItem>
-        </Form>
-      </Spin>
+      <div className='login-card__wrapper'>
+        <Card title='Sign In'>
+          <Skeleton loading={loading} avatar>
+            <Form onSubmit={this._handleSubmit} >
+              <FormItem key='username'>
+                {getFieldDecorator('username', {
+                  rules: [
+                    {
+                      type: 'string',
+                      required: true,
+                      whitespace: true,
+                      message: 'Not correct format'
+                    }
+                  ]
+                })(<Input
+                  prefix={<Icon type='user' />}
+                  placeholder='Username or Email'
+                />)}
+              </FormItem>
+              <FormItem key='password'>
+                {getFieldDecorator('password', {
+                  rules: [
+                    {
+                      type: 'string',
+                      required: true,
+                      message: 'Not correct'
+                    }
+                  ]
+                })(<Input
+                  prefix={<Icon type='lock' />}
+                  type='password'
+                  placeholder='Password'
+                />)}
+              </FormItem>
+              <FormItem>
+                <Button
+                  type='primary'
+                  block
+                  htmlType='submit'
+                >
+                  <Icon type='login' />
+                  Login
+                </Button>
+              </FormItem>
+            </Form>
+          </Skeleton>
+        </Card>
+      </div>
     )
   }
 }
