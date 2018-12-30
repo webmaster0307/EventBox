@@ -3,12 +3,12 @@ import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
-import { Menu, Affix, Button, Icon } from 'antd'
+import { Menu, Affix, Icon } from 'antd'
 
-import logo from '../../images/logo.svg'
+import logo from '../images/vanlang_logo.png'
 import { Query, ApolloConsumer } from 'react-apollo'
 import { signOut } from '@components'
-import { GET_SESSION } from '../../../Authorizing/Session/localQueries'
+import { GET_SESSION } from '../../Authorizing/Session/localQueries'
 
 const { Item, SubMenu } = Menu
 
@@ -22,10 +22,26 @@ class Header extends React.Component {
   }
 
   handleSignOut = () => {
-    
+
   }
 
-  render() {
+  handleMenuClick = ({ key }) => {
+    switch (key) {
+      case 'signin':
+        this.props.stores.landing.ocSignInModal('o')
+        break
+      case 'signup':
+        this.props.stores.landing.ocSignUpModal('o')
+        break
+      default:
+        this.props.stores.landing.changeLanguage()
+    }
+  }
+
+  render () {
+    const {
+      isMobile, buttonText, phoneOpen, menuHeight
+    } = this.props.stores.landing
 
     return (
       <ApolloConsumer>
@@ -35,11 +51,8 @@ class Header extends React.Component {
               // apollo local state
               const { me } = data
               // console.log('me: ',me)
-              const {
-                isMobile, currentLangData, buttonText, phoneOpen, menuHeight
-              } = this.props.stores.landing
-          
-              let navChildren = [] 
+
+              let navChildren = []
               if(me && !error){
                 const userTitle = (
                   <div >
@@ -54,25 +67,31 @@ class Header extends React.Component {
                     <span>{me.username} | {me.email}</span>
                   </div>
                 )
-                navChildren.push(<SubMenu className="user" title={userTitle} key="user">
-                  <Item key="a"><Link to='/dashboard' >Dashboard</Link></Item>
-                  {/* <Item key="b">修改密码</Item> */}
-                  <Item key="c" onClick={() => signOut(client)} >Sign Out</Item>
-                </SubMenu>)
+                navChildren=[
+                  ...navChildren,
+                  <SubMenu className="user" title={userTitle} key="user">
+                    <Item key="a"><Link to='/dashboard' >Dashboard</Link></Item>
+                    {/* <Item key="b">修改密码</Item> */}
+                    <Item key="c" onClick={() => signOut(client)} >Sign Out</Item>
+                  </SubMenu>
+                ]
               }
               else{
-                navChildren = currentLangData.navigationItems.map((item, i) => (
-                  <Item key={i.toString()}>
-                    <Link to={item.path}>
-                      <span>
-                        <Icon type={item.iconType} style={{
-                          border: '1px solid',
-                          borderRadius: 2
-                        }}/>{`${item.text}`}
-                      </span>
-                    </Link>
+                navChildren = [
+                  ...navChildren,
+                  <Item key='signup' className='menu-item-text-custom'>
+                    <Icon
+                      className='menu-item-icon-custom'
+                      type='user-add'
+                    />SIGN UP
+                  </Item>,
+                  <Item key='signin' className='menu-item-text-custom'>
+                    <Icon
+                      className='menu-item-icon-custom'
+                      type='login'
+                    />SIGN IN
                   </Item>
-                ))
+                ]
               }
 
               return(
@@ -107,19 +126,12 @@ class Header extends React.Component {
                       >
                         <Menu
                           mode={isMobile ? 'inline' : 'horizontal'}
-                          // defaultSelectedKeys={['0']}
                           theme={isMobile ? 'dark' : 'light'}
+                          onClick={this.handleMenuClick}
                         >
                           {navChildren}
-                          <Item>
-                            <Button
-                              type='primary'
-                              onClick={() => {
-                                this.props.stores.landing.changeLanguage()
-                              }}
-                            >
-                              {buttonText}
-                            </Button>
+                          <Item className='menu-item-text-custom'>
+                            <span style={{padding: 3, border: '1px solid'}}>{buttonText}</span>
                           </Item>
                         </Menu>
                       </TweenOne>

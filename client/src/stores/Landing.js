@@ -11,6 +11,10 @@ class Landing {
   @observable buttonText = 'Tiếng Việt'
   @observable phoneOpen = false
   @observable menuHeight = 0
+  // For sign in modal
+  @observable isSigningIn = false
+  // For sign up modal
+  @observable isSigningUp = false
 
   @action
   checkScreen (r) {this.isMobile = r}
@@ -38,6 +42,24 @@ class Landing {
       this.menuHeight = 0
     }
     this.phoneOpen = !this.phoneOpen
+  }
+
+  @action
+  ocSignInModal (cmd) {
+    if(cmd === 'o') {
+      this.isSigningIn = true
+    } else {
+      this.isSigningIn = false
+    }
+  }
+
+  @action
+  ocSignUpModal (cmd) {
+    if(cmd === 'o') {
+      this.isSigningUp = true
+    } else {
+      this.isSigningUp = false
+    }
   }
 
 }

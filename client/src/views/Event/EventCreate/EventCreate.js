@@ -2,38 +2,11 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Form, Button, message, BackTop } from 'antd'
 import { client } from '@client'
-import gql from 'graphql-tag'
 import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common' 
 import { EditorState } from 'draft-js'
 import { inject } from 'mobx-react'
+import { event as eventQueries } from '@gqlQueries'
 
-const CREATE_EVENT = gql`
-  mutation(
-    $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-    $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!
-  ) {
-    createEvent(
-      title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
-      organizationName: $organizationName, organizationLogo: $organizationLogo, 
-      organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location
-    ) {
-      id
-      title
-      description
-      status
-      images {
-        thumbnail
-      }
-      createdAt
-      user {
-        id
-        username
-      }
-    }
-  }
-`
 const FormItem = Form.Item
 
 @inject('stores')
@@ -63,7 +36,7 @@ class EventCreate extends Component{
         }
         this.setState({loading: true}, () => {
           client.mutate({ 
-            mutation: CREATE_EVENT, 
+            mutation: eventQueries.CREATE_EVENT, 
             variables: dataSubmit
           })
             .then( ({data, errors}) => {

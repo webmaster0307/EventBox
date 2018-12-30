@@ -10,7 +10,6 @@ export default gql`
     user: User!
     categoryId: String
     images: EventImages!
-    location: String
     regFrom: String
     regTo: String
     approvedBy: User
@@ -19,6 +18,8 @@ export default gql`
     organizationDescription: String
     startTime: String
     endTime: String
+    location: String
+    address: String
     status: String!
     createdAt: String!
     updatedAt: String!
@@ -54,7 +55,6 @@ export default gql`
       description: String!
       shortDescription: String
       categoryId: String
-      location: String
       regFrom: String
       regTo: String
       organizationName: String!
@@ -63,6 +63,7 @@ export default gql`
       startTime: String
       endTime: String
       location: String
+      address: String
     ): Event!
 
     updateEvent(

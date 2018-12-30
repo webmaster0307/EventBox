@@ -12,7 +12,6 @@ WORKDIR /app/server
 
 ## Install packages using NPM 5 (bundled with the node:9 image)
 COPY ["./package.json", "./yarn.lock", "/app/server/"]
-RUN npm install -g --silent yarn
 RUN yarn install
 
 RUN npm install -g pm2 babel-cli

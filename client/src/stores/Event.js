@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx'
 import { client } from '@client'
-import { GET_PAGINATED_EVENTS_WITH_USERS, GET_EVENT_DETAIL } from './localQueries'
+import { event } from './apollo'
 
 const limitEventPerPage = 10
 
@@ -18,7 +18,7 @@ class Event {
     let result 
     try {
       result = await client.query({ 
-        query: GET_PAGINATED_EVENTS_WITH_USERS, 
+        query: event.GET_PAGINATED_EVENTS_WITH_USERS, 
         variables: { limit: limitEventPerPage },
         fetchPolicy: 'no-cache'
       })
@@ -35,14 +35,14 @@ class Event {
   async getEventById(eventId){
     let result 
     try {
-      result = await client.query({ query: GET_EVENT_DETAIL, variables: { eventId }, fetchPolicy: 'no-cache' })
+      result = await client.query({ query: event.GET_EVENT_DETAIL, variables: { eventId }, fetchPolicy: 'no-cache' })
     } catch ({graphQLErrors}) {
       const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
       return { error }
     }
-    const { event } = result.data
-    this.event = event
-    return({ event })
+    const { event: eventResult } = result.data
+    this.event = eventResult
+    return({ event: eventResult })
   }
 }
 

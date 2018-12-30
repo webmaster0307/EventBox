@@ -18,10 +18,11 @@ import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
 
-import { Event, Landing } from './store'
+import { Event, Landing } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
+
 
 const prodMode = process.env.NODE_ENV === 'production'
 

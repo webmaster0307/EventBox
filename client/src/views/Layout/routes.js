@@ -105,24 +105,24 @@ export const routesMenu = [
         breadcumbs: [ 'Events', 'Event create' ]
       }
     ]
-  },
-  {
-    title: 'Draft Events',
-    roles: ['admin', 'user'],
-    icon: 'file',
-    subComponent: [
-      {
-        title: 'List',
-        path: `${basename}/draft-events`,
-        icon: 'bars',
-        breadcumbs: ['Draft Events', 'Draft event list']
-      },
-      {
-        title: 'Create',
-        path: `${basename}/draft-events/create`,
-        icon: 'form',
-        breadcumbs: [ 'Draft Events', 'Create draft event' ]
-      }
-    ]
   }
+  // {
+  //   title: 'Draft Events',
+  //   roles: ['admin', 'user'],
+  //   icon: 'file',
+  //   subComponent: [
+  //     {
+  //       title: 'List',
+  //       path: `${basename}/draft-events`,
+  //       icon: 'bars',
+  //       breadcumbs: ['Draft Events', 'Draft event list']
+  //     },
+  //     {
+  //       title: 'Create',
+  //       path: `${basename}/draft-events/create`,
+  //       icon: 'form',
+  //       breadcumbs: [ 'Draft Events', 'Create draft event' ]
+  //     }
+  //   ]
+  // }
 ]
