@@ -19,8 +19,9 @@ const { location } = window
 @observer
 class Landing extends React.Component {
   componentDidMount() {
-    enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
-    if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
+    const { landing } = this.props.stores
+    enquireScreen(b => landing.checkScreen(!!b))
+    if (location.port) setTimeout(() => landing.checkShow(true), 500)
   }
 
   render() {

@@ -28,6 +28,36 @@ const CREATE_EVENT = gql`
   }
 `
 
+const UPDATE_EVENT_BYID = gql`
+  mutation(
+    $id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
+    $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
+    $startTime: String!, $endTime: String!, $location: String!, $address: String!
+  ) {
+    updateEvent(
+      id: $id, title: $title, thumbnail: $thumbnail, 
+      description: $description, shortDescription: $shortDescription
+      organizationName: $organizationName, organizationLogo: $organizationLogo, 
+      organizationDescription: $organizationDescription,
+      startTime: $startTime, endTime: $endTime, location: $location, address: $address
+    ) {
+      title
+      description
+      shortDescription
+      images {
+        thumbnail
+      }
+      createdAt
+      user {
+        id
+        username
+        email
+      }
+    }
+  }
+`
+
 export {
-  CREATE_EVENT
+  CREATE_EVENT,
+  UPDATE_EVENT_BYID
 }

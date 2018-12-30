@@ -1,8 +1,9 @@
 import React, { Component, createElement } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Row, Col } from 'antd'
+import { Row } from 'antd'
 import { TweenOneGroup } from 'rc-tween-one'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
+import EventList from './EventList'
 
 @inject('stores')
 @observer
@@ -10,21 +11,21 @@ class SecondSection extends Component {
   render () {
     const { secondSection } = this.props.stores.landing.currentLangData
 
-    const childrenToRender = secondSection.block.map((item, i) => {
-      return (
-        <Col
-          key={i.toString()} className='block'
-          md={6} xs={24}
-        >
-          <div className='content5-block-content'>
-            <span>
-              <img src={item.imgLink} height='100%' alt='img' />
-            </span>
-            <p>{item.text}</p>
-          </div>
-        </Col>
-      )
-    })
+    // const childrenToRender = secondSection.block.map((item, i) => {
+    //   return (
+    //     <Col
+    //       key={i.toString()} className='block'
+    //       md={6} xs={24}
+    //     >
+    //       <div className='content5-block-content'>
+    //         <span>
+    //           <img src={item.imgLink} height='100%' alt='img' />
+    //         </span>
+    //         <p>{item.text}</p>
+    //       </div>
+    //     </Col>
+    //   )
+    // })
 
     return (
       <div className='home-page-wrapper content5-wrapper'>
@@ -58,7 +59,8 @@ class SecondSection extends Component {
               leave={{ y: '+=30', opacity: 0, ease: 'easeInOutQuad' }}
               component={Row}
             >
-              {childrenToRender}
+              {/* {childrenToRender} */}
+              <EventList />
             </TweenOneGroup>
           </OverPack>
         </div>
