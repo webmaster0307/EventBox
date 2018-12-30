@@ -44,7 +44,7 @@ export default gql`
   }
 
   extend type Query {
-    events(cursor: String, limit: Int): EventConnection!
+    events(status: String, cursor: String, limit: Int): EventConnection!
     event(id: ID!): Event
   }
 
@@ -82,6 +82,7 @@ export default gql`
       startTime: String
       endTime: String
       location: String
+      address: String
     ): Event!
 
     deleteEvent(id: ID!): Boolean!

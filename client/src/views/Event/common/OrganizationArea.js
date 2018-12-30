@@ -23,7 +23,7 @@ class OrganizationArea extends Component{
     {
       name: 'organizationDescription',
       title: 'About organization',
-      customRender: <Input.TextArea placeholder='About organization' />,
+      customRender: <Input.TextArea placeholder='About organization' autosize={{ minRows: 2, maxRows: 6 }} />,
       rules: [formRuleNotEmpty]
     }
   ]

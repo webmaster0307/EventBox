@@ -8,10 +8,46 @@ import { Row, Col } from 'antd'
 @inject('stores')
 @observer
 class Footer extends Component {
-  render () {
-    const { footer } = this.props.stores.landing.currentLangData
+  block = () => [
+    {
+      title: 'https://zos.alipayobjects.com/rmsportal/qqaimmXZVSwAhpL.svg',
+      content: 'Animation specification and components of Ant Design.'
+    },
+    {
+      title: 'Products',
+      content: (
+        <span>
+          <p><span href="#">Product update record</span></p>
+          <p><span href="#">API documentation</span></p>
+          <p><span href="#">Quick start</span></p>
+          <p><span href="#">Reference guide</span></p>
+        </span>
+      )
+    },
+    {
+      title: 'Introduction',
+      content: (
+        <span>
+          <p><span href="#">FAQ</span></p>
+          <p><span href="#">Contact us</span></p>
+        </span>
+      )
+    },
+    {
+      title: 'Resources',
+      content: (
+        <span>
+          <p><span href="#">Ant Design</span></p>
+          <p><span href="#">Ant Design</span></p>
+          <p><span href="#">Ant Design</span></p>
+          <p><span href="#">Ant Design</span></p>
+        </span>
+      )
+    }
+  ]
 
-    const childrenToRender = footer.block.map((item, i) => {
+  render () {
+    const childrenToRender = this.block().map((item, i) => {
       return (
         <Col
           xs={24}
@@ -51,7 +87,9 @@ class Footer extends Component {
           >
             <div key='homepage' className='home-page'>
               <div className='copyright'>
-                {/* {footer.copyright} */}
+                <span>
+                  ©2018 by <a href='https://ant.design'>Ant Motion</a> All Rights Reserved
+                </span>
               </div>
             </div>
           </TweenOne>

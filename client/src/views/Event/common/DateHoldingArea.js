@@ -36,9 +36,10 @@ class DateHoldingArea extends Component{
     const endTime = getFieldValue('endTime')
     if(!endTime){
       validateFields(['endTime'], { force: true })
+      return callback()
     }
     const startTime = value._d.getTime()
-    if(startTime >= endTime){
+    if(startTime >= endTime._d.getTime()){
       return callback('Start time can not later than end time')
     }
 
@@ -53,9 +54,10 @@ class DateHoldingArea extends Component{
     const startTime = getFieldValue('startTime')
     if(!startTime){
       validateFields(['startTime'], { force: true })
+      return callback()
     }
     const endTime = value._d.getTime()
-    if(startTime >= endTime){
+    if(startTime._d.getTime() >= endTime){
       return callback('End time can not earlier than start time')
     }
 

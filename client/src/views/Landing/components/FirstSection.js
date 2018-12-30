@@ -8,10 +8,31 @@ import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 @inject('stores')
 @observer
 class FirstSection extends Component {
-  render () {
-    const { firstSection } = this.props.stores.landing.currentLangData
+  title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
 
-    const listChildren = firstSection.block.map((item, i) => {
+  block = () => [
+    {
+      key: '0',
+      iconLink: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png',
+      title: 'One-stop service access',
+      description: 'Four times the efficiency of payment, settlement, and accounting access products.'
+    },
+    {
+      key: '1',
+      iconLink: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png',
+      title: 'One-stop risk monitoring',
+      description: 'Prior risk control and quality control capabilities in all requirements configuration.'
+    },
+    {
+      key: '2',
+      iconLink: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png',
+      title: 'One-stop data operation',
+      description: 'Precipitation product access efficiency and operational small two work efficiency data.'
+    }
+  ]
+
+  render () {
+    const listChildren = this.block().map((item, i) => {
       return (
         <Col
           key={i.toString()} className='block'
@@ -30,7 +51,7 @@ class FirstSection extends Component {
       <div className='home-page-wrapper content0-wrapper'>
         <div className='home-page content0'>
           <div className='title-wrapper'>
-            {firstSection.title.map(item =>
+            {this.title().map(item =>
               createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: item.key,

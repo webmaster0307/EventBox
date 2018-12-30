@@ -11,17 +11,30 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { cursor, limit = 100 }, { models }) => {
+    events: async (parent, { status, cursor, limit = 10 }, { models, me, isAdmin }) => {
       const cursorOptions = cursor
-        ? {
-          createdAt: {
-            '$lt': fromCursorHash(cursor)
-          }
+      ? {
+        createdAt: {
+          '$lt': fromCursorHash(cursor)
         }
-        : {}
+      }
+      : {}
+      let selfEventsCondition
+      if(!status){
+        selfEventsCondition = !isAdmin ? {
+          userId: me.id
+        } : {}
+      }
+      else{
+        selfEventsCondition = {
+          status
+        }
+      }
+      
 
       const events = await models.Event.find({
-        ...cursorOptions
+        ...cursorOptions,
+        ...selfEventsCondition
       }, null, {
         limit: limit + 1,
         sort: {

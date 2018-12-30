@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 const GET_PAGINATED_EVENTS_WITH_USERS = gql`
-  query($cursor: String, $limit: Int!) {
-    events(cursor: $cursor, limit: $limit)
+  query($status: String, $cursor: String, $limit: Int!) {
+    events(status: $status, cursor: $cursor, limit: $limit)
       @connection(key: "EventConnection") {
       edges {
         id
@@ -43,6 +43,7 @@ const GET_EVENT_DETAIL = gql`
       startTime
       endTime
       location
+      address
       user {
         id
         username
