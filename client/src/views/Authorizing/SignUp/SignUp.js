@@ -46,7 +46,7 @@ class SignUpForm extends React.Component{
           const { token } = result.data.signUp
           localStorage.setItem('token', token)
           await this.props.refetch()
-          this.props.history.push(routes.HOME)
+          // this.props.history.push(routes.HOME)
           message.success('Sign up successfully!')
           this.props.stores.landing.ocSignUpModal('c')
         })

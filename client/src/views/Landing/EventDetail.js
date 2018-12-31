@@ -12,7 +12,6 @@ import SecondSection from './components/SecondSection'
 import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
-import EventItem from './EventDetail'
 import * as routes from '@routes'
 import { Switch, Route } from 'react-router-dom'
 
@@ -42,11 +41,7 @@ class Landing extends React.Component {
     const { refetch } = this.props
     const children = [
       <Nav id='Nav' key='Nav' />,
-      <Banner id='Banner' key='Banner' />,
-      <FirstSection id='FirstSection' key='FirstSection' />,
-      <SecondSection id='SecondSection' key='SecondSection' />,
-      <ThirdSection id='ThirdSection' key='ThirdSection' />,
-      <Footer id='Footer' key='Footer' />
+      <EventItem id='eventdetail' key='detail' />
     ]
 
     return (
@@ -64,3 +59,5 @@ class Landing extends React.Component {
 
 
 export default Landing
+
+const EventItem = () => (<div>Container</div>)

@@ -6,6 +6,7 @@ import { GET_SESSION } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
 import { Page404 } from '../ErrorPage'
 import Header from './Header'
+import * as routes from '@routes'
 import './styles.scss'
 
 const { Content, Footer, Sider } = Layout
@@ -22,8 +23,8 @@ class Container extends React.Component {
   }
 
   handleGotoHome = () => {
-    if(this.props.history.pathname !== '/dashboard'){
-      this.props.history.push('/dashboard')
+    if(this.props.history.pathname !== routes.DASHBOARD){
+      this.props.history.push(routes.DASHBOARD)
     }
   }
 

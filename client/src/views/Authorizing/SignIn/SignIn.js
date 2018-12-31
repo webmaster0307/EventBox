@@ -11,9 +11,10 @@ import { observer, inject } from 'mobx-react'
 
 const FormItem = Form.Item
 
-const SignIn = ({ refetch }) => (
+const SignIn = ({ history, refetch }) => (
   <Query query={GET_SESSION} >
     {({ data }) => {
+      console.log('history: ',history)
       if (data && data.me){
         return (
           <Redirect to={routes.HOME} />
@@ -27,7 +28,7 @@ const SignIn = ({ refetch }) => (
   </Query>
 )
 
-export default SignIn
+export default withRouter(SignIn)
 
 const SIGN_IN = gql`
   mutation($username: String!, $password: String!) {
@@ -79,7 +80,7 @@ class SignInForm extends React.Component{
           const { token } = result.data.signIn
           localStorage.setItem('token', token)
           await this.props.refetch()
-          this.props.history.push(routes.HOME)
+          // this.props.history.push(routes.HOME)
           this.props.stores.landing.ocSignInModal('c')
         })
       }
@@ -141,6 +142,10 @@ class SignInForm extends React.Component{
       </div>
     )
   }
+}
+
+export {
+  SignInFormWrapped
 }
 
 const SignInFormWrapped = Form.create()(withRouter(SignInForm))
