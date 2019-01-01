@@ -57,7 +57,8 @@ export default {
     },
 
     event: combineResolvers(
-      isEventOwner,
+      // TODO: authorization handling, open for temporarily
+      // isEventOwner,
       async (parent, { id }, { models }) =>
       await models.Event.findById(id)
     )
