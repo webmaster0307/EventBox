@@ -81,7 +81,8 @@ class EventItem extends React.Component{
   }
 
   componentDidMount = async () => {
-    const { eventId } = this.props.match.params
+    const { eventId: slug } = this.props.match.params
+    const eventId = slug.split('-')[slug.split('-').length - 1]
     let result 
     try {
       result = await client.query({query: event.GET_EVENT_DETAIL, variables: { eventId }})
@@ -195,7 +196,7 @@ const AboutOrganization = ({ className, event }) => (
     >
       <div style={{display: 'flex'}} >
         <div style={{marginRight: 18}} >
-          <img src={event.organizationLogo} style={{maxWidth: 132, maxHeight: 132}} />
+          <img src={event.organizationLogo} style={{maxWidth: 132, maxHeight: 132}} alt='organization_logo' />
         </div>
         <div>
           <div style={{color: '#000', fontWeight: 'bold', fontSize: 16}} >

@@ -7,6 +7,7 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
       edges {
         id
         title
+        slug
         description
         status
         images {

@@ -21,8 +21,8 @@ class EventList extends Component{
     this.setState({ events: events.edges })
   }
 
-  handleGoToEventDetail = id => {
-    this.props.history.push(`${routes.EVENT}/${id}`)
+  handleGoToEventDetail = event => {
+    this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
   
 
@@ -34,7 +34,7 @@ class EventList extends Component{
           <Col
             key={index.toString()} className='block'
             md={6} xs={24}
-            onClick={() => this.handleGoToEventDetail(item.id)}
+            onClick={() => this.handleGoToEventDetail(item)}
           >
             <div className='content5-block-content'>
               <span>

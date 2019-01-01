@@ -81,6 +81,10 @@ class EventUpdate extends Component{
     })
   }
 
+  handlePublishEvent = () => {
+
+  }
+
   render() {
     const { loading, buttonLoading } = this.state
 
@@ -93,12 +97,20 @@ class EventUpdate extends Component{
           <FormItem>
             <Button
               type='primary'
-              block
               htmlType='submit'
               loading={buttonLoading}
               icon='form'
+              style={{marginRight: 24}}
             >
               Update Event
+            </Button>
+            <Button
+              type='primary'
+              loading={buttonLoading}
+              icon='form'
+              onClick={this.handlePublishEvent}
+            >
+              PUBLISH
             </Button>
           </FormItem>
         </Form>
