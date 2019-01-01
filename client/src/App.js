@@ -30,6 +30,8 @@ class App extends React.Component {
   
   render(){
     const { session, refetch } = this.props
+    // const { pathname } = window.location
+    // console.log('pathname: ' ,pathname.startsWith('/dashboard'))
 
     return(
       <Router history={history}>
