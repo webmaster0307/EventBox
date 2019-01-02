@@ -1,10 +1,12 @@
 import React from 'react'
+import AccountList from './AccountList'
 
 import withAuthorization from '../Authorizing/Session/withAuthorization'
 
 const AdminPage = () => (
   <div>
     <h1>Admin Page</h1>
+    <AccountList />
   </div>
 )
 

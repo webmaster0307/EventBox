@@ -9,10 +9,10 @@ import EventList from './EventList'
 @observer
 class SecondSection extends Component {
   title = () => [
-    { key: '0', name: 'title', text: 'Customer case' },
+    { key: '0', name: 'title', text: 'Hot Events' },
     {
       key: '1', name: 'content',
-      text: 'Here is a case study of the case of the service.'
+      text: 'Here is a some latest and  event for you.'
     }
   ]
 
