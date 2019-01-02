@@ -12,12 +12,11 @@ class EventList extends Component{
 
   componentDidMount = async () => {
     const { data: { events } } = await client.query({
-      query: event.GET_PAGINATED_EVENTS_WITH_USERS, 
-      variables: {status: 'draft', limit: 10}
+      query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+      variables: {status: 'draft', limit: 8}
     })
     this.setState({ events: events.edges })
   }
-  
 
   render(){
     const { events } = this.state
