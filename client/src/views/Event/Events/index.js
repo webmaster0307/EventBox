@@ -199,7 +199,12 @@ class EventList extends Component {
       title: 'Action',
       dataIndex: 'action',
       render: (_, row) => (
-        <Popconfirm placement='topRight' title='Are you sure to delete this event' onConfirm={() => this.handleDeleteEvent(row.id)} okText='Yes' cancelText='No'>
+        <Popconfirm 
+          placement='topRight' 
+          title='Are you sure to delete this event' 
+          onConfirm={() => this.handleDeleteEvent(row.id)} 
+          okText='Yes' 
+          cancelText='No'>
           <Icon type='delete' className='icon-primary-custom__wrapper' />
         </Popconfirm>
       )
