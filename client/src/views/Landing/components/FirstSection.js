@@ -144,7 +144,7 @@ class FirstSection extends Component {
                       dataSource={eventList}
                       onSelect={(v) => this.props.stores.landing.handleAutoCompleteSelect(v)}
                       onSearch={(v) => this.props.stores.landing.handleAutoCompleteSearch(v)}
-                      placeholder="Search events..."
+                      placeholder='Search events...'
                       style={{width: '60%'}}
                     />)}
                   </FormItem>

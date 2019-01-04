@@ -83,8 +83,8 @@ const EditorWrapper = inject('stores')(observer(({stores: { event }}) => {
 
   return(
     <Editor
-      wrapperClassName="demo-wrapper"
-      editorClassName="demo-editor"
+      wrapperClassName='demo-wrapper'
+      editorClassName='demo-editor'
       editorStyle={{border: '1px #E6E6E6 solid', padding: 12}}
       name='editor'
       editorState={editorEventCreate}

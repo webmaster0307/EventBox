@@ -1,17 +1,17 @@
 import React from 'react'
 import { client } from '@client'
 import * as routes from '@routes'
-import gql from 'graphql-tag'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
 import { GET_SESSION } from '../Session/localQueries'
 import { observer, inject } from 'mobx-react'
+import { user as userMutations } from '@gqlQueries'
 
 const FormItem = Form.Item
 
-const SignIn = ({ refetch }) => (
+const SignIn = ({ history, refetch }) => (
   <Query query={GET_SESSION} >
     {({ data }) => {
       if (data && data.me){
@@ -26,16 +26,8 @@ const SignIn = ({ refetch }) => (
     }}
   </Query>
 )
+export default withRouter(SignIn)
 
-export default SignIn
-
-const SIGN_IN = gql`
-  mutation($username: String!, $password: String!) {
-    signIn(username: $username, password: $password) {
-      token
-    }
-  }
-`
 @inject('stores')
 @observer
 class SignInForm extends React.Component{
@@ -70,7 +62,7 @@ class SignInForm extends React.Component{
         this.setState({loading: true}, async () => {
           let result
           try {
-            result = await client.mutate({mutation: SIGN_IN, variables: { username, password }})
+            result = await client.mutate({mutation: userMutations.SIGN_IN, variables: { username, password }})
           } catch ({graphQLErrors}) {
             const msg = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
             this.setState({loading: false})
@@ -79,7 +71,7 @@ class SignInForm extends React.Component{
           const { token } = result.data.signIn
           localStorage.setItem('token', token)
           await this.props.refetch()
-          this.props.history.push(routes.HOME)
+          // this.props.history.push(routes.HOME)
           this.props.stores.landing.ocSignInModal('c')
         })
       }
@@ -144,3 +136,7 @@ class SignInForm extends React.Component{
 }
 
 const SignInFormWrapped = Form.create()(withRouter(SignInForm))
+
+export {
+  SignInFormWrapped
+}

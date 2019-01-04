@@ -7,21 +7,26 @@ export const isAuthenticated = (parent, args, { me }) =>
 export const isAdmin = combineResolvers(
   isAuthenticated,
   (parent, args, { me: { role } }) =>
-    role.filter(r => r === 'admin' ).length === 1
+    role.includes('admin')
       ? skip
       : new ForbiddenError('Not authorized as admin.')
 )
 
-export const isEventOwner = async (
-  parent,
-  { id },
-  { models, me }
-) => {
-  const event = await models.Event.findById({ _id: id })
+export const isEventOwner = combineResolvers(
+  isAuthenticated,
+  async ( parent, { id }, { models, me } ) => {
+    if(isAdminRole(me)){
+      return skip
+    }
 
-  if (event.userId.toString() !== me.id) {
-    throw new ForbiddenError('Not authenticated as owner.')
-  }
+    const event = await models.Event.findById(id)
 
-  return skip
-}
+    if (event.userId.toString() !== me.id) {
+      throw new ForbiddenError('Not authenticated as owner.')
+    }
+
+
+    return skip
+})
+
+const isAdminRole = me => me.role.includes('admin')

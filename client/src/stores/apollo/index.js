@@ -1,5 +1,5 @@
-import { event as eventQueries, user as userQueries } from './query'
-import { event as eventMutations, user as userMutations } from './mutation'
+import { event as eventQueries } from './query'
+import { user as userMutations, event as eventMutations } from './mutation'
 
 const event = {
   ...eventQueries,
@@ -7,7 +7,6 @@ const event = {
 }
 
 const user = {
-  ...userQueries,
   ...userMutations
 }
 

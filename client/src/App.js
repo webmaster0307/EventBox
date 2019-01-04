@@ -11,8 +11,8 @@ import { SignUpPage, SignInPage } from './views/Authorizing'
 import { Page404 } from './views/ErrorPage'
 
 import Landing from './views/Landing'
-
-import Container from './views/Layout/Container'
+import LandingEventDetail from './views/Landing/EventDetail'
+import DashboardContainer from './views/Layout/Container'
 
 const setSession = gql`
   mutation($session: Session) {
@@ -30,6 +30,8 @@ class App extends React.Component {
   
   render(){
     const { session, refetch } = this.props
+    // const { pathname } = window.location
+    // console.log('pathname: ' ,pathname.startsWith('/dashboard'))
 
     return(
       <Router history={history}>
@@ -51,9 +53,14 @@ class App extends React.Component {
           />
           <Route
             exact
+            path={`${routes.EVENT}/:eventId`}
+            render={() => <LandingEventDetail refetch={refetch} session={session} />}
+          />
+          <Route
+            exact
             path={`${routes.DASHBOARD}*`}
             render={() => session && session.me ? 
-              <Container session={session} />
+              <DashboardContainer session={session} />
               :
               <SignInPage refetch={refetch} session={session} /> 
             }

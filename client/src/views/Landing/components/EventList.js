@@ -3,7 +3,10 @@ import React, { Component } from 'react'
 import { client } from '@client'
 import { event } from '@gqlQueries'
 import { Col, Card } from 'antd'
+import { withRouter } from 'react-router-dom'
+import * as routes from '@routes'
 
+@withRouter
 class EventList extends Component{
 
   state = {
@@ -18,6 +21,10 @@ class EventList extends Component{
     this.setState({ events: events.edges })
   }
 
+  handleGoToEventDetail = event => {
+    this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
+  }
+
   render(){
     const { events } = this.state
     return(
@@ -26,6 +33,7 @@ class EventList extends Component{
           <Col
             key={index.toString()} className='block'
             md={6} xs={24}
+            onClick={() => this.handleGoToEventDetail(item)}
           >
             <div className='content5-block-content'>
               <span>

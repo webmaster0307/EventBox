@@ -49,15 +49,17 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: edges[edges.length - 1] ? toCursorHash(
-            edges[edges.length - 1].createdAt.toString()
-          ) : ''
+          endCursor: toCursorHash( edges[edges.length - 1].createdAt.toString() )
         }
       }
     },
 
-    event: async (parent, { id }, { models }) =>
+    event: combineResolvers(
+      // TODO: authorization handling, open for temporarily
+      // isEventOwner,
+      async (parent, { id }, { models }) =>
       await models.Event.findById(id)
+    )
   },
 
   Mutation: {
@@ -81,7 +83,6 @@ export default {
       }
     ),
     updateEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, args, { models, me }) => {
         const { id, thumbnail, ...rest } = args
@@ -102,7 +103,6 @@ export default {
     ),
 
     deleteEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, { id }, { models }) => {
         try {

@@ -19,3 +19,16 @@
     }
   }
 }
+
+.icon-primary-custom {
+  &__wrapper {
+    color: #1890ff;
+    font-size: 16px;
+    opacity: 1;
+    transition: opacity 0.3s;
+    &:hover{
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  }
+}

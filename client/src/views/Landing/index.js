@@ -13,6 +13,11 @@ import CarouselSection from './components/CarouselSection'
 import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
+/* eslint-disable */
+import EventItem from './EventDetail'
+import * as routes from '@routes'
+import { Switch, Route } from 'react-router-dom'
+
 import './less/antMotionStyle.less'
 const { location } = window
 
@@ -59,6 +64,5 @@ class Landing extends React.Component {
     )
   }
 }
-
 
 export default Landing

@@ -104,8 +104,8 @@ class CreateDraftEvent extends Component {
       title: 'District',
       customRender:
         <Select placeholder='Select district' style={{ width: 120 }}>
-          <Option key='a' value="jack">Jack</Option>
-          <Option key='b' value="lucy">Lucy</Option>
+          <Option key='a' value='jack'>Jack</Option>
+          <Option key='b' value='lucy'>Lucy</Option>
         </Select>,
       rules: []
     },
@@ -114,8 +114,8 @@ class CreateDraftEvent extends Component {
       title: 'City',
       customRender:
         <Select placeholder='Select city' style={{ width: 120 }}>
-          <Option key='a' value="jack">Jack</Option>
-          <Option key='b' value="lucy">Lucy</Option>
+          <Option key='a' value='jack'>Jack</Option>
+          <Option key='b' value='lucy'>Lucy</Option>
         </Select>,
       rules: []
     },
@@ -124,8 +124,8 @@ class CreateDraftEvent extends Component {
       title: 'Category',
       customRender:
         <Select placeholder='Select category' style={{ width: 120 }}>
-          <Option key='a' value="jack">Jack</Option>
-          <Option key='b' value="lucy">Lucy</Option>
+          <Option key='a' value='jack'>Jack</Option>
+          <Option key='b' value='lucy'>Lucy</Option>
         </Select>,
       rules: []
     },
@@ -172,8 +172,8 @@ class CreateDraftEvent extends Component {
       customRender:
         <DatePicker
           showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          placeholder="Select Time"
+          format='YYYY-MM-DD HH:mm:ss'
+          placeholder='Select Time'
         />,
       rules: []
     },
@@ -183,8 +183,8 @@ class CreateDraftEvent extends Component {
       customRender:
         <DatePicker
           showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          placeholder="Select Time"
+          format='YYYY-MM-DD HH:mm:ss'
+          placeholder='Select Time'
         />,
       rules: []
     }
@@ -230,8 +230,8 @@ class CreateDraftEvent extends Component {
           <Divider />
           <div>
             <Editor
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
+              wrapperClassName='demo-wrapper'
+              editorClassName='demo-editor'
               editorStyle={{border: '1px #E6E6E6 solid'}}
               name='editor'
               editorState={editorState}

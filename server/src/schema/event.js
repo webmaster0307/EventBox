@@ -7,7 +7,7 @@ export default gql`
     slug: String!
     description: String!
     shortDescription: String!
-    user: User!
+    user: User
     categoryId: String
     images: EventImages!
     regFrom: String

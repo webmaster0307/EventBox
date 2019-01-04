@@ -1,6 +1,5 @@
 import React from 'react'
 import { client } from '@client'
-import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
 import { Card, Form, Input, Icon, Button, message, Skeleton } from 'antd'
 import gql from 'graphql-tag'
@@ -46,7 +45,7 @@ class SignUpForm extends React.Component{
           const { token } = result.data.signUp
           localStorage.setItem('token', token)
           await this.props.refetch()
-          this.props.history.push(routes.HOME)
+          // this.props.history.push(routes.HOME)
           message.success('Sign up successfully!')
           this.props.stores.landing.ocSignUpModal('c')
         })

@@ -63,7 +63,7 @@ class Profile extends Component {
                 // onChange={this.handleChange}
               >
                 <Button>
-                  <Icon type="upload" /> Change avatar
+                  <Icon type='upload' /> Change avatar
                 </Button>
               </Upload>
             </div>

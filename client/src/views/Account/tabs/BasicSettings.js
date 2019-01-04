@@ -39,8 +39,8 @@ class BasicSettings extends Component {
           >
             <Switch
               size='default'
-              checkedChildren="English"
-              unCheckedChildren="Tiếng Việt"
+              checkedChildren='English'
+              unCheckedChildren='Tiếng Việt'
               defaultChecked
               onChange={this.changeLanguage.bind(this)}
             />

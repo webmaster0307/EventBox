@@ -4,10 +4,11 @@ import EventCreate from '../Event/EventCreate/EventCreate'
 import EventUpdate from '../Event/EventUpdate/EventUpdate'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
+import * as routes from '@routes'
 
 import { CreateDraftEvent } from '../DraftEvent'
 
-export const basename = '/dashboard'
+export const basename = routes.DASHBOARD
 
 export const routesComp = [
   {

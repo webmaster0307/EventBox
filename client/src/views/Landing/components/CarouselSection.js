@@ -61,7 +61,7 @@ class CarouselSection extends Component {
                     background: 'linear-gradient(to right, #2C5364, #203A43, #0F2027)'
                   }}
                 >
-                  <img style={{width: 520}} alt="event thumbnail" src={item.images.thumbnail} />
+                  <img style={{width: 520}} alt='event thumbnail' src={item.images.thumbnail} />
                   <p className='legend'>{item.title}</p>
                 </div>
               ))}
