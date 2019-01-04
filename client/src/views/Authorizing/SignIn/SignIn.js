@@ -1,14 +1,13 @@
 import React from 'react'
 import { client } from '@client'
 import * as routes from '@routes'
-import gql from 'graphql-tag'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
 import { GET_SESSION } from '../Session/localQueries'
 import { observer, inject } from 'mobx-react'
-import { user as userMutations} from '@gqlQueries'
+import { user as userMutations } from '@gqlQueries'
 
 const FormItem = Form.Item
 
@@ -136,8 +135,8 @@ class SignInForm extends React.Component{
   }
 }
 
+const SignInFormWrapped = Form.create()(withRouter(SignInForm))
+
 export {
   SignInFormWrapped
 }
-
-const SignInFormWrapped = Form.create()(withRouter(SignInForm))

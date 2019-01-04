@@ -6,7 +6,7 @@ import TweenOne from 'rc-tween-one'
 import { Menu, Affix, Icon } from 'antd'
 
 import logo from '../images/vanlang_logo.png'
-import { Query, ApolloConsumer } from 'react-apollo'
+import { Query } from 'react-apollo'
 import { signOut } from '@components'
 import { GET_SESSION } from '../../Authorizing/Session/localQueries'
 
@@ -66,12 +66,12 @@ class Header extends React.Component {
           if(me && !error){
             const userTitle = (
               <div >
-                <span className="img" >
+                <span className='img' >
                   <img
-                    src="https://zos.alipayobjects.com/rmsportal/iXsgowFDTJtGpZM.png"
-                    width="100%"
-                    height="100%"
-                    alt="img"
+                    src='https://zos.alipayobjects.com/rmsportal/iXsgowFDTJtGpZM.png'
+                    width='100%'
+                    height='100%'
+                    alt='img'
                   />
                 </span>
                 <span>{me.username} | {me.email}</span>
@@ -79,10 +79,10 @@ class Header extends React.Component {
             )
             navChildren=[
               ...navChildren,
-              <SubMenu className="user" title={userTitle} key="user">
-                <Item key="a"><Link to='/dashboard' >Dashboard</Link></Item>
+              <SubMenu className='user' title={userTitle} key='user'>
+                <Item key='a'><Link to='/dashboard' >Dashboard</Link></Item>
                 {/* <Item key="b">修改密码</Item> */}
-                <Item key="c" onClick={() => signOut(client)} >Sign Out</Item>
+                <Item key='c' onClick={() => signOut(client)} >Sign Out</Item>
               </SubMenu>
             ]
           }
@@ -117,7 +117,7 @@ class Header extends React.Component {
                     className='header0-logo'
                     onClick={() => this.props.history.push('/')}
                   >
-                    <img width="100%" src={logo} alt="img" />
+                    <img width='100%' src={logo} alt='img' />
                   </TweenOne>
                   {x && (
                     <div
