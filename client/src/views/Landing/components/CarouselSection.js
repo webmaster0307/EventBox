@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Icon } from 'antd'
+import { Carousel, Icon, Card, Button } from 'antd'
 import TweenOne from 'rc-tween-one'
-
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { Carousel } from 'react-responsive-carousel'
 
 import { client } from '@client'
 import { event } from '@gqlQueries'
+
+const { Meta } = Card
 
 @inject('stores')
 @observer
@@ -44,25 +43,24 @@ class CarouselSection extends Component {
             </TweenOne>
           </div>
           <div key='content'>
-            <Carousel
-              showArrows
-              showStatus={false}
-              showIndicators
-              autoPlay
-              interval={3000}
-              infiniteLoop
-              centerMode
-              showThumbs={false}
-            >
+            <Carousel autoplay>
               {events && events.map((item, i) => (
-                <div
-                  key={i.toString()}
-                  style={{
-                    background: 'linear-gradient(to right, #2C5364, #203A43, #0F2027)'
-                  }}
-                >
-                  <img style={{width: 520}} alt='event thumbnail' src={item.images.thumbnail} />
-                  <p className='legend'>{item.title}</p>
+                <div key={i.toString()}>
+                  <Card
+                    // hoverable
+                    style={{ width: 410 }}
+                    cover={<img alt='event thumbnail' src={item.images.thumbnail} />}
+                  >
+                    <Meta
+                      title={item.title}
+                      description={
+                        <Button>
+                          <Icon type='info-circle' theme='twoTone' twoToneColor='#91bbff' />
+                          More information
+                        </Button>
+                      }
+                    />
+                  </Card>
                 </div>
               ))}
             </Carousel>
