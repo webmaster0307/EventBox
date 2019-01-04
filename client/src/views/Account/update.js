@@ -47,13 +47,13 @@ class UpdateAccountForm extends Component{
         {(updateUser, { data, loading, error }) => (
           <form onSubmit={event => this.onSubmit(event, updateUser)}>
             <input
-              name="username"
+              name='username'
               value={username}
               onChange={this.onChange}
-              type="text"
-              placeholder="Email or Username"
+              type='text'
+              placeholder='Email or Username'
             />
-            <button disabled={isInvalid || loading} type="submit">
+            <button disabled={isInvalid || loading} type='submit'>
               Update
             </button>
 

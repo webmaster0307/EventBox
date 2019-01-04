@@ -9,7 +9,7 @@ import { stateLink }  from '../../'
 const SignOutButton = () => (
   <ApolloConsumer>
     {client => (
-      <button type="button" onClick={() => signOut(client)}>
+      <button type='button' onClick={() => signOut(client)}>
         Sign Out
       </button>
     )}

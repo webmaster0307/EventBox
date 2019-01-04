@@ -15,13 +15,13 @@ class Footer extends Component {
       content: 'Animation specification and components of Ant Design.'
     },
     {
-      title: <img width="100%" src={logo} alt="img" />,
+      title: <img width='100%' src={logo} alt='img' />,
       content: (
         <span>
-          <p><span href="#">Product update record</span></p>
-          <p><span href="#">API documentation</span></p>
-          <p><span href="#">Quick start</span></p>
-          <p><span href="#">Reference guide</span></p>
+          <p><span href='#'>Product update record</span></p>
+          <p><span href='#'>API documentation</span></p>
+          <p><span href='#'>Quick start</span></p>
+          <p><span href='#'>Reference guide</span></p>
         </span>
       )
     },
@@ -29,8 +29,8 @@ class Footer extends Component {
       title: 'Introduction',
       content: (
         <span>
-          <p><span href="#">FAQ</span></p>
-          <p><span href="#">Contact us</span></p>
+          <p><span href='#'>FAQ</span></p>
+          <p><span href='#'>Contact us</span></p>
         </span>
       )
     },
@@ -38,10 +38,10 @@ class Footer extends Component {
       title: 'Resources',
       content: (
         <span>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
         </span>
       )
     }

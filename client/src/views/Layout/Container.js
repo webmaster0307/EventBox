@@ -46,8 +46,8 @@ class Container extends React.Component {
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <div className="layout-logo__wrapper" onClick={this.handleGotoHome} />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
+          <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu.filter(route => {
               for(let role of me.role){
                 if(route.roles.includes(role)){

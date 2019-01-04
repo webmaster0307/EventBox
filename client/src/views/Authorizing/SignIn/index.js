@@ -61,20 +61,20 @@ class SignInForm extends Component {
         {(signIn, { data, loading, error }) => (
           <form onSubmit={event => this.onSubmit(event, signIn)}>
             <input
-              name="username"
+              name='username'
               value={username}
               onChange={this.onChange}
-              type="text"
-              placeholder="Email or Username"
+              type='text'
+              placeholder='Email or Username'
             />
             <input
-              name="password"
+              name='password'
               value={password}
               onChange={this.onChange}
-              type="password"
-              placeholder="Password"
+              type='password'
+              placeholder='Password'
             />
-            <button disabled={isInvalid || loading} type="submit">
+            <button disabled={isInvalid || loading} type='submit'>
               Sign In
             </button>
 

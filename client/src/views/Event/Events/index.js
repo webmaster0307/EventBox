@@ -1,15 +1,9 @@
 import React, { Component, Fragment } from 'react'
-// import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { Table, Icon, message, Tag, Popconfirm } from 'antd'
-// import { Loading } from '@components'
 import { inject, observer } from 'mobx-react'
-// import { client } from '@client'
-// import { toJS } from 'mobx'
 import { basename } from '../../Layout/routes'
-import { client } from '@client'
-import { event as eventQueries } from '@gqlQueries'
 
 const EVENT_CREATED = gql`
   subscription {

@@ -71,8 +71,8 @@ class DateHoldingArea extends Component{
       customRender: 
         <DatePicker 
           showTime={{ format: 'HH:mm' }}
-          format="YYYY-MM-DD HH:mm"
-          placeholder="Select Time"
+          format='YYYY-MM-DD HH:mm'
+          placeholder='Select Time'
           onChange={this.onChangeStartTime}
           allowClear={false}
         />,
@@ -86,8 +86,8 @@ class DateHoldingArea extends Component{
       customRender: 
         <DatePicker 
           showTime={{ format: 'HH:mm' }}
-          format="YYYY-MM-DD HH:mm"
-          placeholder="Select Time"
+          format='YYYY-MM-DD HH:mm'
+          placeholder='Select Time'
           allowClear={false}
         />,
       rules: [{

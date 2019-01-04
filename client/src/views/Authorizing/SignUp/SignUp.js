@@ -1,6 +1,5 @@
 import React from 'react'
 import { client } from '@client'
-import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
 import { Card, Form, Input, Icon, Button, message, Skeleton } from 'antd'
 import gql from 'graphql-tag'

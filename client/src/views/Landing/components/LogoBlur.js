@@ -67,7 +67,7 @@ class LogoBlur extends Component {
       const r = Math.random() * this.state.pointSizeMin + this.state.pointSizeMin
       const b = Math.random() * 0.5 + 0.3
       newChildNode.push((
-        <TweenOne className="point-wrapper" key={i} style={{ left: item.x, top: item.y }}>
+        <TweenOne className='point-wrapper' key={i} style={{ left: item.x, top: item.y }}>
           <TweenOne
             className='point'
             style={{
@@ -162,11 +162,11 @@ class LogoBlur extends Component {
 
   render() {
     return (
-      <div className="logo-gather-demo-wrapper">
-        {this.state.isVisible && <canvas id="canvas" />}
+      <div className='logo-gather-demo-wrapper'>
+        {this.state.isVisible && <canvas id='canvas' />}
         <TweenOne
           animation={this.state.boxAnim}
-          className="right-side blur"
+          className='right-side blur'
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           ref={(c) => {this.sideBoxComp = c}}

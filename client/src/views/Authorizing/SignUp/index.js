@@ -72,34 +72,34 @@ class SignUpForm extends Component {
         {(signUp, { data, loading, error }) => (
           <form onSubmit={event => this.onSubmit(event, signUp)}>
             <input
-              name="username"
+              name='username'
               value={username}
               onChange={this.onChange}
-              type="text"
-              placeholder="Full Name"
+              type='text'
+              placeholder='Full Name'
             />
             <input
-              name="email"
+              name='email'
               value={email}
               onChange={this.onChange}
-              type="text"
-              placeholder="Email Address"
+              type='text'
+              placeholder='Email Address'
             />
             <input
-              name="password"
+              name='password'
               value={password}
               onChange={this.onChange}
-              type="password"
-              placeholder="Password"
+              type='password'
+              placeholder='Password'
             />
             <input
-              name="passwordConfirmation"
+              name='passwordConfirmation'
               value={passwordConfirmation}
               onChange={this.onChange}
-              type="password"
-              placeholder="Confirm Password"
+              type='password'
+              placeholder='Confirm Password'
             />
-            <button disabled={isInvalid || loading} type="submit">
+            <button disabled={isInvalid || loading} type='submit'>
               Sign Up
             </button>
 
