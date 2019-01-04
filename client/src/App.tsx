@@ -20,8 +20,8 @@ const setSession = gql`
   }
 `
 
-@withSession
-class App extends React.Component {
+// @withSession
+class App extends React.Component<{ session: any, refetch: any }> {
 
   componentDidMount = () => {
     const { session } = this.props
@@ -74,7 +74,7 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default withSession(App)
 
 // const AuthorizedContainer = () => (
 //   <Switch>

@@ -4,7 +4,7 @@ import { GET_ME } from './queries'
 import { Row, Spin } from 'antd'
 
 
-const withSession = Component => props => (
+const withSession = (Component: React.ComponentType<any>) => (props: any) => (
   <Query query={GET_ME}>
     {({ data, error, loading, refetch }) => {
       if(error){

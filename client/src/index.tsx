@@ -22,6 +22,7 @@ import { Event, Landing } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
+import { any } from 'prop-types';
 
 
 const prodMode = process.env.NODE_ENV === 'production'
@@ -46,8 +47,8 @@ const terminatingLink = split(({ query }) => {
 wsLink,
 httpLink,)
 
-const authLink = new ApolloLink((operation, forward) => {
-  operation.setContext(({ headers = {}, localToken = localStorage.getItem('token') }) => {
+const authLink = new ApolloLink((operation, forward: any) => {
+  operation.setContext(({ headers = ({} as any), localToken = localStorage.getItem('token') }) => {
     if (localToken) {
       headers['x-token'] = localToken
     }
@@ -73,13 +74,18 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) {
     console.log('Network error: ', networkError)
 
-    if (networkError.statusCode === 401) {
+    if ((networkError as any).statusCode === 401) {
       signOut(client)
     }
   }
 })
 
 const cache = new InMemoryCache()
+
+interface localMutation {
+  _: any
+  variables: any
+}
 
 export const stateLink = withClientState({
   cache,
@@ -92,7 +98,7 @@ export const stateLink = withClientState({
   },
   resolvers: {
     Mutation: {
-      toggleLoading: ( _, variables, { cache, getCacheKey }) => {
+      toggleLoading: ( _: any, variables: any, { cache } : { cache: any } )  => {
         const query = gql`
           query {
             loading @client
@@ -105,7 +111,7 @@ export const stateLink = withClientState({
         cache.writeData({ data })
         return null
       },
-      setSession: ( _, variables, { cache, getCacheKey }) => {
+      setSession: ( _: any, variables: any, { cache } : { cache: any } ) => {
         const { session } = variables
         const data = {
           session : {
@@ -150,11 +156,13 @@ const stores = {
   landing: new Landing()
 }
 
-ReactDOM.render(<ApolloProvider client={client}>
-  <Provider stores={stores} >
-    <App />
-  </Provider>
-</ApolloProvider>,
-document.getElementById('root'))
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Provider stores={stores} >
+      <App />
+    </Provider>
+  </ApolloProvider>,
+  document.getElementById('root')
+)
 
 // registerServiceWorker();

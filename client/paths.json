@@ -1,18 +1,11 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
     "baseUrl": ".",
-    "outDir": "build",
     "paths": {
       "@components": ["./src/components/"],
       "@client": ["./src/index.js"],
       "@routes": ["./src/constants/routes.js"],
       "@gqlQueries": ["./src/stores/apollo/index.js"]
     }
-  },
-  "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  }
 }
