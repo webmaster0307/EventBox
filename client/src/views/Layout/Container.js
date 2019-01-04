@@ -6,6 +6,7 @@ import { GET_SESSION } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
 import { Page404 } from '../ErrorPage'
 import Header from './Header'
+import * as routes from '@routes'
 import './styles.scss'
 
 const { Content, Footer, Sider } = Layout
@@ -22,8 +23,8 @@ class Container extends React.Component {
   }
 
   handleGotoHome = () => {
-    if(this.props.history.pathname !== '/dashboard'){
-      this.props.history.push('/dashboard')
+    if(this.props.history.pathname !== routes.DASHBOARD){
+      this.props.history.push(routes.DASHBOARD)
     }
   }
 
@@ -45,8 +46,8 @@ class Container extends React.Component {
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <div className="layout-logo__wrapper" onClick={this.handleGotoHome} />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
+          <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu.filter(route => {
               for(let role of me.role){
                 if(route.roles.includes(role)){

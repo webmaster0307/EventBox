@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import TweenOne from 'rc-tween-one'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 import QueueAnim from 'rc-queue-anim'
+import logo from '../images/vanlang_logo.png'
 import { Row, Col } from 'antd'
 
 @inject('stores')
@@ -10,17 +11,17 @@ import { Row, Col } from 'antd'
 class Footer extends Component {
   block = () => [
     {
-      title: 'https://zos.alipayobjects.com/rmsportal/qqaimmXZVSwAhpL.svg',
+      title:'',
       content: 'Animation specification and components of Ant Design.'
     },
     {
-      title: 'Products',
+      title: <img width='100%' src={logo} alt='img' />,
       content: (
         <span>
-          <p><span href="#">Product update record</span></p>
-          <p><span href="#">API documentation</span></p>
-          <p><span href="#">Quick start</span></p>
-          <p><span href="#">Reference guide</span></p>
+          <p><span href='#'>Product update record</span></p>
+          <p><span href='#'>API documentation</span></p>
+          <p><span href='#'>Quick start</span></p>
+          <p><span href='#'>Reference guide</span></p>
         </span>
       )
     },
@@ -28,8 +29,8 @@ class Footer extends Component {
       title: 'Introduction',
       content: (
         <span>
-          <p><span href="#">FAQ</span></p>
-          <p><span href="#">Contact us</span></p>
+          <p><span href='#'>FAQ</span></p>
+          <p><span href='#'>Contact us</span></p>
         </span>
       )
     },
@@ -37,10 +38,10 @@ class Footer extends Component {
       title: 'Resources',
       content: (
         <span>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
-          <p><span href="#">Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
+          <p><span href='#'>Ant Design</span></p>
         </span>
       )
     }

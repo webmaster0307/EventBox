@@ -54,7 +54,7 @@ const EventDelete = ({ event }) => (
     }}
   >
     {(deleteEvent, { data, loading, error }) => (
-      <button type="button" onClick={deleteEvent}>
+      <button type='button' onClick={deleteEvent}>
         Delete
       </button>
     )}

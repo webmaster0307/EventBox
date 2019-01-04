@@ -7,7 +7,7 @@ import history from '../../constants/history'
 const SignOutButton = () => (
   <ApolloConsumer>
     {client => (
-      <button type="button" onClick={() => signOut(client)}>
+      <button type='button' onClick={() => signOut(client)}>
         Sign Out
       </button>
     )}

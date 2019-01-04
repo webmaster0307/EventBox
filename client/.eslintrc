@@ -33,6 +33,7 @@
     "indent": [2, 2, {"SwitchCase": 1}],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
-    "standard/no-callback-literal": "off"
+    "standard/no-callback-literal": "off",
+    "jsx-quotes": ["error", "prefer-single"]
   }
 }

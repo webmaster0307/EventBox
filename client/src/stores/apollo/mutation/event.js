@@ -57,7 +57,14 @@ const UPDATE_EVENT_BYID = gql`
   }
 `
 
+const DELETE_EVENT_BYID = gql`
+  mutation($id: ID!){
+    deleteEvent(id: $id)
+  }
+`
+
 export {
   CREATE_EVENT,
-  UPDATE_EVENT_BYID
+  UPDATE_EVENT_BYID,
+  DELETE_EVENT_BYID
 }

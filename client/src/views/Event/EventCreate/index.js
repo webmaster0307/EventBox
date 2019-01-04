@@ -84,12 +84,12 @@ class EventCreate extends Component {
             <div style={{maxWidth: 800, border: '1px solid #448aff', marginBottom: 12}} >
               <Editor
                 editorState={editorState}
-                wrapperClassName="demo-wrapper"
-                editorClassName="demo-editor"
+                wrapperClassName='demo-wrapper'
+                editorClassName='demo-editor'
                 onEditorStateChange={this.onEditorStateChange}
               />
             </div>
-            <button type="submit">Send</button>
+            <button type='submit'>Send</button>
 
             {error && <ErrorMessage error={error} />}
           </form>

@@ -44,6 +44,25 @@ class Event {
     this.event = eventResult
     return({ event: eventResult })
   }
+
+  @action
+  async deleteEventById(eventId){
+    try {
+      this.eventsLoading = true
+      await client.mutate({
+        mutation: event.DELETE_EVENT_BYID,
+        variables: { id: eventId }
+      })
+      this.events = this.events.filter(item => item.id !== eventId)
+    } catch ({graphQLErrors}) {
+      console.log('graphQLErrors: ',graphQLErrors)
+      const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+      this.eventsLoading = false
+      return { error }
+    }
+    this.eventsLoading = false
+    return true
+  }
 }
 
 

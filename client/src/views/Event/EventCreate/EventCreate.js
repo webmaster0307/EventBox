@@ -105,11 +105,10 @@ class EventCreate extends Component{
               htmlType='submit'
               loading={loading}
               icon='form'
+              style={{marginRight: 24}}
             >
               SAVE
             </Button>
-          </FormItem>
-          <FormItem>
             <Button
               type='primary'
               loading={loading}

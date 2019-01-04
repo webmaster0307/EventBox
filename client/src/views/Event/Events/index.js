@@ -1,12 +1,8 @@
 import React, { Component, Fragment } from 'react'
-// import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { Table, Icon, message, Tag } from 'antd'
-// import { Loading } from '@components'
+import { Table, Icon, message, Tag, Popconfirm } from 'antd'
 import { inject, observer } from 'mobx-react'
-// import { client } from '@client'
-// import { toJS } from 'mobx'
 import { basename } from '../../Layout/routes'
 
 const EVENT_CREATED = gql`
@@ -120,6 +116,8 @@ class Events extends Component {
 //   </button>
 // )
 
+@inject('stores')
+@observer
 class EventList extends Component {
   subscribeToMoreEvent = () => {
     this.props.subscribeToMore({
@@ -149,6 +147,17 @@ class EventList extends Component {
     // this.subscribeToMoreEvent()
   }
 
+  handleDeleteEvent = async (id) => {
+    const { event } = this.props.stores
+    const { error } = await event.deleteEventById(id)
+    if(error){
+      message.error(error)
+    }
+    else{
+      message.success('Delete event successfully!')
+    }
+  }
+
   tableColumns = () => [
     {
       title: '',
@@ -166,7 +175,7 @@ class EventList extends Component {
       render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
     },
     {
-      title: 'status',
+      title: 'Status',
       dataIndex: 'status',
       render: status => <Tag color='geekblue'>{status}</Tag>
     },
@@ -176,9 +185,23 @@ class EventList extends Component {
       render: (text, record) => <div>{record.user.username}</div>
     },
     {
-      title: 'CreatedAt',
-      dataIndex: 'createdAt',
-      render: (text, record) => <div>{new Date(Number(record.createdAt)).toLocaleString()}</div>
+      title: 'Last updated',
+      dataIndex: 'updatedAt',
+      render: (updatedAt) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      render: (_, row) => (
+        <Popconfirm 
+          placement='topRight' 
+          title='Are you sure to delete this event' 
+          onConfirm={() => this.handleDeleteEvent(row.id)} 
+          okText='Yes' 
+          cancelText='No'>
+          <Icon type='delete' className='icon-primary-custom__wrapper' />
+        </Popconfirm>
+      )
     }
   ]
 
