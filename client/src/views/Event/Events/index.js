@@ -182,7 +182,7 @@ class EventList extends Component {
     {
       title: 'Owner',
       dataIndex: 'user',
-      render: (text, record) => <div>{record.user.username}</div>
+      render: (text, record) => <div>{record.user && record.user.username}</div>
     },
     {
       title: 'Last updated',
