@@ -3,9 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["./src/components/"],
-      "@client": ["./src/index.js"],
+      "@client": ["./src/index.tsx"],
       "@routes": ["./src/constants/routes.js"],
-      "@gqlQueries": ["./src/stores/apollo/index.js"]
+      "@gqlQueries": ["./src/stores/apollo/index.ts"]
     }
   }
 }

@@ -1,7 +1,7 @@
 import Home from '../Account/Home'
 import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
 import AccountPage from '../Account'
-import AdminPage from '../Admin'
+import { AdminPage, Department } from '../Admin'
 import * as routes from '@routes'
 
 export const basename = routes.DASHBOARD
@@ -17,6 +17,12 @@ export const routesComp = [
     exact: true,
     path: `${basename}/admin`,
     component: AdminPage,
+    roles: ['admin']
+  },
+  {
+    exact: true,
+    path: `${basename}/admin/departments`,
+    component: Department,
     roles: ['admin']
   },
   {
@@ -58,12 +64,31 @@ export const routesComp = [
 ]
 
 export const routesMenu = [
+  // {
+  //   title: 'Admin',
+  //   path: `${basename}/admin`,
+  //   roles: ['admin'],
+  //   icon: 'star',
+  //   breadcumbs: ['Administration']
+  // },
   {
     title: 'Admin',
-    path: `${basename}/admin`,
-    roles: ['admin'],
+    roles: ['admin', 'user'],
     icon: 'star',
-    breadcumbs: ['Administration']
+    subComponent: [
+      {
+        title: 'Accounts',
+        path: `${basename}/admin`,
+        icon: 'team',
+        breadcumbs: ['Admin', 'Accounts']
+      },
+      {
+        title: 'Departments',
+        path: `${basename}/admin/departments`,
+        icon: 'home',
+        breadcumbs: ['Admin', 'Departments']
+      }
+    ]
   },
   {
     title: 'My account',

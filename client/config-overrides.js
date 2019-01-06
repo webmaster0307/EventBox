@@ -26,9 +26,9 @@ module.exports = function override(config, env) {
   config.resolve = {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
-      '@client': path.resolve(__dirname, './src/index.tsx'),
+      '@client': path.resolve(__dirname, './src'),
       '@routes': path.resolve(__dirname, './src/constants/routes.js'),
-      '@gqlQueries': path.resolve(__dirname, './src/stores/apollo/index.js')
+      '@gqlQueries': path.resolve(__dirname, './src/stores/apollo')
     },
     extensions: ['.js', 'jsx', '.json', 'mjs', '.ts', '.tsx']
   }

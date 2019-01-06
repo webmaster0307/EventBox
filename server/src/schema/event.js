@@ -8,6 +8,7 @@ export default gql`
     description: String!
     shortDescription: String!
     user: User
+    departments: [Department]
     categoryId: String
     images: EventImages!
     regFrom: String

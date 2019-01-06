@@ -33,7 +33,7 @@ const { location } = window
 
 let isMobile
 enquireScreen(b => {
-  console.log(b)
+  // console.log(b)
   isMobile = b
 })
 
