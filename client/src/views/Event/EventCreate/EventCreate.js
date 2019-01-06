@@ -7,6 +7,7 @@ import { EditorState, convertToRaw } from 'draft-js'
 import { inject } from 'mobx-react'
 import { event as eventQueries } from '@gqlQueries'
 import * as routes from '@routes'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 const FormItem = Form.Item
 

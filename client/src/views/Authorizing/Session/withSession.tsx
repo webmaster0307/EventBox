@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query } from 'react-apollo'
+import { Query, QueryProps } from 'react-apollo'
 import { GET_ME } from './queries'
 import { Row, Spin } from 'antd'
 
@@ -24,5 +24,18 @@ const withSession = (Component: React.ComponentType<any>) => (props: any) => (
     }}
   </Query>
 )
+
+export interface withSessionProps {
+  session: {
+    me: {
+      id: string
+      email: string
+      role: string[]
+      username: string
+      readonly __typename: 'User'
+    }
+  }
+  refetch: () => void
+}
 
 export default withSession

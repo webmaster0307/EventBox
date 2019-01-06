@@ -85,7 +85,7 @@ class SignInForm extends React.Component{
     return (
       <div className='login-card__wrapper'>
         <Card title='Sign In'>
-          <Skeleton loading={loading} avatar>
+          <Skeleton loading={loading} avatar active={loading} >
             <Form onSubmit={this._handleSubmit} >
               <FormItem key='username'>
                 {getFieldDecorator('username', {

@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 
 import history from './constants/history'
 import * as routes from '@routes'
-import withSession from './views/Authorizing/Session/withSession'
+import withSession, { withSessionProps } from './views/Authorizing/Session/withSession'
 
 import { SignUpPage, SignInPage } from './views/Authorizing'
 import { Page404 } from './views/ErrorPage'
@@ -21,7 +21,7 @@ const setSession = gql`
 `
 
 // @withSession
-class App extends React.Component<{ session: any, refetch: any }> {
+class App extends React.Component<withSessionProps> {
 
   componentDidMount = () => {
     const { session } = this.props
