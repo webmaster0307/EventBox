@@ -73,7 +73,7 @@ export const routesMenu = [
   // },
   {
     title: 'Admin',
-    roles: ['admin', 'user'],
+    roles: ['admin'],
     icon: 'star',
     subComponent: [
       {
