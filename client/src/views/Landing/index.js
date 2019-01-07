@@ -9,16 +9,32 @@ import Nav from './components/Nav'
 import Banner from './components/Banner'
 import FirstSection from './components/FirstSection'
 import SecondSection from './components/SecondSection'
+import CarouselSection from './components/CarouselSection'
 import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
+
+/* eslint-disable */
+import EventItem from './EventDetail'
+import * as routes from '@routes'
+import { Switch, Route } from 'react-router-dom'
 
 import './less/antMotionStyle.less'
 const { location } = window
 
+let isMobile
+enquireScreen((b) => {
+  // console.log(b)
+  isMobile = b
+})
+
 @inject('stores')
 @observer
 class Landing extends React.Component {
-  componentDidMount() {
+  componentWillMount () {
+    this.props.stores.landing.checkScreen(isMobile)
+  }
+
+  componentDidMount () {
     enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
     if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
   }
@@ -31,6 +47,7 @@ class Landing extends React.Component {
       <Banner id='Banner' key='Banner' />,
       <FirstSection id='FirstSection' key='FirstSection' />,
       <SecondSection id='SecondSection' key='SecondSection' />,
+      <CarouselSection id='CarouselSection' key='CarouselSection' />,
       <ThirdSection id='ThirdSection' key='ThirdSection' />,
       <Footer id='Footer' key='Footer' />
     ]
@@ -47,6 +64,5 @@ class Landing extends React.Component {
     )
   }
 }
-
 
 export default Landing

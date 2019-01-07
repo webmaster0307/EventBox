@@ -1,13 +1,10 @@
 import Home from '../Account/Home'
-import { Events, EventDetail } from '../Event'
-import EventCreate from '../Event/EventCreate/EventCreate'
-import EventUpdate from '../Event/EventUpdate/EventUpdate'
+import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
 import AccountPage from '../Account'
-import AdminPage from '../Admin'
+import { AdminPage, Department } from '../Admin'
+import * as routes from '@routes'
 
-import { CreateDraftEvent } from '../DraftEvent'
-
-export const basename = '/dashboard'
+export const basename = routes.DASHBOARD
 
 export const routesComp = [
   {
@@ -20,6 +17,12 @@ export const routesComp = [
     exact: true,
     path: `${basename}/admin`,
     component: AdminPage,
+    roles: ['admin']
+  },
+  {
+    exact: true,
+    path: `${basename}/admin/departments`,
+    component: Department,
     roles: ['admin']
   },
   {
@@ -57,22 +60,35 @@ export const routesComp = [
     path: `${basename}/draft-events`,
     component: Events,
     roles: ['admin', 'user']
-  },
-  {
-    exact: true,
-    path: `${basename}/draft-events/create`,
-    component: CreateDraftEvent,
-    roles: ['admin', 'user']
   }
 ]
 
 export const routesMenu = [
+  // {
+  //   title: 'Admin',
+  //   path: `${basename}/admin`,
+  //   roles: ['admin'],
+  //   icon: 'star',
+  //   breadcumbs: ['Administration']
+  // },
   {
     title: 'Admin',
-    path: `${basename}/admin`,
     roles: ['admin'],
     icon: 'star',
-    breadcumbs: ['Administration']
+    subComponent: [
+      {
+        title: 'Accounts',
+        path: `${basename}/admin`,
+        icon: 'team',
+        breadcumbs: ['Admin', 'Accounts']
+      },
+      {
+        title: 'Departments',
+        path: `${basename}/admin/departments`,
+        icon: 'home',
+        breadcumbs: ['Admin', 'Departments']
+      }
+    ]
   },
   {
     title: 'My account',
@@ -106,23 +122,4 @@ export const routesMenu = [
       }
     ]
   }
-  // {
-  //   title: 'Draft Events',
-  //   roles: ['admin', 'user'],
-  //   icon: 'file',
-  //   subComponent: [
-  //     {
-  //       title: 'List',
-  //       path: `${basename}/draft-events`,
-  //       icon: 'bars',
-  //       breadcumbs: ['Draft Events', 'Draft event list']
-  //     },
-  //     {
-  //       title: 'Create',
-  //       path: `${basename}/draft-events/create`,
-  //       icon: 'form',
-  //       breadcumbs: [ 'Draft Events', 'Create draft event' ]
-  //     }
-  //   ]
-  // }
 ]

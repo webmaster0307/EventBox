@@ -1,11 +1,12 @@
 import React from 'react'
 import { client } from '../../'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd'
+import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
 import { GET_SESSION } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
 import { Page404 } from '../ErrorPage'
 import Header from './Header'
+import * as routes from '@routes'
 import './styles.scss'
 
 const { Content, Footer, Sider } = Layout
@@ -22,8 +23,8 @@ class Container extends React.Component {
   }
 
   handleGotoHome = () => {
-    if(this.props.history.pathname !== '/dashboard'){
-      this.props.history.push('/dashboard')
+    if(this.props.history.pathname !== routes.DASHBOARD){
+      this.props.history.push(routes.DASHBOARD)
     }
   }
 
@@ -45,8 +46,8 @@ class Container extends React.Component {
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <div className="layout-logo__wrapper" onClick={this.handleGotoHome} />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
+          <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu.filter(route => {
               for(let role of me.role){
                 if(route.roles.includes(role)){
@@ -92,7 +93,7 @@ class Container extends React.Component {
               <Breadcrumb.Item>EventBox</Breadcrumb.Item>
               <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
             </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <Card style={{ background: '#fff', minHeight: 360 }}>
               <Switch>
                 {routesComp.filter(route => {
                   for(let role of me.role){
@@ -106,7 +107,7 @@ class Container extends React.Component {
                 ))}
                 <Route component={Page404} />
               </Switch>
-            </div>
+            </Card>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2018 Created by Ant UED

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Modal, Divider, Row, Col, Icon, Button } from 'antd'
-import SignInForm from '../../../Authorizing/SignIn/SignIn'
+import { SignInFormWrapped as SignInForm } from '../../../Authorizing/SignIn/SignIn'
 
 @inject('stores')
 @observer

@@ -1,6 +1,6 @@
-import EventCreate from './EventCreate'
-import Events from './Events'
-import EventDetail from './EventItem'
-import EventUpdate from './EventUpdate'
+import Events from './Events/Events'
+import EventCreate from './EventCreate/EventCreate'
+import EventUpdate from './EventUpdate/EventUpdate'
+import EventDetail from './EventDetail/EventDetail'
 
 export { EventCreate, Events, EventDetail, EventUpdate }

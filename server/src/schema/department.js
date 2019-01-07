@@ -5,11 +5,13 @@ export default gql`
     id: ID!
     name: String!
     description: String
+    createdAt: String
+    updatedAt: String
   }
 
   extend type Query {
     department(id: ID!): Department
-    departments: [Department]
+    departments(page: Int, limit: Int!): [Department]
   }
 
   extend type Mutation {

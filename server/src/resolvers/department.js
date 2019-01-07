@@ -10,7 +10,11 @@ export default {
 
     departments: (root, args, { models, newErr }) => {
       try {
-        return models.Department.find({ isEnabled: true })
+        return models.Department.find(null, null, {
+          sort: {
+            createdAt: -1
+          }
+        })
       } catch (error) {
         throw newErr(`An error occurred`, 404)
       }

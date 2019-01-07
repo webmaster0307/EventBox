@@ -8,15 +8,52 @@ import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 @inject('stores')
 @observer
 class ThirdSection extends Component {
+  title = () => [
+    { name: 'title', text: 'Ant Financial Cloud provides professional services' },
+    { name: 'content', text: 'Based on Alibaba Cloud\'s powerful basic resources' }
+  ]
+
+  block = () => [
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/ScHBSdwpTkAHZkJ.png',
+      title: 'Enterprise resource management',
+      content: 'Cloud resources are centrally choreographed, elastically scalable.'
+    },
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/NKBELAOuuKbofDD.png',
+      title: 'Cloud security',
+      content: 'The complete cloud security system built according to the security.'
+    },
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/xMSBjgxBhKfyMWX.png',
+      title: 'Cloud monitoring' ,
+      content: 'Centralized monitoring of distributed cloud environments.'
+    },
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png',
+      title: 'Mobile',
+      content:  'One-stop mobile financial APP development and comprehensive monitorin.'
+    },
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png',
+      title: 'Distributed middleware' ,
+      content: 'Financial-grade online transaction processing middleware,.'
+    },
+    {
+      icon: 'https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png',
+      title: 'Big Data',
+      content: 'One-stop, full-cycle big data collaborative work platform.'
+    }
+  ]
+
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100
 
   render () {
-    const { isMobile, currentLangData } = this.props.stores.landing
-    const { thirdSection } = currentLangData
+    const { isMobile } = this.props.stores.landing
 
     let clearFloatNum = 0
 
-    const childrenToRender = thirdSection.block.map((item, i) => {
+    const childrenToRender = this.block().map((item, i) => {
       const delay = isMobile ? i * 50 : this.getDelay(i, 24 / 8)
       const liAnim = {
         opacity: 0,
@@ -76,7 +113,7 @@ class ThirdSection extends Component {
       <div className='home-page-wrapper content3-wrapper'>
         <div className='home-page content3'>
           <div className='title-wrapper'>
-            {thirdSection.title.map((item, i) =>
+            {this.title().map((item, i) =>
               createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: i.toString(),

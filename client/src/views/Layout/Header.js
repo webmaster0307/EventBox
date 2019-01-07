@@ -24,7 +24,7 @@ class UserAvatar extends Component{
     return (
       <div className='layout-header-useravatar__wrapper' >
         <span style={{marginRight: 12}} >{user.username}</span>
-        <Dropdown overlay={actions} placement="bottomCenter" trigger={['click']} >
+        <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']} >
           <Avatar size='large' style={{cursor: 'pointer'}} />
         </Dropdown>
       </div>

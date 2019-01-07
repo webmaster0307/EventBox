@@ -11,17 +11,30 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { cursor, limit = 100 }, { models }) => {
+    events: async (parent, { status, cursor, limit = 10 }, { models, me, isAdmin }) => {
       const cursorOptions = cursor
-        ? {
-          createdAt: {
-            '$lt': fromCursorHash(cursor)
-          }
+      ? {
+        createdAt: {
+          '$lt': fromCursorHash(cursor)
         }
-        : {}
+      }
+      : {}
+      let selfEventsCondition
+      if(!status){
+        selfEventsCondition = !isAdmin ? {
+          userId: me.id
+        } : {}
+      }
+      else{
+        selfEventsCondition = {
+          status
+        }
+      }
+      
 
       const events = await models.Event.find({
-        ...cursorOptions
+        ...cursorOptions,
+        ...selfEventsCondition
       }, null, {
         limit: limit + 1,
         sort: {
@@ -36,15 +49,17 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: edges[edges.length - 1] ? toCursorHash(
-            edges[edges.length - 1].createdAt.toString()
-          ) : ''
+          endCursor: toCursorHash( edges[edges.length - 1].createdAt.toString() )
         }
       }
     },
 
-    event: async (parent, { id }, { models }) =>
+    event: combineResolvers(
+      // TODO: authorization handling, open for temporarily
+      // isEventOwner,
+      async (parent, { id }, { models }) =>
       await models.Event.findById(id)
+    )
   },
 
   Mutation: {
@@ -68,7 +83,6 @@ export default {
       }
     ),
     updateEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, args, { models, me }) => {
         const { id, thumbnail, ...rest } = args
@@ -89,7 +103,6 @@ export default {
     ),
 
     deleteEvent: combineResolvers(
-      isAuthenticated,
       isEventOwner,
       async (parent, { id }, { models }) => {
         try {
@@ -107,7 +120,11 @@ export default {
 
   Event: {
     user: async (event, args, { loaders }) =>
-      await loaders.user.load(event.userId)
+      await loaders.user.load(event.userId),
+    
+    departments: async (event, args, { models }) => {
+      return []
+    }
   },
 
   Subscription: {

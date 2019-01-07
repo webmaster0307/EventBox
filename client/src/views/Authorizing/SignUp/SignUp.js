@@ -1,21 +1,14 @@
 import React from 'react'
 import { client } from '@client'
-import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
-import { Card, Form, Input, Icon, Button, message, Spin } from 'antd'
+import { Card, Form, Input, Icon, Button, message, Skeleton } from 'antd'
 import gql from 'graphql-tag'
 import { inject, observer } from 'mobx-react'
 
 const FormItem = Form.Item
 
 const SignUp = ({refetch}) => (
-  <div className='sign-up-card__wrapper' >
-    <Card
-      title='Sign Up'
-    >
-      <SignUpFormWrapped refetch={refetch} />
-    </Card>
-  </div>
+  <SignUpFormWrapped refetch={refetch} />
 )
 
 export default SignUp
@@ -52,7 +45,7 @@ class SignUpForm extends React.Component{
           const { token } = result.data.signUp
           localStorage.setItem('token', token)
           await this.props.refetch()
-          this.props.history.push(routes.HOME)
+          // this.props.history.push(routes.HOME)
           message.success('Sign up successfully!')
           this.props.stores.landing.ocSignUpModal('c')
         })
@@ -140,34 +133,49 @@ class SignUpForm extends React.Component{
     const { loading } = this.state
 
     return (
-      <Spin spinning={loading} >
-        <Form onSubmit={this._handleSignUp} hideRequiredMark >
-          {this.formFields().map(field => {
-            const { name, title, rules, customRender } = field
-            return(
-              <FormItem
-                key={name}
-                label={title}
-                colon={false}
-              >
-                {getFieldDecorator(name, {
-                  rules
-                })(customRender)}
+      <div className='sign-up-card__wrapper' >
+        <Card
+          title='Sign Up'
+          headStyle={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '2em',
+            background: '#f7faff',
+            fontWeight: 'bolder'
+          }}
+        >
+          <Skeleton loading={loading} avatar>
+            <Form onSubmit={this._handleSignUp} hideRequiredMark >
+              {this.formFields().map(field => {
+                const { name, title, rules, customRender } = field
+                return(
+                  <FormItem
+                    key={name}
+                    label={title}
+                    colon={false}
+                  >
+                    {getFieldDecorator(name, {
+                      rules
+                    })(customRender)}
+                  </FormItem>
+                )
+              })}
+              <FormItem>
+                <Button
+                  type='primary'
+                  block
+                  htmlType='submit'
+                >
+                  <Icon type='user-add' />
+                  Sign Up
+                </Button>
               </FormItem>
-            )
-          })}
-          <FormItem>
-            <Button
-              type='primary'
-              block
-              htmlType='submit'
-            >
-              <Icon type='user-add' />
-              Sign Up
-            </Button>
-          </FormItem>
-        </Form>
-      </Spin>
+            </Form>
+          </Skeleton>
+        </Card>
+      </div>
     )
   }
 }

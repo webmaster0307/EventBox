@@ -105,10 +105,12 @@ const server = new ApolloServer({
 
     if (req) {
       const me = await getMe(req)
+      const isAdmin = me && me.role.includes('admin')
 
       return {
         models,
         me,
+        isAdmin,
         secret: process.env.TOKEN_SECRET,
         loaders: {
           user: new DataLoader(keys =>

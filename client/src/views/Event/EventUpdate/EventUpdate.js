@@ -1,43 +1,15 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { client } from '@client'
-import gql from 'graphql-tag'
-import { Form, Button, Icon, message, Spin, BackTop } from 'antd'
-import DescriptionArea from './DescriptionArea'
-import { OriganizationArea, DateHoldingArea } from '../common' 
+import { Form, Button, message, Spin, BackTop } from 'antd'
+import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common' 
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
+import { event as eventQueries } from '@gqlQueries'
 
 const FormItem = Form.Item
 
-const updateEvent = gql`
-  mutation(
-    $id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-    $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!
-  ) {
-    updateEvent(
-      id: $id, title: $title, thumbnail: $thumbnail, 
-      description: $description, shortDescription: $shortDescription
-      organizationName: $organizationName, organizationLogo: $organizationLogo, 
-      organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location
-    ) {
-      title
-      description
-      shortDescription
-      images {
-        thumbnail
-      }
-      createdAt
-      user {
-        id
-        username
-        email
-      }
-    }
-  }
-`
 
 @inject('stores')
 @observer
@@ -51,6 +23,7 @@ class EventUpdate extends Component{
   componentDidMount = async () => {
     const { eventId } = this.props.match.params
     const { form, stores: { event } } = this.props
+    event.editorEventCreate = EditorState.createEmpty()
     const { error, event: eventDetail } = await event.getEventById(eventId)
     if(error){
       return message.error(error) 
@@ -64,10 +37,11 @@ class EventUpdate extends Component{
       organizationDescription: eventDetail.organizationDescription,
       startTime: moment(parseInt(eventDetail.startTime)),
       endTime: moment(parseInt(eventDetail.endTime)),
-      location: eventDetail.location
+      location: eventDetail.location,
+      address: eventDetail.address
     })
     this.setState({ loading: false })
-    event.editorEventCreate = eventDetail.description
+    event.editorEventCreate = EditorState.createWithContent(convertFromRaw(JSON.parse(eventDetail.description)))
   }
 
   _handleCreatedEvent = event => {
@@ -80,13 +54,13 @@ class EventUpdate extends Component{
         const dataSubmit = {
           id: eventId,
           ...values,
-          description: event.editorEventCreate,
+          description: JSON.stringify(convertToRaw(event.editorEventCreate.getCurrentContent())),
           startTime: values.startTime._d,
           endTime: values.endTime._d
         }
         this.setState({ buttonLoading: true }, () => {
           client.mutate({ 
-            mutation: updateEvent, 
+            mutation: eventQueries.UPDATE_EVENT_BYID, 
             variables: dataSubmit
           })
             .then( ({data, errors}) => {
@@ -107,6 +81,10 @@ class EventUpdate extends Component{
     })
   }
 
+  handlePublishEvent = () => {
+
+  }
+
   render() {
     const { loading, buttonLoading } = this.state
 
@@ -119,12 +97,20 @@ class EventUpdate extends Component{
           <FormItem>
             <Button
               type='primary'
-              block
               htmlType='submit'
               loading={buttonLoading}
+              icon='form'
+              style={{marginRight: 24}}
             >
-              <Icon type='form' />
               Update Event
+            </Button>
+            <Button
+              type='primary'
+              loading={buttonLoading}
+              icon='form'
+              onClick={this.handlePublishEvent}
+            >
+              PUBLISH
             </Button>
           </FormItem>
         </Form>
