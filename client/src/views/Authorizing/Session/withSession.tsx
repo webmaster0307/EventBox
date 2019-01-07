@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query, QueryProps } from 'react-apollo'
+import { Query } from 'react-apollo'
 import { GET_ME } from './queries'
 import { Row, Spin } from 'antd'
 

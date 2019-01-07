@@ -9,72 +9,14 @@ import EventList from './EventList'
 @observer
 class SecondSection extends Component {
   title = () => [
-    { key: '0', name: 'title', text: 'Customer case' },
+    { key: '0', name: 'title', text: 'Hot Events' },
     {
       key: '1', name: 'content',
-      text: 'Here is a case study of the case of the service.'
+      text: 'Here is a some latest and  event for you.'
     }
   ]
 
-  block = () => [
-    {
-      key: '0',
-      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
-      text: 'Ant Design'
-    },
-    {
-      key: '1',
-      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
-      text: 'Ant Motion'
-    },
-    {
-      key: '3',
-      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
-      text: 'Ant Design'
-    },
-    {
-      key: '4',
-      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
-      text: 'Ant Motion'
-    },
-    {
-      key: '5',
-      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
-      text: 'Ant Design'
-    },
-    {
-      key: '6',
-      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
-      text: 'Ant Motion'
-    },
-    {
-      key: '7',
-      imgLink: 'https://t.alipayobjects.com/images/rmsweb/T11aVgXc4eXXXXXXXX.svg',
-      text: 'Ant Design'
-    },
-    {
-      key: '8',
-      imgLink: 'https://zos.alipayobjects.com/rmsportal/faKjZtrmIbwJvVR.svg',
-      text: 'Ant Motion'
-    }
-  ]
-
-  // const childrenToRender = secondSection.block.map((item, i) => {
-  //   return (
-  //     <Col
-  //       key={i.toString()} className='block'
-  //       md={6} xs={24}
-  //     >
-  //       <div className='content5-block-content'>
-  //         <span>
-  //           <img src={item.imgLink} height='100%' alt='img' />
-  //         </span>
-  //         <p>{item.text}</p>
-  //       </div>
-  //     </Col>
-  //   )
-  // })
-  render(){
+  render () {
     return (
       <div className='home-page-wrapper content5-wrapper'>
         <div className='home-page content5 jpl17zkbjcf-editor_css'>
@@ -107,7 +49,6 @@ class SecondSection extends Component {
               leave={{ y: '+=30', opacity: 0, ease: 'easeInOutQuad' }}
               component={Row}
             >
-              {/* {childrenToRender} */}
               <EventList />
             </TweenOneGroup>
           </OverPack>

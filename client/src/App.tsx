@@ -27,7 +27,7 @@ class App extends React.Component<withSessionProps> {
     const { session } = this.props
     client.mutate({ mutation: setSession, variables: { session } })
   }
-  
+
   render(){
     const { session, refetch } = this.props
     // const { pathname } = window.location
@@ -59,10 +59,10 @@ class App extends React.Component<withSessionProps> {
           <Route
             exact
             path={`${routes.DASHBOARD}*`}
-            render={() => session && session.me ? 
+            render={() => session && session.me ?
               <DashboardContainer session={session} />
               :
-              <SignInPage refetch={refetch} session={session} /> 
+              <SignInPage refetch={refetch} session={session} />
             }
           />
           <Route

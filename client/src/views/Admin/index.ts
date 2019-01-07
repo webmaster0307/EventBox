@@ -1,4 +1,4 @@
-import AdminPage from './AdminPage'
+import AdminPage from './AdminPage/AccountList'
 import Department from './Department/Department'
 
 export {

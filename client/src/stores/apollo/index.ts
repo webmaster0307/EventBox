@@ -1,4 +1,5 @@
-import { 
+import {
+  user as userQueries,
   event as eventQueries,
   department as departmentQueries
 } from './query'
@@ -14,6 +15,7 @@ const event = {
 }
 
 const user = {
+  ...userQueries,
   ...userMutations
 }
 
