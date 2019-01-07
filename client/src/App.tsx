@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 
 import history from './constants/history'
 import * as routes from '@routes'
-import withSession from './views/Authorizing/Session/withSession'
+import withSession, { withSessionProps } from './views/Authorizing/Session/withSession'
 
 import { SignUpPage, SignInPage } from './views/Authorizing'
 import { Page404 } from './views/ErrorPage'
@@ -20,14 +20,14 @@ const setSession = gql`
   }
 `
 
-@withSession
-class App extends React.Component {
+// @withSession
+class App extends React.Component<withSessionProps> {
 
   componentDidMount = () => {
     const { session } = this.props
     client.mutate({ mutation: setSession, variables: { session } })
   }
-  
+
   render(){
     const { session, refetch } = this.props
     // const { pathname } = window.location
@@ -59,10 +59,10 @@ class App extends React.Component {
           <Route
             exact
             path={`${routes.DASHBOARD}*`}
-            render={() => session && session.me ? 
+            render={() => session && session.me ?
               <DashboardContainer session={session} />
               :
-              <SignInPage refetch={refetch} session={session} /> 
+              <SignInPage refetch={refetch} session={session} />
             }
           />
           <Route
@@ -74,7 +74,7 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default withSession(App)
 
 // const AuthorizedContainer = () => (
 //   <Switch>

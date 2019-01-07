@@ -23,6 +23,7 @@ class LogoBlur extends Component {
     this.gather = true
     this.interval = true
     this.intervalTime = 30*1000
+    this.unmounted = false
   }
 
   componentDidMount() {
@@ -106,6 +107,9 @@ class LogoBlur extends Component {
   }
 
   updateTweenData = () => {
+    if(!this.unmounted){
+      return
+    }
     this.dom = ReactDOM.findDOMNode(this)
     this.sideBox = ReactDOM.findDOMNode(this.sideBoxComp);
     ((this.gather && this.disperseData) || this.gatherData)()
@@ -158,6 +162,7 @@ class LogoBlur extends Component {
   componentWillUnmount() {
     ticker.clear(this.interval)
     this.interval = null
+    this.unmounted = true
   }
 
   render() {

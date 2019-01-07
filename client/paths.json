@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components": ["./src/components/"],
+      "@client": ["./src/index.tsx"],
+      "@routes": ["./src/constants/routes.js"],
+      "@gqlQueries": ["./src/stores/apollo/index.ts"]
+    }
+  }
+}

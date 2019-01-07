@@ -18,6 +18,10 @@ let eventSchema = new Schema({
     type: String,
     default: ''
   },
+  departmentId: [{
+    type: Schema.Types.ObjectId,
+    ref: 'department'
+  }],
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'user'

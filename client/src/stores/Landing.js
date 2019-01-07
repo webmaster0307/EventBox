@@ -10,6 +10,8 @@ class Landing {
   @observable isSigningIn = false
   // For sign up modal
   @observable isSigningUp = false
+  // Search bar
+  @observable eventList = []
 
   @action
   checkScreen (r) {this.isMobile = r}
@@ -43,6 +45,20 @@ class Landing {
     } else {
       this.isSigningUp = false
     }
+  }
+
+  @action
+  handleAutoCompleteSelect(value) {
+    console.log(value)
+  }
+
+  @action
+  handleAutoCompleteSearch = (value) => {
+    this.eventList = !value ? [] : [
+      value,
+      value + value,
+      value + value + value
+    ]
   }
 
 }

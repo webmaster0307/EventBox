@@ -11,6 +11,7 @@ import LogoBlur from './LogoBlur'
 @observer
 class Banner extends Component {
   render () {
+    const { isMobile } = this.props.stores.landing
     return (
       <div className='banner0'>
         <QueueAnim
@@ -27,10 +28,10 @@ class Banner extends Component {
                 ) : (
                   biglogo
                 )} */}
-            <LogoBlur />
+            { isMobile ? null : <LogoBlur />}
           </div>
           <div className='banner0-content' key='content'>
-            Team 13\'s Event-box web application.
+            Team 13's Event-box web application.
           </div>
           <Button className='banner0-button' key='button' ghost>
             See more

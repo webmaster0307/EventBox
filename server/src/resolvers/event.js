@@ -120,7 +120,11 @@ export default {
 
   Event: {
     user: async (event, args, { loaders }) =>
-      await loaders.user.load(event.userId)
+      await loaders.user.load(event.userId),
+    
+    departments: async (event, args, { models }) => {
+      return []
+    }
   },
 
   Subscription: {

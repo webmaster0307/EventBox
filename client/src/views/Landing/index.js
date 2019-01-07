@@ -9,6 +9,7 @@ import Nav from './components/Nav'
 import Banner from './components/Banner'
 import FirstSection from './components/FirstSection'
 import SecondSection from './components/SecondSection'
+import CarouselSection from './components/CarouselSection'
 import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
@@ -22,7 +23,7 @@ const { location } = window
 
 let isMobile
 enquireScreen((b) => {
-  console.log(b)
+  // console.log(b)
   isMobile = b
 })
 
@@ -46,6 +47,7 @@ class Landing extends React.Component {
       <Banner id='Banner' key='Banner' />,
       <FirstSection id='FirstSection' key='FirstSection' />,
       <SecondSection id='SecondSection' key='SecondSection' />,
+      <CarouselSection id='CarouselSection' key='CarouselSection' />,
       <ThirdSection id='ThirdSection' key='ThirdSection' />,
       <Footer id='Footer' key='Footer' />
     ]
@@ -62,6 +64,5 @@ class Landing extends React.Component {
     )
   }
 }
-
 
 export default Landing
