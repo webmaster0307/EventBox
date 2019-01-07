@@ -3,7 +3,7 @@ import { client } from '@client'
 import { user } from './apollo'
 
 class AdminStore {
-  @observable accountList =[]
+  @observable accountList = []
 
   @action
   async getAccountList () {
@@ -12,6 +12,11 @@ class AdminStore {
         query: user.GET_ALL_USERS,
         fetchPolicy: 'no-cache'
       })
+      // users.map(u => {
+      //   u.fullname = `${u.firstname} ${u.lastname}`
+      //   return u
+      // })
+      // console.log(users)
       this.accountList = [...users]
     } catch ({graphQLErrors}) {
       const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')

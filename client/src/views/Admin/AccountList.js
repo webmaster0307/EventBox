@@ -28,22 +28,36 @@ class AccountList extends Component {
         <span>{email.length > 20 ? `${email.substring(0, 20)}...` : email}</span>
       )
     }, {
-      title: 'Role',
-      dataIndex: '__typename',
-      key: '__typename',
+      title: 'Full name',
+      dataIndex: 'fullname',
+      key: 'fullname',
       width: 200,
-      render: (r) => (
+      render: (text, r) => (
         <span>
-          {/* {role.map(r => <Tag color='blue' key={r}>{r}</Tag>)} */}
-          <Tag color='blue' key={r}>{r}</Tag>
+          {`${r.firstname} ${r.lastname}`.length > 20
+            ? `${r.firstname} ${r.lastname}`.substring(0, 20) + '...'
+            : `${r.firstname} ${r.lastname}`}
+        </span>
+      )
+    }, {
+      title: 'Role',
+      dataIndex: 'role',
+      key: 'role',
+      width: 200,
+      render: (role) => (
+        <span>
+          {role.map(r => <Tag color={
+            r === 'admin' ? 'red' : r === 'user' ? 'blue' : 'purple'
+          } key={r}>{r}</Tag>)}
         </span>
       )
     }, {
       title: 'Action',
       key: 'action',
       width: 200,
+      fixed: 'right',
       render: (text, record) => (
-        <span key={text}>
+        <span>
           <Button
             value={record.id}
             onClick={(e) => this.props.stores.admin.deleteUser(e.target.value)}
@@ -54,7 +68,7 @@ class AccountList extends Component {
       )
     }]
     return (
-      <Table columns={columns} dataSource={accountList} />
+      <Table columns={columns} dataSource={accountList} rowKey={(record) => record.username} />
     )
   }
 }
