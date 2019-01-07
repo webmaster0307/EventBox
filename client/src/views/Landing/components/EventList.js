@@ -27,6 +27,7 @@ class EventList extends Component{
 
   render(){
     const { events } = this.state
+
     return(
       <Card>
         {events && events.map((item, index) => (
@@ -39,7 +40,13 @@ class EventList extends Component{
               <span>
                 <img src={item.images.thumbnail} height='100%' alt='img' />
               </span>
-              <p>{item.title}</p>
+              <p>
+                {item.title.length > 63 ?
+                  item.title.substring(0, 60).concat('...')
+                  :
+                  item.title
+                }
+              </p>
             </div>
           </Col>
         ))
