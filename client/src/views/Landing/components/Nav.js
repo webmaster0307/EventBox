@@ -8,7 +8,7 @@ import { Menu, Affix, Icon } from 'antd'
 import logo from '../images/vanlang_logo.png'
 import { Query } from 'react-apollo'
 import { signOut } from '@components'
-import { GET_SESSION } from '../../Authorizing/Session/localQueries'
+import { session } from '@gqlQueries'
 
 const { Item, SubMenu } = Menu
 
@@ -57,7 +57,7 @@ class Header extends React.Component {
     const { menuHeight, phoneOpen } = this.state
     const x = isMobile
     return (
-      <Query query={GET_SESSION}>
+      <Query query={session.GET_LOCAL_SESSION}>
         {({data, error, client}) => {
           // apollo local state
           const { me } = data

@@ -1,12 +1,11 @@
 import React from 'react'
 import { Query } from 'react-apollo'
+import * as routes from '@routes'
+import { session } from '@gqlQueries'
 import { Redirect } from 'react-router-dom'
 
-import * as routes from '@routes'
-import { GET_SESSION } from '../../Authorizing/Session/localQueries'
-
 const withAuthorization = conditionFn => Component => props => (
-  <Query query={GET_SESSION}>
+  <Query query={session.GET_LOCAL_SESSION}>
     {({ data, networkStatus }) => {
       if (networkStatus < 7) {
         return null
