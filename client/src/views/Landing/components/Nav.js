@@ -93,7 +93,7 @@ class Header extends React.Component {
                 <Icon
                   className='menu-item-icon-custom'
                   type='user-add'
-                />SIGN UP
+                />Đăng ký
               </Item>,
               <Item key='signin' className='menu-item-text-custom'>
                 <Icon
