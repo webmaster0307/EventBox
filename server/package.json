@@ -12,7 +12,7 @@
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "test-server": "TEST_DATABASE=mytestdatabase npm start",
-    "test": "mocha --require babel-core/register 'src/**/*.spec.js'"
+    "test": "mocha --require babel-core/register src/**/*.spec.js"
   },
   "keywords": [],
   "author": "“Robin <hello@rwieruch.com”> (https://www.robinwieruch.de)",
