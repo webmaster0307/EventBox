@@ -2,12 +2,12 @@ import React from 'react'
 import { client } from '../../'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
-import { GET_SESSION } from '../Authorizing/Session/localQueries'
 import { routesComp, routesMenu } from './routes'
 import { Page404 } from '../ErrorPage'
 import Header from './Header'
 import * as routes from '@routes'
 import './styles.scss'
+import { session } from '@gqlQueries'
 
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
@@ -29,7 +29,7 @@ class Container extends React.Component {
   }
 
   getSession = () => {
-    client.query({query: GET_SESSION}).then( result => {
+    client.query({query: session.GET_LOCAL_SESSION}).then( result => {
       const { me } = result.data
       console.log('me: ',me)
     })

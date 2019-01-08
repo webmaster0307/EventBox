@@ -5,14 +5,13 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
-import { GET_SESSION } from '../Session/localQueries'
 import { observer, inject } from 'mobx-react'
-import { user as userMutations } from '@gqlQueries'
+import { user as userMutations, session } from '@gqlQueries'
 
 const FormItem = Form.Item
 
 const SignIn = ({ history, refetch }) => (
-  <Query query={GET_SESSION} >
+  <Query query={session.GET_LOCAL_SESSION} >
     {({ data }) => {
       if (data && data.me){
         return (
