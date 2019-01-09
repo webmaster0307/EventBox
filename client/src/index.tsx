@@ -22,8 +22,9 @@ import { Event, Landing, AdminStore } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
-import { any } from 'prop-types';
 
+import { I18nextProvider } from 'react-i18next'
+import i18n from './constants/i18n'
 
 const prodMode = process.env.NODE_ENV === 'production'
 
@@ -159,8 +160,10 @@ const stores = {
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Provider stores={stores} >
-      <App />
+    <Provider stores={stores}>
+      <I18nextProvider i18n={i18n}>
+        <App />
+      </I18nextProvider>
     </Provider>
   </ApolloProvider>,
   document.getElementById('root')

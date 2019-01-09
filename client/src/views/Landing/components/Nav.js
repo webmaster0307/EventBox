@@ -10,6 +10,8 @@ import { Query } from 'react-apollo'
 import { signOut } from '@components'
 import { session } from '@gqlQueries'
 
+import { translate } from 'react-i18next'
+
 const { Item, SubMenu } = Menu
 
 @withRouter
@@ -38,24 +40,27 @@ class Header extends React.Component {
   }
 
   handleMenuClick = ({ key }) => {
-    switch (key) {
-      case 'signin':
-        this.props.stores.landing.ocSignInModal('o')
-        break
-      case 'signup':
-        this.props.stores.landing.ocSignUpModal('o')
-        break
-      default:
-        this.props.stores.landing.changeLanguage()
+    const { i18n } = this.props
+    if (key === 'signin') {
+      this.props.stores.landing.ocSignInModal('o')
+    } else if (key === 'signup') {
+      this.props.stores.landing.ocSignUpModal('o')
+    } else {
+      if (this.props.stores.landing.isEnglish) {
+        i18n.changeLanguage('vn')
+      } else {
+        i18n.changeLanguage('en')
+      }
+      this.props.stores.landing.changeLanguage()
     }
   }
 
   render () {
+    const { i18n } = this.props
     const {
       isMobile, buttonText
     } = this.props.stores.landing
     const { menuHeight, phoneOpen } = this.state
-    const x = isMobile
     return (
       <Query query={session.GET_LOCAL_SESSION}>
         {({data, error, client}) => {
@@ -80,9 +85,12 @@ class Header extends React.Component {
             navChildren=[
               ...navChildren,
               <SubMenu className='user' title={userTitle} key='user'>
-                <Item key='a'><Link to='/dashboard' >Dashboard</Link></Item>
-                {/* <Item key="b">修改密码</Item> */}
-                <Item key='c' onClick={() => signOut(client)} >Sign Out</Item>
+                <Item key='a'>
+                  <Link to='/dashboard'>
+                    {i18n.t('dashboard')}
+                  </Link>
+                </Item>
+                <Item key='c' onClick={() => signOut(client)}>Sign Out</Item>
               </SubMenu>
             ]
           }
@@ -93,13 +101,13 @@ class Header extends React.Component {
                 <Icon
                   className='menu-item-icon-custom'
                   type='user-add'
-                />Đăng ký
+                />{i18n.t('signup')}
               </Item>,
               <Item key='signin' className='menu-item-text-custom'>
                 <Icon
                   className='menu-item-icon-custom'
                   type='login'
-                />SIGN IN
+                />{i18n.t('signin')}
               </Item>
             ]
           }
@@ -119,7 +127,7 @@ class Header extends React.Component {
                   >
                     <img width='100%' src={logo} alt='img' />
                   </TweenOne>
-                  {x && (
+                  {isMobile && (
                     <div
                       className='header0-mobile-menu'
                       onClick={this.phoneClick}
@@ -156,4 +164,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+export default translate('translations')(Header)
