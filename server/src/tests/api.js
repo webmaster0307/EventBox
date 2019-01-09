@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8000/graphql'
+const API_URL = `http://localhost:${process.env.SERVER_PORT || 8000}/graphql`
 
 export const signIn = async variables =>
   await axios.post(API_URL, {
     query: `
-      mutation ($login: String!, $password: String!) {
-        signIn(login: $login, password: $password) {
+      mutation ($username: String!, $password: String!) {
+        signIn(username: $username, password: $password) {
           token
         }
       }
