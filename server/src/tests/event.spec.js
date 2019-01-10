@@ -28,7 +28,7 @@ describe('event', () => {
       }
 
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
-      const result = await eventApi.event({ id: '5c35e372c90cbf0a105a9ed8' }, token)
+      const result = await eventApi.detailEvent({ id: '5c35e372c90cbf0a105a9ed8' }, token)
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -125,7 +125,7 @@ describe('listEventsHomepage', () => {
         }
       }
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
-      const result = await eventApi.events({ status: "draft", limit: 2 }, token)
+      const result = await eventApi.listEventsHomepage({ status: "draft", limit: 2 }, token)
 
       expect(result.data).to.eql(expectedResult)
     })
