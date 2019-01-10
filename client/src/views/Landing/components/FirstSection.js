@@ -4,54 +4,48 @@ import QueueAnim from 'rc-queue-anim'
 import { Row, Col, AutoComplete, Form, Button, Tabs, Icon, Select } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 import { translate } from 'react-i18next'
+import { withRouter } from 'react-router-dom'
+import * as routes from '@routes'
 
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane
 const Option = Select.Option
 
+@withRouter
 @inject('stores')
 @observer
 class FirstSection extends Component {
-  title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
+  // title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
 
-  block = () => [
-    {
-      key: '0',
-      iconLink: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png',
-      title: 'One-stop service access',
-      description: 'Four times the efficiency of payment, settlement, and accounting access products.'
-    },
-    {
-      key: '1',
-      iconLink: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png',
-      title: 'One-stop risk monitoring',
-      description: 'Prior risk control and quality control capabilities in all requirements configuration.'
-    },
-    {
-      key: '2',
-      iconLink: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png',
-      title: 'One-stop data operation',
-      description: 'Precipitation product access efficiency and operational small two work efficiency data.'
-    }
-  ]
+  handleGoToEventDetail = event => {
+    this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
+  }
 
   render () {
     const { eventList } = this.props.stores.landing
     const { i18n } = this.props
-    // const listChildren = this.block().map((item, i) => {
-    //   return (
-    //     <Col
-    //       key={i.toString()} className='block'
-    //       md={8} xs={24}
-    //     >
-    //       <div className='icon'>
-    //         <img src={item.iconLink} width='100%' alt='img' />
-    //       </div>
-    //       <h3 className='content0-title'>{item.title}</h3>
-    //       <div>{item.description}</div>
-    //     </Col>
-    //   )
-    // })
+
+    // let listChildren = []
+    // if (eventList.length > 0) {
+    //   listChildren = Array.from({ length: Math.ceil(eventList.length / 3) },
+    //     (v, i) => eventList.slice(i * 3, i * 3 + 3))[0]
+    //     .map((item, index) =>
+    //       <Col
+    //         key={index.toString()} className='block'
+    //         md={8} xs={24}
+    //         onClick={() => this.handleGoToEventDetail(item)}
+    //       >
+    //         <Card
+    //           hoverable
+    //         >
+    //           <img src={item.images.thumbnail} width='100%' alt='img' />
+    //           <h3 className='content0-title'>
+    //             {item.title.length > 25 ? `${item.title.substring(0, 25)}...` : item.title}
+    //           </h3>
+    //         </Card>
+    //       </Col>
+    //     )
+    // }
 
     const { getFieldDecorator } = this.props.form
     const formInputLayout = {

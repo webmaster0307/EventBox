@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx'
-// import { client } from '@client'
+import { client } from '@client'
+import { event } from '@gqlQueries'
 
 class Landing {
   @observable isShow = true
@@ -45,6 +46,16 @@ class Landing {
     } else {
       this.isSigningUp = false
     }
+  }
+
+  @action
+  async getEvents () {
+    const { data: { events } } = await client.query({
+      query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+      variables: {status: 'draft', limit: 5}
+    })
+    console.log(events.edges)
+    // this.eventList = [...events.edges]
   }
 
   @action

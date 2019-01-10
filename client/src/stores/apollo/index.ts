@@ -4,8 +4,8 @@ import {
   department as departmentQueries,
   session as sessionQueries
 } from './query'
-import { 
-  user as userMutations, 
+import {
+  user as userMutations,
   event as eventMutations,
   department as departmentMutations
 } from './mutation'
