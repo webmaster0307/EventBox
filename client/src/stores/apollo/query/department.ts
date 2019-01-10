@@ -19,7 +19,18 @@ const GET_EVENT_DEPARTMENTS = gql`
   }
 `
 
+const GET_DEPARTMENT_BYID = gql`
+  query($id: ID!) {
+    department(id: $id){
+      id
+      name
+      description
+    }
+  }
+`
+
 export {
   GET_PAGINATED_DEPARTMENTS,
-  GET_EVENT_DEPARTMENTS
+  GET_EVENT_DEPARTMENTS,
+  GET_DEPARTMENT_BYID
 }

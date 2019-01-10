@@ -1,7 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import { department } from '@gqlQueries'
-import { Spin, Icon, Popover, Button, Checkbox } from 'antd'
+import { Spin, Icon, Popover, Button, Checkbox, Tooltip } from 'antd'
 
 const { Group: CheckboxGroup } = Checkbox
 
@@ -35,6 +35,7 @@ class Wrapper extends React.Component{
   }
 
   render() {
+    const { updateStage } = this.props
     
     return (
       <Popover 
@@ -42,8 +43,13 @@ class Wrapper extends React.Component{
         content={<DepartmentSelection onChange={this.handleChange} />} 
         title='Danh sách Khoa'
         placement='topLeft'
+        trigger={updateStage ? 'click' : 'hover'}
       >
-        <Button type='dashed' >Chọn khoa</Button>
+        <Tooltip 
+          title={updateStage ? 'Không thể chọn lại khoa sau khi đã tạo sự kiện' : ''}
+        >
+          <Button type='dashed' disabled={updateStage} >Chọn khoa</Button>
+        </Tooltip>
       </Popover>
     )
   }

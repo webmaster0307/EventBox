@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { Table, Icon, message, Tag, Popconfirm } from 'antd'
 import { inject, observer } from 'mobx-react'
-import { basename } from '../../Layout/routes'
+import { DASHBOARD_EVENT } from '@routes'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -187,12 +187,12 @@ class EventList extends Component {
         dataIndex: 'title',
         width: 280,
         render: (text, record) => 
-          <div style={{width: 260}} ><Link to={`${basename}/events/detail/${record.id}`} >{text}</Link></div>
+          <div style={{width: 260}} ><Link to={`${DASHBOARD_EVENT}/detail/${record.id}`} >{text}</Link></div>
       },
       {
         title: '',
         dataIndex: 'id',
-        render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
+        render: (id) => <Link to={`${DASHBOARD_EVENT}/update/${id}`} ><Icon type='edit' /> Edit</Link>
       },
       {
         title: 'Status',

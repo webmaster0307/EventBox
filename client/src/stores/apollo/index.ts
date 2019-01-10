@@ -7,7 +7,8 @@ import {
 import { 
   user as userMutations, 
   event as eventMutations,
-  department as departmentMutations
+  department as departmentMutations,
+  departmentUser as departmentUserMutations
 } from './mutation'
 
 const event = {
@@ -29,9 +30,14 @@ const session = {
   ...sessionQueries
 }
 
+const departmentUser = {
+  ...departmentUserMutations
+}
+
 export {
   event,
   user,
   department,
-  session
+  session,
+  departmentUser
 }

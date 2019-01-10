@@ -110,7 +110,7 @@ class EventUpdate extends Component{
     return (
       <Spin spinning={loading} >
         <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
-          <DescriptionArea {...this.props} loading={loading} />
+          <DescriptionArea {...this.props} loading={loading} updateStage />
           <OriganizationArea {...this.props} />
           <DateHoldingArea {...this.props} />
           <FormItem>

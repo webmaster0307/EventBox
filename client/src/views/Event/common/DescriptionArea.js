@@ -22,7 +22,7 @@ class DescriptionArea extends Component{
     {
       name: 'departments',
       title: 'Thuộc về Khoa',
-      customRender: <DepartmentSelection placeholder='Title' />
+      customRender: <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
     },
     {
       name: 'thumbnail',
