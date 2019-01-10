@@ -13,9 +13,9 @@ import './styles.scss'
 class Department extends Component<any>{
 
   componentDidMount = () => {
-    
+
   }
-  
+
   handleOpenAdd = () => {
     const { modal } = this.props
     modal.show({

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Carousel, Icon, Card, Button } from 'antd'
 import TweenOne from 'rc-tween-one'
+import { translate } from 'react-i18next'
 
 import { client } from '@client'
 import { event } from '@gqlQueries'
@@ -25,6 +26,7 @@ class CarouselSection extends Component {
 
   render () {
     const { events } = this.state
+    const { i18n } = this.props
     return (
       <div className='banner0' style={{height: 560}}>
         <div className='banner0-text-wrapper'>
@@ -56,7 +58,7 @@ class CarouselSection extends Component {
                       description={
                         <Button>
                           <Icon type='info-circle' theme='twoTone' twoToneColor='#91bbff' />
-                          More information
+                          {i18n.t('More information')}
                         </Button>
                       }
                     />
@@ -83,4 +85,4 @@ class CarouselSection extends Component {
   }
 }
 
-export default CarouselSection
+export default translate('translations')(CarouselSection)

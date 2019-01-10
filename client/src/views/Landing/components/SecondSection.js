@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Row } from 'antd'
 import { TweenOneGroup } from 'rc-tween-one'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
+import { translate } from 'react-i18next'
 import EventList from './EventList'
 
 @inject('stores')
@@ -12,11 +13,12 @@ class SecondSection extends Component {
     { key: '0', name: 'title', text: 'Hot Events' },
     {
       key: '1', name: 'content',
-      text: 'Here is a some latest and  event for you.'
+      text: '2nds-subtitle'
     }
   ]
 
   render () {
+    const { i18n } = this.props
     return (
       <div className='home-page-wrapper content5-wrapper'>
         <div className='home-page content5 jpl17zkbjcf-editor_css'>
@@ -33,7 +35,7 @@ class SecondSection extends Component {
                     src: item.text,
                     alt: 'img'
                   })
-                  : item.text))}
+                  : i18n.t(item.text) ))}
           </div>
           <OverPack className={'content-template'} playScale={0.3}>
             <TweenOneGroup
@@ -58,4 +60,4 @@ class SecondSection extends Component {
   }
 }
 
-export default SecondSection
+export default translate('translations')(SecondSection)

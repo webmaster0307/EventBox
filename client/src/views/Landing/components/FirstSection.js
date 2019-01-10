@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
 import { Row, Col, AutoComplete, Form, Button, Tabs, Icon, Select } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
+import { translate } from 'react-i18next'
 
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane
@@ -36,6 +37,7 @@ class FirstSection extends Component {
 
   render () {
     const { eventList } = this.props.stores.landing
+    const { i18n } = this.props
     // const listChildren = this.block().map((item, i) => {
     //   return (
     //     <Col
@@ -87,7 +89,7 @@ class FirstSection extends Component {
 
     const categoryOptions = []
     categoryOpts.map((opt, i) => {
-      categoryOptions.push(<Option key={opt.key}>{opt.text}</Option>)
+      categoryOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
 
@@ -101,7 +103,7 @@ class FirstSection extends Component {
 
     const selectTimeOptions = []
     selectTimeOpts.map((opt, i) => {
-      selectTimeOptions.push(<Option key={opt.key}>{opt.text}</Option>)
+      selectTimeOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
 
@@ -125,7 +127,7 @@ class FirstSection extends Component {
                 )
             )} */}
             <Tabs defaultActiveKey='1'>
-              <TabPane tab={<span><Icon type='form' />Search by keywords</span>} key='1'>
+              <TabPane tab={<span><Icon type='form' />{i18n.t('Search by keywords')}</span>} key='1'>
                 <Form
                   style={{
                     background: 'rgba(0,0,0,.03)',
@@ -157,12 +159,12 @@ class FirstSection extends Component {
                       type='primary'
                       htmlType='submit'
                     >
-                      Search<Icon type='search' />
+                      {i18n.t('Search')}<Icon type='search' />
                     </Button>
                   </FormItem>
                 </Form>
               </TabPane>
-              <TabPane tab={<span><Icon type='bars' />Search by Options</span>} key='2'>
+              <TabPane tab={<span><Icon type='bars' />{i18n.t('Search by Options')}</span>} key='2'>
                 <Row gutter={20}>
                   <Col xs={0} sm={0} md={6} lg={6}/>
                   <Col xs={24} sm={24} md={6} lg={6} style={{margin: '10px 0'}}>
@@ -207,4 +209,4 @@ class FirstSection extends Component {
   }
 }
 
-export default Form.create()(FirstSection)
+export default translate('translations')(Form.create()(FirstSection))

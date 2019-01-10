@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { client } from '@client'
 import { Form, Button, message, Spin, BackTop } from 'antd'
-import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common' 
+import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
@@ -26,7 +26,7 @@ class EventUpdate extends Component{
     event.editorEventCreate = EditorState.createEmpty()
     const { error, event: eventDetail } = await event.getEventById(eventId)
     if(error){
-      return message.error(error) 
+      return message.error(error)
     }
     form.setFieldsValue({
       title: eventDetail.title,
@@ -59,8 +59,8 @@ class EventUpdate extends Component{
           endTime: values.endTime._d
         }
         this.setState({ buttonLoading: true }, () => {
-          client.mutate({ 
-            mutation: eventQueries.UPDATE_EVENT_BYID, 
+          client.mutate({
+            mutation: eventQueries.UPDATE_EVENT_BYID,
             variables: dataSubmit
           })
             .then( ({data, errors}) => {
@@ -72,7 +72,7 @@ class EventUpdate extends Component{
             })
             .catch( ({graphQLErrors}) => {
               this.setState({ buttonLoading: false })
-              const msg = (graphQLErrors && 
+              const msg = (graphQLErrors &&
                 graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
               return message.error(msg)
             })

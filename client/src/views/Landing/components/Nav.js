@@ -90,7 +90,7 @@ class Header extends React.Component {
                     {i18n.t('dashboard')}
                   </Link>
                 </Item>
-                <Item key='c' onClick={() => signOut(client)}>Sign Out</Item>
+                <Item key='c' onClick={() => signOut(client)}>{i18n.t('signout')}</Item>
               </SubMenu>
             ]
           }

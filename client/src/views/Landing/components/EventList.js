@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { client } from '@client'
 import { event } from '@gqlQueries'
@@ -27,7 +26,6 @@ class EventList extends Component{
 
   render(){
     const { events } = this.state
-
     return(
       <Card>
         {events && events.map((item, index) => (
