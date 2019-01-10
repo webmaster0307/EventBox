@@ -3,14 +3,13 @@ import { expect } from 'chai'
 import * as userApi from './api'
 import * as eventApi from './eventApi'
 
-describe('events', () => {
-  describe('events(status: String, limit: Int): [Events]', () => {
+describe('event', () => {
+  describe('event(id: ID!): [Event]', () => {
     it.only('returns details of event', async () => {
       const expectedResult = {
         data: {
-            events:
-            {
-                edges:[{
+            event:
+                {
                     title: "Event01",
                     images: {
                       thumbnail: "https://i.imgur.com/3PuAloY.png"
@@ -24,13 +23,12 @@ describe('events', () => {
                     endTime: "1547726700642",
                     location: "Lucy and Jack Plaza",
                     address: "123/123 Nguyễn Khắc Nhu"
-                  }]
-            }
+                  }
         }
       }
 
       const { data: { data : { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
-      const result = await eventApi.events({status:"draft", limit:8}, token)
+      const result = await eventApi.event({id:"5c35e372c90cbf0a105a9ed8"}, token)
 
       expect(result.data).to.eql(expectedResult)
     })
