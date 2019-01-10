@@ -95,8 +95,12 @@ class EventUpdate extends Component{
         graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
       return message.error(msg)
     }
-    this.props.history.push(`${routes.DASHBOARD}/events`)
-    console.log('result: ',result)
+    const { data: { publishEvent } } = result
+    if(publishEvent){
+      // console.log('result: ',result)
+      message.success('Xuất bản sự kiện thành công')
+      this.props.history.push(`${routes.DASHBOARD}/events`)
+    }
   }
 
   render() {
