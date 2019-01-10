@@ -4,7 +4,7 @@ import * as userApi from './api'
 import * as eventApi from './eventApi'
 
 describe('event', () => {
-  describe('event(id: ID!): [Event]', () => {
+  describe('detailEvent(id: ID!): [Event]', () => {
     it('returns details of event', async () => {
       const expectedResult = {
         data: {
@@ -34,6 +34,32 @@ describe('event', () => {
     })
 
   })
+  describe('personalEvent(id: ID!): [Event]', () => {
+    it.only('returns list of your event', async () => {
+      const expectedResult = {
+        data: {
+          event:
+            {
+              title: 'Event01',
+              images: {
+                thumbnail: 'https://i.imgur.com/3PuAloY.png'
+              },
+              status: 'draft',
+              user: {
+                username: 'toai'
+              },
+              updatedAt: '1547055129207'
+            }
+        }
+      }
+      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
+      const result = await eventApi.personalEvent({ id: '5c35e372c90cbf0a105a9ed8'}, token)
+
+      expect(result.data).to.eql(expectedResult)
+    })
+
+  })
+
 
 })
 
@@ -98,8 +124,8 @@ describe('listEventsHomepage', () => {
           }
         }
       }
-      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'thanhhuy', password: '123' })
-      const result = await eventApi.listEventsHomepage({ status: "draft", limit: 4 }, token)
+      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
+      const result = await eventApi.events({ status: "draft", limit: 2 }, token)
 
       expect(result.data).to.eql(expectedResult)
     })
