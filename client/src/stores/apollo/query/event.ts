@@ -51,6 +51,7 @@ const GET_EVENT_DETAIL = gql`
         username
         email
       }
+      status
     }
   }
 `

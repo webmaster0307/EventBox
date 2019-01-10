@@ -115,6 +115,7 @@ class EventCreate extends Component{
               loading={loading}
               icon='form'
               onClick={this.handlePublishEvent}
+              disabled
             >
               PUBLISH
             </Button>

@@ -65,6 +65,7 @@ export default gql`
       endTime: String
       location: String
       address: String
+      departments: [ID]
     ): Event!
 
     updateEvent(
@@ -87,6 +88,8 @@ export default gql`
     ): Event!
 
     deleteEvent(id: ID!): Boolean!
+
+    publishEvent(id: ID!): Boolean!
   }
 
   extend type Subscription {

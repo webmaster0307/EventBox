@@ -7,6 +7,7 @@ import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { event as eventQueries } from '@gqlQueries'
+import * as routes from '@routes'
 
 const FormItem = Form.Item
 
@@ -81,12 +82,26 @@ class EventUpdate extends Component{
     })
   }
 
-  handlePublishEvent = () => {
-
+  handlePublishEvent = async () => {
+    const { eventId } = this.props.match.params
+    let result
+    try {
+      result = await client.mutate({
+        mutation: eventQueries.PUBLISH_EVENT_BYID,
+        variables: { id: eventId }
+      })
+    } catch ({graphQLErrors}) {
+      const msg = (graphQLErrors && 
+        graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
+      return message.error(msg)
+    }
+    this.props.history.push(`${routes.DASHBOARD}/events`)
+    console.log('result: ',result)
   }
 
   render() {
     const { loading, buttonLoading } = this.state
+    const { event } = this.props.stores.event
 
     return (
       <Spin spinning={loading} >
@@ -109,6 +124,7 @@ class EventUpdate extends Component{
               loading={buttonLoading}
               icon='form'
               onClick={this.handlePublishEvent}
+              disabled={event && event.status === 'in-review'}
             >
               PUBLISH
             </Button>

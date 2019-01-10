@@ -18,7 +18,18 @@ export default {
       } catch (error) {
         throw newErr(`An error occurred`, 404)
       }
-    }
+    },
+    eventDepartments: (root, args, { models, newErr }) => {
+      try {
+        return models.Department.find(null, null, {
+          sort: {
+            createdAt: -1
+          }
+        })
+      } catch (error) {
+        throw newErr(`An error occurred`, 404)
+      }
+    },
   },
 
   Mutation: {

@@ -10,6 +10,16 @@ const GET_PAGINATED_DEPARTMENTS = gql`
   }
 `
 
+const GET_EVENT_DEPARTMENTS = gql`
+  query {
+    eventDepartments {
+      id
+      name
+    }
+  }
+`
+
 export {
-  GET_PAGINATED_DEPARTMENTS
+  GET_PAGINATED_DEPARTMENTS,
+  GET_EVENT_DEPARTMENTS
 }

@@ -115,6 +115,21 @@ export default {
         }
         return true
       }
+    ),
+
+    publishEvent: combineResolvers(
+      isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'in-review' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
     )
   },
 

@@ -119,6 +119,12 @@ class Events extends Component {
 @inject('stores')
 @observer
 class EventList extends Component {
+
+  state = {
+    statusFilter: undefined,
+    pageSize: 5
+  }
+
   subscribeToMoreEvent = () => {
     this.props.subscribeToMore({
       document: EVENT_CREATED,
@@ -158,55 +164,89 @@ class EventList extends Component {
     }
   }
 
-  tableColumns = () => [
-    {
-      title: '',
-      dataIndex: 'images',
-      render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} alt='thumbnail' /></div>
-    },
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      render: (text, record) => <Link to={`${basename}/events/detail/${record.id}`} >{text}</Link>
-    },
-    {
-      title: '',
-      dataIndex: 'id',
-      render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: status => <Tag color='geekblue'>{status}</Tag>
-    },
-    {
-      title: 'Owner',
-      dataIndex: 'user',
-      render: (text, record) => <div>{record.user && record.user.username}</div>
-    },
-    {
-      title: 'Last updated',
-      dataIndex: 'updatedAt',
-      render: (updatedAt) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      render: (_, row) => (
-        <Popconfirm 
-          placement='topRight' 
-          title='Are you sure to delete this event' 
-          onConfirm={() => this.handleDeleteEvent(row.id)} 
-          okText='Yes' 
-          cancelText='No'>
-          <Icon type='delete' className='icon-primary-custom__wrapper' />
-        </Popconfirm>
-      )
-    }
-  ]
+  handleTableChange = (pagination, filters, sorter) => {
+    this.setState({ statusFilter: filters })
+  }
+
+  handlePageSizeChange = (current, size) => {
+    this.setState({ pageSize: size })
+  }
+
+  tableColumns = () => {
+    let { statusFilter } = this.state
+    statusFilter = statusFilter || {}
+    
+    return([
+      {
+        title: '',
+        dataIndex: 'images',
+        render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} alt='thumbnail' /></div>
+      },
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        width: 280,
+        render: (text, record) => 
+          <div style={{width: 260}} ><Link to={`${basename}/events/detail/${record.id}`} >{text}</Link></div>
+      },
+      {
+        title: '',
+        dataIndex: 'id',
+        render: (id) => <Link to={`${basename}/events/update/${id}`} ><Icon type='edit' /> Edit</Link>
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        render: status => {
+          switch(status){
+            case 'draft': {
+              return <Tag color='blue'>Draft</Tag>
+            }
+            case 'in-review': {
+              return <Tag color='orange'>In Review</Tag>
+            }
+            default: {
+              return <Tag color='blue'>{status}</Tag> 
+            }
+          }
+        },
+        filters: [
+          { text: <Tag color='orange'>In Review</Tag>, value: 'in-review' },
+          { text: <Tag color='blue'>Draft</Tag>, value: 'draft' }
+        ],
+        filteredValue: statusFilter.status || [],
+        onFilter: (value, record) => record.status.includes(value)
+      },
+      {
+        title: 'Owner',
+        dataIndex: 'user',
+        render: (text, record) => <div>{record.user && record.user.username}</div>
+      },
+      {
+        title: 'Last updated',
+        dataIndex: 'updatedAt',
+        render: (updatedAt) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        render: (_, row) => (
+          <Popconfirm 
+            placement='topRight' 
+            title='Are you sure to delete this event' 
+            onConfirm={() => this.handleDeleteEvent(row.id)} 
+            okText='Yes' 
+            cancelText='No'>
+            <Icon type='delete' className='icon-primary-custom__wrapper' />
+          </Popconfirm>
+        )
+      }
+    ])
+  }
 
   render() {
     const { events, loading } = this.props
+
     return(
       // <Query query={getSession} >
       //   {({ data }) => {
@@ -218,7 +258,21 @@ class EventList extends Component {
       //     )
       //   }}
       // </Query>
-      <Table dataSource={events} columns={this.tableColumns()} rowKey='id' loading={loading} />
+      <Table 
+        dataSource={events} 
+        columns={this.tableColumns()} 
+        rowKey='id' 
+        loading={loading} 
+        onChange={this.handleTableChange}
+        pagination={{
+          pageSize: this.state.pageSize,
+          size: 'small',
+          total: events.length,
+          showSizeChanger: true,
+          pageSizeOptions: ['5', '10', '20'],
+          onShowSizeChange: this.handlePageSizeChange
+        }}
+      />
     )
   }
 }

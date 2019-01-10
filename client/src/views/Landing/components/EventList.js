@@ -16,7 +16,8 @@ class EventList extends Component{
   componentDidMount = async () => {
     const { data: { events } } = await client.query({
       query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-      variables: {status: 'draft', limit: 8}
+      variables: {status: 'draft', limit: 8},
+      fetchPolicy: 'no-cache'
     })
     this.setState({ events: events.edges })
   }
