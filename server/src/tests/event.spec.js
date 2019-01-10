@@ -5,7 +5,7 @@ import * as eventApi from './eventApi'
 
 describe('event', () => {
   describe('event(id: ID!): [Event]', () => {
-    it.only('returns details of event', async () => {
+    it('returns details of event', async () => {
       const expectedResult = {
         data: {
             event:
@@ -29,6 +29,52 @@ describe('event', () => {
 
       const { data: { data : { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
       const result = await eventApi.event({id:"5c35e372c90cbf0a105a9ed8"}, token)
+
+      expect(result.data).to.eql(expectedResult)
+    })
+
+  })
+
+})
+
+describe('events', () => {
+  describe('events(status:String, limit: Int!): [Events]', () => {
+    it('returns List of event', async () => {
+      const expectedResult = {
+        data: {
+          events:{
+            edges:[
+              {
+                id: "5c36c1bfd3ad920118f3e3d3",
+                images: {
+                  thumbnail: "https://i.ibb.co/vQxmVqD/noelbui.jpg"
+                },
+                title: "Cầm Cân Nảy Mực",
+                status: "draft",
+                createdAt: "1547092415490",
+                user: {
+                  username: "thanhhuy"
+                }
+              },
+              {
+                id: "5c35e372c90cbf0a105a9ed8",
+
+                images: {
+                  thumbnail: "https://i.imgur.com/3PuAloY.png"
+                },
+                title: "Event01",
+                status: "draft",
+                createdAt: "1547035506835",
+                user: {
+                  username: "toai"
+                }
+              }
+            ]
+          }
+        }
+      }
+      const { data: { data : { signIn: { token } } } } = await userApi.signIn({ username: 'thanhhuy', password: '123' })
+      const result = await eventApi.events({status:"draft",limit:8}, token)
 
       expect(result.data).to.eql(expectedResult)
     })

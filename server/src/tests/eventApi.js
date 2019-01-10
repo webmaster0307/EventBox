@@ -35,3 +35,36 @@ export const event = async (variables, token) =>
       }
       : null
   )
+export const events = async (variables, token) =>
+  await axios.post(
+    API_URL,
+    {
+      query: `
+        query ($status: String, $limit: Int) {
+            events(status: $status, limit: $limit) {
+                edges{
+                  id
+                  images{
+                    thumbnail
+                  }
+                  title
+                  status
+                  createdAt
+                  user{
+                    username
+                  }
+                }
+            }
+        }
+      `,
+      variables
+    },
+    token
+      ? {
+        headers: {
+          'x-token': token
+        }
+      }
+      : null
+  )
+
