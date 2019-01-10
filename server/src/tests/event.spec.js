@@ -35,7 +35,7 @@ describe('event', () => {
 
   })
   describe('personalEvent(id: ID!): [Event]', () => {
-    it.only('returns list of your event', async () => {
+    it('returns list of your event', async () => {
       const expectedResult = {
         data: {
           event:
@@ -65,7 +65,7 @@ describe('event', () => {
 
 describe('listEventsHomepage', () => {
   describe('events(status:String, limit: Int!): [Events]', () => {
-    it.only('returns List of event', async () => {
+    it('returns List of event', async () => {
       const expectedResult = {
         data: {
           events: {
@@ -138,3 +138,15 @@ describe('listEventsHomepage', () => {
 //   describe('createEvent(title:String, thumbnail: String!)')
 
 // })
+
+describe('updateEvent', () => {
+  it.only('updates event', async () => {
+    const {
+      data: {
+        data: { updateEvent }
+      }
+    } = await eventApi.updateEvent({ title: 'NEON LA RISA 2018 - lan tỏa những nụ cười tỏa nắng' }, token)
+
+    expect(updateEvent.title).to.eql('NEON LA RISA 2018 - lan tỏa những nụ cười tỏa nắng')
+  })
+})

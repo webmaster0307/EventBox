@@ -88,7 +88,6 @@ export const createEvent = async variables =>
   })
 
 
-
 export const personalEvent = async (variables, token) =>
   await axios.post(
     API_URL,
@@ -106,6 +105,36 @@ export const personalEvent = async (variables, token) =>
               }
       				updatedAt
             }
+        }
+      `,
+      variables
+    },
+    token
+      ? {
+        headers: {
+          'x-token': token
+        }
+      }
+      : null
+  )
+
+  export const updateEvent = async (variables, token) =>
+  axios.post(
+    API_URL,
+    {
+      query: `
+      mutation(
+        $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
+        $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
+        $startTime: String!, $endTime: String!, $location: String!, $address: String)  {
+        updateEvent(
+          title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
+          organizationName: $organizationName, organizationLogo: $organizationLogo,
+          organizationDescription: $organizationDescription,
+          startTime: $startTime, endTime: $endTime, location: $location, address: $address) {
+            title
+          }
+
         }
       `,
       variables
