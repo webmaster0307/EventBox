@@ -5,11 +5,16 @@ import { FormComponentProps } from 'antd/lib/form'
 import { client } from '@client';
 import { department, departmentUser } from '@gqlQueries';
 import { inject } from 'mobx-react';
+import { withRouter, RouteComponentProps, match } from 'react-router';
 
 const { Item } = Form
 const { Option } = Select
 
-class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function}>{
+interface RouteProps extends RouteComponentProps {
+  match: match<{ departmentId: string }>;
+}
+
+class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function} & RouteProps>{
 
   handleSubmit = (e : React.FormEvent) => {
     e.preventDefault()
@@ -17,16 +22,19 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
     form.validateFields(async (err, values) => {
       if(!err){
         const { email, role } = values
+        const { departmentId } = this.props.match.params
         let result
         try {
           result = await client.mutate({
             mutation: departmentUser.INVITE_TO_DEPARTMENT,
-            variables: { email, role }
+            variables: { departmentId, email, role }
           })
         } catch ({graphQLErrors}) {
           const msg = graphQLErrors && graphQLErrors.map((item : any) => item.message).join(', ')
           return message.error(msg)
         }
+        const { data } = result
+        console.log('data: ',data)
         message.success('Thêm thành viên mới thành công!')
         this.props.onAddSuccess(result.data.createDepartment)
       }
@@ -45,10 +53,11 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
         name: 'role',
         title: 'Vai trò',
         customRender: 
-        <Select defaultValue='reviewer' >
+        <Select>
           <Option value='member' disabled >Thành viên</Option>
           <Option value='reviewer' >Xét duyệt sự kiện</Option>
         </Select>,
+        initialValue: 'reviewer',
         rules: [RULE_NOT_EMPTY]
       }
     ])
@@ -60,7 +69,7 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
     return (
       <Form onSubmit={this.handleSubmit} hideRequiredMark className='form-add-department__wrapper' >
         {this.formFields().map(field => {
-          const { name, title, rules, customRender } = field
+          const { name, title, rules, initialValue, customRender } = field
           return(
             <Item
               key={name}
@@ -69,7 +78,8 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
               {...ITEM_LAYOUT}
             >
               {getFieldDecorator(name, {
-                rules
+                rules,
+                initialValue
               })(customRender)}
             </Item>
           )
@@ -88,4 +98,4 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
   }
 }
 
-export default Form.create()(FormAddUser)
+export default Form.create()(withRouter(FormAddUser))
