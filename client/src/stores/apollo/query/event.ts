@@ -56,7 +56,32 @@ const GET_EVENT_DETAIL = gql`
   }
 `
 
+const GET_EVENTS_INREVIEW = gql`
+  query($page: Int, $limit: Int) {
+    eventsInReview(page: $page, limit: $limit)
+      @connection(key: "EventReviewConnection") {
+      edges {
+        id
+        title
+        slug
+        description
+        status
+        images {
+          thumbnail
+        }
+        createdAt
+        updatedAt
+        user {
+          id
+          username
+        }
+      }
+    }
+  }
+`
+
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
-  GET_EVENT_DETAIL
+  GET_EVENT_DETAIL,
+  GET_EVENTS_INREVIEW
 }

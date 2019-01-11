@@ -2,6 +2,7 @@ import Home from '../Account/Home'
 import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
 import AccountPage from '../Account'
 import { AdminPage, Department, DepartmentDetail } from '../Admin'
+import { EventsReview } from '../EventReview'
 import * as routes from '@routes'
 
 export const routesComp = [
@@ -62,7 +63,7 @@ export const routesComp = [
   {
     exact: true,
     path: routes.DB_REVIEW,
-    component: Events,
+    component: EventsReview,
     roles: ['admin', 'user']
   }
 ]
@@ -132,7 +133,7 @@ export const routesMenu = [
     icon: 'file-protect',
     subComponent: [
       {
-        title: 'List',
+        title: 'Sự kiện',
         path: routes.DB_REVIEW,
         icon: 'bars',
         breadcumbs: ['Events', 'Event list']
