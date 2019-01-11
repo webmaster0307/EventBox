@@ -29,8 +29,19 @@ const GET_DEPARTMENT_BYID = gql`
   }
 `
 
+const GET_USERS_BY_DEPARTMENT = gql`
+  query($departmentId: ID!){
+    userOfDepartments(departmentId: $departmentId){
+      id
+      username
+      email
+    }
+  }
+`
+
 export {
   GET_PAGINATED_DEPARTMENTS,
   GET_EVENT_DEPARTMENTS,
-  GET_DEPARTMENT_BYID
+  GET_DEPARTMENT_BYID,
+  GET_USERS_BY_DEPARTMENT
 }

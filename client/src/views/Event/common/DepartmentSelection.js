@@ -1,7 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import { department } from '@gqlQueries'
-import { Spin, Icon, Popover, Button, Checkbox, Tooltip } from 'antd'
+import { Spin, Icon, Popover, Button, Checkbox, Tooltip, Tag } from 'antd'
 
 const { Group: CheckboxGroup } = Checkbox
 
@@ -29,9 +29,14 @@ const DepartmentSelection = (props) => {
 
 class Wrapper extends React.Component{
 
-  handleChange = values => {
+  state = {
+    selected: []
+  }
+
+  handleChange = (values) => {
     const { onChange } = this.props
     onChange && onChange(values)
+    this.setState({ selected: values })
   }
 
   render() {
@@ -48,7 +53,14 @@ class Wrapper extends React.Component{
         <Tooltip 
           title={updateStage ? 'Không thể chọn lại khoa sau khi đã tạo sự kiện' : ''}
         >
-          <Button type='dashed' disabled={updateStage} >Chọn khoa</Button>
+          <div style={{display: 'flex'}} >
+            <div style={{marginRight: 18}} >
+              <Button type='dashed' disabled={updateStage} >Chọn khoa</Button>
+            </div>
+            <div>
+              {this.state.selected.map( item => <Tag color='blue' key={item} >{item}</Tag>)}
+            </div>
+          </div>
         </Tooltip>
       </Popover>
     )

@@ -71,9 +71,23 @@ const PUBLISH_EVENT_BYID = gql`
   }
 `
 
+const APPROVE_EVENT_BYID = gql`
+  mutation($id: ID!){
+    approveEvent(id: $id)
+  }
+`
+
+const REJECT_EVENT_BYID = gql`
+  mutation($id: ID!){
+    rejectEvent(id: $id)
+  }
+`
+
 export {
   CREATE_EVENT,
   UPDATE_EVENT_BYID,
   DELETE_EVENT_BYID,
-  PUBLISH_EVENT_BYID
+  PUBLISH_EVENT_BYID,
+  APPROVE_EVENT_BYID,
+  REJECT_EVENT_BYID
 }

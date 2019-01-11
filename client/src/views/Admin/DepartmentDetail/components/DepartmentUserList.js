@@ -1,25 +1,39 @@
 import React, { Component } from 'react'
-import { List, Avatar, Divider, Button } from 'antd'
+import { List, Avatar, Divider, Button, message, Skeleton } from 'antd'
 import { withModal } from '@components'
 import FormAddUser from './FormAddUser'
-
-const data = [
-  {
-    title: 'Ant Design Title 1'
-  },
-  {
-    title: 'Ant Design Title 2'
-  },
-  {
-    title: 'Ant Design Title 3'
-  },
-  {
-    title: 'Ant Design Title 4'
-  }
-]
+import { client } from '@client'
+import { department } from '@gqlQueries'
+import { withRouter } from 'react-router'
 
 @withModal
+@withRouter
 class DepartmentUserList extends Component{
+
+  state = {
+    loading: true,
+    users: []
+  }
+
+  componentDidMount = async () => {
+    let result
+    const { departmentId } = this.props.match.params
+    
+    try {
+      result = await client.query({
+        query: department.GET_USERS_BY_DEPARTMENT,
+        variables: { departmentId }
+      })
+    } catch (error) {
+      return message.error('Failed to get users from department')
+    }
+    this.setState({
+      users: result.data.userOfDepartments,
+      loading: false
+    })
+    // console.log('result: ',result.data)
+  }
+  
 
   handleAddMember = () => {
     const { modal } = this.props
@@ -34,20 +48,30 @@ class DepartmentUserList extends Component{
   }
 
   render() {
+    const { users, loading } = this.state
+
     return (
       <div>
         <Button type='primary' onClick={this.handleAddMember} >Thêm thành viên</Button>
         <Divider />
         <List
           itemLayout='horizontal'
-          dataSource={data}
+          dataSource={users}
           renderItem={item => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />}
-                title={<a href='https://ant.design'>{item.title}</a>}
-                description='Ant Design, a design language for background applications, is refined by Ant UED Team'
-              />
+            <List.Item
+              key={item.id}
+            >
+              <Skeleton
+                loading={loading}
+                active
+                avatar
+              >
+                <List.Item.Meta
+                  avatar={<Avatar size={36} />}
+                  title={<span>{item.username} | {item.email}</span>}
+                  description={`UserID: ${item.id}`}
+                />
+              </Skeleton>
             </List.Item>
           )}
         />

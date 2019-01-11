@@ -205,14 +205,22 @@ class EventList extends Component {
             case 'in-review': {
               return <Tag color='orange'>In Review</Tag>
             }
+            case 'active': {
+              return <Tag color='green'>Published</Tag>
+            }
+            case 'rejected': {
+              return <Tag color='red'>Rejected</Tag>
+            }
             default: {
               return <Tag color='blue'>{status}</Tag> 
             }
           }
         },
         filters: [
+          { text: <Tag color='blue'>Draft</Tag>, value: 'draft' },
           { text: <Tag color='orange'>In Review</Tag>, value: 'in-review' },
-          { text: <Tag color='blue'>Draft</Tag>, value: 'draft' }
+          { text: <Tag color='green'>Published</Tag>, value: 'active' },
+          { text: <Tag color='red'>Rejected</Tag>, value: 'rejected' }
         ],
         filteredValue: statusFilter.status || [],
         onFilter: (value, record) => record.status.includes(value)

@@ -1,6 +1,7 @@
-.event-landing-detail {
+.event-review-detail {
   &__wrapper {
-    background-color: #e9e9e9;
+    padding: 2px;
+    background-color: #fff;
     padding-bottom: 50px;
 
     .event-image-thumbnail {
@@ -12,7 +13,7 @@
         max-height: 75vh;
     
         img {
-          height: 70vh;
+          height: 35vh;
         }
       }
     }
@@ -89,17 +90,18 @@
         }
       }
     }
-    
+
     .event-description {
       &__wrapper {
-        margin: 14px 0;
+        padding: 14px 10px;
         background-color: #e9e9e9;
       }
     }
     
     .event-organization {
       &__wrapper {
-        margin: 14px 0;
+        padding: 14px 10px;
+        padding-top: 0;
         background-color: #e9e9e9;
       }
     }

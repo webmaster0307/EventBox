@@ -95,6 +95,9 @@ export default gql`
     deleteEvent(id: ID!): Boolean!
 
     publishEvent(id: ID!): Boolean!
+
+    approveEvent(id: ID!): Boolean!
+    rejectEvent(id: ID!): Boolean!
   }
 
   extend type Subscription {

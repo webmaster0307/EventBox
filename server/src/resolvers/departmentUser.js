@@ -19,6 +19,14 @@ export default {
       } catch (error) {
         throw newErr(`An error occurred`, 404)
       }
+    },
+    // TODO: authentication
+    userOfDepartments: async(root, { departmentId }, { models }) => {
+      const dpmUsers = await models.DepartmentUser.find({ departmentId }).populate('userId')
+      const users = dpmUsers.map(item => item.userId)
+      // console.log('users: ',users)
+      
+      return users
     }
   },
 

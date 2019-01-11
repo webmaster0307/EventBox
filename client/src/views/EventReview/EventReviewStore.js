@@ -25,7 +25,7 @@ class EventReviewStore {
       const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
       return { error }
     }
-    console.log('result: ',result.data)
+    // console.log('result: ',result.data)
     const { edges } = result.data.eventsInReview
     this.events = edges
     this.eventsLoading = false

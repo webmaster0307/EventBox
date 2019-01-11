@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { Table, Icon, message, Tag } from 'antd'
+import { Table, message, Tag } from 'antd'
 import { inject, observer, Provider } from 'mobx-react'
-import { DASHBOARD_EVENT } from '@routes'
+import { DB_EVENT_REVIEW } from '@routes'
 import EventReviewStore from './EventReviewStore'
 
 const EVENT_CREATED = gql`
@@ -170,12 +170,7 @@ class EventList extends Component {
         dataIndex: 'title',
         width: 280,
         render: (text, record) => 
-          <div style={{width: 260}} ><Link to={`${DASHBOARD_EVENT}/detail/${record.id}`} >{text}</Link></div>
-      },
-      {
-        title: '',
-        dataIndex: 'id',
-        render: (id) => <Link to={`${DASHBOARD_EVENT}/update/${id}`} ><Icon type='edit' /> Edit</Link>
+          <div style={{width: 260}} ><Link to={`${DB_EVENT_REVIEW}/${record.id}`} >{text}</Link></div>
       },
       {
         title: 'Status',

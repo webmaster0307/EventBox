@@ -18,7 +18,8 @@ export const DB_ADMIN                      = `${DASHBOARD}/admin`
 export const DB_ADMIN_DEPARTMENT           = `${DB_ADMIN}/departments`
 export const DB_ADMIN_DEPARTMENT_UPDATE    = `${DB_ADMIN_DEPARTMENT}/:departmentId`
 // 
-export const DB_REVIEW                     = `${DASHBOARD}/review`
+export const DB_EVENT_REVIEW               = `${DASHBOARD}/review`
+export const DB_EVENT_DETAIL_REVIEW        = `${DASHBOARD}/review/:eventId`
 
 export const UNAUTHORIZED           = '/unauthorized'
 

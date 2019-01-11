@@ -57,8 +57,9 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { models }) =>
-      await models.Event.findById(id)
+      async (parent, { id }, { me, models }) =>{
+        return await models.Event.findById(id)
+      }
     ),
 
     eventsInReview: async (parent, { status, page = 0, limit = 10 }, { models, me, isAdmin }) => {
@@ -149,6 +150,37 @@ export default {
       async (parent, { id }, { models }) => {
         try {
           const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'in-review' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
+    ),
+
+    approveEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'active' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
+    ),
+    rejectEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'rejected' })
           if (errors) {
             return false
           }
