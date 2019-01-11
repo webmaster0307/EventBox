@@ -30,10 +30,10 @@ class Banner extends Component {
                   biglogo
                 )} */}
             { isMobile ? null : <LogoBlur />}
-            {i18n.t('banner title')}
+            <span className='banner0-text'>{i18n.t('banner title')}</span>
           </div>
           <div className='banner0-content' key='content'>
-            {i18n.t('banner content')}
+            <span className='banner0-text'>{i18n.t('banner content')}</span>
           </div>
           <Button className='banner0-button' key='button' ghost>
             {i18n.t('see more')}

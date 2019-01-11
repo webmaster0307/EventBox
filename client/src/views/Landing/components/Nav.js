@@ -1,4 +1,5 @@
 import React from 'react'
+import { toJS } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link, withRouter } from 'react-router-dom'
@@ -127,7 +128,7 @@ class Header extends React.Component {
                   >
                     <img width='100%' src={logo} alt='img' />
                   </TweenOne>
-                  {isMobile && (
+                  {toJS(isMobile) && (
                     <div
                       className='header0-mobile-menu'
                       onClick={this.phoneClick}
@@ -144,8 +145,8 @@ class Header extends React.Component {
                     style={isMobile ? { height: menuHeight } : null}
                   >
                     <Menu
-                      mode={isMobile ? 'inline' : 'horizontal'}
-                      theme={isMobile ? 'dark' : 'light'}
+                      mode={toJS(isMobile) ? 'horizontal' : 'horizontal'}
+                      theme={toJS(isMobile) ? 'dark' : 'light'}
                       onClick={this.handleMenuClick}
                     >
                       {navChildren}

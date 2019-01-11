@@ -54,6 +54,12 @@ export default {
       // carousel
       'More information': 'More information',
       // 3rd section
+      '3rd-title': 'Browse Events by Category',
+      '3rd-subtitle': 'Quick access to your favorite event category',
+      'events': 'events',
+      'Entertainment': 'Entertainment',
+      'Studying': 'Studying',
+      'Others': 'Others',
       // footer
       'f-about': 'is an online ticketing and event management' +
         'platform that helps you join and host events easily.',
@@ -75,24 +81,37 @@ export default {
       'Subscribe us': 'Subscribe us',
       'sb-inp-ph': 'Enter your email here',
       'Follow us': 'Follow us'
-
     }
   },
   vn: {
     translations: {
       // nav
-      'dashboard': 'Bảng điều khiển',
-      'signup': 'ĐĂNG KÝ',
-      'signin': 'ĐĂNG NHẬP',
-      'signout': 'ĐĂNG XUẤT',
+      'dashboard': '',
+      'signup': '',
+      'signin': '',
+      'signout': '',
+      // sign-in modal
+      'usn-ph': '',
+      'pwd-ph': '',
+      'Login': '',
+      'divider1': '',
+      'divider2': '',
+      'tosignup': '',
+      // sign-up modal
+      'usn': '',
+      'pwd': '',
+      'cf-pwd': '',
+      'sign-up': '',
+      'divider3': '',
+      'tosignin': '',
       // banner
-      'banner title': 'Event box trường đại học Văn Lang',
+      'banner title': '',
       'banner content': '',
-      'see more': 'Xem thêm',
+      'see more': '',
       // 1st section
       'Search by keywords': '',
       'Search by Options': '',
-      'Search': '',
+      'Search': 'Search',
       // -- category options
       'All Categories': '',
       'Live Music': '',
@@ -115,8 +134,37 @@ export default {
       'This month': '',
       // 2nd section
       'Hot Events': '',
-      '2nds-subtitle': ''
+      '2nds-subtitle': '',
       // carousel
+      'More information': '',
+      // 3rd section
+      '3rd-title': '',
+      '3rd-subtitle': '',
+      'events': '',
+      'Entertainment': '',
+      'Studying': '',
+      'Others': '',
+      // footer
+      'f-about': '' +
+        '',
+      'sp-email': '',
+      'Address': '',
+      'Office': '',
+      'Campus': '',
+      'office1': '' +
+        '',
+      'office2': '' +
+        '',
+      'office3': '' +
+        '',
+      'Contact': '',
+      'Hotline': '',
+      'c-time': '',
+      'Quick Access': '',
+      'faq': '',
+      'Subscribe us': '',
+      'sb-inp-ph': '',
+      'Follow us': ''
     }
   }
 }

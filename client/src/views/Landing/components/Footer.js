@@ -80,7 +80,7 @@ class Footer extends Component {
                 enterButton={<Icon type='thunderbolt' />}
               />
             </p>
-            <p>
+            <div>
               <b>{i18n.t('Follow us')}</b><br />
               {this.socialButton().map((button, i) => {
                 return (
@@ -109,7 +109,7 @@ class Footer extends Component {
                   </Col>
                 )
               })}
-            </p>
+            </div>
           </span>
         )
       }

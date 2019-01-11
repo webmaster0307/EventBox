@@ -7,6 +7,8 @@ import { translate } from 'react-i18next'
 import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 
+import  { categoryOpts, selectTimeOpts } from '../../../constants/options'
+
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane
 const Option = Select.Option
@@ -22,31 +24,8 @@ class FirstSection extends Component {
   }
 
   render () {
-    const { eventList } = this.props.stores.landing
+    const { suggestion } = this.props.stores.landing
     const { i18n } = this.props
-
-    // let listChildren = []
-    // if (eventList.length > 0) {
-    //   listChildren = Array.from({ length: Math.ceil(eventList.length / 3) },
-    //     (v, i) => eventList.slice(i * 3, i * 3 + 3))[0]
-    //     .map((item, index) =>
-    //       <Col
-    //         key={index.toString()} className='block'
-    //         md={8} xs={24}
-    //         onClick={() => this.handleGoToEventDetail(item)}
-    //       >
-    //         <Card
-    //           hoverable
-    //         >
-    //           <img src={item.images.thumbnail} width='100%' alt='img' />
-    //           <h3 className='content0-title'>
-    //             {item.title.length > 25 ? `${item.title.substring(0, 25)}...` : item.title}
-    //           </h3>
-    //         </Card>
-    //       </Col>
-    //     )
-    // }
-
     const { getFieldDecorator } = this.props.form
     const formInputLayout = {
       wrapperCol: {
@@ -65,35 +44,11 @@ class FirstSection extends Component {
       }
     }
 
-    let categoryOpts = [
-      {key: 'all', text: 'All Categories'},
-      {key: 'livemusic', text: 'Live Music'},
-      {key: 'artnculture', text: 'Art & Culture'},
-      {key: 'theaternplays', text: 'Theater & Plays'},
-      {key: 'nightlife', text: 'Night Life'},
-      {key: 'outdoor', text: 'Outdoor'},
-      {key: 'conference', text: 'Conference'},
-      {key: 'seminarsncourses', text: 'Seminar/Courses'},
-      {key: 'exhibitions', text: 'Exhibitions'},
-      {key: 'meetups', text: 'Meetups'},
-      {key: 'sports', text: 'Sports'},
-      {key: 'community', text: 'Community'},
-      {key: 'attractions', text: 'Attractions'}
-    ]
-
     const categoryOptions = []
     categoryOpts.map((opt, i) => {
       categoryOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
-
-    let selectTimeOpts = [
-      {key: 'all', text: 'All Upcoming dates'},
-      {key: 'today', text: 'Today'},
-      {key: 'tomorrow', text: 'Tomorrow'},
-      {key: 'thisweek', text: 'This week'},
-      {key: 'thismonth', text: 'This month'}
-    ]
 
     const selectTimeOptions = []
     selectTimeOpts.map((opt, i) => {
@@ -131,13 +86,9 @@ class FirstSection extends Component {
                 >
                   <FormItem {...formInputLayout}>
                     {getFieldDecorator('searchbar',
-                      {
-                        rules: [
-                          { type: 'string', required: true, message: 'Please input some keywords!' }
-                        ]
-                      })(<AutoComplete
+                      {rules: []})(<AutoComplete
                       id='searchbar'
-                      dataSource={eventList}
+                      dataSource={suggestion}
                       onSelect={(v) => this.props.stores.landing.handleAutoCompleteSelect(v)}
                       onSearch={(v) => this.props.stores.landing.handleAutoCompleteSearch(v)}
                       placeholder='Search events...'
