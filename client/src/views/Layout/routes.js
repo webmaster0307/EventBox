@@ -58,6 +58,12 @@ export const routesComp = [
     path: routes.DASHBOARD_EVENT_UPDATE,
     component: EventUpdate,
     roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: routes.DB_REVIEW,
+    component: Events,
+    roles: ['admin', 'user']
   }
 ]
 
@@ -117,6 +123,19 @@ export const routesMenu = [
         path: routes.DASHBOARD_EVENT_CREATE,
         icon: 'form',
         breadcumbs: [ 'Events', 'Event create' ]
+      }
+    ]
+  },
+  {
+    title: 'Xét duyệt',
+    roles: ['admin', 'reviewer'],
+    icon: 'file-protect',
+    subComponent: [
+      {
+        title: 'List',
+        path: routes.DB_REVIEW,
+        icon: 'bars',
+        breadcumbs: ['Events', 'Event list']
       }
     ]
   }

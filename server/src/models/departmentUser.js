@@ -5,10 +5,12 @@ const Schema = mongoose.Schema
 let departmentUserSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
+    required: true,
     ref: 'user'
   },
   departmentId: {
     type: Schema.Types.ObjectId,
+    required: true,
     ref: 'department'
   },
   departmentRole: {
