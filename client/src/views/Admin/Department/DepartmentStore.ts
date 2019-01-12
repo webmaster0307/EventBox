@@ -13,7 +13,7 @@ class DepartmentStore {
     try {
       result = await client.query({ query: department.GET_PAGINATED_DEPARTMENTS, variables: { limit: 5 } })
     } catch (error) {
-      
+
     }
     const { departments } = result.data
     this.departments = departments

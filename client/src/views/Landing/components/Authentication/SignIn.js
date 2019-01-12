@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Modal, Divider, Row, Col, Icon, Button } from 'antd'
+import { translate } from 'react-i18next'
 import { SignInFormWrapped as SignInForm } from '../../../Authorizing/SignIn/SignIn'
 
 @inject('stores')
@@ -39,7 +40,7 @@ class SignInModal extends Component {
 
   render () {
     const { isSigningIn } = this.props.stores.landing
-    const { refetch } = this.props
+    const { refetch, i18n } = this.props
     return (
       <Modal
         title={null}
@@ -51,7 +52,7 @@ class SignInModal extends Component {
         onCancel={() => this.props.stores.landing.ocSignInModal('c')}
       >
         <SignInForm refetch={refetch} />
-        <Divider>Or login by</Divider>
+        <Divider>{i18n.t('divider1')}</Divider>
         <Row>
           {
             this.socialButton().map((button, i) => {
@@ -83,7 +84,7 @@ class SignInModal extends Component {
             })
           }
         </Row>
-        <Divider>Don't have an account yet?</Divider>
+        <Divider>{i18n.t('divider2')}</Divider>
         <div
           style={{
             display: 'flex',
@@ -100,7 +101,7 @@ class SignInModal extends Component {
               this.props.stores.landing.ocSignUpModal('o')
             }}
           >
-            Sign up now!<Icon type='right' />
+            {i18n.t('tosignup')}!<Icon type='right' />
           </Button>
         </div>
       </Modal>
@@ -108,4 +109,4 @@ class SignInModal extends Component {
   }
 }
 
-export default SignInModal
+export default translate('translations')(SignInModal)

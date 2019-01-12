@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Form, Button, message, BackTop } from 'antd'
 import { client } from '@client'
-import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common' 
+import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common'
 import { EditorState, convertToRaw } from 'draft-js'
 import { inject } from 'mobx-react'
 import { event as eventQueries } from '@gqlQueries'
@@ -22,7 +22,7 @@ class EventCreate extends Component{
   componentDidMount = () => {
     this.props.stores.event.editorEventCreate = EditorState.createEmpty()
   }
-  
+
   _handleCreatedEvent = event => {
     event.preventDefault()
     const { form } = this.props
@@ -30,8 +30,8 @@ class EventCreate extends Component{
       if(!err){
         const dataSubmit = this.prepareData(values)
         this.setState({loading: true}, () => {
-          client.mutate({ 
-            mutation: eventQueries.CREATE_EVENT, 
+          client.mutate({
+            mutation: eventQueries.CREATE_EVENT,
             variables: dataSubmit
           })
             .then( ({data, errors}) => {
@@ -59,8 +59,8 @@ class EventCreate extends Component{
         const dataSubmit = this.prepareData(values)
         const { event } = this.props.stores
         this.setState({loading: true}, () => {
-          client.mutate({ 
-            mutation: eventQueries.CREATE_EVENT, 
+          client.mutate({
+            mutation: eventQueries.CREATE_EVENT,
             variables: dataSubmit
           })
             .then( ({data, errors}) => {

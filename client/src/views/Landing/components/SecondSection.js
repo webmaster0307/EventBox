@@ -1,8 +1,9 @@
 import React, { Component, createElement } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Row } from 'antd'
-import { TweenOneGroup } from 'rc-tween-one'
+import QueueAnim from 'rc-queue-anim'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
+import { translate } from 'react-i18next'
 import EventList from './EventList'
 
 @inject('stores')
@@ -12,11 +13,12 @@ class SecondSection extends Component {
     { key: '0', name: 'title', text: 'Hot Events' },
     {
       key: '1', name: 'content',
-      text: 'Here is a some latest and  event for you.'
+      text: '2nds-subtitle'
     }
   ]
 
   render () {
+    const { i18n } = this.props
     return (
       <div className='home-page-wrapper content5-wrapper'>
         <div className='home-page content5 jpl17zkbjcf-editor_css'>
@@ -33,24 +35,14 @@ class SecondSection extends Component {
                     src: item.text,
                     alt: 'img'
                   })
-                  : item.text))}
+                  : i18n.t(item.text)))}
           </div>
           <OverPack className={'content-template'} playScale={0.3}>
-            <TweenOneGroup
-              className='content5-img-wrapper'
-              gutter={16}
-              key='ul'
-              enter={{
-                y: '+=30',
-                opacity: 0,
-                type: 'from',
-                ease: 'easeInOutQuad'
-              }}
-              leave={{ y: '+=30', opacity: 0, ease: 'easeInOutQuad' }}
-              component={Row}
-            >
-              <EventList />
-            </TweenOneGroup>
+            <QueueAnim key='u' type='bottom'>
+              <Row key='ul' className='content5-img-wrapper' gutter={16}>
+                <EventList />
+              </Row>
+            </QueueAnim>
           </OverPack>
         </div>
       </div>
@@ -58,4 +50,4 @@ class SecondSection extends Component {
   }
 }
 
-export default SecondSection
+export default translate('translations')(SecondSection)

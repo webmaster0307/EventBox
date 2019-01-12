@@ -29,15 +29,15 @@ const EVENT_CREATED = gql`
 @inject('stores')
 @observer
 class Events extends Component {
-  
+
   componentDidMount = () => {
     const { event } = this.props.stores
     const { error } = event.getEvents()
     if(error){
       return message.error(error)
     }
-    
-    // let result 
+
+    // let result
     // try {
     //   result = await client.query({ query: GET_PAGINATED_EVENTS_WITH_USERS, variables: { limit } })
     // } catch ({graphQLErrors}) {
@@ -49,7 +49,7 @@ class Events extends Component {
     // console.log('event: ' ,events)
     // event.updateEvents(events.edges)
   }
-  
+
 
   render(){
     const { eventsLoading, events } = this.props.stores.event

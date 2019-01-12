@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Carousel, Icon, Card, Button } from 'antd'
 import TweenOne from 'rc-tween-one'
+import { translate } from 'react-i18next'
 
 import { client } from '@client'
 import { event } from '@gqlQueries'
+import * as routes from '@routes'
+import { withRouter } from 'react-router-dom'
 
 const { Meta } = Card
 
+@withRouter
 @inject('stores')
 @observer
 class CarouselSection extends Component {
@@ -23,8 +27,13 @@ class CarouselSection extends Component {
     this.setState({ events: events.edges })
   }
 
+  handleGoToEventDetail = event => {
+    this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
+  }
+
   render () {
     const { events } = this.state
+    const { i18n } = this.props
     return (
       <div className='banner0' style={{height: 560}}>
         <div className='banner0-text-wrapper'>
@@ -47,16 +56,35 @@ class CarouselSection extends Component {
               {events && events.map((item, i) => (
                 <div key={i.toString()}>
                   <Card
-                    // hoverable
-                    style={{ width: 410 }}
-                    cover={<img alt='event thumbnail' src={item.images.thumbnail} />}
+                    style={{
+                      width: 410,
+                      height: 400,
+                      borderRadius: 10,
+                      background: 'linear-gradient(to top right,' +
+                      'rgba(234, 242, 255, 1),' +
+                      'rgba(255, 255, 255, .7))',
+                      border: 'none'
+                    }}
                   >
+                    <img
+                      style={{
+                        width: '80%',
+                        marginBottom: 10,
+                        borderRadius: 10
+                      }}
+                      alt='event thumbnail'
+                      src={item.images.thumbnail}
+                    />
                     <Meta
-                      title={item.title}
+                      title={
+                        <span style={{fontSize: 20}}>
+                          <Icon type='tag' theme='twoTone' twoToneColor='#52c41a' />
+                          <i>{item.title.length > 30 ? ` ${item.title.substring(0,30)}...` : ` ${item.title}`}</i>
+                        </span>}
                       description={
-                        <Button>
+                        <Button onClick={() => this.handleGoToEventDetail(item)}>
                           <Icon type='info-circle' theme='twoTone' twoToneColor='#91bbff' />
-                          More information
+                          {i18n.t('More information')}
                         </Button>
                       }
                     />
@@ -83,4 +111,4 @@ class CarouselSection extends Component {
   }
 }
 
-export default CarouselSection
+export default translate('translations')(CarouselSection)

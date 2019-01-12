@@ -7,7 +7,7 @@ RUN mkdir -p /app/client
 
 WORKDIR /app/client
 
-COPY ["./package.json", "./yarn.lock", "./"] 
+COPY ["./package.json", "./yarn.lock", "./"]
 
 RUN yarn install --prod
 

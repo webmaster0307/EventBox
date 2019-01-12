@@ -5,13 +5,14 @@ import QueueAnim from 'rc-queue-anim'
 import TweenOne from 'rc-tween-one'
 
 import LogoBlur from './LogoBlur'
-
+import { translate } from 'react-i18next'
 
 @inject('stores')
 @observer
 class Banner extends Component {
   render () {
     const { isMobile } = this.props.stores.landing
+    const { i18n } = this.props
     return (
       <div className='banner0'>
         <QueueAnim
@@ -29,12 +30,13 @@ class Banner extends Component {
                   biglogo
                 )} */}
             { isMobile ? null : <LogoBlur />}
+            <span className='banner0-text'>{i18n.t('banner title')}</span>
           </div>
           <div className='banner0-content' key='content'>
-            Team 13's Event-box web application.
+            <span className='banner0-text'>{i18n.t('banner content')}</span>
           </div>
           <Button className='banner0-button' key='button' ghost>
-            See more
+            {i18n.t('see more')}
           </Button>
         </QueueAnim>
         <TweenOne
@@ -54,4 +56,4 @@ class Banner extends Component {
   }
 }
 
-export default Banner
+export default translate('translations')(Banner)

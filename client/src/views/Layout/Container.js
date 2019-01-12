@@ -13,7 +13,7 @@ const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
 class Container extends React.Component {
-  
+
   state = {
     collapsed: false
   }
