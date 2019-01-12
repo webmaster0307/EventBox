@@ -50,18 +50,18 @@ class Wrapper extends React.Component{
         placement='topLeft'
         trigger={updateStage ? 'click' : 'hover'}
       >
-        <Tooltip 
-          title={updateStage ? 'Không thể chọn lại khoa sau khi đã tạo sự kiện' : ''}
-        >
-          <div style={{display: 'flex'}} >
-            <div style={{marginRight: 18}} >
+        <div style={{display: 'flex'}} >
+          <div style={{marginRight: 18}} >
+            <Tooltip 
+              title={updateStage ? 'Không thể chọn lại khoa sau khi đã tạo sự kiện' : ''}
+            >
               <Button type='dashed' disabled={updateStage} >Chọn khoa</Button>
-            </div>
-            <div>
-              {this.state.selected.map( item => <Tag color='blue' key={item} >{item}</Tag>)}
-            </div>
+            </Tooltip>
           </div>
-        </Tooltip>
+          <div>
+            {this.state.selected.map(item => <Tag color='blue' key={item} >{item}</Tag>)}
+          </div>
+        </div>
       </Popover>
     )
   }
