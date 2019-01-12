@@ -8,6 +8,7 @@ import { inject } from 'mobx-react'
 import { event as eventQueries } from '@gqlQueries'
 import * as routes from '@routes'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import './styles.scss'
 
 const FormItem = Form.Item
 

@@ -9,7 +9,7 @@ const DepartmentSelection = (props) => {
   const { onChange } = props
 
   return(
-    <div style={{minWidth: 120, minHeight: 120, textAlign: 'center'}} >
+    <div style={{width: 200, minHeight: 120}} >
       <Query
         query={department.GET_EVENT_DEPARTMENTS}
       >
@@ -17,7 +17,8 @@ const DepartmentSelection = (props) => {
           if(loading){
             return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
           }
-          const options = data.eventDepartments.map(item => ({ label: item.name, value: item.id }))
+          const options = data.eventDepartments.map(item => 
+            ({ label: item.name, value: JSON.stringify({id: item.id, name: item.name}) }))
           return(
             <CheckboxGroup options={options} onChange={onChange} />
           )
@@ -34,9 +35,13 @@ class Wrapper extends React.Component{
   }
 
   handleChange = (values) => {
+    const dataParsed = values.map(item => JSON.parse(item))
+    const ids = dataParsed.map(item => item.id)
+    const names = dataParsed.map(item => item.name)
     const { onChange } = this.props
-    onChange && onChange(values)
-    this.setState({ selected: values })
+    onChange && onChange(ids)
+    this.setState({ selected: names })
+    console.log('values: ',ids)
   }
 
   render() {
@@ -49,6 +54,7 @@ class Wrapper extends React.Component{
         title='Danh sách Khoa'
         placement='topLeft'
         trigger={updateStage ? 'click' : 'hover'}
+        overlayClassName='deaprtment-selection-custom__wrapper'
       >
         <div style={{display: 'flex'}} >
           <div style={{marginRight: 18}} >
