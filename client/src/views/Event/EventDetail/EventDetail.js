@@ -15,7 +15,7 @@ class EventItem extends Component{
 
   componentDidMount = async () => {
     const { eventId } = this.props.match.params
-    let result 
+    let result
     try {
       result = await client.query({query: event.GET_EVENT_DETAIL, variables: { eventId }})
     } catch (error) {
@@ -26,7 +26,7 @@ class EventItem extends Component{
       loading: false
     })
   }
-  
+
 
   render(){
     const { loading, event } = this.state

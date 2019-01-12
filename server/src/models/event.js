@@ -18,7 +18,7 @@ let eventSchema = new Schema({
     type: String,
     default: ''
   },
-  departmentId: [{
+  departments: [{
     type: Schema.Types.ObjectId,
     ref: 'department'
   }],

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 const GET_PAGINATED_EVENTS_WITH_USERS = gql`
-  query($status: String, $cursor: String, $limit: Int!) {
+  query($status: String, $cursor: String, $limit: Int) {
     events(status: $status, cursor: $cursor, limit: $limit)
       @connection(key: "EventConnection") {
       edges {
@@ -40,7 +40,7 @@ const GET_EVENT_DETAIL = gql`
       }
       createdAt
       organizationName
-      organizationLogo 
+      organizationLogo
       organizationDescription
       startTime
       endTime
@@ -51,11 +51,37 @@ const GET_EVENT_DETAIL = gql`
         username
         email
       }
+      status
+    }
+  }
+`
+
+const GET_EVENTS_INREVIEW = gql`
+  query($page: Int, $limit: Int) {
+    eventsInReview(page: $page, limit: $limit)
+      @connection(key: "EventReviewConnection") {
+      edges {
+        id
+        title
+        slug
+        description
+        status
+        images {
+          thumbnail
+        }
+        createdAt
+        updatedAt
+        user {
+          id
+          username
+        }
+      }
     }
   }
 `
 
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
-  GET_EVENT_DETAIL
+  GET_EVENT_DETAIL,
+  GET_EVENTS_INREVIEW
 }

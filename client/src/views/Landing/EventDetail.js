@@ -245,7 +245,7 @@ const HeaderNav = props => {
 
 const AboutEvent = ({ className, event }) => (
   <div className={className} name='inTroduce' >
-    <Card 
+    <Card
       title='Giới thiệu'
     >
       <EditorWysiwyg

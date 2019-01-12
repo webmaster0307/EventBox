@@ -29,4 +29,33 @@ export const isEventOwner = combineResolvers(
     return skip
 })
 
+export const isEventReviewer = combineResolvers(
+  isAuthenticated,
+  async ( parent, { id }, { models, me } ) => {
+    if(isAdminRole(me)){
+      return skip
+    }
+    const event = await models.Event.findById(id)
+    if(!event){
+      throw new UserInputError(
+        'Sự kiện không hợp lệ'
+      )
+    }
+
+    const reviewers = models.DepartmentUser.findOne({ 
+      userId: me.id,
+      departmentId: {
+        $in: event.departmentId
+      }
+    })
+
+    console.log('reviewers: ',reviewers)
+
+    if (!reviewers) {
+      throw new ForbiddenError('Not authenticated as owner.')
+    }
+
+    return skip
+})
+
 const isAdminRole = me => me.role.includes('admin')

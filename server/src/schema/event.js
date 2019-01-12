@@ -32,7 +32,11 @@ export default gql`
 
   type EventConnection {
     edges: [Event!]!
-    pageInfo: PageInfo!
+    pageInfo: PageInfo
+  }
+
+  type EventReviewConnection {
+    edges: [Event!]
   }
 
   type PageInfo {
@@ -46,6 +50,7 @@ export default gql`
 
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
+    eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
   }
 
@@ -65,6 +70,7 @@ export default gql`
       endTime: String
       location: String
       address: String
+      departments: [ID]
     ): Event!
 
     updateEvent(
@@ -87,9 +93,15 @@ export default gql`
     ): Event!
 
     deleteEvent(id: ID!): Boolean!
+
+    publishEvent(id: ID!): Boolean!
+
+    approveEvent(id: ID!): Boolean!
+    rejectEvent(id: ID!): Boolean!
   }
 
   extend type Subscription {
     eventCreated: EventCreated!
+    eventSubmited: EventCreated!
   }
 `

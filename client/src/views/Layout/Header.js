@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom'
 const { Header } = Layout
 
 const LayoutHeader = props => (
-  <Header 
-    style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }} 
+  <Header
+    style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}
   >
     <UserAvatar {...props} />
   </Header>
@@ -19,8 +19,8 @@ export default LayoutHeader
 class UserAvatar extends Component{
 
   render() {
-    const { user } = this.props 
-    
+    const { user } = this.props
+
     return (
       <div className='layout-header-useravatar__wrapper' >
         <span style={{marginRight: 12}} >{user.username}</span>

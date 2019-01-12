@@ -15,10 +15,10 @@ class Event {
   @action
   async getEvents(_events){
     this.eventsLoading = true
-    let result 
+    let result
     try {
-      result = await client.query({ 
-        query: event.GET_PAGINATED_EVENTS_WITH_USERS, 
+      result = await client.query({
+        query: event.GET_PAGINATED_EVENTS_WITH_USERS,
         variables: { limit: limitEventPerPage },
         fetchPolicy: 'no-cache'
       })
@@ -33,7 +33,7 @@ class Event {
 
   @action
   async getEventById(eventId){
-    let result 
+    let result
     try {
       result = await client.query({ query: event.GET_EVENT_DETAIL, variables: { eventId }, fetchPolicy: 'no-cache' })
     } catch ({graphQLErrors}) {

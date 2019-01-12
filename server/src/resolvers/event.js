@@ -49,7 +49,7 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: toCursorHash( edges[edges.length - 1].createdAt.toString() )
+          endCursor: events.length > 0 ? toCursorHash( edges[edges.length - 1].createdAt.toString() ) : ''
         }
       }
     },
@@ -57,9 +57,37 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { models }) =>
-      await models.Event.findById(id)
-    )
+      async (parent, { id }, { me, models }) =>{
+        return await models.Event.findById(id)
+      }
+    ),
+
+    eventsInReview: async (parent, { status, page = 0, limit = 10 }, { models, me, isAdmin }) => {
+
+      // const departmentIds = await models.DepartmentUser
+      //   .find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
+      //   .map(doc => doc.departmentId.toString())
+
+      const departments = await models.DepartmentUser.find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
+      const departmentIds = departments.map(doc => doc.departmentId)
+      const edges = await models.Event.find({
+        status: 'in-review',
+        departments: {
+          $in: departmentIds
+        }
+      }, null, {
+        skip: page * limit,
+        limit: limit + 1,
+        sort: {
+          createdAt: -1
+        }
+      })
+      // console.log("​events", edges)
+      
+      return {
+        edges
+      }
+    },
   },
 
   Mutation: {
@@ -115,6 +143,52 @@ export default {
         }
         return true
       }
+    ),
+
+    publishEvent: combineResolvers(
+      isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'in-review' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
+    ),
+
+    approveEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'active' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
+    ),
+    rejectEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'rejected' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
     )
   },
 
@@ -130,6 +204,9 @@ export default {
   Subscription: {
     eventCreated: {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
+    },
+    eventSubmited: {
+      subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.SUBMITED_REVIEW)
     }
   }
 }

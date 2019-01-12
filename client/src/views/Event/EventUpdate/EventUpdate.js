@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { client } from '@client'
 import { Form, Button, message, Spin, BackTop } from 'antd'
-import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common' 
+import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { event as eventQueries } from '@gqlQueries'
+import * as routes from '@routes'
 
 const FormItem = Form.Item
 
@@ -26,7 +27,7 @@ class EventUpdate extends Component{
     event.editorEventCreate = EditorState.createEmpty()
     const { error, event: eventDetail } = await event.getEventById(eventId)
     if(error){
-      return message.error(error) 
+      return message.error(error)
     }
     form.setFieldsValue({
       title: eventDetail.title,
@@ -59,8 +60,8 @@ class EventUpdate extends Component{
           endTime: values.endTime._d
         }
         this.setState({ buttonLoading: true }, () => {
-          client.mutate({ 
-            mutation: eventQueries.UPDATE_EVENT_BYID, 
+          client.mutate({
+            mutation: eventQueries.UPDATE_EVENT_BYID,
             variables: dataSubmit
           })
             .then( ({data, errors}) => {
@@ -72,7 +73,7 @@ class EventUpdate extends Component{
             })
             .catch( ({graphQLErrors}) => {
               this.setState({ buttonLoading: false })
-              const msg = (graphQLErrors && 
+              const msg = (graphQLErrors &&
                 graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
               return message.error(msg)
             })
@@ -81,17 +82,35 @@ class EventUpdate extends Component{
     })
   }
 
-  handlePublishEvent = () => {
-
+  handlePublishEvent = async () => {
+    const { eventId } = this.props.match.params
+    let result
+    try {
+      result = await client.mutate({
+        mutation: eventQueries.PUBLISH_EVENT_BYID,
+        variables: { id: eventId }
+      })
+    } catch ({graphQLErrors}) {
+      const msg = (graphQLErrors && 
+        graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
+      return message.error(msg)
+    }
+    const { data: { publishEvent } } = result
+    if(publishEvent){
+      // console.log('result: ',result)
+      message.success('Xuất bản sự kiện thành công')
+      this.props.history.push(`${routes.DASHBOARD}/events`)
+    }
   }
 
   render() {
     const { loading, buttonLoading } = this.state
+    const { event } = this.props.stores.event
 
     return (
       <Spin spinning={loading} >
         <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
-          <DescriptionArea {...this.props} loading={loading} />
+          <DescriptionArea {...this.props} loading={loading} updateStage />
           <OriganizationArea {...this.props} />
           <DateHoldingArea {...this.props} />
           <FormItem>
@@ -109,6 +128,7 @@ class EventUpdate extends Component{
               loading={buttonLoading}
               icon='form'
               onClick={this.handlePublishEvent}
+              disabled={event && event.status === 'in-review'}
             >
               PUBLISH
             </Button>

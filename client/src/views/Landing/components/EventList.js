@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { client } from '@client'
 import { event } from '@gqlQueries'
@@ -16,7 +15,8 @@ class EventList extends Component{
   componentDidMount = async () => {
     const { data: { events } } = await client.query({
       query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-      variables: {status: 'draft', limit: 8}
+      variables: {status: 'draft', limit: 8},
+      fetchPolicy: 'no-cache'
     })
     this.setState({ events: events.edges })
   }
@@ -27,7 +27,6 @@ class EventList extends Component{
 
   render(){
     const { events } = this.state
-
     return(
       <Card>
         {events && events.map((item, index) => (

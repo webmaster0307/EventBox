@@ -38,7 +38,7 @@ query($eventId: ID!) {
     }
     createdAt
     organizationName
-    organizationLogo 
+    organizationLogo
     organizationDescription
     startTime
     endTime

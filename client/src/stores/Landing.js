@@ -1,5 +1,6 @@
-import { observable, action } from 'mobx'
-// import { client } from '@client'
+import { observable, action, toJS } from 'mobx'
+import { client } from '@client'
+import { event } from '@gqlQueries'
 
 class Landing {
   @observable isShow = true
@@ -11,10 +12,18 @@ class Landing {
   // For sign up modal
   @observable isSigningUp = false
   // Search bar
+  @observable allSuggestion = []
+  @observable suggestion = []
+  // Event list
   @observable eventList = []
 
   @action
-  checkScreen (r) {this.isMobile = r}
+  checkScreen (r) {
+    if (r === undefined) {
+      this.isMobile = false
+    }
+    this.isMobile = r
+  }
 
   @action
   checkShow (r) {this.isShow = r}
@@ -48,17 +57,39 @@ class Landing {
   }
 
   @action
+  async getEvents () {
+    const { data: { events } } = await client.query({
+      query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+      variables: {status: 'draft'}
+    })
+
+    if (events.edges.length) {
+      this.allSuggestion = events.edges.map(e => {
+        if (e.title.length > 90) {
+          return e.title.substring(0, 90)
+        } else {
+          return e.title
+        }
+      })
+    }
+
+    this.eventList = [...events.edges]
+  }
+
+  @action
   handleAutoCompleteSelect(value) {
     console.log(value)
   }
 
   @action
-  handleAutoCompleteSearch = (value) => {
-    this.eventList = !value ? [] : [
-      value,
-      value + value,
-      value + value + value
-    ]
+  handleAutoCompleteSearch = (words) => {
+    if (words) {
+      this.suggestion = toJS(this.allSuggestion).filter(title => {
+        return title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      })
+    } else {
+      this.suggestion = []
+    }
   }
 
 }

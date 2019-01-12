@@ -37,8 +37,14 @@ export default {
       if (!me) {
         return null
       }
+      const currentUser = await models.User.findById(me.id)
+      const isReviewer = await models.DepartmentUser.findOne({ userId: me.id, departmentRole: 'reviewer' })
+      if(isReviewer){
+        currentUser.role.push('reviewer')
+      }
+      // console.log('current: ',currentUser);
 
-      return await models.User.findById(me.id)
+      return currentUser
     }
   },
 

@@ -9,12 +9,13 @@
       "request": "launch",
       "name": "express-graphql",
       "program": "${workspaceFolder}/server/src/index.js",
+      "runtimeExecutable": "${workspaceFolder}/server/node_modules/.bin/babel-node",
+      "runtimeArgs": ["--nolazy"],
       "envFile": "${workspaceFolder}/server/.env",
       "env":{
         "NODE_ENV":"development",
         "BABEL_ENV": "debug"
-      },
-      "runtimeExecutable": "${workspaceFolder}/server/node_modules/.bin/babel-node"
+      }
     }
   ]
 }

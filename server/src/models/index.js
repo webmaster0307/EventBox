@@ -6,6 +6,7 @@ import Contact from './contact'
 import Department from './department'
 import DraftEvent from './draftEvent'
 import Event from './event'
+import DepartmentUser from './departmentUser'
 
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI, {
@@ -31,5 +32,6 @@ export default {
   Department,
   DraftEvent,
   Event,
-  User
+  User,
+  DepartmentUser
 }
