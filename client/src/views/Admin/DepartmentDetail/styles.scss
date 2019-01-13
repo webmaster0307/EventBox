@@ -1,0 +1,11 @@
+.department-user-list {
+  &__wrapper {
+    .ant-list-item-content-single {
+      align-items: center;
+
+      .ant-list-item-meta{
+        align-items: center;
+      }
+    }
+  }
+}

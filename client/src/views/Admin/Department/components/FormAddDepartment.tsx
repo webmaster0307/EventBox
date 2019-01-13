@@ -4,11 +4,9 @@ import { RULE_NOT_EMPTY, ITEM_LAYOUT } from './constants'
 import { FormComponentProps } from 'antd/lib/form'
 import { client } from '@client';
 import { department } from '@gqlQueries';
-import { inject } from 'mobx-react';
 
 const { Item } = Form
 
-@inject('departmentStore')
 class FormAddDepartment extends Component<FormComponentProps & {onAddSuccess: Function}>{
 
   handleSubmit = (e : React.FormEvent) => {

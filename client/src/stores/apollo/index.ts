@@ -2,7 +2,8 @@ import {
   user as userQueries,
   event as eventQueries,
   department as departmentQueries,
-  session as sessionQueries
+  session as sessionQueries,
+  departmentUser as departmentUserQueries
 } from './query'
 import {
   user as userMutations,
@@ -31,6 +32,7 @@ const session = {
 }
 
 const departmentUser = {
+  ...departmentUserQueries,
   ...departmentUserMutations
 }
 

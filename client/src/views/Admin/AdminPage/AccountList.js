@@ -6,11 +6,11 @@ import { inject, observer } from 'mobx-react'
 @observer
 class AccountList extends Component {
   componentDidMount = async () => {
-    this.props.stores.admin.getAccountList()
+    this.props.stores.admin.accountStore.getAccountList()
   }
 
   render () {
-    const { accountList } = this.props.stores.admin
+    const { accountList } = this.props.stores.admin.accountStore
 
     const columns = [{
       title: 'Username',
@@ -61,7 +61,7 @@ class AccountList extends Component {
         <span>
           <Button
             value={record.id}
-            onClick={(e) => this.props.stores.admin.deleteUser(e.target.value)}
+            onClick={(e) => this.props.stores.admin.accountStore.deleteUser(e.target.value)}
           >
             <Icon type='delete' />Delete
           </Button>

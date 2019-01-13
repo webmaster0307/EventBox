@@ -1,4 +1,5 @@
 import { combineResolvers } from 'graphql-resolvers'
+import mongoose from 'mongoose'
 
 import { isAuthenticated, isEventOwner } from './authorization'
 
@@ -197,7 +198,13 @@ export default {
       await loaders.user.load(event.userId),
     
     departments: async (event, args, { models }) => {
-      return []
+      const ids = event.departments.map(id => mongoose.Types.ObjectId(id))
+      const departments = await models.Department.find({
+        _id: {
+          $in: ids
+        }
+      })
+      return departments
     }
   },
 

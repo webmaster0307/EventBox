@@ -1,33 +1,19 @@
+import { combineResolvers } from 'graphql-resolvers'
 import { UserInputError } from 'apollo-server'
 
 export default {
   Query: {
-    departmentuserList: async (root, { page, limit }, { models, newErr }) => {
-      try {
-        return models.DepartmentUser.find(null, null, {
-          sort: {
-            createdAt: -1
-          }
-        })
-      } catch (error) {
-        throw newErr(`An error occurred`, 404)
-      }
-    },
-    departmentuser: async (root, { id }, { models, newErr }) => {
-      try {
-        return models.DepartmentUser.findById(id)
-      } catch (error) {
-        throw newErr(`An error occurred`, 404)
-      }
-    },
     // TODO: authentication
-    userOfDepartments: async(root, { departmentId }, { models }) => {
-      const dpmUsers = await models.DepartmentUser.find({ departmentId }).populate('userId')
-      const users = dpmUsers.map(item => item.userId)
-      // console.log('users: ',users)
-      
-      return users
-    }
+    userOfDepartments: combineResolvers(
+      // isEventOwner,
+      async(root, { departmentId }, { models }) => {
+        const dpmUsers = await models.DepartmentUser.find({ departmentId }).populate('userId')
+        const users = dpmUsers.map(item => item.userId)
+        // console.log('users: ',users)
+        
+        return users
+      }
+    ),
   },
 
   Mutation: {
@@ -64,6 +50,20 @@ export default {
       })
       return document
     },
+    removeMember: combineResolvers(
+      async (root, { departmentId, userId }, { models, newErr }) => {
+        try {
+          await models.DepartmentUser.deleteOne({
+            userId,
+            departmentId
+          })
+        } catch (error) {
+          throw newErr(`An error occurred`, 404)
+        }
+        
+        return true
+      }
+    )
   },
 
   DepartmentUser: {

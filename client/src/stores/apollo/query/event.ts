@@ -33,6 +33,10 @@ const GET_EVENT_DETAIL = gql`
       id
       title
       description
+      departments {
+        id
+        name
+      }
       shortDescription
       images {
         thumbnail

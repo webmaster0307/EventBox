@@ -13,6 +13,13 @@ const INVITE_TO_DEPARTMENT = gql`
   }
 `
 
+const REMOVE_FROM_DEPARTMENT = gql`
+  mutation($departmentId: ID!, $userId: ID!) {
+    removeMember(departmentId: $departmentId, userId: $userId)
+  }
+`
+
 export {
-  INVITE_TO_DEPARTMENT
+  INVITE_TO_DEPARTMENT,
+  REMOVE_FROM_DEPARTMENT
 }

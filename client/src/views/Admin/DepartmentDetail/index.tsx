@@ -4,6 +4,7 @@ import { Tabs, Spin } from 'antd';
 import { department } from '@gqlQueries'
 import { RouteComponentProps, match } from 'react-router'
 import UserList from './components/DepartmentUserList'
+import './styles.scss'
 
 const { TabPane } = Tabs
 

@@ -18,8 +18,7 @@ export default gql`
   }
 
   extend type Mutation {
-
     inviteMember(departmentId: ID!, email: String!, role: String!): DepartmentUser
-
+    removeMember(departmentId: ID!, userId: ID!): Boolean!
   }
 `

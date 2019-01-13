@@ -5,12 +5,12 @@ import { toJS } from 'mobx';
 import { Link } from 'react-router-dom'
 import * as routes from '@routes'
 
-@inject('stores', 'departmentStore')
+@inject('stores')
 @observer
 class DepartmentList extends Component<any>{
 
   componentDidMount = () => {
-    const { departmentStore } = this.props
+    const { departmentStore } = this.props.stores.admin
     departmentStore.getDepartments()
   }
 
@@ -36,7 +36,7 @@ class DepartmentList extends Component<any>{
   }
 
   render() {
-    const { departments, listLoading: loading } = this.props.departmentStore
+    const { departments, listLoading: loading } = this.props.stores.admin.departmentStore
 
     return (
       <Table 

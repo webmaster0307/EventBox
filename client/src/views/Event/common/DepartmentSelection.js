@@ -2,6 +2,8 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import { department } from '@gqlQueries'
 import { Spin, Icon, Popover, Button, Checkbox, Tooltip, Tag } from 'antd'
+import { inject, observer } from 'mobx-react'
+import { toJS } from 'mobx'
 
 const { Group: CheckboxGroup } = Checkbox
 
@@ -28,6 +30,8 @@ const DepartmentSelection = (props) => {
   )
 }
 
+@inject('stores')
+@observer
 class Wrapper extends React.Component{
 
   state = {
@@ -41,11 +45,11 @@ class Wrapper extends React.Component{
     const { onChange } = this.props
     onChange && onChange(ids)
     this.setState({ selected: names })
-    console.log('values: ',ids)
   }
 
   render() {
     const { updateStage } = this.props
+    const { event } = this.props.stores.event
     
     return (
       <Popover 
@@ -66,6 +70,9 @@ class Wrapper extends React.Component{
           </div>
           <div>
             {this.state.selected.map(item => <Tag color='blue' key={item} >{item}</Tag>)}
+            {updateStage && event &&
+              toJS(event.departments).map(item => <Tag color='blue' key={item} >{item.name}</Tag>)
+            }
           </div>
         </div>
       </Popover>

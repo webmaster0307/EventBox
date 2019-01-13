@@ -3,8 +3,7 @@ import { Form, Input, Button, Row, Select, message } from 'antd'
 import { RULE_NOT_EMPTY, ITEM_LAYOUT } from './constants'
 import { FormComponentProps } from 'antd/lib/form'
 import { client } from '@client';
-import { department, departmentUser } from '@gqlQueries';
-import { inject } from 'mobx-react';
+import { departmentUser } from '@gqlQueries';
 import { withRouter, RouteComponentProps, match } from 'react-router';
 
 const { Item } = Form
@@ -33,10 +32,9 @@ class FormAddUser extends Component<FormComponentProps & {onAddSuccess: Function
           const msg = graphQLErrors && graphQLErrors.map((item : any) => item.message).join(', ')
           return message.error(msg)
         }
-        const { data } = result
-        console.log('data: ',data)
+        const { user } = result.data.inviteMember
         message.success('Thêm thành viên mới thành công!')
-        this.props.onAddSuccess(result.data.createDepartment)
+        this.props.onAddSuccess(user)
       }
     })
   }
