@@ -71,7 +71,7 @@ class Wrapper extends React.Component{
           <div>
             {this.state.selected.map(item => <Tag color='blue' key={item} >{item}</Tag>)}
             {updateStage && event &&
-              toJS(event.departments).map(item => <Tag color='blue' key={item} >{item.name}</Tag>)
+              toJS(event.departments).map(item => <Tag color='blue' key={item.id} >{item.name}</Tag>)
             }
           </div>
         </div>
