@@ -1,11 +1,12 @@
-import { observable, action, toJS } from 'mobx'
+import { observable, action, toJS, computed } from 'mobx'
 import { client } from '@client'
 import { event } from '@gqlQueries'
+import i18n from '../constants/i18n'
 
 class Landing {
   @observable isShow = true
-  @observable isEnglish = true
-  @observable buttonText = 'Tiếng Việt'
+  @observable isEnglish = false
+  // @observable buttonText = 'Tiếng Việt'
   @observable isMobile = false
   // For sign in modal
   @observable isSigningIn = false
@@ -16,6 +17,12 @@ class Landing {
   @observable suggestion = []
   // Event list
   @observable eventList = []
+
+  constructor(){
+    if(i18n.language === 'en'){
+      this.isEnglish = true
+    }
+  }
 
   @action
   checkScreen (r) {
@@ -30,11 +37,11 @@ class Landing {
 
   @action
   changeLanguage () {
-    if (this.isEnglish) {
-      this.buttonText = 'English'
-    } else {
-      this.buttonText = 'Tiếng Việt'
-    }
+    // if (this.isEnglish) {
+    //   this.buttonText = 'English'
+    // } else {
+    //   this.buttonText = 'Tiếng Việt'
+    // }
     this.isEnglish = !this.isEnglish
   }
 
@@ -60,7 +67,7 @@ class Landing {
   async getEvents () {
     const { data: { events } } = await client.query({
       query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-      variables: {status: 'draft'}
+      variables: { status: 'draft', limit: 8 }
     })
 
     if (events.edges.length) {
@@ -92,6 +99,13 @@ class Landing {
     }
   }
 
+  @computed get buttonText(){
+    if (this.isEnglish) {
+      return 'Tiếng Việt'
+    } else {
+      return 'English'
+    }
+  }
 }
 
 

@@ -8,7 +8,6 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
         id
         title
         slug
-        description
         status
         images {
           thumbnail

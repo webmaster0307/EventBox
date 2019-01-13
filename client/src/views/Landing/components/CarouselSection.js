@@ -4,9 +4,6 @@ import { Carousel, Icon, Card, Button } from 'antd'
 import TweenOne from 'rc-tween-one'
 import { translate } from 'react-i18next'
 
-import { client } from '@client'
-import { event } from '@gqlQueries'
-import * as routes from '@routes'
 import { withRouter } from 'react-router-dom'
 
 const { Meta } = Card
@@ -19,20 +16,10 @@ class CarouselSection extends Component {
     events: []
   }
 
-  componentDidMount = async () => {
-    const { data: { events } } = await client.query({
-      query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-      variables: {status: 'draft', limit: 5}
-    })
-    this.setState({ events: events.edges })
-  }
-
-  handleGoToEventDetail = event => {
-    this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
-  }
-
   render () {
-    const { events } = this.state
+    // const { events } = this.state
+    const eventList = this.props.stores.landing.eventList || []
+    const events = eventList && eventList.slice(0, 5)
     const { i18n } = this.props
     return (
       <div className='banner0' style={{height: 560}}>
