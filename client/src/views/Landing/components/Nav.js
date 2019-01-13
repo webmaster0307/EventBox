@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link, withRouter } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
-import { Menu, Affix, Icon } from 'antd'
+import { Menu, Affix, Icon, Row } from 'antd'
 
 import logo from '../images/vanlang_logo.png'
 import { Query } from 'react-apollo'
@@ -46,20 +46,19 @@ class Header extends React.Component {
       this.props.stores.landing.ocSignInModal('o')
     } else if (key === 'signup') {
       this.props.stores.landing.ocSignUpModal('o')
-    } else {
-      if (this.props.stores.landing.isEnglish) {
-        i18n.changeLanguage('vn')
-      } else {
-        i18n.changeLanguage('en')
-      }
-      this.props.stores.landing.changeLanguage()
+    } else if (key === 'vnFlag'){
+      i18n.changeLanguage('vn')
+      this.props.stores.landing.isEnglish = false
+    } else if (key === 'usFlag'){
+      i18n.changeLanguage('en')
+      this.props.stores.landing.isEnglish = true
     }
   }
 
   render () {
     const { i18n } = this.props
     const {
-      isMobile, buttonText
+      isMobile, isEnglish
     } = this.props.stores.landing
     const { menuHeight, phoneOpen } = this.state
     return (
@@ -150,9 +149,31 @@ class Header extends React.Component {
                       onClick={this.handleMenuClick}
                     >
                       {navChildren}
-                      <Item className='menu-item-text-custom'>
+                      {/* <Item className='menu-item-text-custom'>
                         <span style={{padding: 3, border: '1px solid'}}>{buttonText}</span>
-                      </Item>
+                      </Item> */}
+                      <SubMenu key='sub1' title={<LanguageSelected isEnglish={isEnglish} />} >
+                        <Menu.Item key='vnFlag'>
+                          <Row type='flex' align='middle' >
+                            <div style={{marginRight: 6}} >
+                              <img src='/images/vn_flag.png' style={{width: 25}} alt='vietnam_flag' />
+                            </div>
+                            <div style={{fontWeight: 600}} >
+                              Tiếng Việt
+                            </div>
+                          </Row>
+                        </Menu.Item>
+                        <Menu.Item key='usFlag'>
+                          <Row type='flex' align='middle' >
+                            <div style={{marginRight: 6}} >
+                              <img src='/images/gb_flag.png' style={{width: 25}} alt='england_flag' />
+                            </div>
+                            <div style={{fontWeight: 600}} >
+                              English
+                            </div>
+                          </Row>
+                        </Menu.Item>
+                      </SubMenu>
                     </Menu>
                   </TweenOne>
                 </div>
@@ -164,5 +185,18 @@ class Header extends React.Component {
     )
   }
 }
+
+const LanguageSelected = ({ isEnglish }) => (
+  isEnglish ?
+    <span style={{padding: 3}} >
+      <img src='/images/gb_flag.png' style={{width: 25, marginRight: 4}} alt='england_flag' />
+      <Icon type='caret-down' />
+    </span>
+    :
+    <span>
+      <img src='/images/vn_flag.png' style={{width: 25, marginRight: 4}} alt='vietnam_flag' />
+      <Icon type='caret-down' />
+    </span>
+)
 
 export default translate('translations')(Header)
