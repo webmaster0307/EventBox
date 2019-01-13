@@ -144,6 +144,7 @@ httpServer.listen({ port }, () => {
 app.get('/api/status', (req, res) => {
   res.send({
     status: 'ok',
+    instance: process.env.INSTANCE,
     code: 200
   })
 })
