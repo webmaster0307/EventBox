@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { Table, message, Tag, Spin } from 'antd'
+import { Link, withRouter } from 'react-router-dom'
+import { Table, notification, Tag, Spin, Icon } from 'antd'
 import { inject, observer, Provider } from 'mobx-react'
 import { DB_EVENT_REVIEW } from '@routes'
 import EventReviewStore from './EventReviewStore'
 import { Query } from 'react-apollo'
 import { event } from '@gqlQueries'
+import './styles.scss'
 
 @inject('eventReviewStore')
 @observer
@@ -98,12 +99,17 @@ class Events extends Component {
 //   </button>
 // )
 
+@withRouter
 @inject('eventReviewStore')
 @observer
 class EventList extends Component {
 
   state = {
     pageSize: 5
+  }
+
+  goToReviewPage = (id) => {
+    this.props.history.push(`${DB_EVENT_REVIEW}/${id}`)
   }
 
   subscribeToMoreEvent = () => {
@@ -116,9 +122,17 @@ class EventList extends Component {
         if (!subscriptionData.data) {
           return previousResult
         }
-        message.success('New event is pending for approval')
         const { eventSubmited } = subscriptionData.data
-        // console.log('eventSubmited: ',eventSubmited)
+
+        // message.success('New event is pending for approval')
+        notification.open({
+          message: 'New pending Event',
+          description: 
+            <div>New event is waiting for approval. 
+              <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
+            </div>,
+          icon: <Icon type='solution' style={{ color: '#108ee9' }} />
+        })
         const previousEdges = previousResult.eventsInReview.edges.filter(item => item.id !== eventSubmited.id)
         return {
           ...previousResult,
