@@ -102,6 +102,6 @@ export default gql`
 
   extend type Subscription {
     eventCreated: EventCreated!
-    eventSubmited: EventCreated!
+    eventSubmited(departmentId: ID!): Event
   }
 `

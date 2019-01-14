@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 import { isAuthenticated, isEventOwner } from './authorization'
 
-import pubsub, { EVENTS } from '../subscription'
+import { EVENTS } from '../subscription'
 
 const toCursorHash = string => Buffer.from(string).toString('base64')
 
@@ -148,16 +148,22 @@ export default {
 
     publishEvent: combineResolvers(
       isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, { id }, { models, pubsub }) => {
         try {
-          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'in-review' })
-          if (errors) {
-            return false
-          }
+          const event = await models.Event.findByIdAndUpdate(
+            id, 
+            { 
+              status: 'in-review'
+            },
+            { new: true }
+          )
+          // console.log('event: ',event);
+          pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
+          return true
+
         } catch (error) {
-          return false
+          throw new Error('Failed to publish event')
         }
-        return true
       }
     ),
 
@@ -213,7 +219,9 @@ export default {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
     },
     eventSubmited: {
-      subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.SUBMITED_REVIEW)
+      subscribe: (parent, { departmentId }, { models, pubsub }, info) => {
+        return pubsub.asyncIterator(`${EVENTS.EVENT.SUBMITED_REVIEW} ${departmentId}`)
+      }
     }
   }
 }

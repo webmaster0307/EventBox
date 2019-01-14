@@ -8,6 +8,7 @@ import morgan from 'morgan'
 import jwt from 'jsonwebtoken'
 import DataLoader from 'dataloader'
 import { ApolloServer } from 'apollo-server-express'
+import { PubSub } from 'apollo-server'
 import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
 
@@ -20,6 +21,7 @@ const port = process.env.SERVER_PORT || 8000
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express()
+const pubsub = new PubSub()
 
 // const corsOptions = {
 //   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],
@@ -95,6 +97,7 @@ const server = new ApolloServer({
       return {
         models,
         newErr,
+        pubsub,
         loaders: {
           user: new DataLoader(keys =>
             loaders.user.batchUsers(keys, models)
@@ -110,6 +113,7 @@ const server = new ApolloServer({
       return {
         models,
         me,
+        pubsub,
         isAdmin,
         secret: process.env.TOKEN_SECRET,
         loaders: {
