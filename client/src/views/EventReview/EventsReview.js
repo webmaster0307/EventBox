@@ -43,6 +43,7 @@ class Events extends Component {
     return (
       <Query
         query={event.GET_EVENTS_INREVIEW}
+        fetchPolicy='cache-and-network'
       >
         {({data, loading, subscribeToMore}) => {
           if(loading || !data){
