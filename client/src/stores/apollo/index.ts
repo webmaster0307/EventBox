@@ -11,10 +11,14 @@ import {
   department as departmentMutations,
   departmentUser as departmentUserMutations
 } from './mutation'
+import {
+  event as eventSubscriptions
+} from './subscription'
 
 const event = {
   ...eventQueries,
-  ...eventMutations
+  ...eventMutations,
+  ...eventSubscriptions
 }
 
 const user = {

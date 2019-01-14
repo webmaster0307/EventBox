@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 import { isAuthenticated, isEventOwner } from './authorization'
 
-import pubsub, { EVENTS } from '../subscription'
+import { EVENTS } from '../subscription'
 
 const toCursorHash = string => Buffer.from(string).toString('base64')
 
@@ -80,13 +80,14 @@ export default {
         skip: page * limit,
         limit: limit + 1,
         sort: {
-          createdAt: -1
+          updatedAt: -1
         }
       })
-      // console.log("​events", edges)
+      // console.log("departmentIds: ", departmentIds)
       
       return {
-        edges
+        edges,
+        departmentIds: departmentIds.map(item => item.toString())
       }
     },
   },
@@ -148,16 +149,25 @@ export default {
 
     publishEvent: combineResolvers(
       isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, { id }, { models, pubsub }) => {
         try {
-          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'in-review' })
-          if (errors) {
-            return false
-          }
+          const event = await models.Event.findByIdAndUpdate(
+            id, 
+            { 
+              status: 'in-review'
+            },
+            { new: true }
+          )
+          // console.log('event: ',event);
+          event.departments.forEach(id => {
+            pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
+          })
+          // pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
+          return true
+
         } catch (error) {
-          return false
+          throw new Error('Failed to publish event')
         }
-        return true
       }
     ),
 
@@ -213,7 +223,10 @@ export default {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
     },
     eventSubmited: {
-      subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.SUBMITED_REVIEW)
+      subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
+        const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
+        return pubsub.asyncIterator(arrIterator)
+      }
     }
   }
 }

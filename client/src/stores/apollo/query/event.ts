@@ -67,7 +67,6 @@ const GET_EVENTS_INREVIEW = gql`
         id
         title
         slug
-        description
         status
         images {
           thumbnail
@@ -79,6 +78,7 @@ const GET_EVENTS_INREVIEW = gql`
           username
         }
       }
+      departmentIds
     }
   }
 `

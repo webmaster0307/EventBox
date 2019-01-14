@@ -1,42 +1,23 @@
-import React, { Component, Fragment } from 'react'
-import gql from 'graphql-tag'
-import { Link } from 'react-router-dom'
-import { Table, message, Tag } from 'antd'
+import React, { Component } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import { Table, notification, Tag, Spin, Icon } from 'antd'
 import { inject, observer, Provider } from 'mobx-react'
 import { DB_EVENT_REVIEW } from '@routes'
 import EventReviewStore from './EventReviewStore'
-
-const EVENT_CREATED = gql`
-  subscription {
-    eventCreated {
-      event {
-        id
-        title
-        description
-        status
-        images {
-          thumbnail
-        }
-        createdAt
-        user {
-          id
-          username
-        }
-      }
-    }
-  }
-`
+import { Query } from 'react-apollo'
+import { event } from '@gqlQueries'
+import './styles.scss'
 
 @inject('eventReviewStore')
 @observer
 class Events extends Component {
   
   componentDidMount = () => {
-    const { eventReviewStore } = this.props
-    const { error } = eventReviewStore.getEvents()
-    if(error){
-      return message.error(error)
-    }
+    // const { eventReviewStore } = this.props
+    // const { error } = eventReviewStore.getEvents()
+    // if(error){
+    //   return message.error(error)
+    // }
     
     // let result 
     // try {
@@ -53,30 +34,31 @@ class Events extends Component {
   
 
   render(){
-    const { eventsLoading, events } = this.props.eventReviewStore
+    // const { eventsLoading, events } = this.props.eventReviewStore
     // console.log('loading: ' ,this.props.stores.event.eventsLoading)
     // console.log('events: ',toJS(this.props.stores.event.events))
 
     // const { edges, pageInfo } = events
 
     return (
-      <Fragment>
-        <EventList
-          events={events}
-          loading={eventsLoading}
-          // subscribeToMore={subscribeToMore}
-        />
-
-        {/* {pageInfo.hasNextPage && (
-          <MoreEventsButton
-            limit={limit}
-            pageInfo={pageInfo}
-            fetchMore={fetchMore}
-          >
-        More
-          </MoreEventsButton>
-        )} */}
-      </Fragment>
+      <Query
+        query={event.GET_EVENTS_INREVIEW}
+      >
+        {({data, loading, subscribeToMore}) => {
+          if(loading || !data){
+            return <Spin />
+          }
+          const { edges, departmentIds } = data.eventsInReview
+          return(
+            <EventList
+              events={edges}
+              departmentIds={departmentIds}
+              loading={false}
+              subscribeToMore={subscribeToMore}
+            />
+          )
+        }}
+      </Query>
     )
   }
 }
@@ -117,6 +99,7 @@ class Events extends Component {
 //   </button>
 // )
 
+@withRouter
 @inject('eventReviewStore')
 @observer
 class EventList extends Component {
@@ -125,23 +108,39 @@ class EventList extends Component {
     pageSize: 5
   }
 
+  goToReviewPage = (id) => {
+    this.props.history.push(`${DB_EVENT_REVIEW}/${id}`)
+  }
+
   subscribeToMoreEvent = () => {
+    const { departmentIds } = this.props
+    // console.log('departmentIds: ',departmentIds)
     this.props.subscribeToMore({
-      document: EVENT_CREATED,
+      document: event.SUBCRIBE_EVENT_REVIEW,
+      variables: { departmentIds },
       updateQuery: (previousResult, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return previousResult
         }
+        const { eventSubmited } = subscriptionData.data
 
-        const { eventCreated } = subscriptionData.data
-
+        // message.success('New event is pending for approval')
+        notification.open({
+          message: 'New pending Event',
+          description: 
+            <div>New event is waiting for approval. 
+              <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
+            </div>,
+          icon: <Icon type='solution' style={{ color: '#108ee9' }} />
+        })
+        const previousEdges = previousResult.eventsInReview.edges.filter(item => item.id !== eventSubmited.id)
         return {
           ...previousResult,
-          events: {
-            ...previousResult.events,
+          eventsInReview: {
+            ...previousResult.eventsInReview,
             edges: [
-              eventCreated.event,
-              ...previousResult.events.edges
+              eventSubmited,
+              ...previousEdges
             ]
           }
         }
@@ -150,7 +149,7 @@ class EventList extends Component {
   };
 
   componentDidMount() {
-    // this.subscribeToMoreEvent()
+    this.subscribeToMoreEvent()
   }
 
   handlePageSizeChange = (current, size) => {
