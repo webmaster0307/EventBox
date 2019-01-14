@@ -80,13 +80,14 @@ export default {
         skip: page * limit,
         limit: limit + 1,
         sort: {
-          createdAt: -1
+          updatedAt: -1
         }
       })
-      // console.log("​events", edges)
+      // console.log("departmentIds: ", departmentIds)
       
       return {
-        edges
+        edges,
+        departmentIds: departmentIds.map(item => item.toString())
       }
     },
   },
@@ -158,7 +159,10 @@ export default {
             { new: true }
           )
           // console.log('event: ',event);
-          pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
+          event.departments.forEach(id => {
+            pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
+          })
+          // pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
           return true
 
         } catch (error) {
@@ -219,8 +223,9 @@ export default {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
     },
     eventSubmited: {
-      subscribe: (parent, { departmentId }, { models, pubsub }, info) => {
-        return pubsub.asyncIterator(`${EVENTS.EVENT.SUBMITED_REVIEW} ${departmentId}`)
+      subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
+        const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
+        return pubsub.asyncIterator(arrIterator)
       }
     }
   }

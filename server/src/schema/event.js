@@ -37,6 +37,7 @@ export default gql`
 
   type EventReviewConnection {
     edges: [Event!]
+    departmentIds: [String]
   }
 
   type PageInfo {
@@ -102,6 +103,6 @@ export default gql`
 
   extend type Subscription {
     eventCreated: EventCreated!
-    eventSubmited(departmentId: ID!): Event
+    eventSubmited(departmentIds: [ID]!): Event
   }
 `
