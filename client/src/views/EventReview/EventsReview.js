@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Table, notification, Tag, Spin, Icon } from 'antd'
+import { Table, Tag, Spin } from 'antd'
 import { inject, observer, Provider } from 'mobx-react'
 import { DB_EVENT_REVIEW } from '@routes'
 import EventReviewStore from './EventReviewStore'
@@ -126,14 +126,14 @@ class EventList extends Component {
         const { eventSubmited } = subscriptionData.data
 
         // message.success('New event is pending for approval')
-        notification.open({
-          message: 'New pending Event',
-          description: 
-            <div>New event is waiting for approval. 
-              <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
-            </div>,
-          icon: <Icon type='solution' style={{ color: '#108ee9' }} />
-        })
+        // notification.open({
+        //   message: 'New pending Event',
+        //   description: 
+        //     <div>New event is waiting for approval. 
+        //       <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
+        //     </div>,
+        //   icon: <Icon type='solution' style={{ color: '#108ee9' }} />
+        // })
         const previousEdges = previousResult.eventsInReview.edges.filter(item => item.id !== eventSubmited.id)
         return {
           ...previousResult,

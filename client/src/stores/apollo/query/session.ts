@@ -7,6 +7,10 @@ const GET_ME = gql`
       username
       email
       role
+      departments {
+        id
+        name
+      }
     }
   }
 `

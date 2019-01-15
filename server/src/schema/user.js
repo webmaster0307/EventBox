@@ -12,6 +12,7 @@ export default gql`
     secret: String
     role: [String]
     events: [Event!]
+    departments: [Department]
   }
 
   type Token {

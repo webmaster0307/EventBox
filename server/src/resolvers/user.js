@@ -121,6 +121,18 @@ export default {
         where: {
           userId: user.id
         }
+      }),
+    departments: async (user, args, { models }) => {
+      const roles = await models.DepartmentUser.find({
+        userId: user.id
       })
+      const departmentIds = roles.map(item => item.departmentId)
+      const departments = await models.Department.find({
+        _id: {
+          $in: departmentIds
+        }
+      })
+      return departments
+    }
   }
 }
