@@ -55,37 +55,35 @@ export const listEventsHomepage = async (variables, token) =>
       }
       : null
   )
-export const createEvent = async variables =>
+export const createEvent = async (variables, token) =>
   await axios.post(API_URL, {
     query: `
-    mutation(
-      $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-      $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-      $startTime: String!, $endTime: String!, $location: String!, $address: String) 
-    {
-      createEvent(
-        title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
-        organizationName: $organizationName, organizationLogo: $organizationLogo,
-        organizationDescription: $organizationDescription,
-        startTime: $startTime, endTime: $endTime, location: $location, address: $address
-      )
-      {
-        id
-        title
-        description
-        status
-        images {
-          thumbnail
-        }
-        createdAt
-        user {
-          username
+      mutation(
+        $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
+        $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
+        $startTime: String!, $endTime: String!, $location: String!, $address: String
+      ) {
+        createEvent(
+          title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
+          organizationName: $organizationName, organizationLogo: $organizationLogo,
+          organizationDescription: $organizationDescription,
+          startTime: $startTime, endTime: $endTime, location: $location, address: $address
+        ) {
+          title
+          description
+          status
         }
       }
-    }
     `,
     variables
-  })
+  },
+  token
+    ? {
+      headers: {
+        'x-token': token
+      }
+    }
+    : null)
 
 
 export const personalEvent = async (variables, token) =>
