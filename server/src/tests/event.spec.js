@@ -5,7 +5,7 @@ import * as eventApi from './eventApi'
 
 describe('event', () => {
   describe('detailEvent(id: ID!): [Event]', () => {
-    it('returns details of event', async () => {
+    it.only('returns details of event', async () => {
       const expectedResult = {
         data: {
           event:
@@ -15,8 +15,8 @@ describe('event', () => {
               thumbnail: 'https://i.imgur.com/3PuAloY.png'
             },
             shortDescription: 'short',
-            description: "{\"blocks\":[{\"key\":\"be8dd\",\"text\":\"des\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
-            organizationName: 'Vanlang University',
+            description: '{\"blocks\":[{\"key\":\"6j5u\",\"text\":\"des\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}',
+            organizationName: 'VLU',
             organizationLogo: 'https://i.imgur.com/f1Q97JB.png',
             organizationDescription: 'VLU',
             startTime: '1547107310490',
@@ -27,7 +27,7 @@ describe('event', () => {
         }
       }
 
-      // const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
+      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
       const result = await eventApi.detailEvent({ id: '5c3d93883997b71214c014e1' }, token)
 
       expect(result.data).to.eql(expectedResult)
@@ -132,7 +132,7 @@ describe('listEventsHomepage', () => {
 
 describe('createEvent', () => {
   describe('createEvent($title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,$organizationName: String!, $organizationLogo: String, $organizationDescription: String, $startTime: String, $endTime: String, $location: String, $address: String): [Ev]', () => {
-    it.only('return create new event', async () => {
+    it('return create new event', async () => {
       let expectedResult = {
           data: {
             createEvent:{
