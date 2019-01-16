@@ -55,38 +55,38 @@ export const listEventsHomepage = async (variables, token) =>
       }
       : null
   )
-export const createEvent = async variables =>
+export const createEvent = async (variables, token) =>
   await axios.post(API_URL, {
     query: `
     mutation(
-      $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-      $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-      $startTime: String!, $endTime: String!, $location: String!, $address: String) 
+      $title: String!, $images: EventImages!, $description: String!,$organizationName: String!) 
     {
       createEvent(
-        title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
-        organizationName: $organizationName, organizationLogo: $organizationLogo,
-        organizationDescription: $organizationDescription,
-        startTime: $startTime, endTime: $endTime, location: $location, address: $address
+        title:$title
+        images: $images
+        description: $description
+        organizationName:$organizationName
       )
       {
-        id
         title
         description
-        status
         images {
           thumbnail
         }
-        createdAt
-        user {
-          username
-        }
+        organizationName
       }
     }
     `,
     variables
-  })
+  }, token
+      ? {
+        headers: {
+          'x-token': token
+        }
+      }
+      : null
 
+  )
 
 
 export const personalEvent = async (variables, token) =>
