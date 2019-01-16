@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import chalk from 'chalk'
-import * as userApi from './api'
+import * as userApi from './userApi'
 import * as eventApi from './eventApi'
 
 describe('event', () => {
