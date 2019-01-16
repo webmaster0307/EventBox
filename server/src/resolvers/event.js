@@ -54,7 +54,17 @@ export default {
         }
       }
     },
-
+    eventsHome: async (parent, args, { me, models }) =>{
+      const events = await models.Event.find({
+        status: 'active'
+      }, null, {
+        limit: 8,
+        sort: {
+          createdAt: -1
+        }
+      })
+      return events
+    },
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,

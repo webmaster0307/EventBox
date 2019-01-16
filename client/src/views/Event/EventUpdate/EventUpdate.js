@@ -62,7 +62,39 @@ class EventUpdate extends Component{
         this.setState({ buttonLoading: true }, () => {
           client.mutate({
             mutation: eventQueries.UPDATE_EVENT_BYID,
-            variables: dataSubmit
+            variables: dataSubmit,
+            update: (cache, { data: { updateEvent } }) => {
+              if(!updateEvent){
+                // return alert('Failed to delete')
+              }
+              try {
+                const data = cache.readQuery({
+                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+                })
+                const dataWrite = {
+                  ...data,
+                  events: {
+                    ...data.events,
+                    edges: data.events.edges.filter(node => node.id !== eventId),
+                    pageInfo: data.events.pageInfo
+                  }
+                }
+                console.log('dataWrite: ',dataWrite)
+                cache.writeQuery({
+                  query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+                  data: {
+                    ...data,
+                    events: {
+                      ...data.events,
+                      edges: data.events.edges.filter(node => node.id !== eventId),
+                      pageInfo: data.events.pageInfo
+                    }
+                  }
+                })
+              } catch (error) {
+                console.log('error: ',error)
+              }
+            }
           })
             .then( ({data, errors}) => {
               this.setState({ buttonLoading: false })
