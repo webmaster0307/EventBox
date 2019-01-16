@@ -45,7 +45,7 @@ class EventUpdate extends Component{
     event.editorEventCreate = EditorState.createWithContent(convertFromRaw(JSON.parse(eventDetail.description)))
   }
 
-  _handleCreatedEvent = event => {
+  _handleUpdateEvent = event => {
     event.preventDefault()
     const { form } = this.props
     form.validateFields( (err, values) => {
@@ -66,6 +66,7 @@ class EventUpdate extends Component{
           })
             .then( ({data, errors}) => {
               this.setState({ buttonLoading: false })
+              this.props.stores.event.event.status = 'draft'
               if(errors){
                 return message.error('Failed to update event')
               }
@@ -109,7 +110,7 @@ class EventUpdate extends Component{
 
     return (
       <Spin spinning={loading} >
-        <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
+        <Form onSubmit={this._handleUpdateEvent} hideRequiredMark >
           <DescriptionArea {...this.props} loading={loading} updateStage />
           <OriganizationArea {...this.props} />
           <DateHoldingArea {...this.props} />

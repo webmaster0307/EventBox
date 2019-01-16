@@ -12,7 +12,7 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 10 }, { models, me, isAdmin }) => {
+    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
       const cursorOptions = cursor
       ? {
         createdAt: {

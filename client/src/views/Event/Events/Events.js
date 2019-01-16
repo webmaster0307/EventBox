@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { Table, Icon, message, Tag, Popconfirm } from 'antd'
 import { inject, observer } from 'mobx-react'
 import { DASHBOARD_EVENT } from '@routes'
+import { Query } from 'react-apollo'
+import { event } from '@gqlQueries'
 
 const EVENT_CREATED = gql`
   subscription {
@@ -31,11 +33,11 @@ const EVENT_CREATED = gql`
 class Events extends Component {
 
   componentDidMount = () => {
-    const { event } = this.props.stores
-    const { error } = event.getEvents()
-    if(error){
-      return message.error(error)
-    }
+    // const { event } = this.props.stores
+    // const { error } = event.getEvents()
+    // if(error){
+    //   return message.error(error)
+    // }
 
     // let result
     // try {
@@ -52,30 +54,24 @@ class Events extends Component {
 
 
   render(){
-    const { eventsLoading, events } = this.props.stores.event
+    // const { eventsLoading, events } = this.props.stores.event
     // console.log('loading: ' ,this.props.stores.event.eventsLoading)
     // console.log('events: ',toJS(this.props.stores.event.events))
 
     // const { edges, pageInfo } = events
 
     return (
-      <Fragment>
-        <EventList
-          events={events}
-          loading={eventsLoading}
-          // subscribeToMore={subscribeToMore}
-        />
-
-        {/* {pageInfo.hasNextPage && (
-          <MoreEventsButton
-            limit={limit}
-            pageInfo={pageInfo}
-            fetchMore={fetchMore}
-          >
-        More
-          </MoreEventsButton>
-        )} */}
-      </Fragment>
+      <Query
+        query={event.GET_PAGINATED_EVENTS_WITH_USERS}
+        // fetchPolicy='cache-and-network'
+      >
+        {({data, loading}) => (
+          <EventList
+            events={loading ? [] : data.events.edges}
+            loading={loading}
+          />
+        )}
+      </Query>
     )
   }
 }

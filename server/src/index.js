@@ -112,6 +112,7 @@ const server = new ApolloServer({
 
       return {
         models,
+        newErr,
         me,
         pubsub,
         isAdmin,

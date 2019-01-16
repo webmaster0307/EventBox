@@ -20,7 +20,7 @@ class Event {
       result = await client.query({
         query: event.GET_PAGINATED_EVENTS_WITH_USERS,
         variables: { limit: limitEventPerPage },
-        fetchPolicy: 'no-cache'
+        fetchPolicy: 'network-only'
       })
     } catch ({graphQLErrors}) {
       const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')

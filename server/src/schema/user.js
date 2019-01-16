@@ -51,4 +51,8 @@ export default gql`
 
     deleteUser(id: ID!): Boolean!
   }
+
+  extend type Subscription {
+    myNotification: Event
+  }
 `
