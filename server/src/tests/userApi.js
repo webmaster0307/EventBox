@@ -126,4 +126,37 @@ export const deleteUser = async (variables, token) =>
         }
       }
       : null
-  )
+)
+export const createEvent = async (variables, token) =>
+await axios.post(API_URL, {
+  query: `
+  mutation(
+    $title: String!, $thumbnail: String!, $description: String!,$organizationName: String!)
+  {
+    createEvent(
+      title: $title
+      thumbnail: $thumbnail
+      description: $description
+      organizationName: $organizationName
+    )
+    {
+      title
+      images {
+        thumbnail
+      }
+      description
+      organizationName
+    }
+  }
+  `,
+  variables
+}, token
+    ? {
+      headers: {
+        'x-token': token
+      }
+    }
+    : null
+
+)
+

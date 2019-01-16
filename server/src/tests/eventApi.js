@@ -58,35 +58,32 @@ export const listEventsHomepage = async (variables, token) =>
 export const createEvent = async (variables, token) =>
   await axios.post(API_URL, {
     query: `
-    mutation(
-      $title: String!, $images: EventImages!, $description: String!,$organizationName: String!) 
-    {
-      createEvent(
-        title:$title
-        images: $images
-        description: $description
-        organizationName:$organizationName
-      )
-      {
-        title
-        description
-        images {
-          thumbnail
+      mutation(
+        $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
+        $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
+        $startTime: String!, $endTime: String!, $location: String!, $address: String
+      ) {
+        createEvent(
+          title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
+          organizationName: $organizationName, organizationLogo: $organizationLogo,
+          organizationDescription: $organizationDescription,
+          startTime: $startTime, endTime: $endTime, location: $location, address: $address
+        ) {
+          title
+          description
+          status
         }
-        organizationName
       }
-    }
     `,
     variables
-  }, token
-      ? {
-        headers: {
-          'x-token': token
-        }
+  },
+  token
+    ? {
+      headers: {
+        'x-token': token
       }
-      : null
-
-  )
+    }
+    : null)
 
 
 export const personalEvent = async (variables, token) =>
@@ -106,6 +103,38 @@ export const personalEvent = async (variables, token) =>
               }
       				updatedAt
             }
+        }
+      `,
+      variables
+    },
+    token
+      ? {
+        headers: {
+          'x-token': token
+        }
+      }
+      : null
+  )
+
+  export const updateEvent = async (variables, token) =>
+  axios.post(
+    API_URL,
+    {
+      query: `
+      mutation(
+        $id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
+        $categoryId: String, $location: String, $regFrom: String, $regTo: String, $organizationName: String!,
+        $organizationLogo: String, $organizationDescription: String, $startTime: String, $endTime: String,
+        $address: String)  {
+        updateEvent(
+          id: $id, title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription, categoryId: $categoryId, location: $location, regFrom: $regFrom
+          regTo: $regTo, organizationName: $organizationName, organizationLogo: $organizationLogo, organizationDescription: $organizationDescription, startTime: $startTime, endTime: $endTime, address: $address) {
+            id
+            title
+            description
+            status
+          }
+
         }
       `,
       variables
