@@ -5,7 +5,7 @@ import * as eventApi from './eventApi'
 
 describe('event', () => {
   describe('detailEvent(id: ID!): [Event]', () => {
-    it.only('returns details of event', async () => {
+    it('returns details of event', async () => {
       const expectedResult = {
         data: {
           event:
@@ -135,7 +135,7 @@ describe('listEventsHomepage', () => {
 
 describe('createEvent', () => {
   describe('createEvent($title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,$organizationName: String!, $organizationLogo: String, $organizationDescription: String, $startTime: String, $endTime: String, $location: String, $address: String): [Ev]', () => {
-    it.only('return create new event', async () => {
+    it('return create new event', async () => {
       let expectedResult = {
           data: {
             createEvent:{
@@ -172,7 +172,7 @@ describe('createEvent', () => {
 })
 describe('updateEvent', () => {
   describe('updateEvent($id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String, $categoryId: String, $location: String, $regFrom: String, $regTo: String, $organizationName: String!, $organizationLogo: String, $organizationDescription: String, $startTime: String, $endTime: String, $address: String): [uEv]', () => {
-    it.only('return update new event', async () => {
+    it('return update new event', async () => {
       let expectedResult = {
           data: {
             updateEvent:{
