@@ -162,7 +162,8 @@ export default {
           event.departments.forEach(id => {
             pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
           })
-          // pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
+          // const thumbnail = event?.images?.thumbnail
+          // console.log('thumbnail: ',thumbnail);
           return true
 
         } catch (error) {
