@@ -4,9 +4,9 @@ import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link, withRouter } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
-import { Menu, Affix, Icon, Row } from 'antd'
+import { Menu, Affix, Icon, Row, Avatar } from 'antd'
 
-import logo from '../images/vanlang_logo.png'
+// import logo from '../images/vanlang_logo.png'
 import { Query } from 'react-apollo'
 import { signOut } from '@components'
 import { session } from '@gqlQueries'
@@ -71,14 +71,10 @@ class Header extends React.Component {
           if(me && !error){
             const userTitle = (
               <div >
-                <span className='img' >
-                  <img
-                    src='https://zos.alipayobjects.com/rmsportal/iXsgowFDTJtGpZM.png'
-                    width='100%'
-                    height='100%'
-                    alt='img'
-                  />
-                </span>
+                <Avatar
+                  size={36}
+                  alt='img'
+                />
                 <span>{me.username} | {me.email}</span>
               </div>
             )
@@ -125,7 +121,7 @@ class Header extends React.Component {
                     className='header0-logo'
                     onClick={() => this.props.history.push('/')}
                   >
-                    <img width='100%' src={logo} alt='img' />
+                    <img width='100%' src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_376/v1547734140/vanlang_logo.png' alt='img' />
                   </TweenOne>
                   {toJS(isMobile) && (
                     <div
@@ -156,7 +152,7 @@ class Header extends React.Component {
                         <Menu.Item key='vnFlag'>
                           <Row type='flex' align='middle' >
                             <div style={{marginRight: 6}} >
-                              <img src='/images/vn_flag.png' style={{width: 25}} alt='vietnam_flag' />
+                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25}} alt='vietnam_flag' />
                             </div>
                             <div style={{fontWeight: 600}} >
                               Tiếng Việt
@@ -166,7 +162,7 @@ class Header extends React.Component {
                         <Menu.Item key='usFlag'>
                           <Row type='flex' align='middle' >
                             <div style={{marginRight: 6}} >
-                              <img src='/images/gb_flag.png' style={{width: 25}} alt='england_flag' />
+                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25}} alt='england_flag' />
                             </div>
                             <div style={{fontWeight: 600}} >
                               English
@@ -189,12 +185,12 @@ class Header extends React.Component {
 const LanguageSelected = ({ isEnglish }) => (
   isEnglish ?
     <span style={{padding: 3}} >
-      <img src='/images/gb_flag.png' style={{width: 25, marginRight: 4}} alt='england_flag' />
+      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25, marginRight: 4}} alt='england_flag' />
       <Icon type='caret-down' />
     </span>
     :
     <span>
-      <img src='/images/vn_flag.png' style={{width: 25, marginRight: 4}} alt='vietnam_flag' />
+      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25, marginRight: 4}} alt='vietnam_flag' />
       <Icon type='caret-down' />
     </span>
 )
