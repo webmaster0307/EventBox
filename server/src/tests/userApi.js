@@ -102,9 +102,14 @@ export const updateUser = async (variables, token) =>
     API_URL,
     {
       query: `
-        mutation ($username: String!) {
-          updateUser(username: $username) {
-            username
+      mutation ( $id: ID!, $username: String!, $password: String, $firstname: String, $lastname: String, $department: String,
+        $phoneNumber: Int, $secret: String, $role: [String]) {
+        updateUser(id: $id, username: $username, password: $password, firstname: $firstname, lastname: $lastname, department: $department,
+          phoneNumber: $phoneNumber, secret: $secret, role: $role) {
+          id
+          username
+          email
+          role
           }
         }
       `,

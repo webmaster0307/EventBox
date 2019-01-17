@@ -219,6 +219,42 @@ describe('users', () => {
       expect(deleteUser).to.eql(true)
     })
   })
+  //update user
+  describe('updateUser', () => {
+    describe('updateUser($id: ID!, $username: String!, $password: String, $firstname: String, $lastname: String, $department: String,  $phoneNumber: Int, $secret: String,  $role: [String]): [uEv]', () => {
+      it('return update new user', async () => {
+        let expectedResult = {
+            data: {
+              updateUser:{
+                id: '5c35f283fd0a5541406cb4aa',
+                username: 'quangkhai',
+                email: 'quangkhai897@gmail.com',
+                role: ['user']
+              }
+          }
+        }
+        const {data:{data:{signIn: {token}}}}= await userApi.signIn({ username: 'quangkhai', password: '123456' })
+        // console.log('token: ',token)
+        let result
+        try {
+          result = await userApi.updateUser({
+          id:'5c35f283fd0a5541406cb4aa',
+          username:"quangkhai",
+          password:"123456",
+          firstname:"quangkhai",
+          lastname:"khai",
+          department:"user",
+          phonenumber:"0974650838",
+          secret:"demo",
+          role:"user" }, token)
+          // console.log('result: ', result.data)
+        } catch (error) {
+          console.log('err: ',error.response.data);
+        }
+        console.log('expectedResult: ',result.data)
+        expect(result.data).to.eql(expectedResult)
+      })
+    })
 
   describe('deleteUser(id: String!): Boolean!', () => {
     it('returns an error because only admins can delete a user', async () => {
@@ -252,7 +288,7 @@ describe('users', () => {
   })
 
   describe('signIn(login: String!, password: String!): Token!', () => {
-    it.only('returns a token when a user signs in with username', async () => {
+    it('returns a token when a user signs in with username', async () => {
       const {
         data: {
           data: {
@@ -307,5 +343,4 @@ describe('users', () => {
     )
   })
 })
-
-
+})
