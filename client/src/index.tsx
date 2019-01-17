@@ -28,6 +28,7 @@ import { I18nextProvider } from 'react-i18next'
 import i18n from './constants/i18n'
 
 // const prodMode = process.env.NODE_ENV === 'production'
+
 const httpLink = new HttpLink({
   uri: '/graphql'
 })
