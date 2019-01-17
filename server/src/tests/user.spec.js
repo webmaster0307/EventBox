@@ -8,15 +8,15 @@ describe('users', () => {
       const expectedResult = {
         data: {
           user: {
-            id: '5c35e34fc90cbf0a105a9ed7',
-            username: 'toai',
-            email: 'pinz.impossible@gmail.com',
-            role: ['user']
+            id: '5c35f5e8ee02da41c87aaea2',
+            username: 'vinh',
+            email: 'vinh@ya.com',
+            role: ['user','admin']
           }
         }
       }
 
-      const result = await userApi.user({ id: '5c35e34fc90cbf0a105a9ed7' })
+      const result = await userApi.user({ id: '5c35f5e8ee02da41c87aaea2' })
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -28,7 +28,7 @@ describe('users', () => {
         }
       }
 
-      const result = await userApi.user({ id: '42' })
+      const result = await userApi.user({ id: '5c35f5e8ee02da41c87aaeaa' })
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -252,7 +252,7 @@ describe('users', () => {
   })
 
   describe('signIn(login: String!, password: String!): Token!', () => {
-    it('returns a token when a user signs in with username', async () => {
+    it.only('returns a token when a user signs in with username', async () => {
       const {
         data: {
           data: {
@@ -260,8 +260,8 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'ddavids',
-        password: 'ddavids'
+        username: 'toai',
+        password: '123'
       })
 
       expect(token).to.be.a('string')
@@ -275,8 +275,8 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'hello@david.com',
-        password: 'ddavids'
+        username: 'huyhuythanh3010@gmail.com',
+        password: '123'
       })
 
       expect(token).to.be.a('string')
@@ -286,7 +286,7 @@ describe('users', () => {
       const {
         data: { errors }
       } = await userApi.signIn({
-        login: 'ddavids',
+        username: 'thanhhuy',
         password: 'dontknow'
       })
 
@@ -298,7 +298,7 @@ describe('users', () => {
     const {
       data: { errors }
     } = await userApi.signIn({
-      login: 'dontknow',
+      username: 'dontknow',
       password: 'ddavids'
     })
 
