@@ -5,6 +5,7 @@ import TweenOne from 'rc-tween-one'
 import { translate } from 'react-i18next'
 
 import { withRouter } from 'react-router-dom'
+import { EVENT } from '@routes'
 
 const { Meta } = Card
 
@@ -14,6 +15,10 @@ const { Meta } = Card
 class CarouselSection extends Component {
   state = {
     events: []
+  }
+
+  handleGoToEventDetail = event => {
+    this.props.history.push(`${EVENT}/${event.slug}-${event.id}`)
   }
 
   render () {

@@ -12,7 +12,7 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 10 }, { models, me, isAdmin }) => {
+    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
       const cursorOptions = cursor
       ? {
         createdAt: {
@@ -54,7 +54,17 @@ export default {
         }
       }
     },
-
+    eventsHome: async (parent, args, { me, models }) =>{
+      const events = await models.Event.find({
+        status: 'active'
+      }, null, {
+        limit: 8,
+        sort: {
+          createdAt: -1
+        }
+      })
+      return events
+    },
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
@@ -162,7 +172,8 @@ export default {
           event.departments.forEach(id => {
             pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
           })
-          // pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${event.departments[0]}`, { eventSubmited: event })
+          // const thumbnail = event?.images?.thumbnail
+          // console.log('thumbnail: ',thumbnail);
           return true
 
         } catch (error) {

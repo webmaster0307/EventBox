@@ -51,6 +51,7 @@ export default gql`
 
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
+    eventsHome: [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
   }

@@ -5,19 +5,27 @@
   "main": "index.js",
   "nodemonConfig": {
     "ignore": [
-      "public/**"
+      "public/**",
+      "tests/**",
+      "dist/**"
     ]
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
-    "test-server": "TEST_DATABASE=mytestdatabase npm start",
-    "test": "mocha --require babel-core/register 'src/**/*.spec.js'"
+    "build": "babel src --out-dir dist",
+    "serve": "node dist/server.js",
+    "test": "mocha --require js:@babel/register src/**/*.spec.js"
   },
   "keywords": [],
-  "author": "“Robin <hello@rwieruch.com”> (https://www.robinwieruch.de)",
+  "author": "Vinh Nguyen <vinh_nguyen1211@yahoo.com.vn>",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
     "@sindresorhus/slugify": "^0.6.0",
     "apollo-server": "^2.2.2",
     "apollo-server-express": "^2.2.2",
@@ -40,9 +48,6 @@
   },
   "devDependencies": {
     "axios": "^0.18.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.0"

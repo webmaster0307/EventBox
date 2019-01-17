@@ -12,6 +12,7 @@ export default gql`
     secret: String
     role: [String]
     events: [Event!]
+    departments: [Department]
   }
 
   type Token {
@@ -49,5 +50,9 @@ export default gql`
     ): User!
 
     deleteUser(id: ID!): Boolean!
+  }
+
+  extend type Subscription {
+    myNotification: Event
   }
 `

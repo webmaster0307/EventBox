@@ -27,6 +27,26 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
   }
 `
 
+const GET_EVENTS_HOMEPAGE = gql`
+  query {
+    eventsHome {
+      id
+      title
+      slug
+      status
+      images {
+        thumbnail
+      }
+      createdAt
+      updatedAt
+      user {
+        id
+        username
+      }
+    }
+  }
+`
+
 const GET_EVENT_DETAIL = gql`
   query($eventId: ID!) {
     event(id: $eventId) {
@@ -85,6 +105,7 @@ const GET_EVENTS_INREVIEW = gql`
 
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
+  GET_EVENTS_HOMEPAGE,
   GET_EVENT_DETAIL,
   GET_EVENTS_INREVIEW
 }

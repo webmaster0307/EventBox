@@ -65,13 +65,13 @@ class Landing {
 
   @action
   async getEvents () {
-    const { data: { events } } = await client.query({
-      query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-      variables: { status: 'draft', limit: 8 }
+    const { data: { eventsHome } } = await client.query({
+      query: event.GET_EVENTS_HOMEPAGE,
+      fetchPolicy: 'network-only'
     })
 
-    if (events.edges.length) {
-      this.allSuggestion = events.edges.map(e => {
+    if (eventsHome.length) {
+      this.allSuggestion = eventsHome.map(e => {
         if (e.title.length > 90) {
           return e.title.substring(0, 90)
         } else {
@@ -80,7 +80,7 @@ class Landing {
       })
     }
 
-    this.eventList = [...events.edges]
+    this.eventList = eventsHome
   }
 
   @action

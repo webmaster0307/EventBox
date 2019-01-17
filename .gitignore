@@ -5,3 +5,4 @@
 /server/src/public
 
 .env
+dist
