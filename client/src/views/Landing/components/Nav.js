@@ -1,14 +1,17 @@
 import React from 'react'
+import { toJS } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { findDOMNode } from 'react-dom'
 import { Link, withRouter } from 'react-router-dom'
 import TweenOne from 'rc-tween-one'
-import { Menu, Affix, Icon } from 'antd'
+import { Menu, Affix, Icon, Row, Avatar } from 'antd'
 
-import logo from '../images/vanlang_logo.png'
+// import logo from '../images/vanlang_logo.png'
 import { Query } from 'react-apollo'
 import { signOut } from '@components'
-import { GET_SESSION } from '../../Authorizing/Session/localQueries'
+import { session } from '@gqlQueries'
+
+import { translate } from 'react-i18next'
 
 const { Item, SubMenu } = Menu
 
@@ -38,26 +41,28 @@ class Header extends React.Component {
   }
 
   handleMenuClick = ({ key }) => {
-    switch (key) {
-      case 'signin':
-        this.props.stores.landing.ocSignInModal('o')
-        break
-      case 'signup':
-        this.props.stores.landing.ocSignUpModal('o')
-        break
-      default:
-        this.props.stores.landing.changeLanguage()
+    const { i18n } = this.props
+    if (key === 'signin') {
+      this.props.stores.landing.ocSignInModal('o')
+    } else if (key === 'signup') {
+      this.props.stores.landing.ocSignUpModal('o')
+    } else if (key === 'vnFlag'){
+      i18n.changeLanguage('vn')
+      this.props.stores.landing.isEnglish = false
+    } else if (key === 'usFlag'){
+      i18n.changeLanguage('en')
+      this.props.stores.landing.isEnglish = true
     }
   }
 
   render () {
+    const { i18n } = this.props
     const {
-      isMobile, buttonText
+      isMobile, isEnglish
     } = this.props.stores.landing
     const { menuHeight, phoneOpen } = this.state
-    const x = isMobile
     return (
-      <Query query={GET_SESSION}>
+      <Query query={session.GET_LOCAL_SESSION}>
         {({data, error, client}) => {
           // apollo local state
           const { me } = data
@@ -66,23 +71,22 @@ class Header extends React.Component {
           if(me && !error){
             const userTitle = (
               <div >
-                <span className='img' >
-                  <img
-                    src='https://zos.alipayobjects.com/rmsportal/iXsgowFDTJtGpZM.png'
-                    width='100%'
-                    height='100%'
-                    alt='img'
-                  />
-                </span>
+                <Avatar
+                  size={36}
+                  alt='img'
+                />
                 <span>{me.username} | {me.email}</span>
               </div>
             )
             navChildren=[
               ...navChildren,
               <SubMenu className='user' title={userTitle} key='user'>
-                <Item key='a'><Link to='/dashboard' >Dashboard</Link></Item>
-                {/* <Item key="b">修改密码</Item> */}
-                <Item key='c' onClick={() => signOut(client)} >Sign Out</Item>
+                <Item key='a'>
+                  <Link to='/dashboard'>
+                    {i18n.t('dashboard')}
+                  </Link>
+                </Item>
+                <Item key='c' onClick={() => signOut(client)}>{i18n.t('signout')}</Item>
               </SubMenu>
             ]
           }
@@ -93,13 +97,13 @@ class Header extends React.Component {
                 <Icon
                   className='menu-item-icon-custom'
                   type='user-add'
-                />SIGN UP
+                />{i18n.t('signup')}
               </Item>,
               <Item key='signin' className='menu-item-text-custom'>
                 <Icon
                   className='menu-item-icon-custom'
                   type='login'
-                />SIGN IN
+                />{i18n.t('signin')}
               </Item>
             ]
           }
@@ -117,9 +121,9 @@ class Header extends React.Component {
                     className='header0-logo'
                     onClick={() => this.props.history.push('/')}
                   >
-                    <img width='100%' src={logo} alt='img' />
+                    <img width='100%' src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_376/v1547734140/vanlang_logo.png' alt='img' />
                   </TweenOne>
-                  {x && (
+                  {toJS(isMobile) && (
                     <div
                       className='header0-mobile-menu'
                       onClick={this.phoneClick}
@@ -136,14 +140,36 @@ class Header extends React.Component {
                     style={isMobile ? { height: menuHeight } : null}
                   >
                     <Menu
-                      mode={isMobile ? 'inline' : 'horizontal'}
-                      theme={isMobile ? 'dark' : 'light'}
+                      mode={toJS(isMobile) ? 'horizontal' : 'horizontal'}
+                      theme={toJS(isMobile) ? 'dark' : 'light'}
                       onClick={this.handleMenuClick}
                     >
                       {navChildren}
-                      <Item className='menu-item-text-custom'>
+                      {/* <Item className='menu-item-text-custom'>
                         <span style={{padding: 3, border: '1px solid'}}>{buttonText}</span>
-                      </Item>
+                      </Item> */}
+                      <SubMenu key='sub1' title={<LanguageSelected isEnglish={isEnglish} />} >
+                        <Menu.Item key='vnFlag'>
+                          <Row type='flex' align='middle' >
+                            <div style={{marginRight: 6}} >
+                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25}} alt='vietnam_flag' />
+                            </div>
+                            <div style={{fontWeight: 600}} >
+                              Tiếng Việt
+                            </div>
+                          </Row>
+                        </Menu.Item>
+                        <Menu.Item key='usFlag'>
+                          <Row type='flex' align='middle' >
+                            <div style={{marginRight: 6}} >
+                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25}} alt='england_flag' />
+                            </div>
+                            <div style={{fontWeight: 600}} >
+                              English
+                            </div>
+                          </Row>
+                        </Menu.Item>
+                      </SubMenu>
                     </Menu>
                   </TweenOne>
                 </div>
@@ -156,4 +182,17 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+const LanguageSelected = ({ isEnglish }) => (
+  isEnglish ?
+    <span style={{padding: 3}} >
+      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25, marginRight: 4}} alt='england_flag' />
+      <Icon type='caret-down' />
+    </span>
+    :
+    <span>
+      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25, marginRight: 4}} alt='vietnam_flag' />
+      <Icon type='caret-down' />
+    </span>
+)
+
+export default translate('translations')(Header)

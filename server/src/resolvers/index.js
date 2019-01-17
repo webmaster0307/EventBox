@@ -4,6 +4,7 @@ import departmentResolvers from './department'
 import draftEventResolvers from './draftEvent'
 import userResolvers from './user'
 import eventResolvers from './event'
+import departmentuserResolvers from './departmentUser'
 
 export default [
   categoryResolvers,
@@ -11,5 +12,6 @@ export default [
   departmentResolvers,
   draftEventResolvers,
   eventResolvers,
-  userResolvers
+  userResolvers,
+  departmentuserResolvers
 ]

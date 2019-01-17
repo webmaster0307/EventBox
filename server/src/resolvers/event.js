@@ -1,8 +1,9 @@
 import { combineResolvers } from 'graphql-resolvers'
+import mongoose from 'mongoose'
 
 import { isAuthenticated, isEventOwner } from './authorization'
 
-import pubsub, { EVENTS } from '../subscription'
+import { EVENTS } from '../subscription'
 
 const toCursorHash = string => Buffer.from(string).toString('base64')
 
@@ -11,7 +12,7 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 10 }, { models, me, isAdmin }) => {
+    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
       const cursorOptions = cursor
       ? {
         createdAt: {
@@ -49,17 +50,56 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: toCursorHash( edges[edges.length - 1].createdAt.toString() )
+          endCursor: events.length > 0 ? toCursorHash( edges[edges.length - 1].createdAt.toString() ) : ''
         }
       }
     },
-
+    eventsHome: async (parent, args, { me, models }) =>{
+      const events = await models.Event.find({
+        status: 'active'
+      }, null, {
+        limit: 8,
+        sort: {
+          createdAt: -1
+        }
+      })
+      return events
+    },
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { models }) =>
-      await models.Event.findById(id)
-    )
+      async (parent, { id }, { me, models }) =>{
+        return await models.Event.findById(id)
+      }
+    ),
+
+    eventsInReview: async (parent, { status, page = 0, limit = 10 }, { models, me, isAdmin }) => {
+
+      // const departmentIds = await models.DepartmentUser
+      //   .find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
+      //   .map(doc => doc.departmentId.toString())
+
+      const departments = await models.DepartmentUser.find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
+      const departmentIds = departments.map(doc => doc.departmentId)
+      const edges = await models.Event.find({
+        status: 'in-review',
+        departments: {
+          $in: departmentIds
+        }
+      }, null, {
+        skip: page * limit,
+        limit: limit + 1,
+        sort: {
+          updatedAt: -1
+        }
+      })
+      // console.log("departmentIds: ", departmentIds)
+      
+      return {
+        edges,
+        departmentIds: departmentIds.map(item => item.toString())
+      }
+    },
   },
 
   Mutation: {
@@ -115,6 +155,62 @@ export default {
         }
         return true
       }
+    ),
+
+    publishEvent: combineResolvers(
+      isEventOwner,
+      async (parent, { id }, { models, pubsub }) => {
+        try {
+          const event = await models.Event.findByIdAndUpdate(
+            id, 
+            { 
+              status: 'in-review'
+            },
+            { new: true }
+          )
+          // console.log('event: ',event);
+          event.departments.forEach(id => {
+            pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
+          })
+          // const thumbnail = event?.images?.thumbnail
+          // console.log('thumbnail: ',thumbnail);
+          return true
+
+        } catch (error) {
+          throw new Error('Failed to publish event')
+        }
+      }
+    ),
+
+    approveEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'active' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
+    ),
+    rejectEvent: combineResolvers(
+      // TODO: authenticate by review-er role 
+      // isEventOwner,
+      async (parent, { id }, { models }) => {
+        try {
+          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'rejected' })
+          if (errors) {
+            return false
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      }
     )
   },
 
@@ -123,13 +219,25 @@ export default {
       await loaders.user.load(event.userId),
     
     departments: async (event, args, { models }) => {
-      return []
+      const ids = event.departments.map(id => mongoose.Types.ObjectId(id))
+      const departments = await models.Department.find({
+        _id: {
+          $in: ids
+        }
+      })
+      return departments
     }
   },
 
   Subscription: {
     eventCreated: {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
+    },
+    eventSubmited: {
+      subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
+        const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
+        return pubsub.asyncIterator(arrIterator)
+      }
     }
   }
 }

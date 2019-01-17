@@ -7,6 +7,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import { ApolloLink, split } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
@@ -22,21 +23,21 @@ import { Event, Landing, AdminStore } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
-import { any } from 'prop-types';
 
+import { I18nextProvider } from 'react-i18next'
+import i18n from './constants/i18n'
 
-const prodMode = process.env.NODE_ENV === 'production'
+// const prodMode = process.env.NODE_ENV === 'production'
 
 const httpLink = new HttpLink({
   uri: '/graphql'
 })
 
-const wsLink = new WebSocketLink({
-  uri: `ws://${prodMode ? process.env.REACT_APP_GRAPHQL_SUBSCRIPTION : 'localhost:8000/graphql'}`,
-  options: {
-    reconnect: true
-  }
+const WS_ENDPOINT = process.env.REACT_APP_GRAPHQL_SUBSCRIPTION || 'ws://localhost:8000/graphql'
+const ws_client = new SubscriptionClient(WS_ENDPOINT,{
+  reconnect: true
 })
+const wsLink = new WebSocketLink(ws_client)
 
 const terminatingLink = split(({ query }) => {
   const { kind, operation } = getMainDefinition(query)
@@ -159,8 +160,10 @@ const stores = {
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Provider stores={stores} >
-      <App />
+    <Provider stores={stores}>
+      <I18nextProvider i18n={i18n}>
+        <App />
+      </I18nextProvider>
     </Provider>
   </ApolloProvider>,
   document.getElementById('root')

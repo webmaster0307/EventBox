@@ -1,11 +1,11 @@
 import React from 'react'
 import { Query } from 'react-apollo'
-import { GET_ME } from './queries'
 import { Row, Spin } from 'antd'
+import { session } from '@gqlQueries';
 
 
 const withSession = (Component: React.ComponentType<any>) => (props: any) => (
-  <Query query={GET_ME}>
+  <Query query={session.GET_ME}>
     {({ data, error, loading, refetch }) => {
       if(error){
         return(<div>Error</div>)

@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react';
 import { Table } from 'antd';
 import { toJS } from 'mobx';
+import { Link } from 'react-router-dom'
+import * as routes from '@routes'
 
-@inject('stores', 'departmentStore')
+@inject('stores')
 @observer
 class DepartmentList extends Component<any>{
 
   componentDidMount = () => {
-    const { departmentStore } = this.props
+    const { departmentStore } = this.props.stores.admin
     departmentStore.getDepartments()
   }
 
@@ -22,7 +24,8 @@ class DepartmentList extends Component<any>{
       {
         title: 'Tên khoa',
         dataIndex: 'name',
-        render: (name: string) => <div>{name}</div>
+        render: (name: any, record:any) => 
+          <div><Link to={`${routes.DB_ADMIN_DEPARTMENT}/${record.id}`} >{record.name}</Link></div>
       },
       {
         title: 'Last updated',
@@ -33,7 +36,7 @@ class DepartmentList extends Component<any>{
   }
 
   render() {
-    const { departments, listLoading: loading } = this.props.departmentStore
+    const { departments, listLoading: loading } = this.props.stores.admin.departmentStore
 
     return (
       <Table 

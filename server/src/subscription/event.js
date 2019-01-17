@@ -1,1 +1,2 @@
 export const CREATED = 'CREATED'
+export const SUBMITED_REVIEW = 'SUBMITED_REVIEW'

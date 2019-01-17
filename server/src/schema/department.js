@@ -12,6 +12,7 @@ export default gql`
   extend type Query {
     department(id: ID!): Department
     departments(page: Int, limit: Int!): [Department]
+    eventDepartments: [Department]
   }
 
   extend type Mutation {

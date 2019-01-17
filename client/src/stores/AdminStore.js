@@ -1,9 +1,18 @@
 import { observable, action } from 'mobx'
 import { client } from '@client'
-import { user } from '@gqlQueries'
+import { user, department } from '@gqlQueries'
 
 class AdminStore {
-  @observable accountList = []
+
+  constructor(){
+    this.accountStore = new AccountStore()
+    this.departmentStore = new DepartmentStore()
+  }
+}
+
+class AccountStore {
+
+  @observable accountList= []
 
   @action
   async getAccountList () {
@@ -42,5 +51,28 @@ class AdminStore {
   }
 }
 
+class DepartmentStore {
+
+  @observable listLoading = true
+  @observable departments = []
+
+  @action
+  async getDepartments(){
+    let result
+    try {
+      result = await client.query({ query: department.GET_PAGINATED_DEPARTMENTS, variables: { limit: 5 } })
+    } catch (error) {
+
+    }
+    const { departments } = result.data
+    this.departments = departments
+    this.listLoading = false
+  }
+
+  @action
+  addDepartment(_department){
+    this.departments = [ _department, ...this.departments ]
+  }
+}
 
 export default AdminStore

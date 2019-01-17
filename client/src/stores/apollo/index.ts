@@ -1,17 +1,24 @@
 import {
   user as userQueries,
   event as eventQueries,
-  department as departmentQueries
+  department as departmentQueries,
+  session as sessionQueries,
+  departmentUser as departmentUserQueries
 } from './query'
-import { 
-  user as userMutations, 
+import {
+  user as userMutations,
   event as eventMutations,
-  department as departmentMutations
+  department as departmentMutations,
+  departmentUser as departmentUserMutations
 } from './mutation'
+import {
+  event as eventSubscriptions
+} from './subscription'
 
 const event = {
   ...eventQueries,
-  ...eventMutations
+  ...eventMutations,
+  ...eventSubscriptions
 }
 
 const user = {
@@ -24,8 +31,19 @@ const department = {
   ...departmentMutations
 }
 
+const session = {
+  ...sessionQueries
+}
+
+const departmentUser = {
+  ...departmentUserQueries,
+  ...departmentUserMutations
+}
+
 export {
   event,
   user,
-  department
+  department,
+  session,
+  departmentUser
 }

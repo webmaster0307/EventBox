@@ -1,64 +1,75 @@
 import Home from '../Account/Home'
 import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
 import AccountPage from '../Account'
-import { AdminPage, Department } from '../Admin'
+import { AdminPage, Department, DepartmentDetail } from '../Admin'
+import { EventsReview, EventDetailReview } from '../EventReview'
 import * as routes from '@routes'
-
-export const basename = routes.DASHBOARD
 
 export const routesComp = [
   {
     exact: true,
-    path: `${basename}`,
+    path: routes.DASHBOARD,
     component: Home,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/admin`,
+    path: routes.DB_ADMIN,
     component: AdminPage,
     roles: ['admin']
   },
   {
     exact: true,
-    path: `${basename}/admin/departments`,
+    path: routes.DB_ADMIN_DEPARTMENT,
     component: Department,
     roles: ['admin']
   },
   {
     exact: true,
-    path: `${basename}/account`,
+    path: routes.DB_ADMIN_DEPARTMENT_UPDATE,
+    component: DepartmentDetail,
+    roles: ['admin']
+  },
+  {
+    exact: true,
+    path: routes.DASHBOARD_MYACCOUNT,
     component: AccountPage,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/events`,
+    path: routes.DASHBOARD_EVENT,
     component: Events,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/events/create`,
+    path: routes.DASHBOARD_EVENT_CREATE,
     component: EventCreate,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/events/detail/:eventId`,
+    path: routes.DASHBOARD_EVENT_DETAIL,
     component: EventDetail,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/events/update/:eventId`,
+    path: routes.DASHBOARD_EVENT_UPDATE,
     component: EventUpdate,
     roles: ['admin', 'user']
   },
   {
     exact: true,
-    path: `${basename}/draft-events`,
-    component: Events,
+    path: routes.DB_EVENT_REVIEW,
+    component: EventsReview,
+    roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: routes.DB_EVENT_DETAIL_REVIEW,
+    component: EventDetailReview,
     roles: ['admin', 'user']
   }
 ]
@@ -78,13 +89,13 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'Accounts',
-        path: `${basename}/admin`,
+        path: routes.DB_ADMIN,
         icon: 'team',
         breadcumbs: ['Admin', 'Accounts']
       },
       {
         title: 'Departments',
-        path: `${basename}/admin/departments`,
+        path: routes.DB_ADMIN_DEPARTMENT,
         icon: 'home',
         breadcumbs: ['Admin', 'Departments']
       }
@@ -97,7 +108,7 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'Information',
-        path: `${basename}/account`,
+        path: routes.DASHBOARD_MYACCOUNT,
         icon: 'idcard',
         breadcumbs: ['Account', 'Account information']
       }
@@ -110,15 +121,28 @@ export const routesMenu = [
     subComponent: [
       {
         title: 'List',
-        path: `${basename}/events`,
+        path: routes.DASHBOARD_EVENT,
         icon: 'bars',
         breadcumbs: ['Events', 'Event list']
       },
       {
         title: 'Create',
-        path: `${basename}/events/create`,
+        path: routes.DASHBOARD_EVENT_CREATE,
         icon: 'form',
         breadcumbs: [ 'Events', 'Event create' ]
+      }
+    ]
+  },
+  {
+    title: 'Xét duyệt',
+    roles: ['admin', 'reviewer'],
+    icon: 'file-protect',
+    subComponent: [
+      {
+        title: 'Sự kiện',
+        path: routes.DB_EVENT_REVIEW,
+        icon: 'bars',
+        breadcumbs: ['Events', 'Event list']
       }
     ]
   }

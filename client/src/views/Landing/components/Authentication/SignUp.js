@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Modal, Divider, Icon, Button } from 'antd'
 import SignUpForm from '../../../Authorizing/SignUp/SignUp'
+import { translate } from 'react-i18next'
 
 @inject('stores')
 @observer
@@ -39,7 +40,7 @@ class SignUpModal extends Component {
 
   render () {
     const { isSigningUp } = this.props.stores.landing
-    const { refetch } = this.props
+    const { refetch, i18n } = this.props
     return (
       <Modal
         title={null}
@@ -51,7 +52,7 @@ class SignUpModal extends Component {
         onCancel={() => this.props.stores.landing.ocSignUpModal('c')}
       >
         <SignUpForm refetch={refetch} />
-        <Divider>Already have an account?</Divider>
+        <Divider>{i18n.t('divider3')}</Divider>
         <div
           style={{
             display: 'flex',
@@ -68,7 +69,7 @@ class SignUpModal extends Component {
               this.props.stores.landing.ocSignInModal('o')
             }}
           >
-            Sign In now!<Icon type='right' />
+            {i18n.t('tosignin')}!<Icon type='right' />
           </Button>
         </div>
       </Modal>
@@ -76,4 +77,4 @@ class SignUpModal extends Component {
   }
 }
 
-export default SignUpModal
+export default translate('translations')(SignUpModal)

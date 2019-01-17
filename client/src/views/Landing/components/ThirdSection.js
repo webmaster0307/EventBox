@@ -1,117 +1,69 @@
 import React, { Component, createElement } from 'react'
 import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
-import TweenOne from 'rc-tween-one'
-import { Row, Col } from 'antd'
+import { Row, Col, Tag } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
+import { translate } from 'react-i18next'
+
+import entertainment from '../images/section3/Entertainment.png'
+import studying from '../images/section3/Studying.png'
+import other from '../images/section3/Other.png'
 
 @inject('stores')
 @observer
 class ThirdSection extends Component {
   title = () => [
-    { name: 'title', text: 'Ant Financial Cloud provides professional services' },
-    { name: 'content', text: 'Based on Alibaba Cloud\'s powerful basic resources' }
+    { name: 'title', text: '3rd-title' },
+    { name: 'content', text: '3rd-subtitle' }
   ]
 
-  block = () => [
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/ScHBSdwpTkAHZkJ.png',
-      title: 'Enterprise resource management',
-      content: 'Cloud resources are centrally choreographed, elastically scalable.'
-    },
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/NKBELAOuuKbofDD.png',
-      title: 'Cloud security',
-      content: 'The complete cloud security system built according to the security.'
-    },
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/xMSBjgxBhKfyMWX.png',
-      title: 'Cloud monitoring' ,
-      content: 'Centralized monitoring of distributed cloud environments.'
-    },
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png',
-      title: 'Mobile',
-      content:  'One-stop mobile financial APP development and comprehensive monitorin.'
-    },
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png',
-      title: 'Distributed middleware' ,
-      content: 'Financial-grade online transaction processing middleware,.'
-    },
-    {
-      icon: 'https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png',
-      title: 'Big Data',
-      content: 'One-stop, full-cycle big data collaborative work platform.'
-    }
-  ]
+  block = () => {
+    const { i18n } = this.props
+    // const { eventList } = this.props.stores.landing
+
+    return [
+      {
+        key: '0',
+        icon: entertainment,
+        title: i18n.t('Entertainment'),
+        content: <Tag color='green'>10 {i18n.t('events')}</Tag>
+      },
+      {
+        key: '1',
+        icon: studying,
+        title: i18n.t('Studying'),
+        content: <Tag color='green'>4 {i18n.t('events')}</Tag>
+      },
+      {
+        key: '2',
+        icon: other,
+        title: i18n.t('Others'),
+        content: <Tag color='green'>8 {i18n.t('events')}</Tag>
+      }
+    ]
+  }
 
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100
 
   render () {
-    const { isMobile } = this.props.stores.landing
-
-    let clearFloatNum = 0
-
+    const { i18n } = this.props
     const childrenToRender = this.block().map((item, i) => {
-      const delay = isMobile ? i * 50 : this.getDelay(i, 24 / 8)
-      const liAnim = {
-        opacity: 0,
-        type: 'from',
-        ease: 'easeOutQuad',
-        delay
-      }
-      const childrenAnim = { ...liAnim, x: '+=10', delay: delay + 100 }
-      clearFloatNum += 8
-      clearFloatNum = clearFloatNum > 24 ? 0 : clearFloatNum
       return (
-        <TweenOne
-          component={Col}
-          animation={liAnim}
-          key={i.toString()}
-          componentProps={{ md: 8, xs: 24 }}
-          className={
-            !clearFloatNum
-              ? `${'content3-block' || ''} clear-both`.trim()
-              : 'content3-block'
-          }
+        <Col
+          key={i.toString()} className='block'
+          md={8} sm={24} xs={24}
         >
-          <TweenOne
-            animation={{
-              x: '-=10',
-              opacity: 0,
-              type: 'from',
-              ease: 'easeOutQuad'
-            }}
-            key='img'
-            className='content3-icon'
-          >
+          <div className='icon'>
             <img src={item.icon} width='100%' alt='img' />
-          </TweenOne>
-          <div className='content3-text'>
-            <TweenOne
-              key='h2'
-              animation={childrenAnim}
-              component='h2'
-              className='content3-title'
-            >
-              {item.title}
-            </TweenOne>
-            <TweenOne
-              key='p'
-              animation={{ ...childrenAnim, delay: delay + 200 }}
-              component='div'
-              className='content3-content'
-            >
-              {item.content}
-            </TweenOne>
           </div>
-        </TweenOne>
+          <h3 className='content0-title'><b>{item.title}</b></h3>
+          <div>{item.content}</div>
+        </Col>
       )
     })
     return (
-      <div className='home-page-wrapper content3-wrapper'>
-        <div className='home-page content3'>
+      <div className='home-page-wrapper content0-wrapper' style={{minHeight: 485}}>
+        <div className='home-page content0'>
           <div className='title-wrapper'>
             {this.title().map((item, i) =>
               createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
@@ -125,13 +77,17 @@ class ThirdSection extends Component {
                     src: item.text,
                     alt: 'img'
                   })
-                  : item.text))}
+                  : i18n.t(item.text)))}
           </div>
-          <OverPack playScale={0.3}>
-            <QueueAnim key='u' type='bottom'>
-              <Row key='row'  className='content3-block-wrapper'>
-                {childrenToRender}
-              </Row>
+          <OverPack playScale={0.3} className=''>
+            <QueueAnim
+              className='block-wrapper'
+              type='bottom'
+              key='block'
+              leaveReverse
+              component={Row}
+            >
+              {childrenToRender}
             </QueueAnim>
           </OverPack>
         </div>
@@ -140,4 +96,4 @@ class ThirdSection extends Component {
   }
 }
 
-export default ThirdSection
+export default translate('translations')(ThirdSection)

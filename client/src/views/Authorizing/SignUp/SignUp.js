@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Card, Form, Input, Icon, Button, message, Skeleton } from 'antd'
 import gql from 'graphql-tag'
 import { inject, observer } from 'mobx-react'
+import { translate } from 'react-i18next'
 
 const FormItem = Form.Item
 
@@ -67,84 +68,79 @@ class SignUpForm extends React.Component{
     callback()
   }
 
-  formFields = () => [
-    {
-      name: 'username',
-      title: 'Username',
-      customRender: <Input prefix={<Icon type='user' />} placeholder='Username' />,
-      rules: [
-        {
-          type: 'string',
-          required: true,
-          whitespace: true,
-          message: 'Not correct format'
-        }
-      ]
-    },
-    {
-      name: 'email',
-      title: 'Email',
-      customRender: <Input prefix={<Icon type='inbox' />} placeholder='Email' />,
-      rules: [
-        {
-          type: 'email',
-          required: true,
-          whitespace: true,
-          message: 'Not correct email format'
-        }
-      ]
-    },
-    {
-      name: 'password',
-      title: 'Password',
-      customRender: <Input prefix={<Icon type='lock' />} type='password' placeholder='Password' />,
-      rules: [
-        {
-          type: 'string',
-          required: true,
-          whitespace: true,
-          message: 'Not correct format'
-        },
-        {
-          validator: this.validateToConfirm
-        }
-      ]
-    }, 
-    {
-      name: 'confirm_password',
-      title: 'Confirm Password',
-      customRender: <Input prefix={<Icon type='lock' />} type='password' placeholder='Confirm Password' />,
-      rules: [
-        {
-          type: 'string',
-          required: true,
-          whitespace: true,
-          message: 'Not correct format'
-        },
-        {
-          validator: this.validateConfirmPassword
-        }
-      ]
-    }
-  ]
+  formFields = () => {
+    // const { i18n } = this.props
+    return [
+      {
+        name: 'username',
+        title: 'usn',
+        customRender: <Input prefix={<Icon type='user' />} placeholder='Username' />,
+        rules: [
+          {
+            type: 'string',
+            required: true,
+            whitespace: true,
+            message: 'Not correct format'
+          }
+        ]
+      },
+      {
+        name: 'email',
+        title: 'Email',
+        customRender: <Input prefix={<Icon type='inbox' />} placeholder='Email' />,
+        rules: [
+          {
+            type: 'email',
+            required: true,
+            whitespace: true,
+            message: 'Not correct email format'
+          }
+        ]
+      },
+      {
+        name: 'password',
+        title: 'pwd',
+        customRender: <Input prefix={<Icon type='lock' />} type='password' placeholder='Password' />,
+        rules: [
+          {
+            type: 'string',
+            required: true,
+            whitespace: true,
+            message: 'Not correct format'
+          },
+          {
+            validator: this.validateToConfirm
+          }
+        ]
+      },
+      {
+        name: 'confirm_password',
+        title: 'cf-pwd',
+        customRender: <Input prefix={<Icon type='lock' />} type='password' placeholder='Confirm Password' />,
+        rules: [
+          {
+            type: 'string',
+            required: true,
+            whitespace: true,
+            message: 'Not correct format'
+          },
+          {
+            validator: this.validateConfirmPassword
+          }
+        ]
+      }
+    ]
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form
     const { loading } = this.state
-
+    const { i18n } = this.props
     return (
       <div className='sign-up-card__wrapper' >
         <Card
-          title='Sign Up'
-          headStyle={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontSize: '2em',
-            background: '#f7faff',
-            fontWeight: 'bolder'
-          }}
+          title={i18n.t('signup')}
+          headStyle={{textAlign: 'center'}}
         >
           <Skeleton loading={loading} avatar>
             <Form onSubmit={this._handleSignUp} hideRequiredMark >
@@ -153,7 +149,7 @@ class SignUpForm extends React.Component{
                 return(
                   <FormItem
                     key={name}
-                    label={title}
+                    label={i18n.t(title)}
                     colon={false}
                   >
                     {getFieldDecorator(name, {
@@ -169,7 +165,7 @@ class SignUpForm extends React.Component{
                   htmlType='submit'
                 >
                   <Icon type='user-add' />
-                  Sign Up
+                  {i18n.t('sign-up')}
                 </Button>
               </FormItem>
             </Form>
@@ -180,4 +176,4 @@ class SignUpForm extends React.Component{
   }
 }
 
-const SignUpFormWrapped = Form.create()(withRouter(SignUpForm))
+const SignUpFormWrapped = translate('translations')(Form.create()(withRouter(SignUpForm)))

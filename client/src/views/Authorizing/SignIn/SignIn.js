@@ -5,14 +5,14 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { Query } from 'react-apollo'
-import { GET_SESSION } from '../Session/localQueries'
 import { observer, inject } from 'mobx-react'
-import { user as userMutations } from '@gqlQueries'
+import { user as userMutations, session } from '@gqlQueries'
+import { translate } from 'react-i18next'
 
 const FormItem = Form.Item
 
 const SignIn = ({ history, refetch }) => (
-  <Query query={GET_SESSION} >
+  <Query query={session.GET_LOCAL_SESSION} >
     {({ data }) => {
       if (data && data.me){
         return (
@@ -81,13 +81,13 @@ class SignInForm extends React.Component{
   render() {
     const { getFieldDecorator } = this.props.form
     const { loading } = this.state
-
+    const { i18n } = this.props
     return (
       <div className='login-card__wrapper'>
-        <Card title='Sign In'>
+        <Card headStyle={{textAlign: 'center'}} title={i18n.t('signin')}>
           <Skeleton loading={loading} avatar active={loading} >
-            <Form onSubmit={this._handleSubmit} >
-              <FormItem key='username'>
+            <Form onSubmit={this._handleSubmit} hideRequiredMark>
+              <FormItem label={i18n.t('usn')} colon={false} key='username'>
                 {getFieldDecorator('username', {
                   rules: [
                     {
@@ -99,10 +99,10 @@ class SignInForm extends React.Component{
                   ]
                 })(<Input
                   prefix={<Icon type='user' />}
-                  placeholder='Username or Email'
+                  placeholder={i18n.t('usn-ph')}
                 />)}
               </FormItem>
-              <FormItem key='password'>
+              <FormItem label={i18n.t('pwd')} colon={false} key='password'>
                 {getFieldDecorator('password', {
                   rules: [
                     {
@@ -114,7 +114,7 @@ class SignInForm extends React.Component{
                 })(<Input
                   prefix={<Icon type='lock' />}
                   type='password'
-                  placeholder='Password'
+                  placeholder={i18n.t('pwd-ph')}
                 />)}
               </FormItem>
               <FormItem>
@@ -124,7 +124,7 @@ class SignInForm extends React.Component{
                   htmlType='submit'
                 >
                   <Icon type='login' />
-                  Login
+                  {i18n.t('Login')}
                 </Button>
               </FormItem>
             </Form>
@@ -135,7 +135,7 @@ class SignInForm extends React.Component{
   }
 }
 
-const SignInFormWrapped = Form.create()(withRouter(SignInForm))
+const SignInFormWrapped = translate('translations')(Form.create()(withRouter(SignInForm)))
 
 export {
   SignInFormWrapped
