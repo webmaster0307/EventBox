@@ -52,19 +52,25 @@ export const user = async variables =>
     variables
   })
 
-export const users = async () =>
-  axios.post(API_URL, {
+export const users = async (variables,token) =>
+  axios.get(API_URL, {
     query: `
       {
-        users {
+        users{
           id
           username
           email
           role
         }
       }
-    `
-  })
+    `,variables
+  },token
+  ? {
+    headers: {
+      'x-token': token
+    }
+  }
+  : null)
 
 export const signUp = async variables =>
   axios.post(API_URL, {
@@ -78,13 +84,18 @@ export const signUp = async variables =>
           username: $username,
           email: $email,
           password: $password
-        ) {
-          token
-        }
+        ) 
       }
     `,
     variables
-  })
+  },token
+  ? {
+    headers: {
+      'x-token': token
+    }
+  }
+  : null
+)
 
 export const updateUser = async (variables, token) =>
   axios.post(

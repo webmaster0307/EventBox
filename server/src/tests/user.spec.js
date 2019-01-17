@@ -8,15 +8,15 @@ describe('users', () => {
       const expectedResult = {
         data: {
           user: {
-            id: '1',
-            username: 'rwieruch',
-            email: 'hello@robin.com',
-            role: 'ADMIN'
+            id: '5c35e34fc90cbf0a105a9ed7',
+            username: 'toai',
+            email: 'pinz.impossible@gmail.com',
+            role: ['user']
           }
         }
       }
 
-      const result = await userApi.user({ id: '1' })
+      const result = await userApi.user({ id: '5c35e34fc90cbf0a105a9ed7' })
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -33,33 +33,91 @@ describe('users', () => {
       expect(result.data).to.eql(expectedResult)
     })
   })
-
-  describe('users: [User!]', () => {
-    it('returns a list of users', async () => {
-      const expectedResult = {
-        data: {
+describe('users', () => {
+  it('returns a list of users', async () => {
+    const expectedResult = {
+      data: {
           users: [
             {
-              id: '1',
-              username: 'rwieruch',
-              email: 'hello@robin.com',
-              role: 'ADMIN'
+              id: '5c35e34fc90cbf0a105a9ed7',
+              username: 'toai',
+              email: 'pinz.impossible@gmail.com',
+              role: ['user']
             },
             {
-              id: '2',
-              username: 'ddavids',
-              email: 'hello@david.com',
-              role: null
+              id: '5c35e447c90cbf0a105a9ed9',
+              username: 'mark',
+              email: 'mark@gmule.com',
+              role: ['user']
+            },
+            {
+              id: '5c35e88329884c0aa096e6a3',
+              username: 'thanhhuy',
+              email: 'huyhuythanh3010@gmail.com',
+              role: ['user']
+            },
+            {
+              id: '5c35f283fd0a5541406cb4aa',
+              username: 'quangkhai',
+              email: 'quangkhai897@gmail.com',
+              role: ['user']
+            },
+            {
+              id: '5c35f5e8ee02da41c87aaea2',
+              username: 'vinh',
+              email: 'vinh@ya.com',
+              role: ['user', 'admin']
             }
-          ]
-        }
+          ]   
       }
+    }
+    const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
+    let result
+    try {
+      result = await userApi.users({data},token
+        // [
+        // {
+        //   id: '5c35e34fc90cbf0a105a9ed7',
+        //   username: 'toai',
+        //   email: 'pinz.impossible@gmail.com',
+        //   role: ['user']
+        // },
+        // {
+        //   id: '5c35e447c90cbf0a105a9ed9',
+        //   username: 'mark',
+        //   email: 'mark@gmule.com',
+        //   role: ['user']
+        // },
+        // {
+        //   id: '5c35e88329884c0aa096e6a3',
+        //   username: 'thanhhuy',
+        //   email: 'huyhuythanh3010@gmail.com',
+        //   role: ['user']
+        // },
+        // {
+        //   id: '5c35f283fd0a5541406cb4aa',
+        //   username: 'quangkhai',
+        //   email: 'quangkhai897@gmail.com',
+        //   role: ['user']
+        // },
+        // {
+        //   id: '5c35f5e8ee02da41c87aaea2',
+        //   username: 'vinh',
+        //   email: 'vinh@ya.com',
+        //   role: ['user', 'admin']
+        // }],
+      )
+    } catch (error) {
+      console.log('err: ', error.response.data);
+    }
+    // const result = await userApi.users(token) 
+    console.log('expectedResult: ', result.data)
+    expect(result.data).to.eql(expectedResult)
 
-      const result = await userApi.users()
-
-      expect(result.data).to.eql(expectedResult)
-    })
   })
+
+})
+
 
   describe('me: User', () => {
     it('returns null when no user is signed in', async () => {
@@ -68,7 +126,6 @@ describe('users', () => {
           me: null
         }
       }
-
       const { data } = await userApi.me()
 
       expect(data).to.eql(expectedResult)
@@ -78,9 +135,9 @@ describe('users', () => {
       const expectedResult = {
         data: {
           me: {
-            id: '1',
-            username: 'rwieruch',
-            email: 'hello@robin.com'
+            id: '5c35e88329884c0aa096e6a3',
+            username: 'thanhhuy',
+            email: 'huyhuythanh3010@gmail.com'
           }
         }
       }
@@ -92,8 +149,8 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'rwieruch',
-        password: 'rwieruch'
+        login: 'thanhhuy',
+        password: '123'
       })
 
       const { data } = await userApi.me(token)
@@ -250,3 +307,5 @@ describe('users', () => {
     )
   })
 })
+
+

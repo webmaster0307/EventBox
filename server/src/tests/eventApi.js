@@ -39,6 +39,7 @@ export const listEventsHomepage = async (variables, token) =>
                   status
                   createdAt
                   user{
+                    id
                     username
                   }
                 }
