@@ -257,7 +257,7 @@ describe('users', () => {
     })
 
   describe('deleteUser(id: String!): Boolean!', () => {
-    it.only('returns an error because only admins can delete a user', async () => {
+    it('returns an error because only admins can delete a user', async () => {
       const {
         data: {
           data: {
