@@ -149,7 +149,7 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'thanhhuy',
+        username: 'thanhhuy',
         password: '123'
       })
 
@@ -206,7 +206,7 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'rwieruch',
+        username: 'rwieruch',
         password: 'rwieruch'
       })
 
@@ -257,7 +257,7 @@ describe('users', () => {
     })
 
   describe('deleteUser(id: String!): Boolean!', () => {
-    it('returns an error because only admins can delete a user', async () => {
+    it.only('returns an error because only admins can delete a user', async () => {
       const {
         data: {
           data: {
@@ -265,13 +265,13 @@ describe('users', () => {
           }
         }
       } = await userApi.signIn({
-        login: 'ddavids',
-        password: 'ddavids'
+        username: 'toai',
+        password: '123'
       })
 
       const {
         data: { errors }
-      } = await userApi.deleteUser({ id: '1' }, token)
+      } = await userApi.deleteUser({ id: '5c35e447c90cbf0a105a9ed9' }, token)
 
       expect(errors[0].message).to.eql('Not authorized as admin.')
     })
@@ -287,7 +287,7 @@ describe('users', () => {
     })
   })
 
-  describe('signIn(login: String!, password: String!): Token!', () => {
+  describe('signIn(username: String!, password: String!): Token!', () => {
     it('returns a token when a user signs in with username', async () => {
       const {
         data: {

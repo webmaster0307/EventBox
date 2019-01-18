@@ -63,7 +63,7 @@ describe('event', () => {
 
 describe('listEventsHomepage', () => {
   describe('events(status:String, limit: Int!): [Events]', () => {
-    it.only('returns List of event', async () => {
+    it('returns List of event', async () => {
       const expectedResult = {
         data: {
           events: {
