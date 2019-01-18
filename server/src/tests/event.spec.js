@@ -63,16 +63,16 @@ describe('event', () => {
 
 describe('listEventsHomepage', () => {
   describe('events(status:String, limit: Int!): [Events]', () => {
-    it('returns List of event', async () => {
+    it.only('returns List of event', async () => {
       const expectedResult = {
         data: {
           events: {
             edges: [
               {
-                id: '5c40a88ca9ceeb2e906424df',
+                id: '5c41a22fb1165b476019ef21',
                 title: 'Event01',
                 status:'draft',
-                createdAt: '1547741324817',
+                createdAt: '1547805231028',
                 images: {
                   thumbnail: 'https://i.imgur.com/3PuAloY.png'
                 },
@@ -81,10 +81,10 @@ describe('listEventsHomepage', () => {
                   username: 'toai'
                 }
               }, {
-                id: "5c40a86ea9ceeb2e906424de",
+                id: "5c419c64f0568521742b6853",
                 title: "Event01",
                 status:'draft',
-                createdAt: "1547741294665",
+                createdAt: "1547803748346",
                 images: {
                   thumbnail: "https://i.imgur.com/3PuAloY.png"
                 },
@@ -93,90 +93,12 @@ describe('listEventsHomepage', () => {
                   username: "toai"
                 }
               },
-              {
-                id: "5c3f58366254d23848f86bc7",
-                title: "Event01",
-                status:'draft',
-                createdAt: "1547655222731",
-                images: {
-                  thumbnail: "https://i.imgur.com/3PuAloY.png"
-                },
-                user: {
-                  id: "5c35e34fc90cbf0a105a9ed7",
-                  username: "toai"
-                }
-              },
-              {
-                id: "5c3f582f6254d23848f86bc6",
-                title: "Event01",
-                status:'draft',
-                createdAt: "1547655215330",
-                images: {
-                  thumbnail: "https://i.imgur.com/3PuAloY.png"
-                },
-                user: {
-                  id: "5c35e34fc90cbf0a105a9ed7",
-                  username: "toai"
-                }
-              },
-              {
-                id: "5c3edaaa179d09221c2e7eb4",
-                title: "Event01",
-                status:'draft',
-                createdAt: "1547623082902",
-                images: {
-                  thumbnail: "https://i.imgur.com/3PuAloY.png"
-                },
-                user: {
-                  id: "5c35e34fc90cbf0a105a9ed7",
-                  username: "toai"
-                }
-              },
-              {
-                id: "5c3ed8c1179d09221c2e7eb3",
-                title: "Event01",
-                status:'draft',
-                createdAt: "1547622593306",
-                images: {
-                  thumbnail: "https://i.imgur.com/3PuAloY.png"
-                },
-                user: {
-                  id: "5c35e34fc90cbf0a105a9ed7",
-                  username: "toai"
-                }
-              },
-              {
-                id: "5c3eb585836eb617b46ac36f",
-                title: "Event05",
-                status:'draft',
-                createdAt: "1547613573934",
-                images: {
-                  thumbnail: "https://i.imgur.com/mKpeEWw.jpg"
-                },
-                user: {
-                  id: "5c35f283fd0a5541406cb4aa",
-                  username: "quangkhai"
-                }
-              },
-              {
-                id: "5c3eb463836eb617b46ac36e",
-                title: "Event04",
-                status:'draft',
-                createdAt: "1547613283625",
-                images: {
-                  thumbnail: "https://i.imgur.com/3PuAloY.png"
-                },
-                user: {
-                  id: "5c35e88329884c0aa096e6a3",
-                  username: "thanhhuy"
-                }
-              }
             ]
           }
         }
       }
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
-      const result = await eventApi.listEventsHomepage({ status: "draft", limit: 8 }, token)
+      const result = await eventApi.listEventsHomepage({ status: "draft", limit:2 }, token)
 
       expect(result.data).to.eql(expectedResult)
     })

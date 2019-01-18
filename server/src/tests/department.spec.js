@@ -18,7 +18,7 @@ describe('departments', () => {
       }
 
       const { data: { data : { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
-      const result = await departmentApi.departments({ limit: 1 }, token)
+      const result = await departmentApi.departments({ limit: 2}, token)
 
       expect(result.data).to.eql(expectedResult)
     })
