@@ -13,36 +13,34 @@ const FormItem = Form.Item
 @observer
 class DescriptionArea extends Component{
 
-  formFields = () => [
-    {
-      name: 'title',
-      title: 'Title',
-      customRender: <Input placeholder='Title' />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'departments',
-      title: 'Thuộc về Khoa',
-      customRender: <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
-    },
-    {
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      customRender: <Input placeholder='Thumbnail' />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'thumbnail2',
-      title: 'Thumbnail2',
-      customRender: <UploadDragger />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'shortDescription',
-      title: 'Short Description',
-      customRender: <Input placeholder='Short description' />
-    }
-  ]
+  formFields = () => {
+    const thumbnailSrc = this.props.form.getFieldValue('thumbnail')
+
+    return([
+      {
+        name: 'title',
+        title: 'Title',
+        customRender: <Input placeholder='Title' />,
+        rules: [formRuleNotEmpty]
+      },
+      {
+        name: 'departments',
+        title: 'Thuộc về Khoa',
+        customRender: <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
+      },
+      {
+        name: 'thumbnail',
+        title: 'Thumbnail',
+        customRender: <UploadDragger imageSrc={thumbnailSrc} />,
+        rules: [formRuleNotEmpty]
+      },
+      {
+        name: 'shortDescription',
+        title: 'Short Description',
+        customRender: <Input placeholder='Short description' />
+      }
+    ])
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form

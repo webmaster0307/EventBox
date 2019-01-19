@@ -115,9 +115,9 @@ export default {
           userId: me.id
         })
 
-        pubsub.publish(EVENTS.EVENT.CREATED, {
-          eventCreated: { event }
-        })
+        // pubsub.publish(EVENTS.EVENT.CREATED, {
+        //   eventCreated: { event }
+        // })
 
         return event
       }

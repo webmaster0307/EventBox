@@ -80,6 +80,9 @@ class EventUpdate extends Component{
                         if(node.id === eventId){
                           return {
                             ...node,
+                            images: {
+                              thumbnail: values.thumbnail
+                            },
                             status: 'draft'
                           }
                         }
