@@ -16,12 +16,13 @@ const CREATE_EVENT = gql`
     ) {
       id
       title
-      description
+      slug
       status
       images {
         thumbnail
       }
       createdAt
+      updatedAt
       user {
         id
         username
