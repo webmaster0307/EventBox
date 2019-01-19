@@ -5,6 +5,7 @@ import { formRuleNotEmpty, formItemLayout } from './constants'
 import { Editor } from 'react-draft-wysiwyg'
 import { inject, observer } from 'mobx-react'
 import DepartmentSelection from './DepartmentSelection'
+import UploadDragger from './UploadDragger'
 
 const FormItem = Form.Item
 
@@ -28,6 +29,12 @@ class DescriptionArea extends Component{
       name: 'thumbnail',
       title: 'Thumbnail',
       customRender: <Input placeholder='Thumbnail' />,
+      rules: [formRuleNotEmpty]
+    },
+    {
+      name: 'thumbnail2',
+      title: 'Thumbnail2',
+      customRender: <UploadDragger />,
       rules: [formRuleNotEmpty]
     },
     {
