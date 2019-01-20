@@ -17,11 +17,29 @@ import resolvers from './resolvers'
 import models from './models/index'
 import loaders from './loaders'
 
+import { RedisPubSub } from 'graphql-redis-subscriptions'
+import Redis from 'ioredis'
+
 const port = process.env.SERVER_PORT || 8000
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express()
-const pubsub = new PubSub()
+
+// Subscription
+// const pubsub = new PubSub()
+const options = {
+  host: process.env.REDIS_PUBSUB_HOST || '127.0.0.1',   // Redis host
+  port: process.env.REDIS_PUBSUB_PORT || 6379,          // Redis port
+  retry_strategy: options => {
+    // reconnect after
+    return Math.max(options.attempt * 100, 3000);
+  }
+};
+
+const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options)
+})
 
 // const corsOptions = {
 //   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],

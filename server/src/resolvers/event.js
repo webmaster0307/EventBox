@@ -115,9 +115,9 @@ export default {
           userId: me.id
         })
 
-        pubsub.publish(EVENTS.EVENT.CREATED, {
-          eventCreated: { event }
-        })
+        // pubsub.publish(EVENTS.EVENT.CREATED, {
+        //   eventCreated: { event }
+        // })
 
         return event
       }
@@ -234,6 +234,16 @@ export default {
       subscribe: () => pubsub.asyncIterator(EVENTS.EVENT.CREATED)
     },
     eventSubmited: {
+      resolve: (payload, args, context, info) => {
+        // Manipulate and return the new value
+        const { description, ...eventSubmited } = payload.eventSubmited
+        // console.log('rest: ',eventSubmited)
+        // console.log('typeof: ',typeof eventSubmited)
+        return {
+          ...eventSubmited,
+          id: mongoose.Types.ObjectId(eventSubmited._id)
+        }
+      },
       subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
         const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
         return pubsub.asyncIterator(arrIterator)

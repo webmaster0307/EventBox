@@ -107,7 +107,8 @@ class LogoBlur extends Component {
   }
 
   updateTweenData = () => {
-    if(!this.unmounted){
+    if(this.unmounted){
+      console.log('unmounted LogoBlur \nreturn')
       return
     }
     this.dom = ReactDOM.findDOMNode(this)
