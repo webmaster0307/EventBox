@@ -45,17 +45,11 @@ const UPDATE_EVENT_BYID = gql`
       startTime: $startTime, endTime: $endTime, location: $location, address: $address
     ) {
       title
-      description
-      shortDescription
       images {
         thumbnail
       }
       createdAt
-      user {
-        id
-        username
-        email
-      }
+      updatedAt
     }
   }
 `
