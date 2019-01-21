@@ -5,7 +5,7 @@ import * as eventApi from './eventApi'
 
 describe('event', () => {
   describe('detailEvent(id: ID!): [Event]', () => {
-    it('returns details of event', async () => {
+    it('should returns details of event', async () => {
       const expectedResult = {
         data: {
           event:
@@ -35,7 +35,7 @@ describe('event', () => {
 
   })
   describe('personalEvent(id: ID!): [Event]', () => {
-    it('returns list of your event', async () => {
+    it('should returns list of your event', async () => {
       const expectedResult = {
         data: {
           event:
@@ -54,7 +54,7 @@ describe('event', () => {
       }
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
       const result = await eventApi.personalEvent({ id: '5c3d93883997b71214c014e1' }, token)
-      console.log(chalk.blue(JSON.stringify(result.data)))
+      // console.log(chalk.blue(JSON.stringify(result.data)))
       expect(result.data).to.eql(expectedResult)
     })
 
@@ -63,7 +63,7 @@ describe('event', () => {
 
 describe('listEventsHomepage', () => {
   describe('events(status:String, limit: Int!): [Events]', () => {
-    it('returns List of event', async () => {
+    it('should returns List of event', async () => {
       const expectedResult = {
         data: {
           events: {
@@ -106,7 +106,7 @@ describe('listEventsHomepage', () => {
   })
 
   describe('deleteEvent', () => {
-    it('return an error ')
+    it('should return an error ')
   })
 })
 

@@ -8,7 +8,7 @@
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
-    "test": "node ./node_modules/mocha/bin/mocha --require @babel/register src/tests/lifecycle.test.js src/tests/integration/**/*.spec.js",
+    "test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js",
     "test-cov": "nyc npm run test"
   },
   "keywords": [],
@@ -60,9 +60,6 @@
   "nyc": {
     "include": [
       "src/**"
-    ],
-    "exclude": [
-      "src/tests/**"
     ],
     "all": false,
     "cache": false,

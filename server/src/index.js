@@ -67,9 +67,9 @@ morgan.token('decodeUrl', function (req, res) {
 //   }
 // });
 
-app.use(
-  morgan(`- :method :decodeUrl :status :response-time ms`)
-)
+// app.use(
+//   morgan(`- :method :decodeUrl :status :response-time ms`)
+// )
 
 const getMe = async req => {
   const token = req.headers['x-token']

@@ -13,6 +13,7 @@ export const connect = function(cb){
     mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useCreateIndex: true,
+      useFindAndModify: false,
       // sets how many times to try reconnecting
       reconnectTries: Number.MAX_VALUE,
       // sets the delay between every retry (milliseconds)

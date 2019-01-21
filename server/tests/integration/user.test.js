@@ -4,7 +4,7 @@ import * as userApi from './userApi'
 
 describe('users', () => {
   describe('user(id: String!): User', () => {
-    it('returns a user when user can be found', async () => {
+    it('should returns a user when user can be found', async () => {
       const expectedResult = {
         data: {
           user: {
@@ -21,7 +21,7 @@ describe('users', () => {
       expect(result.data).to.eql(expectedResult)
     })
 
-    it('returns null when user cannot be found', async () => {
+    it('should returns null when user cannot be found', async () => {
       const expectedResult = {
         data: {
           user: null
@@ -34,7 +34,7 @@ describe('users', () => {
     })
   })
 describe('users', () => {
-  it('returns a list of users', async () => {
+  it('should returns a list of users', async () => {
     const expectedResult = {
       data: {
           users: [
@@ -111,7 +111,7 @@ describe('users', () => {
       console.log('err: ', error.response.data);
     }
     // const result = await userApi.users(token) 
-    console.log('expectedResult: ', result.data)
+    // console.log('expectedResult: ', result.data)
     expect(result.data).to.eql(expectedResult)
 
   })
@@ -120,7 +120,7 @@ describe('users', () => {
 
 
   describe('me: User', () => {
-    it('returns null when no user is signed in', async () => {
+    it('should returns null when no user is signed in', async () => {
       const expectedResult = {
         data: {
           me: null
@@ -131,7 +131,7 @@ describe('users', () => {
       expect(data).to.eql(expectedResult)
     })
 
-    it('returns me when me is signed in', async () => {
+    it('should returns me when me is signed in', async () => {
       const expectedResult = {
         data: {
           me: {
@@ -160,7 +160,7 @@ describe('users', () => {
   })
 
   describe('signUp, updateUser, deleteUser', () => {
-    it('signs up a user, updates a user and deletes the user as admin', async () => {
+    it('should signs up a user, updates a user and deletes the user as admin', async () => {
       // sign up
 
       let {
@@ -222,7 +222,7 @@ describe('users', () => {
   //update user
   describe('updateUser', () => {
     describe('updateUser($id: ID!, $username: String!, $password: String, $firstname: String, $lastname: String, $department: String,  $phoneNumber: Int, $secret: String,  $role: [String]): [uEv]', () => {
-      it('return update new user', async () => {
+      it('should return update new user', async () => {
         let expectedResult = {
             data: {
               updateUser:{
@@ -251,13 +251,13 @@ describe('users', () => {
         } catch (error) {
           console.log('err: ',error.response.data);
         }
-        console.log('expectedResult: ',result.data)
+        // console.log('expectedResult: ',result.data)
         expect(result.data).to.eql(expectedResult)
       })
     })
 
   describe('deleteUser(id: String!): Boolean!', () => {
-    it('returns an error because only admins can delete a user', async () => {
+    it('should returns an error because only admins can delete a user', async () => {
       const {
         data: {
           data: {
@@ -278,7 +278,7 @@ describe('users', () => {
   })
 
   describe('updateUser(username: String!): User!', () => {
-    it('returns an error because only authenticated users can update a user', async () => {
+    it('should returns an error because only authenticated users can update a user', async () => {
       const {
         data: { errors }
       } = await userApi.updateUser({ username: 'Mark' })
@@ -288,7 +288,7 @@ describe('users', () => {
   })
 
   describe('signIn(username: String!, password: String!): Token!', () => {
-    it('returns a token when a user signs in with username', async () => {
+    it('should returns a token when a user signs in with username', async () => {
       const {
         data: {
           data: {
@@ -303,7 +303,7 @@ describe('users', () => {
       expect(token).to.be.a('string')
     })
 
-    it('returns a token when a user signs in with email', async () => {
+    it('should returns a token when a user signs in with email', async () => {
       const {
         data: {
           data: {
@@ -318,7 +318,7 @@ describe('users', () => {
       expect(token).to.be.a('string')
     })
 
-    it('returns an error when a user provides a wrong password', async () => {
+    it('should returns an error when a user provides a wrong password', async () => {
       const {
         data: { errors }
       } = await userApi.signIn({
@@ -330,7 +330,7 @@ describe('users', () => {
     })
   })
 
-  it('returns an error when a user is not found', async () => {
+  it('should returns an error when a user is not found', async () => {
     const {
       data: { errors }
     } = await userApi.signIn({
