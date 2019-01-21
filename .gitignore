@@ -5,3 +5,6 @@
 /server/src/public
 
 .env
+dist
+coverage
+.nyc_output

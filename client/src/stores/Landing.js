@@ -1,31 +1,47 @@
-import { observable, action } from 'mobx'
-// import { client } from '@client'
+import { observable, action, toJS, computed } from 'mobx'
+import { client } from '@client'
+import { event } from '@gqlQueries'
+import i18n from '../constants/i18n'
 
 class Landing {
   @observable isShow = true
-  @observable isEnglish = true
-  @observable buttonText = 'Tiếng Việt'
+  @observable isEnglish = false
+  // @observable buttonText = 'Tiếng Việt'
   @observable isMobile = false
   // For sign in modal
   @observable isSigningIn = false
   // For sign up modal
   @observable isSigningUp = false
   // Search bar
+  @observable allSuggestion = []
+  @observable suggestion = []
+  // Event list
   @observable eventList = []
 
+  constructor(){
+    if(i18n.language === 'en'){
+      this.isEnglish = true
+    }
+  }
+
   @action
-  checkScreen (r) {this.isMobile = r}
+  checkScreen (r) {
+    if (r === undefined) {
+      this.isMobile = false
+    }
+    this.isMobile = r
+  }
 
   @action
   checkShow (r) {this.isShow = r}
 
   @action
   changeLanguage () {
-    if (this.isEnglish) {
-      this.buttonText = 'English'
-    } else {
-      this.buttonText = 'Tiếng Việt'
-    }
+    // if (this.isEnglish) {
+    //   this.buttonText = 'English'
+    // } else {
+    //   this.buttonText = 'Tiếng Việt'
+    // }
     this.isEnglish = !this.isEnglish
   }
 
@@ -48,19 +64,48 @@ class Landing {
   }
 
   @action
+  async getEvents () {
+    const { data: { eventsHome } } = await client.query({
+      query: event.GET_EVENTS_HOMEPAGE,
+      fetchPolicy: 'network-only'
+    })
+
+    if (eventsHome.length) {
+      this.allSuggestion = eventsHome.map(e => {
+        if (e.title.length > 90) {
+          return e.title.substring(0, 90)
+        } else {
+          return e.title
+        }
+      })
+    }
+
+    this.eventList = eventsHome
+  }
+
+  @action
   handleAutoCompleteSelect(value) {
     console.log(value)
   }
 
   @action
-  handleAutoCompleteSearch = (value) => {
-    this.eventList = !value ? [] : [
-      value,
-      value + value,
-      value + value + value
-    ]
+  handleAutoCompleteSearch = (words) => {
+    if (words) {
+      this.suggestion = toJS(this.allSuggestion).filter(title => {
+        return title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      })
+    } else {
+      this.suggestion = []
+    }
   }
 
+  @computed get buttonText(){
+    if (this.isEnglish) {
+      return 'Tiếng Việt'
+    } else {
+      return 'English'
+    }
+  }
 }
 
 

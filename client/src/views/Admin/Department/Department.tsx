@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import { Button, Divider } from 'antd'
-import DepartmentStore from './DepartmentStore'
-import { Provider, inject, observer } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import { withModal } from '@components'
 import FormAddDepartment from './components/FormAddDepartment'
 import DepartmentList from './components/DepartmentList'
 import './styles.scss'
 
 @withModal
-@inject('stores', 'departmentStore')
+@inject('stores')
 @observer
 class Department extends Component<any>{
 
   componentDidMount = () => {
-    
+
   }
-  
+
   handleOpenAdd = () => {
     const { modal } = this.props
     modal.show({
@@ -25,7 +24,8 @@ class Department extends Component<any>{
   }
 
   handleAddSuccess = (values: any) => {
-    const { modal, departmentStore } = this.props
+    const { modal, stores } = this.props
+    const { departmentStore } = stores.admin
     departmentStore.addDepartment(values)
     modal.close()
   }
@@ -43,22 +43,4 @@ class Department extends Component<any>{
   }
 }
 
-@observer
-class DepartmentWrapper extends Component {
-  private departmentStore: any
-
-  constructor(props: any){
-    super(props)
-    this.departmentStore = new DepartmentStore()
-  }
-
-  render() {
-    return (
-      <Provider departmentStore={this.departmentStore} >
-        <Department />
-      </Provider>
-    )
-  }
-}
-
-export default DepartmentWrapper
+export default Department

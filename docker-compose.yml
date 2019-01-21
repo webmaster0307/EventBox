@@ -1,5 +1,14 @@
 version: '3'
 services:
+  redis:
+    image: 'redis:5.0.3'
+    container_name: eventbox-redis
+    env_file: 
+      - .env
+    expose:
+      - ${REDIS_PUBSUB_PORT}
+    networks:
+    - eventbox-net
   nginx:
     build:
       context: ./client
@@ -7,12 +16,15 @@ services:
     image:
       eventbox-server-nginx:v1
     depends_on:
-      - server
+      - redis
+      - server1
+      - server2
+      - server3
     ports:
       - "8080:80"
     networks:
       - eventbox-net
-  server:
+  server1:
     build:
       context: ./server
       dockerfile: ./Dockerfile
@@ -20,6 +32,40 @@ services:
       eventbox-server:v2
     env_file: 
       - .env
+    environment:
+      - INSTANCE=server1
+    expose:
+      - ${SERVER_PORT}
+    networks:
+    - eventbox-net
+    restart: always
+    command: npm run start-prod
+  server2:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    image:
+      eventbox-server:v2
+    env_file: 
+      - .env
+    environment:
+      - INSTANCE=server2
+    expose:
+      - ${SERVER_PORT}
+    networks:
+    - eventbox-net
+    restart: always
+    command: npm run start-prod
+  server3:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    image:
+      eventbox-server:v2
+    env_file: 
+      - .env
+    environment:
+      - INSTANCE=server3
     expose:
       - ${SERVER_PORT}
     networks:

@@ -37,6 +37,8 @@ class Landing extends React.Component {
   componentDidMount () {
     enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
     if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
+
+    this.props.stores.landing.getEvents()
   }
 
   render() {

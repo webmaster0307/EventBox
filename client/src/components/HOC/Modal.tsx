@@ -34,7 +34,7 @@ const ModalHOCWrapper = (Child: React.ComponentType<any>) => {
       const { body, ...rest } = this.state
       return (
         <Fragment>
-          <Child {...this.props} modal={this.modal} /> 
+          <Child {...this.props} modal={this.modal} />
           <Modal
             {...rest}
             onCancel={this.handleCancel}
@@ -49,4 +49,4 @@ const ModalHOCWrapper = (Child: React.ComponentType<any>) => {
   return ModalHOC as any
 }
 
-export default ModalHOCWrapper 
+export default ModalHOCWrapper

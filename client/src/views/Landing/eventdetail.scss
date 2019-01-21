@@ -2,106 +2,106 @@
   &__wrapper {
     background-color: #e9e9e9;
     padding-bottom: 50px;
-  }
-}
 
-.event-image-thumbnail {
-  &__wrapper {
-    padding: 24px;
-    padding-top: 12px;
-    background-color: #e9e9e9;
-    text-align: center;
-    max-height: 75vh;
-
-    img {
-      height: 70vh;
-    }
-  }
-}
-
-.event-header-info {
-  &__wrapper {
-    padding-top: 14px;
-    color: #333333;
-    padding-bottom: 50px;
-    background-color: #fff;
-
-    .calendar-fake {
-      width: 85px;
-      height: 102px;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #ccc;
-      text-align: center;
-      word-wrap: break-word;
-      border-bottom: 5px solid #ccc;
-
-      .month {
-        padding: 4px 0;
-        text-transform: uppercase;
-        font-weight: bold;
-        color: #fff;
-        font-size: 12px;
-        background-color: #eb1212;
-      }
-      .date {
-        font-size: 34px;
-        font-weight: normal;
-        color: #666666;
-      }
-      .weekdate {
-        margin: 0;
-        color: #666;
-        font-size: 14px;
-        font-weight: normal;
-        &::first-letter {
-          text-transform: uppercase;
+    .event-image-thumbnail {
+      &__wrapper {
+        padding: 24px;
+        padding-top: 12px;
+        background-color: #e9e9e9;
+        text-align: center;
+        max-height: 75vh;
+    
+        img {
+          height: 70vh;
         }
       }
     }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
+    
+    .event-header-info {
+      &__wrapper {
+        padding-top: 14px;
+        color: #333333;
+        padding-bottom: 50px;
+        background-color: #fff;
+    
+        .calendar-fake {
+          width: 85px;
+          height: 102px;
+          display: flex;
+          flex-direction: column;
+          border: 1px solid #ccc;
+          text-align: center;
+          word-wrap: break-word;
+          border-bottom: 5px solid #ccc;
+    
+          .month {
+            padding: 4px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #fff;
+            font-size: 12px;
+            background-color: #eb1212;
+          }
+          .date {
+            font-size: 34px;
+            font-weight: normal;
+            color: #666666;
+          }
+          .weekdate {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+            &::first-letter {
+              text-transform: uppercase;
+            }
+          }
+        }
+    
+        .title {
+          font-size: 24px;
+          font-weight: bold;
+        }
+    
+        .start-time, .location{
+          font-size: 16px;
+          font-weight: bold;
+          padding-top: 8px;
+        }
+    
+        .address {
+          padding-top: 8px;
+          margin-left: 36px;
+        }
+      }
     }
-
-    .start-time, .location{
-      font-size: 16px;
-      font-weight: bold;
-      padding-top: 8px;
+    
+    .event-header-nav {
+      &__wrapper {
+        border: 1px solid #e7e7e7;
+        background-color: #fff;
+    
+        .item {
+          color: #333333;
+          font-size: 16px;
+          padding: 15px;
+          border-bottom: 3px solid transparent;
+        }
+      }
     }
-
-    .address {
-      padding-top: 8px;
-      margin-left: 36px;
+    
+    .event-description {
+      &__wrapper {
+        margin: 14px 132px;
+        background-color: #e9e9e9;
+      }
     }
-  }
-}
-
-.event-header-nav {
-  &__wrapper {
-    border: 1px solid #e7e7e7;
-    background-color: #fff;
-
-    .item {
-      color: #333333;
-      font-size: 16px;
-      padding: 15px;
-      border-bottom: 3px solid transparent;
+    
+    .event-organization {
+      &__wrapper {
+        margin: 14px 132px;
+        background-color: #e9e9e9;
+      }
     }
-  }
-}
-
-.event-description {
-  &__wrapper {
-    margin: 14px 132px;
-    background-color: #e9e9e9;
-  }
-}
-
-.event-organization {
-  &__wrapper {
-    margin: 14px 132px;
-    background-color: #e9e9e9;
   }
 }

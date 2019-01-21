@@ -37,8 +37,14 @@ export default {
       if (!me) {
         return null
       }
+      const currentUser = await models.User.findById(me.id)
+      const isReviewer = await models.DepartmentUser.findOne({ userId: me.id, departmentRole: 'reviewer' })
+      if(isReviewer){
+        currentUser.role.push('reviewer')
+      }
+      // console.log('current: ',currentUser);
 
-      return await models.User.findById(me.id)
+      return currentUser
     }
   },
 
@@ -115,6 +121,18 @@ export default {
         where: {
           userId: user.id
         }
+      }),
+    departments: async (user, args, { models }) => {
+      const roles = await models.DepartmentUser.find({
+        userId: user.id
       })
+      const departmentIds = roles.map(item => item.departmentId)
+      const departments = await models.Department.find({
+        _id: {
+          $in: departmentIds
+        }
+      })
+      return departments
+    }
   }
 }

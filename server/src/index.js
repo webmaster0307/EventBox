@@ -8,18 +8,38 @@ import morgan from 'morgan'
 import jwt from 'jsonwebtoken'
 import DataLoader from 'dataloader'
 import { ApolloServer } from 'apollo-server-express'
+import { PubSub } from 'apollo-server'
 import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
 
 import schema from './schema'
 import resolvers from './resolvers'
-import models from './models/index'
+import models, { connect } from './models/index'
 import loaders from './loaders'
+
+import { RedisPubSub } from 'graphql-redis-subscriptions'
+import Redis from 'ioredis'
 
 const port = process.env.SERVER_PORT || 8000
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express()
+
+// Subscription
+// const pubsub = new PubSub()
+const options = {
+  host: process.env.REDIS_PUBSUB_HOST || '127.0.0.1',   // Redis host
+  port: process.env.REDIS_PUBSUB_PORT || 6379,          // Redis port
+  retry_strategy: options => {
+    // reconnect after
+    return Math.max(options.attempt * 100, 3000);
+  }
+};
+
+const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options)
+})
 
 // const corsOptions = {
 //   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],
@@ -95,6 +115,7 @@ const server = new ApolloServer({
       return {
         models,
         newErr,
+        pubsub,
         loaders: {
           user: new DataLoader(keys =>
             loaders.user.batchUsers(keys, models)
@@ -109,7 +130,9 @@ const server = new ApolloServer({
 
       return {
         models,
+        newErr,
         me,
+        pubsub,
         isAdmin,
         secret: process.env.TOKEN_SECRET,
         loaders: {
@@ -133,9 +156,19 @@ server.applyMiddleware({
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-httpServer.listen({ port }, () => {
-  console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+connect(function(err){
+  if(!err){
+    httpServer.listen({ port }, () => {
+      console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+      app.emit('serverStarted')
+    })
+  }
 })
+
+export {
+  app,
+  httpServer
+}
 
 // app.get('/', (req, res) => {
 //   res.render('index')
@@ -144,6 +177,7 @@ httpServer.listen({ port }, () => {
 app.get('/api/status', (req, res) => {
   res.send({
     status: 'ok',
+    instance: process.env.INSTANCE,
     code: 200
   })
 })

@@ -4,7 +4,7 @@ const CREATE_DEPARTMENT = gql`
   mutation($name: String!, $description: String!) {
     createDepartment(name: $name, description: $description) {
       id
-      name,
+      name
       updatedAt
     }
   }

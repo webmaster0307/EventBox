@@ -5,15 +5,15 @@ import { department } from '@gqlQueries'
 class DepartmentStore {
 
   @observable listLoading = true
-  @observable departments = []
+  @observable departments: any[] = []
 
   @action
   async getDepartments(){
-    let result
+    let result: any
     try {
       result = await client.query({ query: department.GET_PAGINATED_DEPARTMENTS, variables: { limit: 5 } })
     } catch (error) {
-      
+
     }
     const { departments } = result.data
     this.departments = departments
@@ -21,7 +21,7 @@ class DepartmentStore {
   }
 
   @action
-  addDepartment(_department){
+  addDepartment(_department: any){
     this.departments.unshift(_department)
   }
 }

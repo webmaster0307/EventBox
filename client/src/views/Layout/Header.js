@@ -1,26 +1,64 @@
 import React, { Component } from 'react'
-import { Layout, Avatar, Menu, Dropdown } from 'antd'
+import { Layout, Avatar, Menu, Dropdown, notification, Icon } from 'antd'
 import { client } from '@client'
 import { signOut } from '@components'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import { Subscription } from 'react-apollo'
+import { event } from '@gqlQueries'
+import { DB_EVENT_REVIEW } from '@routes'
 
 const { Header } = Layout
 
-const LayoutHeader = props => (
-  <Header 
-    style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }} 
-  >
-    <UserAvatar {...props} />
-  </Header>
-)
+class LayoutHeader extends Component{
 
-export default LayoutHeader
+  render(){
+    const { user } = this.props
+    const departmentIds = user && user.departments.map(item => item.id)
+    
+    return(
+      <Subscription
+        subscription={event.SUBCRIBE_EVENT_REVIEW}
+        variables={{ departmentIds }}
+      >
+        {({data}) => {
+          if(data && data.eventSubmited){
+            ShowNotification(data.eventSubmited, this.props)
+          }
+
+          return(
+            <Header
+              style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}
+            >
+              <UserAvatar {...this.props} />
+            </Header>
+          )
+        }}
+      </Subscription>
+    )
+  }
+}
+export default withRouter(LayoutHeader)
+
+const ShowNotification = (event, router) => (
+  notification.open({
+    message: 'New pending Event',
+    description: 
+      <div>New event is waiting for approval. 
+        <div 
+          className='fake-link' 
+          onClick={() => router.history.push(`${DB_EVENT_REVIEW}/${event.id}`)} >
+          Review now!
+        </div>
+      </div>,
+    icon: <Icon type='solution' style={{ color: '#108ee9' }} />
+  })
+)
 
 class UserAvatar extends Component{
 
   render() {
-    const { user } = this.props 
-    
+    const { user } = this.props
+
     return (
       <div className='layout-header-useravatar__wrapper' >
         <span style={{marginRight: 12}} >{user.username}</span>

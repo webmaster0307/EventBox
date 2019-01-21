@@ -1,0 +1,13 @@
+.fake-link {
+  color: #1890ff;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  transition: color 0.3s ease 0s;
+  &:hover{
+    outline: 0px;
+    text-decoration: none;
+    color: rgba($color: #1890ff, $alpha: .7)
+  }
+}

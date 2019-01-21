@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Form, Button, message, BackTop } from 'antd'
 import { client } from '@client'
-import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common' 
+import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common'
 import { EditorState, convertToRaw } from 'draft-js'
 import { inject } from 'mobx-react'
 import { event as eventQueries } from '@gqlQueries'
 import * as routes from '@routes'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import './styles.scss'
 
 const FormItem = Form.Item
 
@@ -21,7 +22,7 @@ class EventCreate extends Component{
   componentDidMount = () => {
     this.props.stores.event.editorEventCreate = EditorState.createEmpty()
   }
-  
+
   _handleCreatedEvent = event => {
     event.preventDefault()
     const { form } = this.props
@@ -29,9 +30,35 @@ class EventCreate extends Component{
       if(!err){
         const dataSubmit = this.prepareData(values)
         this.setState({loading: true}, () => {
-          client.mutate({ 
-            mutation: eventQueries.CREATE_EVENT, 
-            variables: dataSubmit
+          client.mutate({
+            mutation: eventQueries.CREATE_EVENT,
+            variables: dataSubmit,
+            update: (cache, { data: { createEvent } }) => {
+              if(!createEvent){
+                // return alert('Failed to delete')
+              }
+              try {
+                const data = cache.readQuery({
+                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+                })
+
+                cache.writeQuery({
+                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
+                  data: {
+                    ...data,
+                    events: {
+                      ...data.events,
+                      edges: [ 
+                        {...createEvent}, ...data.events.edges 
+                      ],
+                      pageInfo: data.events.pageInfo
+                    }
+                  }
+                })
+              } catch (error) {
+                // console.log('error: ',error)
+              }
+            }
           })
             .then( ({data, errors}) => {
               this.setState({loading: false})
@@ -52,31 +79,31 @@ class EventCreate extends Component{
   }
 
   handlePublishEvent = () => {
-    const { form } = this.props
-    form.validateFields( (err, values) => {
-      if(!err){
-        const dataSubmit = this.prepareData(values)
-        const { event } = this.props.stores
-        this.setState({loading: true}, () => {
-          client.mutate({ 
-            mutation: eventQueries.CREATE_EVENT, 
-            variables: dataSubmit
-          })
-            .then( ({data, errors}) => {
-              this.setState({loading: false})
-              if(errors){
-                return message.error('Failed to publish new event')
-              }
-              event.editorEventCreate = EditorState.createEmpty()
-              message.success('New event published successfully!')
-            })
-            .catch( () => {
-              this.setState({loading: false})
-              return message.error('Failed to publish new event')
-            })
-        })
-      }
-    })
+    // const { form } = this.props
+    // form.validateFields( (err, values) => {
+    //   if(!err){
+    //     const dataSubmit = this.prepareData(values)
+    //     const { event } = this.props.stores
+    //     this.setState({loading: true}, () => {
+    //       client.mutate({
+    //         mutation: eventQueries.CREATE_EVENT,
+    //         variables: dataSubmit
+    //       })
+    //         .then( ({data, errors}) => {
+    //           this.setState({loading: false})
+    //           if(errors){
+    //             return message.error('Failed to publish new event')
+    //           }
+    //           event.editorEventCreate = EditorState.createEmpty()
+    //           message.success('New event published successfully!')
+    //         })
+    //         .catch( () => {
+    //           this.setState({loading: false})
+    //           return message.error('Failed to publish new event')
+    //         })
+    //     })
+    //   }
+    // })
   }
 
   prepareData = (values) => {
@@ -115,6 +142,7 @@ class EventCreate extends Component{
               loading={loading}
               icon='form'
               onClick={this.handlePublishEvent}
+              disabled
             >
               PUBLISH
             </Button>
