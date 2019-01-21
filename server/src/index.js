@@ -14,7 +14,7 @@ import rp from 'request-promise'
 
 import schema from './schema'
 import resolvers from './resolvers'
-import models from './models/index'
+import models, { connect } from './models/index'
 import loaders from './loaders'
 
 import { RedisPubSub } from 'graphql-redis-subscriptions'
@@ -156,9 +156,19 @@ server.applyMiddleware({
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-httpServer.listen({ port }, () => {
-  console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+connect(function(err){
+  if(!err){
+    httpServer.listen({ port }, () => {
+      console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+      app.emit('serverStarted')
+    })
+  }
 })
+
+export {
+  app,
+  httpServer
+}
 
 // app.get('/', (req, res) => {
 //   res.render('index')
