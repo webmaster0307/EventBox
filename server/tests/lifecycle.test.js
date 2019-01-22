@@ -21,6 +21,10 @@ after(function (done) {
   httpServer.close(function(){
     // console.log('close')
     done()
-    process.exit()
+    // try {
+    //   process.kill(process.pid, 'SIGINT');
+    // } catch (e) {
+    //   console.error('Error killing process:', e.stack);
+    // }
   })
 });
