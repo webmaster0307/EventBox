@@ -193,7 +193,10 @@ describe('users', () => {
         data: {
           data: { updateUser }
         }
-      } = await userApi.updateUser({ username: 'Mark' }, token)
+      } = await userApi.updateUser({ 
+
+        username: 'Mark'
+       }, token)
 
       expect(updateUser.username).to.eql('Mark')
 
@@ -281,7 +284,12 @@ describe('users', () => {
     it('should returns an error because only authenticated users can update a user', async () => {
       const {
         data: { errors }
-      } = await userApi.updateUser({ username: 'Mark' })
+      } = await userApi.updateUser({
+          id: '5c35e34fc90cbf0a105a9ed7',
+          username: 'toai',
+          email: 'pinz.impossible@gmail.com',
+          role: ['user']
+       })
 
       expect(errors[0].message).to.eql('Not authenticated as user.')
     })

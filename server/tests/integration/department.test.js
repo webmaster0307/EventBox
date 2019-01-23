@@ -10,6 +10,16 @@ describe('departments', () => {
         data: {
           departments: [
             {
+              name: "NNA",
+              description: "NNA"
+            },{
+              name: "NNA",
+              description: "NNA"
+            },{
+              name: "ngôn ngữ anh",
+              description: "NN"
+            },
+            {
               name: "CNTT",
               description: "CNTT"
             }
