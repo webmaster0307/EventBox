@@ -33,14 +33,16 @@ const UPDATE_EVENT_BYID = gql`
   mutation(
     $id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
     $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!, $address: String!
+    $startTime: String!, $endTime: String!, $location: String!, $address: String!,
+    $departments: [ID]
   ) {
     updateEvent(
       id: $id, title: $title, thumbnail: $thumbnail,
       description: $description, shortDescription: $shortDescription
       organizationName: $organizationName, organizationLogo: $organizationLogo,
       organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location, address: $address
+      startTime: $startTime, endTime: $endTime, location: $location, address: $address,
+      departments: $departments
     ) {
       title
       images {
