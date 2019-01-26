@@ -168,81 +168,91 @@ class EventList extends Component {
 
 export default EventsWrapper
 
-let departmentIds = []
-const selectDepartments = ids => {
-  departmentIds = ids
-  console.log('departmentIds: ',departmentIds)
-}
+// let departmentIds = []
+// const selectDepartments = ids => {
+//   departmentIds = ids
+//   console.log('departmentIds: ',departmentIds)
+// }
 
-const DepartmentSelection = (props) => {
-  const { eventId } = props
+class DepartmentSelection extends Component{
 
-  return(
-    <div style={{width: 200, minHeight: 120}} >
-      <Query
-        query={department.GET_EVENT_DEPARTMENTS}
-      >
-        {({data, loading}) => {
-          if(loading){
-            return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
-          }
-          const options = data.eventDepartments.map(item => 
-            ({ label: item.name, value: item.id }))
-          return(
-            <CheckboxGroup options={options} onChange={selectDepartments} />
-          )
-        }}
-      </Query>
-      <Mutation
-        mutation={event.PUBLISH_EVENT_BYID}
-        variables={{ id: eventId, departmentIds }}
-        update={(cache, { data: { publishEvent } }) => {
-          if(!publishEvent){
-            // return alert('Failed to delete')
-          }
-          try {
-            const data = cache.readQuery({
-              query: event.GET_PAGINATED_EVENTS_WITH_USERS
-            })
-            cache.writeQuery({
-              query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-              data: {
-                ...data,
-                events: {
-                  ...data.events,
-                  edges: data.events.edges.map(node => {
-                    if(node.id === eventId){
-                      return {
-                        ...node,
-                        status: 'in-review'
+  state = {
+    departmentIds: []
+  }
+
+  selectDepartments = departmentIds => {
+    this.setState({ departmentIds })
+  }
+
+  render() {
+    const { eventId } = this.props
+    return(
+      <div style={{width: 200, minHeight: 120}} >
+        <Query
+          query={department.GET_EVENT_DEPARTMENTS}
+        >
+          {({data, loading}) => {
+            if(loading){
+              return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
+            }
+            const options = data.eventDepartments.map(item => 
+              ({ label: item.name, value: item.id }))
+            return(
+              <CheckboxGroup options={options} onChange={this.selectDepartments} />
+            )
+          }}
+        </Query>
+        <Mutation
+          mutation={event.PUBLISH_EVENT_BYID}
+          variables={{ id: eventId, departmentIds: this.state.departmentIds }}
+          update={(cache, { data: { publishEvent } }) => {
+            if(!publishEvent){
+              // return alert('Failed to delete')
+            }
+            try {
+              const data = cache.readQuery({
+                query: event.GET_PAGINATED_EVENTS_WITH_USERS
+              })
+              cache.writeQuery({
+                query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+                data: {
+                  ...data,
+                  events: {
+                    ...data.events,
+                    edges: data.events.edges.map(node => {
+                      if(node.id === eventId){
+                        return {
+                          ...node,
+                          status: 'in-review'
+                        }
                       }
-                    }
-                    else{
-                      return node
-                    }
-                  }),
-                  pageInfo: data.events.pageInfo
+                      else{
+                        return node
+                      }
+                    }),
+                    pageInfo: data.events.pageInfo
+                  }
                 }
-              }
-            })
-          } catch (error) {
-            // console.log('error: ',error)
-          }
-        }}
-      >
-        {(publishEvent, { data, loading, error }) => (
-          <Popconfirm 
-            placement='top' 
-            title='Are you sure to publish this event' 
-            onConfirm={publishEvent} 
-            okText='Yes' 
-            cancelText='No'>
-            <Row type='flex' justify='center' style={{padding: 12}} >
-              <Button type='primary'>Publish</Button>
-            </Row>
-          </Popconfirm>
-        )}
-      </Mutation>
-    </div>
-  )
+              })
+            } catch (error) {
+              // console.log('error: ',error)
+            }
+          }}
+        >
+          {(publishEvent, { data, loading, error }) => (
+            <Popconfirm 
+              placement='top' 
+              title='Are you sure to publish this event' 
+              onConfirm={publishEvent} 
+              okText='Yes' 
+              cancelText='No'>
+              <Row type='flex' justify='center' style={{padding: 12}} >
+                <Button type='primary'>Publish</Button>
+              </Row>
+            </Popconfirm>
+          )}
+        </Mutation>
+      </div>
+    )
+  }
 }
