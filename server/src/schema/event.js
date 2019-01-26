@@ -96,7 +96,7 @@ export default gql`
 
     deleteEvent(id: ID!): Boolean!
 
-    publishEvent(id: ID!): Boolean!
+    publishEvent(id: ID!, departmentIds: [ID]!): Boolean!
 
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!

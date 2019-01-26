@@ -4,15 +4,13 @@ const CREATE_EVENT = gql`
   mutation(
     $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
     $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!, $address: String,
-    $departments: [ID]
+    $startTime: String!, $endTime: String!, $location: String!, $address: String
   ) {
     createEvent(
       title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
       organizationName: $organizationName, organizationLogo: $organizationLogo,
       organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location, address: $address,
-      departments: $departments
+      startTime: $startTime, endTime: $endTime, location: $location, address: $address
     ) {
       id
       title
@@ -61,8 +59,8 @@ const DELETE_EVENT_BYID = gql`
 `
 
 const PUBLISH_EVENT_BYID = gql`
-  mutation($id: ID!){
-    publishEvent(id: $id)
+  mutation($id: ID!, $departmentIds: [ID]!){
+    publishEvent(id: $id, departmentIds: $departmentIds)
   }
 `
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Table, Icon, message, Popconfirm } from 'antd'
+import { Table, Icon, message, Popconfirm, Checkbox, Tooltip, Popover, Spin, Button, Row } from 'antd'
 import { DASHBOARD_EVENT } from '@routes'
 import { Query, Mutation } from 'react-apollo'
-import { event } from '@gqlQueries'
+import { event, department } from '@gqlQueries'
 import { StatusTag } from '@components'
+
+const { Group: CheckboxGroup } = Checkbox
 
 const EventsWrapper = () => (
   <Query
@@ -18,7 +20,6 @@ const EventsWrapper = () => (
     )}
   </Query>
 )
-
 
 class EventList extends Component {
 
@@ -80,8 +81,26 @@ class EventList extends Component {
       {
         title: 'Action',
         dataIndex: 'action',
-        render: (_, row) => (
+        render: (_, row) => ([
+          <Popover
+            key='publish'
+            style={{paddingTop: 50}} 
+            content={<DepartmentSelection eventId={row.id} />} 
+            title='Danh sách Khoa'
+            placement='topLeft'
+            trigger='click'
+            overlayClassName='deaprtment-selection-custom__wrapper'
+          >
+            <Tooltip title='Publish this event' >
+              <Icon 
+                type='solution' 
+                className='icon-primary-custom__wrapper'
+                style={{margin: '0 8px'}}
+              />
+            </Tooltip>
+          </Popover>,
           <Mutation
+            key='delete'
             mutation={event.DELETE_EVENT_BYID}
             variables={{ id: row.id }}
             update={(cache, { data: { deleteEvent } }) => {
@@ -113,11 +132,13 @@ class EventList extends Component {
                 onConfirm={deleteEvent} 
                 okText='Yes' 
                 cancelText='No'>
-                <Icon type='delete' className='icon-primary-custom__wrapper' />
+                <Tooltip title='Delete this event' >
+                  <Icon type='delete' className='icon-primary-custom__wrapper' />
+                </Tooltip>
               </Popconfirm>
             )}
           </Mutation>
-        )
+        ])
       }
     ])
   }
@@ -146,3 +167,82 @@ class EventList extends Component {
 }
 
 export default EventsWrapper
+
+let departmentIds = []
+const selectDepartments = ids => {
+  departmentIds = ids
+  console.log('departmentIds: ',departmentIds)
+}
+
+const DepartmentSelection = (props) => {
+  const { eventId } = props
+
+  return(
+    <div style={{width: 200, minHeight: 120}} >
+      <Query
+        query={department.GET_EVENT_DEPARTMENTS}
+      >
+        {({data, loading}) => {
+          if(loading){
+            return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
+          }
+          const options = data.eventDepartments.map(item => 
+            ({ label: item.name, value: item.id }))
+          return(
+            <CheckboxGroup options={options} onChange={selectDepartments} />
+          )
+        }}
+      </Query>
+      <Mutation
+        mutation={event.PUBLISH_EVENT_BYID}
+        variables={{ id: eventId, departmentIds }}
+        update={(cache, { data: { publishEvent } }) => {
+          if(!publishEvent){
+            // return alert('Failed to delete')
+          }
+          try {
+            const data = cache.readQuery({
+              query: event.GET_PAGINATED_EVENTS_WITH_USERS
+            })
+            cache.writeQuery({
+              query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+              data: {
+                ...data,
+                events: {
+                  ...data.events,
+                  edges: data.events.edges.map(node => {
+                    if(node.id === eventId){
+                      return {
+                        ...node,
+                        status: 'in-review'
+                      }
+                    }
+                    else{
+                      return node
+                    }
+                  }),
+                  pageInfo: data.events.pageInfo
+                }
+              }
+            })
+          } catch (error) {
+            // console.log('error: ',error)
+          }
+        }}
+      >
+        {(publishEvent, { data, loading, error }) => (
+          <Popconfirm 
+            placement='top' 
+            title='Are you sure to publish this event' 
+            onConfirm={publishEvent} 
+            okText='Yes' 
+            cancelText='No'>
+            <Row type='flex' justify='center' style={{padding: 12}} >
+              <Button type='primary'>Publish</Button>
+            </Row>
+          </Popconfirm>
+        )}
+      </Mutation>
+    </div>
+  )
+}
