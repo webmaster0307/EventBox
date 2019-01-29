@@ -54,11 +54,11 @@ export default {
         }
       }
     },
-    eventsHome: async (parent, args, { me, models }) =>{
+    eventsHome: async (parent, { limit = 8 }, { me, models }) =>{
       const events = await models.Event.find({
         status: 'active'
       }, null, {
-        limit: 8,
+        limit,
         sort: {
           createdAt: -1
         }

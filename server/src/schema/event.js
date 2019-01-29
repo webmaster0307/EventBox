@@ -22,8 +22,8 @@ export default gql`
     location: String
     address: String
     status: String!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   type EventImages {
@@ -51,7 +51,7 @@ export default gql`
 
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
-    eventsHome: [Event]
+    eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
   }

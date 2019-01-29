@@ -5,8 +5,10 @@ import draftEventResolvers from './draftEvent'
 import userResolvers from './user'
 import eventResolvers from './event'
 import departmentuserResolvers from './departmentUser'
+import scalarCustom from './scalarCustom'
 
 export default [
+  scalarCustom,
   categoryResolvers,
   contactResolvers,
   departmentResolvers,
