@@ -28,7 +28,8 @@ export default {
       isAdmin,
       async (parent, args, { models }) => {
         return await models.User.find()
-      }),
+      }
+    ),
 
     user: async (parent, { id }, { models }) =>
       await models.User.findById(id),
@@ -38,8 +39,11 @@ export default {
         return null
       }
       const currentUser = await models.User.findById(me.id)
-      const isReviewer = await models.DepartmentUser.findOne({ userId: me.id, departmentRole: 'reviewer' })
-      if(isReviewer){
+      const isReviewer = await models.DepartmentUser.findOne({
+        userId: me.id,
+        departmentRole: 'reviewer'
+      })
+      if (isReviewer) {
         currentUser.role.push('reviewer')
       }
       // console.log('current: ',currentUser);
@@ -56,16 +60,12 @@ export default {
     ) => {
       let user = await models.User.findOne({ username })
       if (user) {
-        throw new UserInputError(
-          'Email or username has been taken'
-        )
+        throw new UserInputError('Email or username has been taken')
       }
 
       user = await models.User.findOne({ email })
       if (user) {
-        throw new UserInputError(
-          'Email or username has been taken'
-        )
+        throw new UserInputError('Email or username has been taken')
       }
 
       user = await models.User.create({ username, email, password })
@@ -102,7 +102,11 @@ export default {
             'No user found with this login credentials.'
           )
         }
-        return await models.User.findByIdAndUpdate(me.id, { username }, { new: true })
+        return await models.User.findByIdAndUpdate(
+          me.id,
+          { username },
+          { new: true }
+        )
       }
     ),
 
