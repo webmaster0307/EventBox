@@ -4,6 +4,9 @@ import { combineResolvers } from 'graphql-resolvers'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { isAuthenticated, isAdmin } from './authorization'
 
+import nodemailer from 'nodemailer'
+import confirmEmail from './mailTemplate/confirmEmail'
+
 const tokenExpired = 60 * 60 * 8 // 8 hours
 
 const createToken = async (models, user, secret) => {
@@ -20,6 +23,24 @@ const createToken = async (models, user, secret) => {
   return await jwt.sign(payLoad, secret, {
     expiresIn: tokenExpired
   })
+}
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.NODEMAILER_USERNAME,
+    pass: process.env.NODEMAILER_PASSWORD
+  }
+})
+
+const verifyEmailOptions = ({receiver, verifyLink}) => {
+  return {
+    from: process.env.NODEMAILER_USERNAME,
+    to: receiver,
+    subject: 'Verify Your Account',
+    html: confirmEmail(receiver, verifyLink),
+    disableUrlAccess: false
+  }
 }
 
 export default {
@@ -69,7 +90,20 @@ export default {
       }
 
       user = await models.User.create({ username, email, password })
-      return { token: createToken(models, user, secret) }
+      const token = await createToken(models, user, secret)
+      const splittedToken = token.split('.')[1]
+      await models.User.updateOne({ email }, { activateToken: splittedToken })
+
+      transporter.sendMail(
+        verifyEmailOptions({
+          receiver: email,
+          verifyLink: `http://localhost:8000/api/verify?token=${splittedToken}`
+        }), (err, info) => {
+        if(err) console.log(err)
+        else console.log('Verify mail sent!')
+      })
+
+      return { token }
     },
 
     signIn: async (

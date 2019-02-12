@@ -11,6 +11,7 @@ import { ApolloServer } from 'apollo-server-express'
 import { PubSub } from 'apollo-server'
 import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
+import depthLimit from 'graphql-depth-limit'
 
 import schema from './schema'
 import resolvers from './resolvers'
@@ -91,6 +92,7 @@ const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   playground: process.env.NODE_ENV === 'development',
+  validationRules: [depthLimit(3)],
   formatError: error => {
     // errorLogger(error)
 
@@ -183,6 +185,22 @@ app.get('/api/auth', async (req, res) => {
     return res.send({status: 403, message: 'Permission denied'})
   }
   return res.send({ status: 'ok', me})
+})
+
+app.get('/api/verify', async (req, res) => {
+  if (req.query.token) {
+    await models.User.findOne({ activateToken: req.query.token }, async (err, data) => {
+      if (err) console.log(err)
+      else if (data && !data.isActivated) {
+        await models.User.updateOne({ _id: data._id }, { $set: { isActivated: true}})
+        res.sendFile(__dirname + '/verifySuccess.html')
+      } else {
+        res.sendFile(__dirname + '/error.html')
+      }
+    })
+  } else {
+    res.sendFile(__dirname + '/error.html')
+  }
 })
 
 const errorLogger = async (error) => {
