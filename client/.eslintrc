@@ -8,12 +8,7 @@
     },
     "sourceType": "module"
   },
-  "extends": [
-    "standard",
-    "standard-jsx",
-    "prettier",
-    "prettier/react"
-  ],
+  "extends": ["standard", "standard-jsx", "prettier", "prettier/react"],
   "env": {
     "browser": true,
     "jest": true
@@ -29,7 +24,6 @@
       }
     ],
     "comma-dangle": ["error", "never"],
-    "function-paren-newline": ["error", "consistent"],
     "indent": [2, 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],

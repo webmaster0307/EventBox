@@ -7,8 +7,8 @@ export default gql`
     department: Department!
     departmentRole: String!
     isActive: Boolean
-    createdAt: String
-    updatedAt: String
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   extend type Query {

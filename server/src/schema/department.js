@@ -5,8 +5,8 @@ export default gql`
     id: ID!
     name: String!
     description: String
-    createdAt: String
-    updatedAt: String
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   extend type Query {
@@ -16,16 +16,9 @@ export default gql`
   }
 
   extend type Mutation {
-    createDepartment(
-      name: String!,
-      description: String
-    ): Department
+    createDepartment(name: String!, description: String): Department
 
-    updateDepartment(
-      id: ID!,
-      name: String,
-      description: String
-    ): Department
+    updateDepartment(id: ID!, name: String, description: String): Department
 
     deleteDepartment(id: ID!): Boolean
   }

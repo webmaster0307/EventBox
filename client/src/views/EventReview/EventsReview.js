@@ -11,15 +11,13 @@ import './styles.scss'
 @inject('eventReviewStore')
 @observer
 class Events extends Component {
-  
   componentDidMount = () => {
     // const { eventReviewStore } = this.props
     // const { error } = eventReviewStore.getEvents()
     // if(error){
     //   return message.error(error)
     // }
-    
-    // let result 
+    // let result
     // try {
     //   result = await client.query({ query: GET_PAGINATED_EVENTS_WITH_USERS, variables: { limit } })
     // } catch ({graphQLErrors}) {
@@ -31,9 +29,8 @@ class Events extends Component {
     // console.log('event: ' ,events)
     // event.updateEvents(events.edges)
   }
-  
 
-  render(){
+  render() {
     // const { eventsLoading, events } = this.props.eventReviewStore
     // console.log('loading: ' ,this.props.stores.event.eventsLoading)
     // console.log('events: ',toJS(this.props.stores.event.events))
@@ -41,16 +38,13 @@ class Events extends Component {
     // const { edges, pageInfo } = events
 
     return (
-      <Query
-        query={event.GET_EVENTS_INREVIEW}
-        fetchPolicy='cache-and-network'
-      >
-        {({data, loading, subscribeToMore}) => {
-          if(loading || !data){
+      <Query query={event.GET_EVENTS_INREVIEW} fetchPolicy='cache-and-network'>
+        {({ data, loading, subscribeToMore }) => {
+          if (loading || !data) {
             return <Spin />
           }
           const { edges, departmentIds } = data.eventsInReview
-          return(
+          return (
             <EventList
               events={edges}
               departmentIds={departmentIds}
@@ -104,12 +98,11 @@ class Events extends Component {
 @inject('eventReviewStore')
 @observer
 class EventList extends Component {
-
   state = {
     pageSize: 5
   }
 
-  goToReviewPage = (id) => {
+  goToReviewPage = id => {
     this.props.history.push(`${DB_EVENT_REVIEW}/${id}`)
   }
 
@@ -128,26 +121,25 @@ class EventList extends Component {
         // message.success('New event is pending for approval')
         // notification.open({
         //   message: 'New pending Event',
-        //   description: 
-        //     <div>New event is waiting for approval. 
+        //   description:
+        //     <div>New event is waiting for approval.
         //       <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
         //     </div>,
         //   icon: <Icon type='solution' style={{ color: '#108ee9' }} />
         // })
-        const previousEdges = previousResult.eventsInReview.edges.filter(item => item.id !== eventSubmited.id)
+        const previousEdges = previousResult.eventsInReview.edges.filter(
+          item => item.id !== eventSubmited.id
+        )
         return {
           ...previousResult,
           eventsInReview: {
             ...previousResult.eventsInReview,
-            edges: [
-              eventSubmited,
-              ...previousEdges
-            ]
+            edges: [eventSubmited, ...previousEdges]
           }
         }
       }
     })
-  };
+  }
 
   componentDidMount() {
     this.subscribeToMoreEvent()
@@ -158,24 +150,32 @@ class EventList extends Component {
   }
 
   tableColumns = () => {
-    
-    return([
+    return [
       {
         title: '',
         dataIndex: 'images',
-        render: (images, record) => <div><img src={images.thumbnail} style={{maxWidth: 42}} alt='thumbnail' /></div>
+        render: (images, record) => (
+          <div>
+            <img src={images.thumbnail} style={{ maxWidth: 42 }} alt='thumbnail' />
+          </div>
+        )
       },
       {
         title: 'Title',
         dataIndex: 'title',
         width: 280,
-        render: (text, record) => 
-          <div style={{width: 260}} ><Link to={`${DB_EVENT_REVIEW}/${record.id}`} >{text}</Link></div>
+        render: (text, record) => (
+          <div style={{ width: 260 }}>
+            <Link to={`${DB_EVENT_REVIEW}/${record.id}`}>{text}</Link>
+          </div>
+        )
       },
       {
         title: 'Status',
         dataIndex: 'status',
-        render: status => <Tag color='orange'>{status === 'in-review' ? 'In Review' : 'Undefined'}</Tag>
+        render: status => (
+          <Tag color='orange'>{status === 'in-review' ? 'In Review' : 'Undefined'}</Tag>
+        )
       },
       {
         title: 'Owner',
@@ -185,15 +185,16 @@ class EventList extends Component {
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        render: (updatedAt) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
+        render: updatedAt => <div>{new Date(updatedAt).toLocaleString()}</div>
       }
-    ])
+    ]
   }
 
   render() {
     const { events, loading } = this.props
+    console.log('events: ', events)
 
-    return(
+    return (
       // <Query query={getSession} >
       //   {({ data }) => {
       //     const { me } = data
@@ -204,11 +205,11 @@ class EventList extends Component {
       //     )
       //   }}
       // </Query>
-      <Table 
-        dataSource={events} 
-        columns={this.tableColumns()} 
-        rowKey='id' 
-        loading={loading} 
+      <Table
+        dataSource={events}
+        columns={this.tableColumns()}
+        rowKey='id'
+        loading={loading}
         onChange={this.handleTableChange}
         pagination={{
           pageSize: this.state.pageSize,
@@ -223,16 +224,15 @@ class EventList extends Component {
   }
 }
 
-class Wrapper extends Component{
-
-  constructor(props){
+class Wrapper extends Component {
+  constructor(props) {
     super(props)
     this.eventReviewStore = new EventReviewStore()
   }
-  
+
   render() {
     return (
-      <Provider eventReviewStore={this.eventReviewStore} >
+      <Provider eventReviewStore={this.eventReviewStore}>
         <Events />
       </Provider>
     )

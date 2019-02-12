@@ -22,10 +22,7 @@ const { Group: CheckboxGroup } = Checkbox
 const EventsWrapper = () => (
   <Query query={event.GET_PAGINATED_EVENTS_WITH_USERS}>
     {({ data, loading }) => (
-      <EventList
-        events={loading ? [] : data.events.edges}
-        loading={loading}
-      />
+      <EventList events={loading ? [] : data.events.edges} loading={loading} />
     )}
   </Query>
 )
@@ -54,11 +51,7 @@ class EventList extends Component {
         dataIndex: 'images',
         render: (images, record) => (
           <div>
-            <img
-              src={images.thumbnail}
-              style={{ maxWidth: 42 }}
-              alt='thumbnail'
-            />
+            <img src={images.thumbnail} style={{ maxWidth: 42 }} alt='thumbnail' />
           </div>
         )
       },
@@ -68,9 +61,7 @@ class EventList extends Component {
         width: 280,
         render: (text, record) => (
           <div style={{ width: 260 }}>
-            <Link to={`${DASHBOARD_EVENT}/detail/${record.id}`}>
-              {text}
-            </Link>
+            <Link to={`${DASHBOARD_EVENT}/detail/${record.id}`}>{text}</Link>
           </div>
         )
       },
@@ -87,28 +78,22 @@ class EventList extends Component {
         title: 'Status',
         dataIndex: 'status',
         render: status => <StatusTag status={status} />,
-        filters: ['draft', 'in-review', 'active', 'rejected'].map(
-          status => ({
-            text: <StatusTag status={status} />,
-            value: status
-          })
-        ),
+        filters: ['draft', 'in-review', 'active', 'rejected'].map(status => ({
+          text: <StatusTag status={status} />,
+          value: status
+        })),
         filteredValue: statusFilter.status || [],
         onFilter: (value, record) => record.status.includes(value)
       },
       {
         title: 'Owner',
         dataIndex: 'user',
-        render: (text, record) => (
-          <div>{record.user && record.user.username}</div>
-        )
+        render: (text, record) => <div>{record.user && record.user.username}</div>
       },
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        render: updatedAt => (
-          <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
-        )
+        render: updatedAt => <div>{new Date(updatedAt).toLocaleString()}</div>
       },
       {
         title: 'Action',
@@ -150,9 +135,7 @@ class EventList extends Component {
                   ...data,
                   events: {
                     ...data.events,
-                    edges: data.events.edges.filter(
-                      node => node.id !== row.id
-                    ),
+                    edges: data.events.edges.filter(node => node.id !== row.id),
                     pageInfo: data.events.pageInfo
                   }
                 }
@@ -168,10 +151,7 @@ class EventList extends Component {
                 cancelText='No'
               >
                 <Tooltip title='Delete this event'>
-                  <Icon
-                    type='delete'
-                    className='icon-primary-custom__wrapper'
-                  />
+                  <Icon type='delete' className='icon-primary-custom__wrapper' />
                 </Tooltip>
               </Popconfirm>
             )}
@@ -228,28 +208,13 @@ class DepartmentSelection extends Component {
         <Query query={department.GET_EVENT_DEPARTMENTS}>
           {({ data, loading }) => {
             if (loading) {
-              return (
-                <Spin
-                  indicator={
-                    <Icon
-                      type='loading'
-                      style={{ fontSize: 24 }}
-                      spin
-                    />
-                  }
-                />
-              )
+              return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
             }
             const options = data.eventDepartments.map(item => ({
               label: item.name,
               value: item.id
             }))
-            return (
-              <CheckboxGroup
-                options={options}
-                onChange={this.selectDepartments}
-              />
-            )
+            return <CheckboxGroup options={options} onChange={this.selectDepartments} />
           }}
         </Query>
         <Mutation
@@ -299,11 +264,7 @@ class DepartmentSelection extends Component {
               okText='Yes'
               cancelText='No'
             >
-              <Row
-                type='flex'
-                justify='center'
-                style={{ padding: 12 }}
-              >
+              <Row type='flex' justify='center' style={{ padding: 12 }}>
                 <Button type='primary'>Publish</Button>
               </Row>
             </Popconfirm>
