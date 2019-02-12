@@ -24,3 +24,24 @@ export const departments = async (variables, token) =>
       }
       : null
   )
+
+export const updateDepartment = async (variables,token) => 
+  await axios.post(
+    API_URL,
+    {
+      query:`
+        mutation ($id : ID!,$name:String,$description:String!) {
+          updateDepartment(
+            id: $id, name: $name, description: $description
+          )
+
+        }
+      `,variables
+    },token
+      ?{
+        headers:{
+          'x-token':token
+        }
+      }
+      : null
+  )
