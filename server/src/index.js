@@ -192,7 +192,7 @@ app.get('/api/verify', async (req, res) => {
     await models.User.findOne({ activateToken: req.query.token }, async (err, data) => {
       if (err) console.log(err)
       else if (data && !data.isActivated) {
-        await models.User.updateOne({ _id: data._id }, { $set: { isActivated: true}})
+        await models.User.updateOne({ _id: data._id }, { $set: { isActivated: true, activateToken: null }})
         res.sendFile(__dirname + '/verifySuccess.html')
       } else {
         res.sendFile(__dirname + '/error.html')

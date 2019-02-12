@@ -16,9 +16,7 @@ export default SignUp
 
 const SIGN_UP = gql`
   mutation($username: String!, $email: String!, $password: String!) {
-    signUp(username: $username, email: $email, password: $password) {
-      token
-    }
+    signUp(username: $username, email: $email, password: $password)
   }
 `
 @inject('stores')
@@ -36,18 +34,20 @@ class SignUpForm extends React.Component{
       if(!err){
         const { username, email, password } = values
         this.setState({loading: true}, async () => {
-          let result
+          // let result
           try {
-            result = await client.mutate({mutation: SIGN_UP, variables: { username, email, password }})
+            // let result =
+            await client.mutate({mutation: SIGN_UP, variables: { username, email, password }})
           } catch ({graphQLErrors}) {
             const msg = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+            this.props.stores.landing.ocSignUpModal('c')
             return message.error(msg || 'Failed to sign up')
           }
-          const { token } = result.data.signUp
-          localStorage.setItem('token', token)
+          // const { token } = result.data.signUp
+          // localStorage.setItem('token', token)
           await this.props.refetch()
           // this.props.history.push(routes.HOME)
-          message.success('Sign up successfully!')
+          message.success('Sign up successfully! Please verify your account via email!')
           this.props.stores.landing.ocSignUpModal('c')
         })
       }

@@ -38,8 +38,7 @@ const verifyEmailOptions = ({receiver, verifyLink}) => {
     from: process.env.NODEMAILER_USERNAME,
     to: receiver,
     subject: 'Verify Your Account',
-    html: confirmEmail(receiver, verifyLink),
-    disableUrlAccess: false
+    html: confirmEmail(receiver, verifyLink)
   }
 }
 
@@ -98,12 +97,11 @@ export default {
         verifyEmailOptions({
           receiver: email,
           verifyLink: `http://localhost:8000/api/verify?token=${splittedToken}`
-        }), (err, info) => {
-        if(err) console.log(err)
-        else console.log('Verify mail sent!')
+        }), (err) => {
+        if(err) throw new Error(err)
       })
 
-      return { token }
+      return true
     },
 
     signIn: async (
@@ -122,6 +120,10 @@ export default {
       const isValid = await user.validatePassword(password)
       if (!isValid) {
         throw new UserInputError('Invalid password.')
+      }
+
+      if (!user.isActivated) {
+        throw new UserInputError('Your account not yet activated!')
       }
 
       return { token: createToken(models, user, secret) }

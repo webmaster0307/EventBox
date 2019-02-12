@@ -31,7 +31,7 @@ export default gql`
       username: String!
       email: String!
       password: String!
-    ): Token!
+    ): Boolean
 
     signIn(
       username: String!,
