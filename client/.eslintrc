@@ -8,7 +8,12 @@
     },
     "sourceType": "module"
   },
-  "extends": ["standard", "standard-jsx", "prettier", "prettier/react"],
+  "extends": [
+    "standard",
+    "standard-jsx",
+    "prettier",
+    "prettier/react"
+  ],
   "env": {
     "browser": true,
     "jest": true
@@ -18,13 +23,14 @@
     "max-len": [
       "error",
       {
-        "code": 120,
+        "code": 95,
         "tabWidth": 2,
         "ignoreUrls": true
       }
     ],
     "comma-dangle": ["error", "never"],
     "indent": [2, 2, { "SwitchCase": 1 }],
+    "function-paren-newline": ["error", "consistent"],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "standard/no-callback-literal": "off",
