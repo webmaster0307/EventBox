@@ -101,6 +101,14 @@ export default {
         if(err) throw new Error(err)
       })
 
+      const recheckTime = 1000 * 60 * 15
+      setTimeout(async () => {
+        const user = await models.User.findOne({ email })
+        if (!user.isActivated) {
+          await models.User.deleteOne({ email }, () => console.log(`Deleted user: ${username}`))
+        }
+      }, recheckTime)
+
       return true
     },
 
