@@ -5,7 +5,7 @@ import * as departmentApi from './departmentApi'
 
 describe('departments', () => {
   describe('departments(page: Int, limit: Int!): [Departments]', () => {
-    it.only('should returns a list of department', async () => {
+    it('should returns a list of department', async () => {
       const expectedResult = {
         data: {
           departments: [
@@ -37,31 +37,31 @@ describe('departments', () => {
 
 })
 
-describe('updateDepartment', ()=>{
-  describe('updateDepartment($id: ID!,$name:String,$description:String)',()=>{
-    it.only('return Update Department', async ()=>{
+describe('createDepartment', ()=>{
+  describe('createDepartment($name:String!,$description:String)',()=>{
+    it.only('create Department successful', async ()=>{
       let expectedResult = {
         data: {
-          updateDepartment: {
-            id:'',
-            name: 'ngôn ngữ anh',
-            description:'{\"blocks\":[{\"key\":\"be8dd\",\"text\":\"des\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}'
+          createDepartment: {
+            name: 'LKT',
           }
         }
       }
 
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
-
+      console.log(token);
+      
       let result
       try {
-        result = await departmentApi.updateDepartment({
-          id:'',
-          name:'Luat',
-          description:'Luat Kinh Te'
-        })
+        result = await departmentApi.createDepartment({
+          name:'LKT',
+
+        },token)
       } catch (error) {
-        
+        console.log('err: ', error.response.data);
       }
+      console.log('expectedResult: ', result.data)
+      expect(result.data).to.eql(expectedResult)
     })
   })
 })

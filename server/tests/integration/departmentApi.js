@@ -25,15 +25,16 @@ export const departments = async (variables, token) =>
       : null
   )
 
-export const updateDepartment = async (variables,token) => 
+export const createDepartment = async (variables,token) => 
   await axios.post(
     API_URL,
     {
       query:`
-        mutation ($id : ID!,$name:String,$description:String!) {
-          updateDepartment(
-            id: $id, name: $name, description: $description
-          )
+        mutation ($name:String!,$description:String) {
+          createDepartment( name: $name,description:$description)
+          {
+            name
+          }
 
         }
       `,variables
