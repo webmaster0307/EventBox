@@ -1,11 +1,5 @@
 import React, { Component } from 'react'
-
-import {
-  Link,
-  Events,
-  scroller
-} from 'react-scroll'
-
+import { Link, Events, scroller } from 'react-scroll'
 import { event } from '@gqlQueries'
 import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider } from 'antd'
 import { client } from '@client'
@@ -13,10 +7,8 @@ import moment from 'moment'
 import 'moment/locale/vi'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
-import './eventdetail.scss'
-// import { Mutation } from 'react-apollo'
 import { withRouter } from 'react-router'
-// import { DB_EVENT_REVIEW } from '@routes'
+import './eventdetail.scss'
 
 class EventDetailReview extends Component {
   constructor(props) {
@@ -51,7 +43,7 @@ class EventDetailReview extends Component {
     Events.scrollEvent.register('end', function() {
       // console.log('end', arguments)
     })
-  };
+  }
 
   scrollTo = () => {
     scroller.scrollTo('scroll-to-element', {
@@ -60,6 +52,7 @@ class EventDetailReview extends Component {
       smooth: 'easeInOutQuart'
     })
   }
+
   scrollToWithContainer() {
     let goToContainer = new Promise((resolve, reject) => {
       Events.scrollEvent.register('end', () => {
@@ -75,13 +68,16 @@ class EventDetailReview extends Component {
     })
 
     goToContainer.then(() =>
+      /* eslint-disable */
       scroller.scrollTo('scroll-container-second-element', {
         duration: 800,
         delay: 0,
         smooth: 'easeInOutQuart',
         containerId: 'scroll-container'
-      }),)
+      })
+    )
   }
+
   componentWillUnmount() {
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
@@ -97,24 +93,12 @@ class EventDetailReview extends Component {
         {event && (
           <div className='event-review-detail__wrapper'>
             <Row className='event-image-thumbnail__wrapper'>
-              <img
-                src={event && event.images.thumbnail}
-                alt='thumbnail'
-              />
+              <img src={event && event.images.thumbnail} alt='thumbnail' />
             </Row>
-            <Header
-              event={event}
-              className='event-header-info__wrapper'
-            />
+            <Header event={event} className='event-header-info__wrapper' />
             <HeaderNav className='event-header-nav__wrapper' />
-            <AboutEvent
-              event={event}
-              className='event-description__wrapper'
-            />
-            <AboutOrganization
-              event={event}
-              className='event-organization__wrapper'
-            />
+            <AboutEvent event={event} className='event-description__wrapper' />
+            <AboutOrganization event={event} className='event-organization__wrapper' />
             <Divider />
             {/* <div style={{display: 'flex'}} >
               <div style={{marginRight: 18}} >
@@ -132,7 +116,7 @@ class EventDetailReview extends Component {
   }
 }
 
-const Header = props => {
+const Header = (props) => {
   const { event } = props
   const time = moment(Number(event.startTime))
   // console.log('time: ', time.format('MMMM') )
@@ -152,17 +136,11 @@ const Header = props => {
       <Col span={8}>
         <div className='title'>{event.title}</div>
         <div className='start-time'>
-          <Icon
-            type='calendar'
-            style={{ fontSize: 16, marginRight: 16 }}
-          />{' '}
+          <Icon type='calendar' style={{ fontSize: 16, marginRight: 16 }} />{' '}
           {new Date(Number(event.startTime)).toLocaleString()}
         </div>
         <div className='location'>
-          <Icon
-            type='environment'
-            style={{ fontSize: 16, marginRight: 16 }}
-          />{' '}
+          <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} />{' '}
           {event.location}
         </div>
         <div className='address'>{event.address}</div>
@@ -171,19 +149,23 @@ const Header = props => {
   )
 }
 
-const HeaderNav = props => {
+const HeaderNav = (props) => {
   return (
     <Row {...props}>
       <Col offset={4}>
         <Row type='flex'>
           <div className='item'>
-            <Link to='inTroduce' offset={-56} spy smooth duration={600}>Giới thiệu</Link>
+            <Link to='inTroduce' offset={-56} spy smooth duration={600}>
+              Giới thiệu
+            </Link>
           </div>
           {/* <div className='item'>
             <Link to='ticket' spy smooth duration={600}>Thông tin vé</Link>
           </div> */}
           <div className='item'>
-            <Link to='organizer' offset={-56} spy smooth duration={800}>Nhà tổ chức</Link>
+            <Link to='organizer' offset={-56} spy smooth duration={800}>
+              Nhà tổ chức
+            </Link>
           </div>
         </Row>
       </Col>
@@ -192,12 +174,12 @@ const HeaderNav = props => {
 }
 
 const AboutEvent = ({ className, event }) => (
-  <div className={className} name='inTroduce' >
-    <Card 
-      title='Giới thiệu'
-    >
+  <div className={className} name='inTroduce'>
+    <Card title='Giới thiệu'>
       <EditorWysiwyg
-        editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)))}
+        editorState={EditorState.createWithContent(
+          convertFromRaw(JSON.parse(event.description))
+        )}
         readOnly
         toolbarHidden
       />
@@ -239,59 +221,5 @@ const AboutOrganization = ({ className, event }) => (
     </Card>
   </div>
 )
-
-// class ApproveButton extends Component{
-
-//   handleApprove = async approveEvent => {
-//     try {
-//       await approveEvent()
-//       this.props.history.push(DB_EVENT_REVIEW)
-//     } catch (error) {
-//       return message.error('Failed to approve event')
-//     }
-//   }
-
-//   render() {
-//     const { eventId } = this.props
-
-//     return (
-//       <Mutation
-//         mutation={event.APPROVE_EVENT_BYID}
-//         variables={{ id: eventId }}
-//       >
-//         {(approveEvent, { data, loading }) => (
-//           <Button type='primary' onClick={() => this.handleApprove(approveEvent)} >Duyệt sự kiện</Button>
-//         )}
-//       </Mutation>
-//     )
-//   }
-// }
-
-// class RejectButton extends Component{
-
-//   handleRejct = async rejectEvent => {
-//     try {
-//       await rejectEvent()
-//       this.props.history.push(DB_EVENT_REVIEW)
-//     } catch (error) {
-//       return message.error('Failed to reject event')
-//     }
-//   }
-
-//   render() {
-//     const { eventId } = this.props
-
-//     return (
-//       <Mutation
-//         mutation={event.REJECT_EVENT_BYID}
-//         variables={{ id: eventId }}
-//       >
-//         {(rejectEvent, { data, loading }) => (
-//           <Button type='danger' onClick={() => this.handleRejct(rejectEvent)} >Từ chối duyệt</Button>
-//         )}
-//       </Mutation>
-//     )
-//   }
-// }
 
 export default withRouter(EventDetailReview)

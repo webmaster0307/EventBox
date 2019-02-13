@@ -12,6 +12,7 @@ import './styles.scss'
 @observer
 class Events extends Component {
   componentDidMount = () => {
+    /* eslint-disable */
     // const { eventReviewStore } = this.props
     // const { error } = eventReviewStore.getEvents()
     // if(error){
@@ -102,7 +103,7 @@ class EventList extends Component {
     pageSize: 5
   }
 
-  goToReviewPage = id => {
+  goToReviewPage = (id) => {
     this.props.history.push(`${DB_EVENT_REVIEW}/${id}`)
   }
 
@@ -118,17 +119,22 @@ class EventList extends Component {
         }
         const { eventSubmited } = subscriptionData.data
 
+        /* eslint-disable */
         // message.success('New event is pending for approval')
         // notification.open({
         //   message: 'New pending Event',
-        //   description:
-        //     <div>New event is waiting for approval.
-        //       <div className='fake-link' onClick={() =>this.goToReviewPage(eventSubmited.id)} >Review now!</div>
-        //     </div>,
+        //   description: (
+        //     <div>
+        //       New event is waiting for approval.
+        //       <div className='fake-link' onClick={() => this.goToReviewPage(eventSubmited.id)}>
+        //         Review now!
+        //       </div>
+        //     </div>
+        //   ),
         //   icon: <Icon type='solution' style={{ color: '#108ee9' }} />
         // })
         const previousEdges = previousResult.eventsInReview.edges.filter(
-          item => item.id !== eventSubmited.id
+          (item) => item.id !== eventSubmited.id
         )
         return {
           ...previousResult,
@@ -173,7 +179,7 @@ class EventList extends Component {
       {
         title: 'Status',
         dataIndex: 'status',
-        render: status => (
+        render: (status) => (
           <Tag color='orange'>{status === 'in-review' ? 'In Review' : 'Undefined'}</Tag>
         )
       },
@@ -185,7 +191,7 @@ class EventList extends Component {
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        render: updatedAt => <div>{new Date(updatedAt).toLocaleString()}</div>
+        render: (updatedAt) => <div>{new Date(updatedAt).toLocaleString()}</div>
       }
     ]
   }
