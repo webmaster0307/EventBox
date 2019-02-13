@@ -53,10 +53,22 @@ class AccountList extends Component {
         </span>
       )
     }, {
+      title: 'Is Activated',
+      dataIndex: 'isActivated',
+      key: 'isActivated',
+      width: 200,
+      render: (isActivated) => (
+        <span>
+          <Tag color={
+            isActivated ? 'blue' : 'red'
+          }>{isActivated ? 'Already' : 'Not yet'}</Tag>
+        </span>
+      )
+    }, {
       title: 'Action',
       key: 'action',
       width: 200,
-      fixed: 'right',
+      // fixed: 'right',
       render: (text, record) => (
         <span>
           <Button

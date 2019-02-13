@@ -7,6 +7,10 @@ const Option = Select.Option
 @inject('stores')
 @observer
 class Profile extends Component {
+  componentDidMount () {
+    this.props.stores.me.getMe()
+  }
+
   render () {
     const { getFieldDecorator } = this.props.form
     const fsFormLayout = {
@@ -33,6 +37,8 @@ class Profile extends Component {
         lg: { span: 18 }
       }
     }
+
+    const { me: { username, email, role, department } } = this.props.stores.me
     return (
       <div>
         <Row gutter={20}>
@@ -80,21 +86,26 @@ class Profile extends Component {
               }}
             >
               <Form>
+                {/* email */}
+                <Form.Item {...fsFormLayout} label='Email'>
+                  <Input value={email} disabled />
+                </Form.Item>
+
                 {/* username */}
                 <Form.Item {...fsFormLayout} label='Username'>
-                  <Input id='username' disabled />
+                  <Input value={username} disabled />
                 </Form.Item>
 
                 {/* user role */}
                 <Form.Item {...fsFormLayout} label='Role'>
-                  <Tag color='red'>Admin</Tag>
-                  <Tag color='purple'>Mod/Reviewer</Tag>
-                  <Tag color='green'>User</Tag>
+                  {role && role.map(r => <Tag color={
+                    r === 'admin' ? 'red' : r === 'user' ? 'blue' : 'purple'
+                  } key={r}>{r}</Tag>)}
                 </Form.Item>
 
                 {/* department */}
                 <Form.Item {...fsFormLayout} label='Department'>
-                  <Tag color='#ff3838'>IT</Tag>
+                  {department && department.map(r => <Tag color='green' key={r}>{r}</Tag>)}
                 </Form.Item>
 
                 {/* link to event list */}
@@ -114,7 +125,7 @@ class Profile extends Component {
               }}
             >
               <Form>
-                <Form.Item {...formItemLayout} label='Email' hasFeedback>
+                {/* <Form.Item {...formItemLayout} label='Email' hasFeedback>
                   {getFieldDecorator('email', {
                     rules: [
                       { required: true, message: 'Email is required!' },
@@ -125,7 +136,7 @@ class Profile extends Component {
                       }
                     ]
                   })(<Input id='email' placeholder='Email address' />)}
-                </Form.Item>
+                </Form.Item> */}
 
                 <Form.Item {...formItemLayout} label='First name' hasFeedback>
                   {getFieldDecorator('firstname', {
