@@ -3,19 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "nodemonConfig": {
-    "ignore": [
-      "public/**",
-      "tests/**",
-      "dist/**"
-    ]
-  },
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
-    "test": "mocha --require js:@babel/register src/**/*.spec.js"
+    "test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
+    "test-cov": "nyc npm run test"
   },
   "keywords": [],
   "author": "Vinh Nguyen <vinh_nguyen1211@yahoo.com.vn>",
@@ -54,7 +48,31 @@
   "devDependencies": {
     "axios": "^0.18.0",
     "chai": "^4.1.2",
+    "chalk": "^2.4.2",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.0"
+    "nodemon": "^1.18.0",
+    "nyc": "^13.1.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "public/**",
+      "tests/**",
+      "dist/**"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "src/**"
+    ],
+    "all": false,
+    "cache": false,
+    "sourceMap": false,
+    "instrument": true,
+    "report-dir": "./coverage",
+    "reporter": [
+      "html",
+      "lcov",
+      "text"
+    ]
   }
 }

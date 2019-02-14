@@ -14,7 +14,7 @@ import depthLimit from 'graphql-depth-limit'
 
 import schema from './schema'
 import resolvers from './resolvers'
-import models from './models/index'
+import models, { connect } from './models/index'
 import loaders from './loaders'
 
 import { RedisPubSub } from 'graphql-redis-subscriptions'
@@ -149,9 +149,17 @@ server.applyMiddleware({
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-httpServer.listen({ port: PORT }, () => {
-  console.log(`Apollo Server starts on ${HOST}:${PORT}/graphql`)
+connect(function(err) {
+  if (!err) {
+    const port = process.env.SERVER_PORT
+    httpServer.listen({ port }, () => {
+      console.log(`Apollo Server starts on ${HOST}:${PORT}/graphql`)
+      app.emit('serverStarted')
+    })
+  }
 })
+
+export { app, httpServer }
 
 // app.get('/', (req, res) => {
 //   res.render('index')
