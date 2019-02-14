@@ -140,8 +140,7 @@ const Header = (props) => {
           {new Date(Number(event.startTime)).toLocaleString()}
         </div>
         <div className='location'>
-          <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} />{' '}
-          {event.location}
+          <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} /> {event.location}
         </div>
         <div className='address'>{event.address}</div>
       </Col>
@@ -177,9 +176,7 @@ const AboutEvent = ({ className, event }) => (
   <div className={className} name='inTroduce'>
     <Card title='Giới thiệu'>
       <EditorWysiwyg
-        editorState={EditorState.createWithContent(
-          convertFromRaw(JSON.parse(event.description))
-        )}
+        editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)))}
         readOnly
         toolbarHidden
       />

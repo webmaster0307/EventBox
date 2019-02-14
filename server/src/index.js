@@ -8,9 +8,9 @@ import morgan from 'morgan'
 import jwt from 'jsonwebtoken'
 import DataLoader from 'dataloader'
 import { ApolloServer } from 'apollo-server-express'
-import { PubSub } from 'apollo-server'
 import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
+import depthLimit from 'graphql-depth-limit'
 
 import schema from './schema'
 import resolvers from './resolvers'
@@ -20,21 +20,21 @@ import loaders from './loaders'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
 
-const port = process.env.SERVER_PORT || 8000
-const host = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
+const PORT = process.env.SERVER_PORT || 8000
+const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
 const app = express()
 
 // Subscription
 // const pubsub = new PubSub()
 const options = {
-  host: process.env.REDIS_PUBSUB_HOST || '127.0.0.1',   // Redis host
-  port: process.env.REDIS_PUBSUB_PORT || 6379,          // Redis port
-  retry_strategy: options => {
+  host: process.env.REDIS_PUBSUB_HOST || '127.0.0.1', // Redis host
+  port: process.env.REDIS_PUBSUB_PORT || 6379, // Redis port
+  retry_strategy: (options) => {
     // reconnect after
-    return Math.max(options.attempt * 100, 3000);
+    return Math.max(options.attempt * 100, 3000)
   }
-};
+}
 
 const pubsub = new RedisPubSub({
   publisher: new Redis(options),
@@ -42,11 +42,11 @@ const pubsub = new RedisPubSub({
 })
 
 // const corsOptions = {
-//   origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:3003` ],
+//   origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`],
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 // // cors
-// app.use(cors(corsOptions));
+// app.use(cors(corsOptions))
 // // api fallback for SPA
 // app.use(history({
 //   rewrites:[
@@ -56,7 +56,7 @@ const pubsub = new RedisPubSub({
 //   ]
 // }))
 // morgan logging
-morgan.token('decodeUrl', function (req, res) {
+morgan.token('decodeUrl', function(req, res) {
   return decodeURI(req.originalUrl)
 })
 // morgan.token('graphql-query', (req) => {
@@ -67,20 +67,16 @@ morgan.token('decodeUrl', function (req, res) {
 //   }
 // });
 
-app.use(
-  morgan(`- :method :decodeUrl :status :response-time ms`)
-)
+app.use(morgan(`- :method :decodeUrl :status :response-time ms`))
 
-const getMe = async req => {
+const getMe = async (req) => {
   const token = req.headers['x-token']
 
   if (token) {
     try {
       return await jwt.verify(token, process.env.TOKEN_SECRET)
     } catch (e) {
-      throw new AuthenticationError(
-        'Your session expired. Sign in again.'
-      )
+      throw new AuthenticationError('Your session expired. Sign in again.')
     }
   }
 }
@@ -91,7 +87,8 @@ const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   playground: process.env.NODE_ENV === 'development',
-  formatError: error => {
+  validationRules: [depthLimit(3)],
+  formatError: (error) => {
     // errorLogger(error)
 
     const { extensions } = error
@@ -117,9 +114,7 @@ const server = new ApolloServer({
         newErr,
         pubsub,
         loaders: {
-          user: new DataLoader(keys =>
-            loaders.user.batchUsers(keys, models)
-          )
+          user: new DataLoader((keys) => loaders.user.batchUsers(keys, models))
         }
       }
     }
@@ -136,9 +131,7 @@ const server = new ApolloServer({
         isAdmin,
         secret: process.env.TOKEN_SECRET,
         loaders: {
-          user: new DataLoader(keys =>
-            loaders.user.batchUsers(keys, models)
-          )
+          user: new DataLoader((keys) => loaders.user.batchUsers(keys, models))
         }
       }
     }
@@ -149,15 +142,15 @@ server.applyMiddleware({
   app,
   path: '/graphql',
   cors: {
-    origin: [ `http://${host}:${port}`, `http://${host}:2048`, `http://${host}:8080` ]
+    origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`]
   }
 })
 
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-httpServer.listen({ port }, () => {
-  console.log(`Apollo Server starts on ${host}:${port}/graphql`)
+httpServer.listen({ port: PORT }, () => {
+  console.log(`Apollo Server starts on ${HOST}:${PORT}/graphql`)
 })
 
 // app.get('/', (req, res) => {
@@ -179,10 +172,32 @@ app.get('/api/auth', async (req, res) => {
   } catch (error) {
     return res.send({ status: 403, message: 'Permission denied' })
   }
-  if(!me){
-    return res.send({status: 403, message: 'Permission denied'})
+  if (!me) {
+    return res.send({ status: 403, message: 'Permission denied' })
   }
-  return res.send({ status: 'ok', me})
+  return res.send({ status: 'ok', me })
+})
+
+app.get('/api/verify', async (req, res) => {
+  const templateSuccess = path.join(__dirname, 'template', 'verifySuccess.html')
+  const templateError = path.join(__dirname, 'template', 'error.html')
+
+  if (req.query.token) {
+    await models.User.findOne({ activateToken: req.query.token }, async (err, data) => {
+      if (err) console.log(err)
+      else if (data && !data.isActivated) {
+        await models.User.updateOne(
+          { _id: data._id },
+          { $set: { isActivated: true, activateToken: null } }
+        )
+        res.sendFile(templateSuccess)
+      } else {
+        res.sendFile(templateError)
+      }
+    })
+  } else {
+    res.sendFile(templateError)
+  }
 })
 
 const errorLogger = async (error) => {
@@ -206,24 +221,24 @@ const errorLogger = async (error) => {
     body: JSON.stringify({
       attachments: [
         {
-          'fallback': 'Required plain-text summary of the attachment.',
-          'color': '#36a64f',
-          'pretext': 'GraphQL Error',
-          'author_name': 'From: vinhnguyen1211 API',
-          'author_link': 'https://github.com/legend1250/eventbox-dashboard',
-          'title': 'Open error detail',
-          'title_link': url,
-          'text': 'See error detail',
-          'fields': [
+          fallback: 'Required plain-text summary of the attachment.',
+          color: '#36a64f',
+          pretext: 'GraphQL Error',
+          author_name: 'From: vinhnguyen1211 API',
+          author_link: 'https://github.com/legend1250/eventbox-dashboard',
+          title: 'Open error detail',
+          title_link: url,
+          text: 'See error detail',
+          fields: [
             {
-              'title': 'Priority',
-              'value': 'High',
-              'short': false
+              title: 'Priority',
+              value: 'High',
+              short: false
             }
           ],
-          'footer': 'Slack API',
-          'footer_icon': 'https://platform.slack-edge.com/img/default_application_icon.png',
-          'ts': new Date().getTime() / 1000
+          footer: 'Slack API',
+          footer_icon: 'https://platform.slack-edge.com/img/default_application_icon.png',
+          ts: new Date().getTime() / 1000
         }
       ]
     })

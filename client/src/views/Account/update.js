@@ -6,23 +6,22 @@ import * as routes from '@routes'
 import ErrorMessage from '../ErrorPage'
 
 const UPDATE_ACCOUNT = gql`
-  mutation($username: String!){
-    updateUser(username: $username){
-      id,
-      username,
-      email,
+  mutation($username: String!) {
+    updateUser(username: $username) {
+      id
+      username
+      email
       role
     }
   }
 `
 
-class UpdateAccountForm extends Component{
-
+class UpdateAccountForm extends Component {
   state = {
     username: ''
   }
 
-  onChange = event => {
+  onChange = (event) => {
     const { name, value } = event.target
     this.setState({ [name]: value })
   }
@@ -35,7 +34,7 @@ class UpdateAccountForm extends Component{
       // console.log('data: ' ,data);
       this.props.history.push(routes.HOME)
     })
-  };
+  }
 
   render() {
     const { username } = this.state
@@ -45,7 +44,7 @@ class UpdateAccountForm extends Component{
     return (
       <Mutation mutation={UPDATE_ACCOUNT} variables={{ username }}>
         {(updateUser, { data, loading, error }) => (
-          <form onSubmit={event => this.onSubmit(event, updateUser)}>
+          <form onSubmit={(event) => this.onSubmit(event, updateUser)}>
             <input
               name='username'
               value={username}

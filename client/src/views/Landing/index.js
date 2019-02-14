@@ -30,12 +30,12 @@ enquireScreen((b) => {
 @inject('stores')
 @observer
 class Landing extends React.Component {
-  componentWillMount () {
+  componentWillMount() {
     this.props.stores.landing.checkScreen(isMobile)
   }
 
-  componentDidMount () {
-    enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
+  componentDidMount() {
+    enquireScreen((b) => this.props.stores.landing.checkScreen(!!b))
     if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
 
     this.props.stores.landing.getEvents()
@@ -57,7 +57,9 @@ class Landing extends React.Component {
     return (
       <div
         className='templates-wrapper'
-        ref={(d) => { this.dom = d }}
+        ref={(d) => {
+          this.dom = d
+        }}
       >
         <SignInModal refetch={refetch} />
         <SignUpModal refetch={refetch} />

@@ -68,7 +68,7 @@ class EventList extends Component {
       {
         title: '',
         dataIndex: 'id',
-        render: id => (
+        render: (id) => (
           <Link to={`${DASHBOARD_EVENT}/update/${id}`}>
             <Icon type='edit' /> Edit
           </Link>
@@ -77,8 +77,8 @@ class EventList extends Component {
       {
         title: 'Status',
         dataIndex: 'status',
-        render: status => <StatusTag status={status} />,
-        filters: ['draft', 'in-review', 'active', 'rejected'].map(status => ({
+        render: (status) => <StatusTag status={status} />,
+        filters: ['draft', 'in-review', 'active', 'rejected'].map((status) => ({
           text: <StatusTag status={status} />,
           value: status
         })),
@@ -93,7 +93,7 @@ class EventList extends Component {
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        render: updatedAt => <div>{new Date(updatedAt).toLocaleString()}</div>
+        render: (updatedAt) => <div>{new Date(updatedAt).toLocaleString()}</div>
       },
       {
         title: 'Action',
@@ -135,7 +135,7 @@ class EventList extends Component {
                   ...data,
                   events: {
                     ...data.events,
-                    edges: data.events.edges.filter(node => node.id !== row.id),
+                    edges: data.events.edges.filter((node) => node.id !== row.id),
                     pageInfo: data.events.pageInfo
                   }
                 }
@@ -197,7 +197,7 @@ class DepartmentSelection extends Component {
     departmentIds: []
   }
 
-  selectDepartments = departmentIds => {
+  selectDepartments = (departmentIds) => {
     this.setState({ departmentIds })
   }
 
@@ -210,7 +210,7 @@ class DepartmentSelection extends Component {
             if (loading) {
               return <Spin indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />} />
             }
-            const options = data.eventDepartments.map(item => ({
+            const options = data.eventDepartments.map((item) => ({
               label: item.name,
               value: item.id
             }))
@@ -237,7 +237,7 @@ class DepartmentSelection extends Component {
                   ...data,
                   events: {
                     ...data.events,
-                    edges: data.events.edges.map(node => {
+                    edges: data.events.edges.map((node) => {
                       if (node.id === eventId) {
                         return {
                           ...node,

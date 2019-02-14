@@ -2,15 +2,30 @@ import gql from 'graphql-tag'
 
 const CREATE_EVENT = gql`
   mutation(
-    $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-    $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!, $address: String
+    $title: String!
+    $thumbnail: String!
+    $description: String!
+    $shortDescription: String
+    $organizationName: String!
+    $organizationLogo: String!
+    $organizationDescription: String!
+    $startTime: String!
+    $endTime: String!
+    $location: String!
+    $address: String
   ) {
     createEvent(
-      title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
-      organizationName: $organizationName, organizationLogo: $organizationLogo,
-      organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location, address: $address
+      title: $title
+      thumbnail: $thumbnail
+      description: $description
+      shortDescription: $shortDescription
+      organizationName: $organizationName
+      organizationLogo: $organizationLogo
+      organizationDescription: $organizationDescription
+      startTime: $startTime
+      endTime: $endTime
+      location: $location
+      address: $address
     ) {
       id
       title
@@ -31,18 +46,32 @@ const CREATE_EVENT = gql`
 
 const UPDATE_EVENT_BYID = gql`
   mutation(
-    $id: ID!, $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
-    $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-    $startTime: String!, $endTime: String!, $location: String!, $address: String!,
-    $departments: [ID]
+    $id: ID!
+    $title: String!
+    $thumbnail: String!
+    $description: String!
+    $shortDescription: String
+    $organizationName: String!
+    $organizationLogo: String!
+    $organizationDescription: String!
+    $startTime: String!
+    $endTime: String!
+    $location: String!
+    $address: String!
   ) {
     updateEvent(
-      id: $id, title: $title, thumbnail: $thumbnail,
-      description: $description, shortDescription: $shortDescription
-      organizationName: $organizationName, organizationLogo: $organizationLogo,
-      organizationDescription: $organizationDescription,
-      startTime: $startTime, endTime: $endTime, location: $location, address: $address,
-      departments: $departments
+      id: $id
+      title: $title
+      thumbnail: $thumbnail
+      description: $description
+      shortDescription: $shortDescription
+      organizationName: $organizationName
+      organizationLogo: $organizationLogo
+      organizationDescription: $organizationDescription
+      startTime: $startTime
+      endTime: $endTime
+      location: $location
+      address: $address
     ) {
       title
       images {
@@ -55,25 +84,25 @@ const UPDATE_EVENT_BYID = gql`
 `
 
 const DELETE_EVENT_BYID = gql`
-  mutation($id: ID!){
+  mutation($id: ID!) {
     deleteEvent(id: $id)
   }
 `
 
 const PUBLISH_EVENT_BYID = gql`
-  mutation($id: ID!, $departmentIds: [ID]!){
+  mutation($id: ID!, $departmentIds: [ID]!) {
     publishEvent(id: $id, departmentIds: $departmentIds)
   }
 `
 
 const APPROVE_EVENT_BYID = gql`
-  mutation($id: ID!){
+  mutation($id: ID!) {
     approveEvent(id: $id)
   }
 `
 
 const REJECT_EVENT_BYID = gql`
-  mutation($id: ID!){
+  mutation($id: ID!) {
     rejectEvent(id: $id)
   }
 `

@@ -198,7 +198,6 @@ class EventList extends Component {
 
   render() {
     const { events, loading } = this.props
-    console.log('events: ', events)
 
     return (
       // <Query query={getSession} >

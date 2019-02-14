@@ -13,7 +13,6 @@ const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
 class Container extends React.Component {
-
   state = {
     collapsed: false
   }
@@ -23,22 +22,22 @@ class Container extends React.Component {
   }
 
   handleGotoHome = () => {
-    if(this.props.history.pathname !== routes.DASHBOARD){
+    if (this.props.history.pathname !== routes.DASHBOARD) {
       this.props.history.push(routes.DASHBOARD)
     }
   }
 
   getSession = () => {
-    client.query({query: session.GET_LOCAL_SESSION}).then( result => {
+    client.query({ query: session.GET_LOCAL_SESSION }).then((result) => {
       const { me } = result.data
-      console.log('me: ',me)
+      console.log('me: ', me)
     })
   }
 
   render() {
     const { me } = this.props.session
 
-    return(
+    return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
@@ -48,42 +47,48 @@ class Container extends React.Component {
         >
           <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
           <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
-            {routesMenu.filter(route => {
-              for(let role of me.role){
-                if(route.roles.includes(role)){
-                  return true
+            {routesMenu
+              .filter((route) => {
+                for (let role of me.role) {
+                  if (route.roles.includes(role)) {
+                    return true
+                  }
                 }
-              }
-              return false
-            }).map(item => {
-              if(item.subComponent){
-                return(
-                  <SubMenu
-                    key={item.title}
-                    title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}
-                  >
-                    {item.subComponent.map(it => (
-                      <Menu.Item key={it.path} >
-                        <Link to={it.path} >
-                          <Icon type={it.icon} />
-                          <span>{it.title}</span>
-                        </Link>
-                      </Menu.Item>
-                    ))}
-                  </SubMenu>
-                )
-              }
-              else{
-                return(
-                  <Menu.Item key={item.title} >
-                    <Link to={item.path} >
-                      <Icon type={item.icon} />
-                      <span>{item.title}</span>
-                    </Link>
-                  </Menu.Item>
-                )
-              }
-            })}
+                return false
+              })
+              .map((item) => {
+                if (item.subComponent) {
+                  return (
+                    <SubMenu
+                      key={item.title}
+                      title={
+                        <span>
+                          <Icon type={item.icon} />
+                          <span>{item.title}</span>
+                        </span>
+                      }
+                    >
+                      {item.subComponent.map((it) => (
+                        <Menu.Item key={it.path}>
+                          <Link to={it.path}>
+                            <Icon type={it.icon} />
+                            <span>{it.title}</span>
+                          </Link>
+                        </Menu.Item>
+                      ))}
+                    </SubMenu>
+                  )
+                } else {
+                  return (
+                    <Menu.Item key={item.title}>
+                      <Link to={item.path}>
+                        <Icon type={item.icon} />
+                        <span>{item.title}</span>
+                      </Link>
+                    </Menu.Item>
+                  )
+                }
+              })}
           </Menu>
         </Sider>
         <Layout>
@@ -95,23 +100,23 @@ class Container extends React.Component {
             </Breadcrumb>
             <Card style={{ background: '#fff', minHeight: 360 }}>
               <Switch>
-                {routesComp.filter(route => {
-                  for(let role of me.role){
-                    if(route.roles.includes(role)){
-                      return route.component && true
+                {routesComp
+                  .filter((route) => {
+                    for (let role of me.role) {
+                      if (route.roles.includes(role)) {
+                        return route.component && true
+                      }
                     }
-                  }
-                  return false
-                }).map(route => (
-                  <Route key={route.path} {...route} />
-                ))}
+                    return false
+                  })
+                  .map((route) => (
+                    <Route key={route.path} {...route} />
+                  ))}
                 <Route component={Page404} />
               </Switch>
             </Card>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
+          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
       </Layout>
     )

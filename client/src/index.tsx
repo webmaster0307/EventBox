@@ -19,7 +19,7 @@ import { signOut } from '@components'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
 
-import { Event, Landing, AdminStore } from './stores'
+import { Event, Landing, AdminStore, Me } from './stores'
 
 // import 'antd/dist/antd.css';
 import './atnd.less'
@@ -155,7 +155,8 @@ export const client = new ApolloClient({
 const stores = {
   event: new Event(),
   landing: new Landing(),
-  admin: new AdminStore()
+  admin: new AdminStore(),
+  me: new Me()
 }
 
 ReactDOM.render(

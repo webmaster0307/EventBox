@@ -4,7 +4,7 @@ import * as routes from '@routes'
 import { session } from '@gqlQueries'
 import { Redirect } from 'react-router-dom'
 
-const withAuthorization = conditionFn => Component => props => (
+const withAuthorization = (conditionFn) => (Component) => (props) => (
   <Query query={session.GET_LOCAL_SESSION}>
     {({ data, networkStatus }) => {
       if (networkStatus < 7) {
@@ -12,7 +12,7 @@ const withAuthorization = conditionFn => Component => props => (
       }
 
       return conditionFn(data) ? (
-        <Component {...props} />
+        <Component {...props} {...data} />
       ) : (
         <Redirect to={routes.SIGN_IN} />
       )

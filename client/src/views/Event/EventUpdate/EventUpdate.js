@@ -13,8 +13,7 @@ const FormItem = Form.Item
 
 @inject('stores')
 @observer
-class EventUpdate extends Component{
-
+class EventUpdate extends Component {
   state = {
     loading: true
   }
@@ -22,10 +21,13 @@ class EventUpdate extends Component{
 
   componentDidMount = async () => {
     const { eventId } = this.props.match.params
-    const { form, stores: { event } } = this.props
+    const {
+      form,
+      stores: { event }
+    } = this.props
     event.editorEventCreate = EditorState.createEmpty()
     const { error, event: eventDetail } = await event.getEventById(eventId)
-    if(error){
+    if (error) {
       return message.error(error)
     }
     form.setFieldsValue({
@@ -41,14 +43,16 @@ class EventUpdate extends Component{
       address: eventDetail.address
     })
     this.setState({ loading: false })
-    event.editorEventCreate = EditorState.createWithContent(convertFromRaw(JSON.parse(eventDetail.description)))
+    event.editorEventCreate = EditorState.createWithContent(
+      convertFromRaw(JSON.parse(eventDetail.description))
+    )
   }
 
-  _handleUpdateEvent = event => {
+  _handleUpdateEvent = (event) => {
     event.preventDefault()
     const { form } = this.props
-    form.validateFields( (err, values) => {
-      if(!err){
+    form.validateFields((err, values) => {
+      if (!err) {
         const { eventId } = this.props.match.params
         const { event } = this.props.stores
         const dataSubmit = {
@@ -59,55 +63,56 @@ class EventUpdate extends Component{
           endTime: values.endTime._d
         }
         this.setState({ buttonLoading: true }, () => {
-          client.mutate({
-            mutation: eventQueries.UPDATE_EVENT_BYID,
-            variables: dataSubmit,
-            update: (cache, { data: { updateEvent } }) => {
-              if(!updateEvent){
-                // return alert('Failed to delete')
-              }
-              try {
-                const data = cache.readQuery({
-                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
-                })
-                cache.writeQuery({
-                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
-                  data: {
-                    ...data,
-                    events: {
-                      ...data.events,
-                      edges: data.events.edges.map(node => {
-                        if(node.id === eventId){
-                          return {
-                            ...node,
-                            ...updateEvent
+          client
+            .mutate({
+              mutation: eventQueries.UPDATE_EVENT_BYID,
+              variables: dataSubmit,
+              update: (cache, { data: { updateEvent } }) => {
+                if (!updateEvent) {
+                  // return alert('Failed to delete')
+                }
+                try {
+                  const data = cache.readQuery({
+                    query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+                  })
+                  cache.writeQuery({
+                    query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
+                    data: {
+                      ...data,
+                      events: {
+                        ...data.events,
+                        edges: data.events.edges.map((node) => {
+                          if (node.id === eventId) {
+                            return {
+                              ...node,
+                              ...updateEvent
+                            }
+                          } else {
+                            return node
                           }
-                        }
-                        else{
-                          return node
-                        }
-                      }),
-                      pageInfo: data.events.pageInfo
+                        }),
+                        pageInfo: data.events.pageInfo
+                      }
                     }
-                  }
-                })
-              } catch (error) {
-                // console.log('error: ',error)
+                  })
+                } catch (error) {
+                  // console.log('error: ',error)
+                }
               }
-            }
-          })
-            .then( ({data, errors}) => {
+            })
+            .then(({ data, errors }) => {
               this.setState({ buttonLoading: false })
               this.props.stores.event.event.status = 'draft'
-              if(errors){
+              if (errors) {
                 return message.error('Failed to update event')
               }
               message.success('Event updated successfully!')
             })
-            .catch( ({graphQLErrors}) => {
+            .catch(({ graphQLErrors }) => {
               this.setState({ buttonLoading: false })
-              const msg = (graphQLErrors &&
-                graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
+              const msg =
+                (graphQLErrors && graphQLErrors.map((err) => err.message).join(', ')) ||
+                'Failed to update event'
               return message.error(msg)
             })
         })
@@ -123,7 +128,7 @@ class EventUpdate extends Component{
         mutation: eventQueries.PUBLISH_EVENT_BYID,
         variables: { id: eventId },
         update: (cache, { data: { publishEvent } }) => {
-          if(!publishEvent){
+          if (!publishEvent) {
             // return alert('Failed to delete')
           }
           try {
@@ -136,14 +141,13 @@ class EventUpdate extends Component{
                 ...data,
                 events: {
                   ...data.events,
-                  edges: data.events.edges.map(node => {
-                    if(node.id === eventId){
+                  edges: data.events.edges.map((node) => {
+                    if (node.id === eventId) {
                       return {
                         ...node,
                         status: 'in-review'
                       }
-                    }
-                    else{
+                    } else {
                       return node
                     }
                   }),
@@ -156,13 +160,16 @@ class EventUpdate extends Component{
           }
         }
       })
-    } catch ({graphQLErrors}) {
-      const msg = (graphQLErrors && 
-        graphQLErrors.map(err => err.message).join(', ')) || 'Failed to update event'
+    } catch ({ graphQLErrors }) {
+      const msg =
+        (graphQLErrors && graphQLErrors.map((err) => err.message).join(', ')) ||
+        'Failed to update event'
       return message.error(msg)
     }
-    const { data: { publishEvent } } = result
-    if(publishEvent){
+    const {
+      data: { publishEvent }
+    } = result
+    if (publishEvent) {
       // console.log('result: ',result)
       message.success('Xuất bản sự kiện thành công')
       this.props.history.push(`${routes.DASHBOARD}/events`)
@@ -174,8 +181,8 @@ class EventUpdate extends Component{
     const { event } = this.props.stores.event
 
     return (
-      <Spin spinning={loading} >
-        <Form onSubmit={this._handleUpdateEvent} hideRequiredMark >
+      <Spin spinning={loading}>
+        <Form onSubmit={this._handleUpdateEvent} hideRequiredMark>
           <DescriptionArea {...this.props} loading={loading} updateStage />
           <OriganizationArea {...this.props} />
           <DateHoldingArea {...this.props} />
@@ -185,7 +192,7 @@ class EventUpdate extends Component{
               htmlType='submit'
               loading={buttonLoading}
               icon='form'
-              style={{marginRight: 24}}
+              style={{ marginRight: 24 }}
             >
               Update Event
             </Button>

@@ -7,7 +7,7 @@ import { translate } from 'react-i18next'
 import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 
-import  { categoryOpts, selectTimeOpts } from '../../../constants/options'
+import { categoryOpts, selectTimeOpts } from '../../../constants/options'
 
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane
@@ -19,11 +19,11 @@ const Option = Select.Option
 class FirstSection extends Component {
   // title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
 
-  handleGoToEventDetail = event => {
+  handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
 
-  render () {
+  render() {
     const { suggestion } = this.props.stores.landing
     const { i18n } = this.props
     const { getFieldDecorator } = this.props.form
@@ -76,7 +76,15 @@ class FirstSection extends Component {
                 )
             )} */}
             <Tabs defaultActiveKey='1'>
-              <TabPane tab={<span><Icon type='form' />{i18n.t('Search by keywords')}</span>} key='1'>
+              <TabPane
+                tab={
+                  <span>
+                    <Icon type='form' />
+                    {i18n.t('Search by keywords')}
+                  </span>
+                }
+                key='1'
+              >
                 <Form
                   style={{
                     background: 'rgba(0,0,0,.03)',
@@ -85,15 +93,16 @@ class FirstSection extends Component {
                   }}
                 >
                   <FormItem {...formInputLayout}>
-                    {getFieldDecorator('searchbar',
-                      {rules: []})(<AutoComplete
-                      id='searchbar'
-                      dataSource={suggestion}
-                      onSelect={(v) => this.props.stores.landing.handleAutoCompleteSelect(v)}
-                      onSearch={(v) => this.props.stores.landing.handleAutoCompleteSearch(v)}
-                      placeholder='Search events...'
-                      style={{width: '60%'}}
-                    />)}
+                    {getFieldDecorator('searchbar', { rules: [] })(
+                      <AutoComplete
+                        id='searchbar'
+                        dataSource={suggestion}
+                        onSelect={(v) => this.props.stores.landing.handleAutoCompleteSelect(v)}
+                        onSearch={(v) => this.props.stores.landing.handleAutoCompleteSearch(v)}
+                        placeholder='Search events...'
+                        style={{ width: '60%' }}
+                      />
+                    )}
                   </FormItem>
                   <FormItem {...formButtonLayout}>
                     <Button
@@ -104,35 +113,48 @@ class FirstSection extends Component {
                       type='primary'
                       htmlType='submit'
                     >
-                      {i18n.t('Search')}<Icon type='search' />
+                      {i18n.t('Search')}
+                      <Icon type='search' />
                     </Button>
                   </FormItem>
                 </Form>
               </TabPane>
-              <TabPane tab={<span><Icon type='bars' />{i18n.t('Search by Options')}</span>} key='2'>
+              <TabPane
+                tab={
+                  <span>
+                    <Icon type='bars' />
+                    {i18n.t('Search by Options')}
+                  </span>
+                }
+                key='2'
+              >
                 <Row gutter={20}>
-                  <Col xs={0} sm={0} md={6} lg={6}/>
-                  <Col xs={24} sm={24} md={6} lg={6} style={{margin: '10px 0'}}>
+                  <Col xs={0} sm={0} md={6} lg={6} />
+                  <Col xs={24} sm={24} md={6} lg={6} style={{ margin: '10px 0' }}>
                     <Select
                       suffixIcon={<Icon type='calendar' />}
                       placeholder='Select categories'
                       mode='multiple'
                       style={{ width: '100%' }}
-                      onSelect={(e) => { console.log(e) }}
+                      onSelect={(e) => {
+                        console.log(e)
+                      }}
                     >
                       {categoryOptions}
                     </Select>
                   </Col>
-                  <Col xs={24} sm={24} md={6} lg={6} style={{margin: '10px 0'}}>
+                  <Col xs={24} sm={24} md={6} lg={6} style={{ margin: '10px 0' }}>
                     <Select
                       placeholder='Select time'
                       style={{ width: '100%' }}
-                      onSelect={(e) => { console.log(e) }}
+                      onSelect={(e) => {
+                        console.log(e)
+                      }}
                     >
                       {selectTimeOptions}
                     </Select>
                   </Col>
-                  <Col xs={0} sm={0} md={6} lg={6}/>
+                  <Col xs={0} sm={0} md={6} lg={6} />
                 </Row>
               </TabPane>
             </Tabs>

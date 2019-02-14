@@ -1,6 +1,3 @@
-
-class Network {
-
-}
+class Network {}
 
 export default Network

@@ -57,7 +57,7 @@
     "eject": "react-scripts eject",
     "linter": "eslint .",
     "linter-fix": "eslint . --fix",
-    "prettier": "prettier --write src/**/*.js"
+    "prettier": "prettier --write 'src/**/*.js'"
   },
   "husky": {
     "hooks": {

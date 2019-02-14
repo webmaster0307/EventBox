@@ -8,6 +8,4 @@ const ErrorMessage = ({ error }) => (
 )
 
 export default ErrorMessage
-export {
-  Page404
-}
+export { Page404 }

@@ -36,9 +36,7 @@ class Header extends React.Component {
     })
   }
 
-  handleSignOut = () => {
-
-  }
+  handleSignOut = () => {}
 
   handleMenuClick = ({ key }) => {
     const { i18n } = this.props
@@ -46,69 +44,61 @@ class Header extends React.Component {
       this.props.stores.landing.ocSignInModal('o')
     } else if (key === 'signup') {
       this.props.stores.landing.ocSignUpModal('o')
-    } else if (key === 'vnFlag'){
+    } else if (key === 'vnFlag') {
       i18n.changeLanguage('vn')
       this.props.stores.landing.isEnglish = false
-    } else if (key === 'usFlag'){
+    } else if (key === 'usFlag') {
       i18n.changeLanguage('en')
       this.props.stores.landing.isEnglish = true
     }
   }
 
-  render () {
+  render() {
     const { i18n } = this.props
-    const {
-      isMobile, isEnglish
-    } = this.props.stores.landing
+    const { isMobile, isEnglish } = this.props.stores.landing
     const { menuHeight, phoneOpen } = this.state
     return (
       <Query query={session.GET_LOCAL_SESSION}>
-        {({data, error, client}) => {
+        {({ data, error, client }) => {
           // apollo local state
           const { me } = data
 
           let navChildren = []
-          if(me && !error){
+          if (me && !error) {
             const userTitle = (
-              <div >
-                <Avatar
-                  size={36}
-                  alt='img'
-                />
-                <span>{me.username} | {me.email}</span>
+              <div>
+                <Avatar size={36} alt='img' />
+                <span>
+                  {me.username} | {me.email}
+                </span>
               </div>
             )
-            navChildren=[
+            navChildren = [
               ...navChildren,
               <SubMenu className='user' title={userTitle} key='user'>
                 <Item key='a'>
-                  <Link to='/dashboard'>
-                    {i18n.t('dashboard')}
-                  </Link>
+                  <Link to='/dashboard'>{i18n.t('dashboard')}</Link>
                 </Item>
-                <Item key='c' onClick={() => signOut(client)}>{i18n.t('signout')}</Item>
+                <Item key='c' onClick={() => signOut(client)}>
+                  {i18n.t('signout')}
+                </Item>
               </SubMenu>
             ]
-          }
-          else{
+          } else {
             navChildren = [
               ...navChildren,
               <Item key='signup' className='menu-item-text-custom'>
-                <Icon
-                  className='menu-item-icon-custom'
-                  type='user-add'
-                />{i18n.t('signup')}
+                <Icon className='menu-item-icon-custom' type='user-add' />
+                {i18n.t('signup')}
               </Item>,
               <Item key='signin' className='menu-item-text-custom'>
-                <Icon
-                  className='menu-item-icon-custom'
-                  type='login'
-                />{i18n.t('signin')}
+                <Icon className='menu-item-icon-custom' type='login' />
+                {i18n.t('signin')}
               </Item>
             ]
           }
 
-          return(
+          return (
             <Affix offsetTop={0}>
               <TweenOne
                 component='header'
@@ -121,13 +111,14 @@ class Header extends React.Component {
                     className='header0-logo'
                     onClick={() => this.props.history.push('/')}
                   >
-                    <img width='100%' src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_376/v1547734140/vanlang_logo.png' alt='img' />
+                    <img
+                      width='100%'
+                      src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_376/v1547734140/vanlang_logo.png'
+                      alt='img'
+                    />
                   </TweenOne>
                   {toJS(isMobile) && (
-                    <div
-                      className='header0-mobile-menu'
-                      onClick={this.phoneClick}
-                    >
+                    <div className='header0-mobile-menu' onClick={this.phoneClick}>
                       <em />
                       <em />
                       <em />
@@ -136,7 +127,9 @@ class Header extends React.Component {
                   <TweenOne
                     className='header0-menu'
                     animation={{ x: 30, type: 'from', ease: 'easeOutQuad' }}
-                    ref={(c) => { this.menu = c }}
+                    ref={(c) => {
+                      this.menu = c
+                    }}
                     style={isMobile ? { height: menuHeight } : null}
                   >
                     <Menu
@@ -148,25 +141,29 @@ class Header extends React.Component {
                       {/* <Item className='menu-item-text-custom'>
                         <span style={{padding: 3, border: '1px solid'}}>{buttonText}</span>
                       </Item> */}
-                      <SubMenu key='sub1' title={<LanguageSelected isEnglish={isEnglish} />} >
+                      <SubMenu key='sub1' title={<LanguageSelected isEnglish={isEnglish} />}>
                         <Menu.Item key='vnFlag'>
-                          <Row type='flex' align='middle' >
-                            <div style={{marginRight: 6}} >
-                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25}} alt='vietnam_flag' />
+                          <Row type='flex' align='middle'>
+                            <div style={{ marginRight: 6 }}>
+                              <img
+                                src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png'
+                                style={{ width: 25 }}
+                                alt='vietnam_flag'
+                              />
                             </div>
-                            <div style={{fontWeight: 600}} >
-                              Tiếng Việt
-                            </div>
+                            <div style={{ fontWeight: 600 }}>Tiếng Việt</div>
                           </Row>
                         </Menu.Item>
                         <Menu.Item key='usFlag'>
-                          <Row type='flex' align='middle' >
-                            <div style={{marginRight: 6}} >
-                              <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25}} alt='england_flag' />
+                          <Row type='flex' align='middle'>
+                            <div style={{ marginRight: 6 }}>
+                              <img
+                                src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png'
+                                style={{ width: 25 }}
+                                alt='england_flag'
+                              />
                             </div>
-                            <div style={{fontWeight: 600}} >
-                              English
-                            </div>
+                            <div style={{ fontWeight: 600 }}>English</div>
                           </Row>
                         </Menu.Item>
                       </SubMenu>
@@ -182,17 +179,25 @@ class Header extends React.Component {
   }
 }
 
-const LanguageSelected = ({ isEnglish }) => (
-  isEnglish ?
-    <span style={{padding: 3}} >
-      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png' style={{width: 25, marginRight: 4}} alt='england_flag' />
+const LanguageSelected = ({ isEnglish }) =>
+  isEnglish ? (
+    <span style={{ padding: 3 }}>
+      <img
+        src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png'
+        style={{ width: 25, marginRight: 4 }}
+        alt='england_flag'
+      />
       <Icon type='caret-down' />
     </span>
-    :
+  ) : (
     <span>
-      <img src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png' style={{width: 25, marginRight: 4}} alt='vietnam_flag' />
+      <img
+        src='https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png'
+        style={{ width: 25, marginRight: 4 }}
+        alt='vietnam_flag'
+      />
       <Icon type='caret-down' />
     </span>
-)
+  )
 
 export default translate('translations')(Header)

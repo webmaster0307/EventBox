@@ -15,7 +15,7 @@ const SIGN_IN = gql`
   }
 `
 
-const SignInPage = ({history, refetch}) => (
+const SignInPage = ({ history, refetch }) => (
   <div>
     <h1>SignIn</h1>
     <SignInForm history={history} refetch={refetch} />
@@ -29,12 +29,12 @@ const INITIAL_STATE = {
 }
 
 class SignInForm extends Component {
-  state = { ...INITIAL_STATE };
+  state = { ...INITIAL_STATE }
 
-  onChange = event => {
+  onChange = (event) => {
     const { name, value } = event.target
     this.setState({ [name]: value })
-  };
+  }
 
   onSubmit = (event, signIn) => {
     signIn().then(async ({ data }) => {
@@ -49,7 +49,7 @@ class SignInForm extends Component {
     })
 
     event.preventDefault()
-  };
+  }
 
   render() {
     const { username, password } = this.state
@@ -59,7 +59,7 @@ class SignInForm extends Component {
     return (
       <Mutation mutation={SIGN_IN} variables={{ username, password }}>
         {(signIn, { data, loading, error }) => (
-          <form onSubmit={event => this.onSubmit(event, signIn)}>
+          <form onSubmit={(event) => this.onSubmit(event, signIn)}>
             <input
               name='username'
               value={username}

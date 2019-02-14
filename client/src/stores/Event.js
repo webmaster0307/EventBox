@@ -13,7 +13,7 @@ class Event {
   @observable editorEventCreate
 
   @action
-  async getEvents(_events){
+  async getEvents(_events) {
     this.eventsLoading = true
     let result
     try {
@@ -22,8 +22,8 @@ class Event {
         variables: { limit: limitEventPerPage },
         fetchPolicy: 'network-only'
       })
-    } catch ({graphQLErrors}) {
-      const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+    } catch ({ graphQLErrors }) {
+      const error = graphQLErrors && graphQLErrors.map((item) => item.message).join(', ')
       return { error }
     }
     const { edges } = result.data.events
@@ -32,31 +32,35 @@ class Event {
   }
 
   @action
-  async getEventById(eventId){
+  async getEventById(eventId) {
     let result
     try {
-      result = await client.query({ query: event.GET_EVENT_DETAIL, variables: { eventId }, fetchPolicy: 'no-cache' })
-    } catch ({graphQLErrors}) {
-      const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+      result = await client.query({
+        query: event.GET_EVENT_DETAIL,
+        variables: { eventId },
+        fetchPolicy: 'no-cache'
+      })
+    } catch ({ graphQLErrors }) {
+      const error = graphQLErrors && graphQLErrors.map((item) => item.message).join(', ')
       return { error }
     }
     const { event: eventResult } = result.data
     this.event = eventResult
-    return({ event: eventResult })
+    return { event: eventResult }
   }
 
   @action
-  async deleteEventById(eventId){
+  async deleteEventById(eventId) {
     try {
       this.eventsLoading = true
       await client.mutate({
         mutation: event.DELETE_EVENT_BYID,
         variables: { id: eventId }
       })
-      this.events = this.events.filter(item => item.id !== eventId)
-    } catch ({graphQLErrors}) {
-      console.log('graphQLErrors: ',graphQLErrors)
-      const error = graphQLErrors && graphQLErrors.map(item => item.message).join(', ')
+      this.events = this.events.filter((item) => item.id !== eventId)
+    } catch ({ graphQLErrors }) {
+      console.log('graphQLErrors: ', graphQLErrors)
+      const error = graphQLErrors && graphQLErrors.map((item) => item.message).join(', ')
       this.eventsLoading = false
       return { error }
     }
@@ -64,6 +68,5 @@ class Event {
     return true
   }
 }
-
 
 export default Event

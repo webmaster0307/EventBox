@@ -29,12 +29,12 @@ const SignUpPage = ({ history, refetch }) => (
 )
 
 class SignUpForm extends Component {
-  state = { ...INITIAL_STATE };
+  state = { ...INITIAL_STATE }
 
-  onChange = event => {
+  onChange = (event) => {
     const { name, value } = event.target
     this.setState({ [name]: value })
-  };
+  }
 
   onSubmit = (event, signUp) => {
     signUp().then(async ({ data }) => {
@@ -48,29 +48,18 @@ class SignUpForm extends Component {
     })
 
     event.preventDefault()
-  };
+  }
 
   render() {
-    const {
-      username,
-      email,
-      password,
-      passwordConfirmation
-    } = this.state
+    const { username, email, password, passwordConfirmation } = this.state
 
     const isInvalid =
-      password !== passwordConfirmation ||
-      password === '' ||
-      email === '' ||
-      username === ''
+      password !== passwordConfirmation || password === '' || email === '' || username === ''
 
     return (
-      <Mutation
-        mutation={SIGN_UP}
-        variables={{ username, email, password }}
-      >
+      <Mutation mutation={SIGN_UP} variables={{ username, email, password }}>
         {(signUp, { data, loading, error }) => (
-          <form onSubmit={event => this.onSubmit(event, signUp)}>
+          <form onSubmit={(event) => this.onSubmit(event, signUp)}>
             <input
               name='username'
               value={username}

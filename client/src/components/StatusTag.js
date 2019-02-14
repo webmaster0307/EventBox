@@ -1,8 +1,8 @@
 import React from 'react'
 import { Tag } from 'antd'
 
-const StatusTag = ({status}) => {
-  switch(status){
+const StatusTag = ({ status }) => {
+  switch (status) {
     case 'draft': {
       return <Tag color='blue'>Draft</Tag>
     }
@@ -16,7 +16,7 @@ const StatusTag = ({status}) => {
       return <Tag color='red'>Rejected</Tag>
     }
     default: {
-      return <Tag color='blue'>{status}</Tag> 
+      return <Tag color='blue'>{status}</Tag>
     }
   }
 }

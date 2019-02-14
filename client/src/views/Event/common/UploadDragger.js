@@ -3,9 +3,8 @@ import { Upload, Icon, message } from 'antd'
 
 const Dragger = Upload.Dragger
 
-class UploadDragger extends React.Component{
-
-  constructor(props){
+class UploadDragger extends React.Component {
+  constructor(props) {
     super(props)
     this.state = {
       imageSrc: ''
@@ -18,14 +17,14 @@ class UploadDragger extends React.Component{
 
   componentWillReceiveProps = (prevProps) => {
     const { imageSrc } = this.props
-    if(imageSrc){
+    if (imageSrc) {
       this.setState({ imageSrc })
     }
   }
 
   uploadProps = () => {
     const self = this
-    return({
+    return {
       name: 'file',
       accept: '.png, .jpg, .jpeg',
       showUploadList: false,
@@ -41,14 +40,16 @@ class UploadDragger extends React.Component{
         }
         if (status === 'done') {
           message.success(`${info.file.name} file uploaded successfully.`)
-          const imageSrc = `${process.env.REACT_APP_EVENTBOX_UPLOAD}/image/${info.file.response.file.filename}`
+          const imageSrc = `${process.env.REACT_APP_EVENTBOX_UPLOAD}/image/${
+            info.file.response.file.filename
+          }`
           self.setState({ imageSrc })
           self.props.onChange && self.props.onChange(imageSrc)
         } else if (status === 'error') {
           message.error(`${info.file.name} file upload failed.`)
         }
       }
-    })
+    }
   }
 
   render() {
@@ -56,7 +57,9 @@ class UploadDragger extends React.Component{
 
     return (
       <Dragger {...this.uploadProps()}>
-        {imageSrc && <img src={imageSrc} style={{maxHeight: '25vh', marginBottom: 14}} alt='logo' />}
+        {imageSrc && (
+          <img src={imageSrc} style={{ maxHeight: '25vh', marginBottom: 14 }} alt='logo' />
+        )}
         <p className='ant-upload-drag-icon'>
           <Icon type='inbox' />
         </p>

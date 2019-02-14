@@ -12,10 +12,7 @@ import other from '../images/section3/Other.png'
 @inject('stores')
 @observer
 class ThirdSection extends Component {
-  title = () => [
-    { name: 'title', text: '3rd-title' },
-    { name: 'content', text: '3rd-subtitle' }
-  ]
+  title = () => [{ name: 'title', text: '3rd-title' }, { name: 'content', text: '3rd-subtitle' }]
 
   block = () => {
     const { i18n } = this.props
@@ -45,39 +42,42 @@ class ThirdSection extends Component {
 
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100
 
-  render () {
+  render() {
     const { i18n } = this.props
     const childrenToRender = this.block().map((item, i) => {
       return (
-        <Col
-          key={i.toString()} className='block'
-          md={8} sm={24} xs={24}
-        >
+        <Col key={i.toString()} className='block' md={8} sm={24} xs={24}>
           <div className='icon'>
             <img src={item.icon} width='100%' alt='img' />
           </div>
-          <h3 className='content0-title'><b>{item.title}</b></h3>
+          <h3 className='content0-title'>
+            <b>{item.title}</b>
+          </h3>
           <div>{item.content}</div>
         </Col>
       )
     })
     return (
-      <div className='home-page-wrapper content0-wrapper' style={{minHeight: 485}}>
+      <div className='home-page-wrapper content0-wrapper' style={{ minHeight: 485 }}>
         <div className='home-page content0'>
           <div className='title-wrapper'>
             {this.title().map((item, i) =>
-              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
+              createElement(
+                item.name.indexOf('title') === 0 ? 'h1' : 'div',
                 {
                   key: i.toString(),
                   className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
                 },
-                typeof item.text === 'string'
-                && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
+                /* eslint-disable */
+                typeof item.text === 'string' &&
+                  item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
                   ? createElement('img', {
-                    src: item.text,
-                    alt: 'img'
-                  })
-                  : i18n.t(item.text)))}
+                      src: item.text,
+                      alt: 'img'
+                    })
+                  : i18n.t(item.text)
+              )
+            )}
           </div>
           <OverPack playScale={0.3} className=''>
             <QueueAnim

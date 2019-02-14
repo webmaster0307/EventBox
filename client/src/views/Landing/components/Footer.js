@@ -21,7 +21,8 @@ class Footer extends Component {
               <b>EventBox</b> {i18n.t('f-about')}
             </p>
             <p>
-              <b>{i18n.t('sp-email')}</b><br />
+              <b>{i18n.t('sp-email')}</b>
+              <br />
               <Icon type='mail' theme='filled' />
               <span> vlu@vanlanguni.edu.vn</span>
             </p>
@@ -33,19 +34,28 @@ class Footer extends Component {
         content: (
           <span className='footer-address'>
             <p>
-              <b>{i18n.t('Office')}</b><br />
+              <b>{i18n.t('Office')}</b>
+              <br />
               <Icon type='environment' theme='filled' />
-              <span><i> {i18n.t('office1')}</i></span>
+              <span>
+                <i> {i18n.t('office1')}</i>
+              </span>
             </p>
             <p>
-              <b>{i18n.t('Campus')} 2</b><br />
+              <b>{i18n.t('Campus')} 2</b>
+              <br />
               <Icon type='environment' />
-              <span><i> {i18n.t('office2')}</i></span>
+              <span>
+                <i> {i18n.t('office2')}</i>
+              </span>
             </p>
             <p>
-              <b>{i18n.t('Campus')} 3</b><br />
+              <b>{i18n.t('Campus')} 3</b>
+              <br />
               <Icon type='environment' />
-              <span><i> {i18n.t('office3')}</i></span>
+              <span>
+                <i> {i18n.t('office3')}</i>
+              </span>
             </p>
           </span>
         )
@@ -55,7 +65,9 @@ class Footer extends Component {
         content: (
           <span className='footer-contact'>
             <p>
-              <b><Icon type='phone' theme='filled' /> {i18n.t('Hotline')}:</b>
+              <b>
+                <Icon type='phone' theme='filled' /> {i18n.t('Hotline')}:
+              </b>
               <span> {i18n.t('c-time')} </span>
             </p>
             <p className='footer-contact-number'>
@@ -69,19 +81,23 @@ class Footer extends Component {
         content: (
           <span className='footer-quickaccess'>
             <p>
-              <b>FAQ</b><br />
-              <span><i>{i18n.t('faq')}</i></span>
+              <b>FAQ</b>
+              <br />
+              <span>
+                <i>{i18n.t('faq')}</i>
+              </span>
             </p>
             <p>
               <b>{i18n.t('Subscribe us')}</b>
               <Input.Search
                 placeholder={i18n.t('sb-inp-ph')}
-                onSearch={value => console.log(value)}
+                onSearch={(value) => console.log(value)}
                 enterButton={<Icon type='thunderbolt' />}
               />
             </p>
             <div>
-              <b>{i18n.t('Follow us')}</b><br />
+              <b>{i18n.t('Follow us')}</b>
+              <br />
               {this.socialButton().map((button, i) => {
                 return (
                   <Col
@@ -143,26 +159,23 @@ class Footer extends Component {
       iconType: 'instagram',
       theme: '',
       color: '#fff',
-      bgColor: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)'
+      bgColor:
+        'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)'
     }
   ]
 
-  render () {
+  render() {
     const childrenToRender = this.block().map((item, i) => {
       return (
-        <Col
-          xs={24}
-          md={6}
-          key={i.toString()}
-          className='block'
-          title={null}
-          content={null}
-        >
+        <Col xs={24} md={6} key={i.toString()} className='block' title={null} content={null}>
           <h2 className='logo'>
-            {typeof item.title === 'string'
-            && item.title.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-              ? <img src={item.title} width='100%' alt='img'/> : item.title
-            }
+            {/* eslint-disable */}
+            {typeof item.title === 'string' &&
+            item.title.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/) ? (
+              <img src={item.title} width='100%' alt='img' />
+            ) : (
+              item.title
+            )}
           </h2>
           <div className='slogan'>{item.content}</div>
         </Col>
@@ -172,13 +185,7 @@ class Footer extends Component {
     return (
       <div className='home-page-wrapper footer1-wrapper'>
         <OverPack key='x' className='footer1' playScale={0.2}>
-          <QueueAnim
-            className='home-page'
-            type='bottom'
-            key='ul'
-            leaveReverse
-            component={Row}
-          >
+          <QueueAnim className='home-page' type='bottom' key='ul' leaveReverse component={Row}>
             {childrenToRender}
           </QueueAnim>
           <TweenOne
