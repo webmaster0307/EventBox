@@ -54,11 +54,11 @@ export default {
         }
       }
     },
-    eventsHome: async (parent, args, { me, models }) =>{
+    eventsHome: async (parent, { limit = 8 }, { me, models }) =>{
       const events = await models.Event.find({
         status: 'active'
       }, null, {
-        limit: 8,
+        limit,
         sort: {
           createdAt: -1
         }
@@ -159,17 +159,19 @@ export default {
 
     publishEvent: combineResolvers(
       isEventOwner,
-      async (parent, { id }, { models, pubsub }) => {
+      async (parent, { id, departmentIds }, { models, pubsub }) => {
         try {
+          console.log('departmentIds: ',departmentIds);
           const event = await models.Event.findByIdAndUpdate(
             id, 
             { 
-              status: 'in-review'
+              status: 'in-review',
+              departments: departmentIds
             },
             { new: true }
           )
           // console.log('event: ',event);
-          event.departments.forEach(id => {
+          departmentIds.forEach(id => {
             pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
           })
           // const thumbnail = event?.images?.thumbnail

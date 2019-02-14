@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Form, Button, Input } from 'antd'
 
 class ChangePassword extends Component {
-  render () {
+  render() {
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
@@ -22,7 +22,7 @@ class ChangePassword extends Component {
       <div>
         <Row>
           <Col md={4} lg={6} />
-          <Col xs= {24} sm={24} md={16} lg={12}>
+          <Col xs={24} sm={24} md={16} lg={12}>
             <div
               style={{
                 borderRadius: 10,
@@ -33,30 +33,26 @@ class ChangePassword extends Component {
               <Form>
                 <Form.Item {...formItemLayout} label='Old Password' hasFeedback>
                   {getFieldDecorator('oldPassword', {
-                    rules: [
-                      { required: true, message: 'Old password is required!' }
-                    ]
+                    rules: [{ required: true, message: 'Old password is required!' }]
                   })(<Input id='oldPassword' placeholder='Input old password' />)}
                 </Form.Item>
 
                 <Form.Item {...formItemLayout} label='New Password' hasFeedback>
                   {getFieldDecorator('newPassword', {
-                    rules: [
-                      { required: true, message: 'New password is required!' }
-                    ]
+                    rules: [{ required: true, message: 'New password is required!' }]
                   })(<Input id='newPassword' placeholder='Input new password' />)}
                 </Form.Item>
 
                 <Form.Item {...formItemLayout} label='Confirm Password' hasFeedback>
                   {getFieldDecorator('confirmPassword', {
-                    rules: [
-                      { required: true, message: 'Confirm password is required!' }
-                    ]
+                    rules: [{ required: true, message: 'Confirm password is required!' }]
                   })(<Input id='confirmPassword' placeholder='Re-enter new password' />)}
                 </Form.Item>
 
-                <Form.Item style={{display: 'flex', justifyContent: 'center'}}>
-                  <Button htmlType='submit' type='primary'>Update</Button>
+                <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button htmlType='submit' type='primary'>
+                    Update
+                  </Button>
                 </Form.Item>
               </Form>
             </div>

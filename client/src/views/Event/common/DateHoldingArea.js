@@ -1,12 +1,10 @@
-
 import React, { Component } from 'react'
 import { Form, Row, Col, Divider, DatePicker, Input } from 'antd'
 import { formItemLayout, formRuleNotEmpty } from './constants'
 
 const FormItem = Form.Item
 
-class DateHoldingArea extends Component{
-
+class DateHoldingArea extends Component {
   // onChangeStartTime = values => {
   //   const startTime = values._d.getTime()
   //   this.props.form.setFieldsValue({ startTime })
@@ -29,17 +27,17 @@ class DateHoldingArea extends Component{
   // }
 
   validateStartTime = (rule, value, callback) => {
-    if(!value){
+    if (!value) {
       return callback('Please select time!')
     }
     const { getFieldValue, validateFields } = this.props.form
     const endTime = getFieldValue('endTime')
-    if(!endTime){
+    if (!endTime) {
       validateFields(['endTime'], { force: true })
       return callback()
     }
     const startTime = value._d.getTime()
-    if(startTime >= endTime._d.getTime()){
+    if (startTime >= endTime._d.getTime()) {
       return callback('Start time can not later than end time')
     }
 
@@ -47,17 +45,17 @@ class DateHoldingArea extends Component{
   }
 
   validateEndTime = (rule, value, callback) => {
-    if(!value){
+    if (!value) {
       return callback('Please select time!')
     }
     const { getFieldValue, validateFields } = this.props.form
     const startTime = getFieldValue('startTime')
-    if(!startTime){
+    if (!startTime) {
       validateFields(['startTime'], { force: true })
       return callback()
     }
     const endTime = value._d.getTime()
-    if(startTime._d.getTime() >= endTime){
+    if (startTime._d.getTime() >= endTime) {
       return callback('End time can not earlier than start time')
     }
 
@@ -68,31 +66,37 @@ class DateHoldingArea extends Component{
     {
       name: 'startTime',
       title: 'Event start from',
-      customRender: 
-        <DatePicker 
+      customRender: (
+        <DatePicker
           showTime={{ format: 'HH:mm' }}
           format='YYYY-MM-DD HH:mm'
           placeholder='Select Time'
           onChange={this.onChangeStartTime}
           allowClear={false}
-        />,
-      rules: [{
-        validator: this.validateStartTime
-      }]
+        />
+      ),
+      rules: [
+        {
+          validator: this.validateStartTime
+        }
+      ]
     },
     {
       name: 'endTime',
       title: 'Event end at',
-      customRender: 
-        <DatePicker 
+      customRender: (
+        <DatePicker
           showTime={{ format: 'HH:mm' }}
           format='YYYY-MM-DD HH:mm'
           placeholder='Select Time'
           allowClear={false}
-        />,
-      rules: [{
-        validator: this.validateEndTime
-      }]
+        />
+      ),
+      rules: [
+        {
+          validator: this.validateEndTime
+        }
+      ]
     },
     {
       name: 'location',
@@ -113,15 +117,10 @@ class DateHoldingArea extends Component{
 
     return (
       <>
-        {this.formFields().map(field => {
+        {this.formFields().map((field) => {
           const { name, title, rules, customRender } = field
-          return(
-            <FormItem
-              key={name}
-              label={title}
-              colon={false}
-              {...formItemLayout}
-            >
+          return (
+            <FormItem key={name} label={title} colon={false} {...formItemLayout}>
               {getFieldDecorator(name, {
                 rules
               })(customRender)}
@@ -136,9 +135,9 @@ class DateHoldingArea extends Component{
 const DateHoldingWrapper = (props) => (
   <Row>
     <Col span={6}>
-      <strong style={{fontWeight: 'bold', fontSize: 16}} >Date</strong>
+      <strong style={{ fontWeight: 'bold', fontSize: 16 }}>Date</strong>
     </Col>
-    <Col span={18} >
+    <Col span={18}>
       <DateHoldingArea {...props} />
     </Col>
     <Divider />

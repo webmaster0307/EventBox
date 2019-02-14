@@ -18,14 +18,14 @@ class Landing {
   // Event list
   @observable eventList = []
 
-  constructor(){
-    if(i18n.language === 'en'){
+  constructor() {
+    if (i18n.language === 'en') {
       this.isEnglish = true
     }
   }
 
   @action
-  checkScreen (r) {
+  checkScreen(r) {
     if (r === undefined) {
       this.isMobile = false
     }
@@ -33,10 +33,12 @@ class Landing {
   }
 
   @action
-  checkShow (r) {this.isShow = r}
+  checkShow(r) {
+    this.isShow = r
+  }
 
   @action
-  changeLanguage () {
+  changeLanguage() {
     // if (this.isEnglish) {
     //   this.buttonText = 'English'
     // } else {
@@ -46,8 +48,8 @@ class Landing {
   }
 
   @action
-  ocSignInModal (cmd) {
-    if(cmd === 'o') {
+  ocSignInModal(cmd) {
+    if (cmd === 'o') {
       this.isSigningIn = true
     } else {
       this.isSigningIn = false
@@ -55,8 +57,8 @@ class Landing {
   }
 
   @action
-  ocSignUpModal (cmd) {
-    if(cmd === 'o') {
+  ocSignUpModal(cmd) {
+    if (cmd === 'o') {
       this.isSigningUp = true
     } else {
       this.isSigningUp = false
@@ -64,14 +66,16 @@ class Landing {
   }
 
   @action
-  async getEvents () {
-    const { data: { eventsHome } } = await client.query({
+  async getEvents() {
+    const {
+      data: { eventsHome }
+    } = await client.query({
       query: event.GET_EVENTS_HOMEPAGE,
       fetchPolicy: 'network-only'
     })
 
     if (eventsHome.length) {
-      this.allSuggestion = eventsHome.map(e => {
+      this.allSuggestion = eventsHome.map((e) => {
         if (e.title.length > 90) {
           return e.title.substring(0, 90)
         } else {
@@ -91,7 +95,7 @@ class Landing {
   @action
   handleAutoCompleteSearch = (words) => {
     if (words) {
-      this.suggestion = toJS(this.allSuggestion).filter(title => {
+      this.suggestion = toJS(this.allSuggestion).filter((title) => {
         return title.toLowerCase().indexOf(words.toLowerCase()) !== -1
       })
     } else {
@@ -99,7 +103,7 @@ class Landing {
     }
   }
 
-  @computed get buttonText(){
+  @computed get buttonText() {
     if (this.isEnglish) {
       return 'Tiếng Việt'
     } else {
@@ -107,6 +111,5 @@ class Landing {
     }
   }
 }
-
 
 export default Landing

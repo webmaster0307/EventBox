@@ -2,8 +2,7 @@ import gql from 'graphql-tag'
 
 const GET_PAGINATED_EVENTS_WITH_USERS = gql`
   query($status: String, $cursor: String, $limit: Int) {
-    events(status: $status, cursor: $cursor, limit: $limit)
-      @connection(key: "EventConnection") {
+    events(status: $status, cursor: $cursor, limit: $limit) @connection(key: "EventConnection") {
       edges {
         id
         title
@@ -81,8 +80,7 @@ const GET_EVENT_DETAIL = gql`
 
 const GET_EVENTS_INREVIEW = gql`
   query($page: Int, $limit: Int) {
-    eventsInReview(page: $page, limit: $limit)
-      @connection(key: "EventReviewConnection") {
+    eventsInReview(page: $page, limit: $limit) @connection(key: "EventReviewConnection") {
       edges {
         id
         title
@@ -91,7 +89,6 @@ const GET_EVENTS_INREVIEW = gql`
         images {
           thumbnail
         }
-        createdAt
         updatedAt
         user {
           id

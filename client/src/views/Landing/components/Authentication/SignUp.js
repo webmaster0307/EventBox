@@ -34,11 +34,12 @@ class SignUpModal extends Component {
       iconType: 'instagram',
       theme: '',
       color: '#fff',
-      bgColor: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)'
+      bgColor:
+        'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)'
     }
   ]
 
-  render () {
+  render() {
     const { isSigningUp } = this.props.stores.landing
     const { refetch, i18n } = this.props
     return (
@@ -48,7 +49,7 @@ class SignUpModal extends Component {
         closable={false}
         destroyOnClose
         visible={isSigningUp}
-        bodyStyle={{background: '#f9f9f9'}}
+        bodyStyle={{ background: '#f9f9f9' }}
         onCancel={() => this.props.stores.landing.ocSignUpModal('c')}
       >
         <SignUpForm refetch={refetch} />
@@ -62,7 +63,7 @@ class SignUpModal extends Component {
           }}
         >
           <Button
-            style={{alignSelf: 'center'}}
+            style={{ alignSelf: 'center' }}
             type='primary'
             onClick={() => {
               this.props.stores.landing.ocSignUpModal('c')

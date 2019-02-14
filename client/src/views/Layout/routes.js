@@ -129,7 +129,7 @@ export const routesMenu = [
         title: 'Create',
         path: routes.DASHBOARD_EVENT_CREATE,
         icon: 'form',
-        breadcumbs: [ 'Events', 'Event create' ]
+        breadcumbs: ['Events', 'Event create']
       }
     ]
   },

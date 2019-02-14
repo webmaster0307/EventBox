@@ -13,8 +13,7 @@ import './styles.scss'
 const FormItem = Form.Item
 
 @inject('stores')
-class EventCreate extends Component{
-
+class EventCreate extends Component {
   state = {
     loading: false
   }
@@ -23,54 +22,53 @@ class EventCreate extends Component{
     this.props.stores.event.editorEventCreate = EditorState.createEmpty()
   }
 
-  _handleCreatedEvent = event => {
+  _handleCreatedEvent = (event) => {
     event.preventDefault()
     const { form } = this.props
-    form.validateFields( (err, values) => {
-      if(!err){
+    form.validateFields((err, values) => {
+      if (!err) {
         const dataSubmit = this.prepareData(values)
-        this.setState({loading: true}, () => {
-          client.mutate({
-            mutation: eventQueries.CREATE_EVENT,
-            variables: dataSubmit,
-            update: (cache, { data: { createEvent } }) => {
-              if(!createEvent){
-                // return alert('Failed to delete')
-              }
-              try {
-                const data = cache.readQuery({
-                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
-                })
+        this.setState({ loading: true }, () => {
+          client
+            .mutate({
+              mutation: eventQueries.CREATE_EVENT,
+              variables: dataSubmit,
+              update: (cache, { data: { createEvent } }) => {
+                if (!createEvent) {
+                  // return alert('Failed to delete')
+                }
+                try {
+                  const data = cache.readQuery({
+                    query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+                  })
 
-                cache.writeQuery({
-                  query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
-                  data: {
-                    ...data,
-                    events: {
-                      ...data.events,
-                      edges: [ 
-                        {...createEvent}, ...data.events.edges 
-                      ],
-                      pageInfo: data.events.pageInfo
+                  cache.writeQuery({
+                    query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
+                    data: {
+                      ...data,
+                      events: {
+                        ...data.events,
+                        edges: [{ ...createEvent }, ...data.events.edges],
+                        pageInfo: data.events.pageInfo
+                      }
                     }
-                  }
-                })
-              } catch (error) {
-                // console.log('error: ',error)
+                  })
+                } catch (error) {
+                  // console.log('error: ',error)
+                }
               }
-            }
-          })
-            .then( ({data, errors}) => {
-              this.setState({loading: false})
-              if(errors){
+            })
+            .then(({ data, errors }) => {
+              this.setState({ loading: false })
+              if (errors) {
                 return message.error('Failed to create new event')
               }
               event.editorEventCreate = EditorState.createEmpty()
               message.success('New event created successfully!')
               this.props.history.push(`${routes.DASHBOARD}/events`)
             })
-            .catch( () => {
-              this.setState({loading: false})
+            .catch(() => {
+              this.setState({ loading: false })
               return message.error('Failed to create new event')
             })
         })
@@ -123,7 +121,7 @@ class EventCreate extends Component{
 
     return (
       <div>
-        <Form onSubmit={this._handleCreatedEvent} hideRequiredMark >
+        <Form onSubmit={this._handleCreatedEvent} hideRequiredMark>
           <DescriptionArea {...this.props} />
           <OriganizationArea {...this.props} />
           <DateHoldingArea {...this.props} />
@@ -133,7 +131,7 @@ class EventCreate extends Component{
               htmlType='submit'
               loading={loading}
               icon='form'
-              style={{marginRight: 24}}
+              style={{ marginRight: 24 }}
             >
               SAVE
             </Button>

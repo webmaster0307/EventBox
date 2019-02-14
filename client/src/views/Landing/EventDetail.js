@@ -13,11 +13,7 @@ import Nav from './components/Nav'
 import Footer from './components/Footer'
 
 import { withRouter } from 'react-router-dom'
-import {
-  Link,
-  Events,
-  scroller
-} from 'react-scroll'
+import { Link, Events, scroller } from 'react-scroll'
 
 import { event } from '@gqlQueries'
 import { message, Row, Spin, Col, Icon, Card, Button, BackTop } from 'antd'
@@ -32,7 +28,7 @@ import './eventdetail.scss'
 const { location } = window
 
 let isMobile
-enquireScreen(b => {
+enquireScreen((b) => {
   // console.log(b)
   isMobile = b
 })
@@ -45,10 +41,8 @@ class Landing extends React.Component {
   }
 
   componentDidMount() {
-    enquireScreen(b => this.props.stores.landing.checkScreen(!!b))
-    if (location.port)
-      setTimeout(() => this.props.stores.landing.checkShow(true),
-        500,)
+    enquireScreen((b) => this.props.stores.landing.checkScreen(!!b))
+    if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
   }
 
   render() {
@@ -63,7 +57,7 @@ class Landing extends React.Component {
     return (
       <div
         className='templates-wrapper'
-        ref={d => {
+        ref={(d) => {
           this.dom = d
         }}
       >
@@ -113,7 +107,7 @@ class EventItem extends React.Component {
     Events.scrollEvent.register('end', function() {
       // console.log('end', arguments)
     })
-  };
+  }
 
   scrollTo = () => {
     scroller.scrollTo('scroll-to-element', {
@@ -136,13 +130,15 @@ class EventItem extends React.Component {
       })
     })
 
+    /* eslint-disable */
     goToContainer.then(() =>
       scroller.scrollTo('scroll-container-second-element', {
         duration: 800,
         delay: 0,
         smooth: 'easeInOutQuart',
         containerId: 'scroll-container'
-      }),)
+      })
+    )
   }
   componentWillUnmount() {
     Events.scrollEvent.remove('begin')
@@ -158,24 +154,12 @@ class EventItem extends React.Component {
         {event && (
           <div className='event-landing-detail__wrapper'>
             <Row className='event-image-thumbnail__wrapper'>
-              <img
-                src={event && event.images.thumbnail}
-                alt='thumbnail'
-              />
+              <img src={event && event.images.thumbnail} alt='thumbnail' />
             </Row>
-            <Header
-              event={event}
-              className='event-header-info__wrapper'
-            />
+            <Header event={event} className='event-header-info__wrapper' />
             <HeaderNav className='event-header-nav__wrapper' />
-            <AboutEvent
-              event={event}
-              className='event-description__wrapper'
-            />
-            <AboutOrganization
-              event={event}
-              className='event-organization__wrapper'
-            />
+            <AboutEvent event={event} className='event-description__wrapper' />
+            <AboutOrganization event={event} className='event-organization__wrapper' />
             <BackTop />
           </div>
         )}
@@ -184,7 +168,7 @@ class EventItem extends React.Component {
   }
 }
 
-const Header = props => {
+const Header = (props) => {
   const { event } = props
   const time = moment(Number(event.startTime))
   // console.log('time: ', time.format('MMMM') )
@@ -204,18 +188,11 @@ const Header = props => {
       <Col span={8}>
         <div className='title'>{event.title}</div>
         <div className='start-time'>
-          <Icon
-            type='calendar'
-            style={{ fontSize: 16, marginRight: 16 }}
-          />{' '}
+          <Icon type='calendar' style={{ fontSize: 16, marginRight: 16 }} />{' '}
           {new Date(Number(event.startTime)).toLocaleString()}
         </div>
         <div className='location'>
-          <Icon
-            type='environment'
-            style={{ fontSize: 16, marginRight: 16 }}
-          />{' '}
-          {event.location}
+          <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} /> {event.location}
         </div>
         <div className='address'>{event.address}</div>
       </Col>
@@ -223,19 +200,25 @@ const Header = props => {
   )
 }
 
-const HeaderNav = props => {
+const HeaderNav = (props) => {
   return (
     <Row {...props}>
       <Col offset={4}>
         <Row type='flex'>
           <div className='item'>
-            <Link to='inTroduce' offset={-56} spy smooth duration={600}>Giới thiệu</Link>
+            <Link to='inTroduce' offset={-56} spy smooth duration={600}>
+              Giới thiệu
+            </Link>
           </div>
           <div className='item'>
-            <Link to='ticket' spy smooth duration={600}>Thông tin vé</Link>
+            <Link to='ticket' spy smooth duration={600}>
+              Thông tin vé
+            </Link>
           </div>
           <div className='item'>
-            <Link to='organizer' offset={-56} spy smooth duration={800}>Nhà tổ chức</Link>
+            <Link to='organizer' offset={-56} spy smooth duration={800}>
+              Nhà tổ chức
+            </Link>
           </div>
         </Row>
       </Col>
@@ -244,10 +227,8 @@ const HeaderNav = props => {
 }
 
 const AboutEvent = ({ className, event }) => (
-  <div className={className} name='inTroduce' >
-    <Card
-      title='Giới thiệu'
-    >
+  <div className={className} name='inTroduce'>
+    <Card title='Giới thiệu'>
       <EditorWysiwyg
         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)))}
         readOnly

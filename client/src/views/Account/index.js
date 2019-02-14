@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 // import UpdateForm from './update'
-import withAuthorization from '../Authorizing/Session/withAuthorization'
-
 import { Tabs, Radio } from 'antd'
-
 import Profile from './tabs/Profile'
 import ChangePassword from './tabs/ChangePassword'
 import BasicSettings from './tabs/BasicSettings'
@@ -30,19 +27,12 @@ class AccountPage extends Component {
     return (
       <div>
         {/* <UpdateForm /> */}
-        <RadioGroup
-          onChange={this.handleModeChange}
-          value={mode}
-          style={{ marginBottom: 8 }}
-        >
+        <RadioGroup onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
           <RadioButton value='top'>Horizontal</RadioButton>
           <RadioButton value='left'>Vertical</RadioButton>
         </RadioGroup>
 
-        <Tabs
-          defaultActiveKey='1'
-          tabPosition={mode}
-        >
+        <Tabs defaultActiveKey='1' tabPosition={mode}>
           <TabPane tab={'Profile'} key='1'>
             <Profile />
           </TabPane>
@@ -58,4 +48,4 @@ class AccountPage extends Component {
   }
 }
 
-export default withAuthorization(session => session && session.me)(AccountPage)
+export default AccountPage

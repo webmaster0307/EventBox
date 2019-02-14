@@ -9,7 +9,7 @@ class BasicSettings extends Component {
     }
   }
 
-  changeLanguage () {
+  changeLanguage() {
     this.setState({
       isEnglish: !this.state.isEnglish
     })
@@ -21,7 +21,7 @@ class BasicSettings extends Component {
         <Divider>General settings</Divider>
         <Row>
           <Col lg={2}>
-            <Avatar shape='square' size={48} icon='gitlab'/>
+            <Avatar shape='square' size={48} icon='gitlab' />
           </Col>
           <Col lg={18}>
             <b style={{ fontSize: 18, marginBottom: 0 }}>Current language</b>
@@ -29,7 +29,8 @@ class BasicSettings extends Component {
               {this.state.isEnglish ? 'English' : 'Tiếng Việt'}
             </p>
           </Col>
-          <Col lg={4}
+          <Col
+            lg={4}
             style={{
               display: 'flex',
               flexDirection: 'row',

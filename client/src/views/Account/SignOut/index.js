@@ -6,7 +6,7 @@ import history from '../../constants/history'
 
 const SignOutButton = () => (
   <ApolloConsumer>
-    {client => (
+    {(client) => (
       <button type='button' onClick={() => signOut(client)}>
         Sign Out
       </button>
@@ -14,7 +14,7 @@ const SignOutButton = () => (
   </ApolloConsumer>
 )
 
-const signOut = client => {
+const signOut = (client) => {
   localStorage.setItem('token', '')
   client.resetStore()
   history.push(routes.HOME)

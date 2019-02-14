@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { Input, Form, Row, Col, Divider } from 'antd'
 import { formRuleNotEmpty, formItemLayout } from './constants'
@@ -11,12 +10,11 @@ const FormItem = Form.Item
 
 @inject('stores')
 @observer
-class DescriptionArea extends Component{
-
+class DescriptionArea extends Component {
   formFields = () => {
     const thumbnailSrc = this.props.form.getFieldValue('thumbnail')
 
-    return([
+    return [
       {
         name: 'title',
         title: 'Title',
@@ -26,7 +24,9 @@ class DescriptionArea extends Component{
       {
         name: 'departments',
         title: 'Thuộc về Khoa',
-        customRender: <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
+        customRender: (
+          <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
+        )
       },
       {
         name: 'thumbnail',
@@ -39,7 +39,7 @@ class DescriptionArea extends Component{
         title: 'Short Description',
         customRender: <Input placeholder='Short description' />
       }
-    ])
+    ]
   }
 
   render() {
@@ -47,27 +47,17 @@ class DescriptionArea extends Component{
 
     return (
       <>
-        {this.formFields().map(field => {
+        {this.formFields().map((field) => {
           const { name, title, rules, customRender } = field
-          return(
-            <FormItem
-              key={name}
-              label={title}
-              colon={false}
-              {...formItemLayout}
-            >
+          return (
+            <FormItem key={name} label={title} colon={false} {...formItemLayout}>
               {getFieldDecorator(name, {
                 rules
               })(customRender)}
             </FormItem>
           )
         })}
-        <FormItem
-          key='description'
-          label='Description'
-          colon={false}
-          {...formItemLayout}
-        >
+        <FormItem key='description' label='Description' colon={false} {...formItemLayout}>
           <EditorWrapper />
         </FormItem>
       </>
@@ -80,28 +70,32 @@ class DescriptionArea extends Component{
 const DescriptionAreaWrapper = (props) => (
   <Row>
     <Col span={6}>
-      <strong style={{fontWeight: 'bold', fontSize: 16}} >Description</strong>
+      <strong style={{ fontWeight: 'bold', fontSize: 16 }}>Description</strong>
     </Col>
-    <Col span={18} >
+    <Col span={18}>
       <DescriptionArea {...props} />
     </Col>
     <Divider />
   </Row>
 )
 
-const EditorWrapper = inject('stores')(observer(({stores: { event }}) => {
-  const { editorEventCreate } = event
+const EditorWrapper = inject('stores')(
+  observer(({ stores: { event } }) => {
+    const { editorEventCreate } = event
 
-  return(
-    <Editor
-      wrapperClassName='demo-wrapper'
-      editorClassName='demo-editor'
-      editorStyle={{border: '1px #E6E6E6 solid', padding: 12}}
-      name='editor'
-      editorState={editorEventCreate}
-      onEditorStateChange={editorState => {event.editorEventCreate = editorState}}
-    />
-  )
-}))
+    return (
+      <Editor
+        wrapperClassName='demo-wrapper'
+        editorClassName='demo-editor'
+        editorStyle={{ border: '1px #E6E6E6 solid', padding: 12 }}
+        name='editor'
+        editorState={editorEventCreate}
+        onEditorStateChange={(editorState) => {
+          event.editorEventCreate = editorState
+        }}
+      />
+    )
+  })
+)
 
 export default DescriptionAreaWrapper

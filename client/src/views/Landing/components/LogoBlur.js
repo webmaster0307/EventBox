@@ -22,7 +22,7 @@ class LogoBlur extends Component {
     }
     this.gather = true
     this.interval = true
-    this.intervalTime = 30*1000
+    this.intervalTime = 30 * 1000
     this.unmounted = false
   }
 
@@ -58,7 +58,7 @@ class LogoBlur extends Component {
     const number = this.state.pixSize
     for (let i = 0; i < w; i += number) {
       for (let j = 0; j < h; j += number) {
-        if (data[((i + j * w) * 4) + 3] > 150) {
+        if (data[(i + j * w) * 4 + 3] > 150) {
           this.pointArray.push({ x: i, y: j })
         }
       }
@@ -67,7 +67,7 @@ class LogoBlur extends Component {
     this.pointArray.forEach((item, i) => {
       const r = Math.random() * this.state.pointSizeMin + this.state.pointSizeMin
       const b = Math.random() * 0.5 + 0.3
-      newChildNode.push((
+      newChildNode.push(
         <TweenOne className='point-wrapper' key={i} style={{ left: item.x, top: item.y }}>
           <TweenOne
             className='point'
@@ -88,15 +88,18 @@ class LogoBlur extends Component {
             }}
           />
         </TweenOne>
-      ))
+      )
     })
 
-    this.setState({
-      childNode: newChildNode,
-      boxAnim: { opacity: 0, type: 'from', duration: 800 }
-    }, () => {
-      this.interval = ticker.interval(this.updateTweenData, this.intervalTime)
-    })
+    this.setState(
+      {
+        childNode: newChildNode,
+        boxAnim: { opacity: 0, type: 'from', duration: 800 }
+      },
+      () => {
+        this.interval = ticker.interval(this.updateTweenData, this.intervalTime)
+      }
+    )
   }
 
   onMouseEnter = () => {
@@ -107,13 +110,13 @@ class LogoBlur extends Component {
   }
 
   updateTweenData = () => {
-    if(this.unmounted){
-      console.log('unmounted LogoBlur \nreturn')
+    if (this.unmounted) {
+      // console.log('unmounted LogoBlur \nreturn')
       return
     }
     this.dom = ReactDOM.findDOMNode(this)
-    this.sideBox = ReactDOM.findDOMNode(this.sideBoxComp);
-    ((this.gather && this.disperseData) || this.gatherData)()
+    this.sideBox = ReactDOM.findDOMNode(this.sideBoxComp)
+    ;((this.gather && this.disperseData) || this.gatherData)()
     this.gather = !this.gather
   }
 
@@ -122,8 +125,8 @@ class LogoBlur extends Component {
     const sideRect = this.sideBox.getBoundingClientRect()
     const sideTop = sideRect.top - rect.top
     const sideLeft = sideRect.left - rect.left
-
-    const newChildNode = this.state.childNode.map(item =>
+    /* eslint-disable */
+    const newChildNode = this.state.childNode.map((item) =>
       React.cloneElement(item, {
         animation: {
           x: Math.random() * rect.width - sideLeft - item.props.style.left,
@@ -133,13 +136,14 @@ class LogoBlur extends Component {
           duration: Math.random() * 500 + 500,
           ease: 'easeInOutQuint'
         }
-      }))
+      })
+    )
 
     this.setState({ childNode: newChildNode })
   }
 
   gatherData = () => {
-    const newChildNode = this.state.childNode.map(item =>
+    const newChildNode = this.state.childNode.map((item) =>
       React.cloneElement(item, {
         animation: {
           x: 0,
@@ -150,13 +154,16 @@ class LogoBlur extends Component {
           duration: 800,
           ease: 'easeInOutQuint'
         }
-      }))
+      })
+    )
 
     this.setState({ childNode: newChildNode })
   }
 
   onMouseLeave = () => {
-    if (this.gather) { this.updateTweenData() }
+    if (this.gather) {
+      this.updateTweenData()
+    }
     this.interval = ticker.interval(this.updateTweenData, this.intervalTime)
   }
 
@@ -175,7 +182,9 @@ class LogoBlur extends Component {
           className='right-side blur'
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
-          ref={(c) => {this.sideBoxComp = c}}
+          ref={(c) => {
+            this.sideBoxComp = c
+          }}
         >
           {this.state.childNode}
         </TweenOne>

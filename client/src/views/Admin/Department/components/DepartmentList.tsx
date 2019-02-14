@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
-import { inject, observer } from 'mobx-react';
-import { Table } from 'antd';
-import { toJS } from 'mobx';
+import { inject, observer } from 'mobx-react'
+import { Table } from 'antd'
+import { toJS } from 'mobx'
 import { Link } from 'react-router-dom'
 import * as routes from '@routes'
 
 @inject('stores')
 @observer
-class DepartmentList extends Component<any>{
-
+class DepartmentList extends Component<any> {
   componentDidMount = () => {
     const { departmentStore } = this.props.stores.admin
     departmentStore.getDepartments()
   }
 
   tableColumns = () => {
-    return([
+    return [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -24,23 +23,30 @@ class DepartmentList extends Component<any>{
       {
         title: 'Tên khoa',
         dataIndex: 'name',
-        render: (name: any, record:any) => 
-          <div><Link to={`${routes.DB_ADMIN_DEPARTMENT}/${record.id}`} >{record.name}</Link></div>
+        render: (name: any, record: any) => (
+          <div>
+            <Link to={`${routes.DB_ADMIN_DEPARTMENT}/${record.id}`}>{record.name}</Link>
+          </div>
+        )
       },
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        render: (updatedAt: string) => <div>{new Date(Number(updatedAt)).toLocaleString()}</div>
-      },
-    ])
+        render: (updatedAt: string) => <div>{new Date(updatedAt).toLocaleString()}</div>
+      }
+    ]
   }
 
   render() {
     const { departments, listLoading: loading } = this.props.stores.admin.departmentStore
+    console.log('departments: ', toJS(departments))
 
     return (
-      <Table 
-        dataSource={toJS(departments)} columns={this.tableColumns()} rowKey='id' loading={loading}
+      <Table
+        dataSource={toJS(departments)}
+        columns={this.tableColumns()}
+        rowKey='id'
+        loading={loading}
       />
     )
   }

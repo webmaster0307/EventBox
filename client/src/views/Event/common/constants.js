@@ -16,7 +16,4 @@ const formRuleNotEmpty = {
   message: 'Not correct format'
 }
 
-export {
-  formItemLayout,
-  formRuleNotEmpty
-}
+export { formItemLayout, formRuleNotEmpty }

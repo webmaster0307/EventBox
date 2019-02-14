@@ -17,17 +17,17 @@ class CarouselSection extends Component {
     events: []
   }
 
-  handleGoToEventDetail = event => {
+  handleGoToEventDetail = (event) => {
     this.props.history.push(`${EVENT}/${event.slug}-${event.id}`)
   }
 
-  render () {
+  render() {
     // const { events } = this.state
     const eventList = this.props.stores.landing.eventList || []
     const events = eventList && eventList.slice(0, 5)
     const { i18n } = this.props
     return (
-      <div className='banner0' style={{height: 560}}>
+      <div className='banner0' style={{ height: 560 }}>
         <div className='banner0-text-wrapper'>
           <div className='banner0-title' key='title'>
             <TweenOne
@@ -45,44 +45,51 @@ class CarouselSection extends Component {
           </div>
           <div key='content'>
             <Carousel autoplay>
-              {events && events.map((item, i) => (
-                <div key={i.toString()}>
-                  <Card
-                    style={{
-                      width: 410,
-                      height: 400,
-                      borderRadius: 10,
-                      background: 'linear-gradient(to top right,' +
-                      'rgba(234, 242, 255, 1),' +
-                      'rgba(255, 255, 255, .7))',
-                      border: 'none'
-                    }}
-                  >
-                    <img
+              {events &&
+                events.map((item, i) => (
+                  <div key={i.toString()}>
+                    <Card
                       style={{
-                        width: '80%',
-                        marginBottom: 10,
-                        borderRadius: 10
+                        width: 410,
+                        height: 400,
+                        borderRadius: 10,
+                        background:
+                          'linear-gradient(to top right,' +
+                          'rgba(234, 242, 255, 1),' +
+                          'rgba(255, 255, 255, .7))',
+                        border: 'none'
                       }}
-                      alt='event thumbnail'
-                      src={item.images.thumbnail}
-                    />
-                    <Meta
-                      title={
-                        <span style={{fontSize: 20}}>
-                          <Icon type='tag' theme='twoTone' twoToneColor='#52c41a' />
-                          <i>{item.title.length > 30 ? ` ${item.title.substring(0,30)}...` : ` ${item.title}`}</i>
-                        </span>}
-                      description={
-                        <Button onClick={() => this.handleGoToEventDetail(item)}>
-                          <Icon type='info-circle' theme='twoTone' twoToneColor='#91bbff' />
-                          {i18n.t('More information')}
-                        </Button>
-                      }
-                    />
-                  </Card>
-                </div>
-              ))}
+                    >
+                      <img
+                        style={{
+                          width: '80%',
+                          marginBottom: 10,
+                          borderRadius: 10
+                        }}
+                        alt='event thumbnail'
+                        src={item.images.thumbnail}
+                      />
+                      <Meta
+                        title={
+                          <span style={{ fontSize: 20 }}>
+                            <Icon type='tag' theme='twoTone' twoToneColor='#52c41a' />
+                            <i>
+                              {item.title.length > 30
+                                ? ` ${item.title.substring(0, 30)}...`
+                                : ` ${item.title}`}
+                            </i>
+                          </span>
+                        }
+                        description={
+                          <Button onClick={() => this.handleGoToEventDetail(item)}>
+                            <Icon type='info-circle' theme='twoTone' twoToneColor='#91bbff' />
+                            {i18n.t('More information')}
+                          </Button>
+                        }
+                      />
+                    </Card>
+                  </div>
+                ))}
             </Carousel>
           </div>
         </div>

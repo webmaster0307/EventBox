@@ -3,7 +3,4 @@ import SignInPage from './SignIn/SignIn'
 
 import './styles.scss'
 
-export {
-  SignUpPage,
-  SignInPage
-}
+export { SignUpPage, SignInPage }

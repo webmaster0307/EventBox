@@ -41,6 +41,14 @@ let userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'event'
   },
+  isActivated: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  activateToken: {
+    type: String
+  },
   isEnabled: {
     type: Boolean,
     required: true,

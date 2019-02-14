@@ -30,5 +30,13 @@
       cursor: pointer;
       opacity: 0.7;
     }
+    &.inactive{
+      color: #A3A6A8;
+      &:hover{
+        color: #A3A6A8;
+        opacity: 1;
+        cursor: not-allowed;
+      }
+    }
   }
 }

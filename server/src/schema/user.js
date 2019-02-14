@@ -13,6 +13,7 @@ export default gql`
     role: [String]
     events: [Event!]
     departments: [Department]
+    isActivated: Boolean
   }
 
   type Token {
@@ -30,7 +31,7 @@ export default gql`
       username: String!
       email: String!
       password: String!
-    ): Token!
+    ): Boolean
 
     signIn(
       username: String!,
@@ -48,6 +49,10 @@ export default gql`
       secret: String
       role: [String]
     ): User!
+
+    activateUser(
+      token: String
+    ): Boolean
 
     deleteUser(id: ID!): Boolean!
   }

@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8000/graphql'
+const API_URL = `http://localhost:${process.env.SERVER_PORT || 8000}/graphql`
 
 export const signIn = async variables =>
   await axios.post(API_URL, {
     query: `
-      mutation ($login: String!, $password: String!) {
-        signIn(login: $login, password: $password) {
+      mutation ($username: String!, $password: String!) {
+        signIn(username: $username, password: $password) {
           token
         }
       }
@@ -52,19 +52,25 @@ export const user = async variables =>
     variables
   })
 
-export const users = async () =>
-  axios.post(API_URL, {
+export const users = async (variables,token) =>
+  axios.get(API_URL, {
     query: `
       {
-        users {
+        users{
           id
           username
           email
           role
         }
       }
-    `
-  })
+    `,variables
+  },token
+  ? {
+    headers: {
+      'x-token': token
+    }
+  }
+  : null)
 
 export const signUp = async variables =>
   axios.post(API_URL, {
@@ -78,22 +84,32 @@ export const signUp = async variables =>
           username: $username,
           email: $email,
           password: $password
-        ) {
-          token
-        }
+        ) 
       }
     `,
     variables
-  })
+  },token
+  ? {
+    headers: {
+      'x-token': token
+    }
+  }
+  : null
+)
 
 export const updateUser = async (variables, token) =>
   axios.post(
     API_URL,
     {
       query: `
-        mutation ($username: String!) {
-          updateUser(username: $username) {
-            username
+      mutation ( $id: ID!, $username: String!, $password: String, $firstname: String, $lastname: String, $department: String,
+        $phoneNumber: Int, $secret: String, $role: [String]) {
+        updateUser(id: $id, username: $username, password: $password, firstname: $firstname, lastname: $lastname, department: $department,
+          phoneNumber: $phoneNumber, secret: $secret, role: $role) {
+          id
+          username
+          email
+          role
           }
         }
       `,
@@ -126,4 +142,37 @@ export const deleteUser = async (variables, token) =>
         }
       }
       : null
-  )
+)
+export const createEvent = async (variables, token) =>
+await axios.post(API_URL, {
+  query: `
+  mutation(
+    $title: String!, $thumbnail: String!, $description: String!,$organizationName: String!)
+  {
+    createEvent(
+      title: $title
+      thumbnail: $thumbnail
+      description: $description
+      organizationName: $organizationName
+    )
+    {
+      title
+      images {
+        thumbnail
+      }
+      description
+      organizationName
+    }
+  }
+  `,
+  variables
+}, token
+    ? {
+      headers: {
+        'x-token': token
+      }
+    }
+    : null
+
+)
+

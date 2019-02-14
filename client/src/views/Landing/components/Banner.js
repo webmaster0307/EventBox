@@ -10,7 +10,7 @@ import { translate } from 'react-i18next'
 @inject('stores')
 @observer
 class Banner extends Component {
-  render () {
+  render() {
     const { isMobile } = this.props.stores.landing
     const { i18n } = this.props
     return (
@@ -29,7 +29,7 @@ class Banner extends Component {
                 ) : (
                   biglogo
                 )} */}
-            { isMobile ? null : <LogoBlur />}
+            {isMobile ? null : <LogoBlur />}
             <span className='banner0-text'>{i18n.t('banner title')}</span>
           </div>
           <div className='banner0-content' key='content'>
