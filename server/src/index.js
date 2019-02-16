@@ -159,7 +159,7 @@ connect(function(err) {
   }
 })
 
-export { app, httpServer }
+export { app, httpServer, models }
 
 // app.get('/', (req, res) => {
 //   res.render('index')

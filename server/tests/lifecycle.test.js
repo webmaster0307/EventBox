@@ -1,8 +1,7 @@
 // Before running any tests...
-import { app, httpServer } from '../src'
-
-process.env.SERVER_PORT = 8001
-process.env.MONGODB_URI = 'mongodb://admin:capstone@eventvlu.tk:27019/admin'
+import { app, httpServer, models } from '../src'
+import { load } from './utils/preload-app'
+import path from 'path'
 
 before(function(done) {
   // Increase the Mocha timeout so app has enough time to up, even if you have a bunch of assets.
@@ -17,6 +16,8 @@ before(function(done) {
 // Before each test-case
 beforeEach(function(done) {
   // console.log('before each')
+  refreshDatabase(done)
+
   done()
 })
 
@@ -32,3 +33,12 @@ after(function(done) {
     // }
   })
 })
+
+function refreshDatabase(done) {
+  const fixturePath = path.join(__dirname, 'fixtures')
+  load(fixturePath, models, function(error, data) {
+    if (error != null) {
+      done(error)
+    }
+  })
+}
