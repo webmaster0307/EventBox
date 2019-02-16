@@ -17,8 +17,6 @@ before(function(done) {
 beforeEach(function(done) {
   // console.log('before each')
   refreshDatabase(done)
-
-  done()
 })
 
 // After all tests have finished...
@@ -40,5 +38,6 @@ function refreshDatabase(done) {
     if (error != null) {
       done(error)
     }
+    done()
   })
 }

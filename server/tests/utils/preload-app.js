@@ -30,26 +30,17 @@ const loadObject = function(data, models, callback) {
 
 async function insertCollection(modelName, data, models, callback) {
   // remove all documents
-  await models[modelName].deleteMany(async function(err) {
-    if (!err) {
-      // re-insert to collection
-      await Promise.all(data.map((arg) => models[modelName].create(arg)))
-      callback()
-    }
-  })
-  // const users = await models[modelName].find()
-  // console.log('users: ', users)
+  await models[modelName].deleteMany()
+  await Promise.all(data.map((arg) => models[modelName].create(arg)))
+
+  callback()
 }
 
 function loadFile(file, models, callback) {
-  callback = callback || function() {}
-
   load(require(file), models, callback)
 }
 
-function loadDir(dir, models, callback) {
-  callback = callback || function() {}
-
+function loadDir(dir, models, callback = function() {}) {
   fs.readdir(dir, function(err, files) {
     if (err) return callback(err)
 

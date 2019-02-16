@@ -66,8 +66,9 @@ morgan.token('decodeUrl', function(req, res) {
 //     // return `GRAPHQL: \nOperation Name: ${operationName} \nQuery: ${query} \nVariables: ${JSON.stringify(variables)}`;
 //   }
 // });
-
-app.use(morgan(`- :method :decodeUrl :status :response-time ms`))
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan(`- :method :decodeUrl :status :response-time ms`))
+}
 
 const getMe = async (req) => {
   const token = req.headers['x-token']
