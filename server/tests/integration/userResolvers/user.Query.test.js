@@ -53,13 +53,17 @@ describe.only('User Resolvers Query', () => {
               id: '5c67c8db0993f7210ef97451',
               username: 'user',
               email: 'user@gmail.com',
-              role: ['user']
+              role: ['user'],
+              createdAt: '2018-12-28T13:38:59.037Z',
+              updatedAt: '2018-12-28T13:38:59.037Z'
             },
             {
               id: '5c67c8db0993f7210ef97450',
               username: 'vinh',
               email: 'vinh@ya.co',
-              role: ['user', 'admin']
+              role: ['user', 'admin'],
+              createdAt: '2018-12-27T18:00:00.872Z',
+              updatedAt: '2018-12-27T18:00:00.872Z'
             }
           ]
         }

@@ -37,6 +37,8 @@ export const users = async (token) =>
           username
           email
           role
+          createdAt
+          updatedAt
         }
       }
     `
