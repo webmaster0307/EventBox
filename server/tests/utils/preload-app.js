@@ -30,13 +30,15 @@ const loadObject = function(data, models, callback) {
 
 async function insertCollection(modelName, data, models, callback) {
   // remove all documents
-  await models[modelName].deleteMany()
-  // re-insert to collection
-  await Promise.all(data.map((arg) => models[modelName].create(arg)))
+  await models[modelName].deleteMany(async function(err) {
+    if (!err) {
+      // re-insert to collection
+      await Promise.all(data.map((arg) => models[modelName].create(arg)))
+      callback()
+    }
+  })
   // const users = await models[modelName].find()
   // console.log('users: ', users)
-
-  callback()
 }
 
 function loadFile(file, models, callback) {
