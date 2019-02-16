@@ -5,6 +5,7 @@
 /server/src/public
 
 .env
+.env.test
 dist
 coverage
 .nyc_output

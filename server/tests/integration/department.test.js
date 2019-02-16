@@ -5,7 +5,7 @@ import * as departmentApi from './departmentApi'
 
 describe('departments', () => {
   describe('departments(page: Int, limit: Int!): [Departments]', () => {
-    it('should returns a list of department', async () => {
+    it.only('should returns a list of department', async () => {
       const expectedResult = {
         data: {
           departments: [
