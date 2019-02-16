@@ -46,10 +46,17 @@ const verifyEmailOptions = ({ receiver, verifyLink }) => {
 export default {
   Query: {
     users: combineResolvers(isAdmin, async (parent, args, { models }) => {
-      return await models.User.find()
+      return await models.User.find(undefined, undefined, {
+        sort: {
+          createdAt: -1
+        }
+      })
     }),
 
-    user: async (parent, { id }, { models }) => await models.User.findById(id),
+    user: combineResolvers(
+      isAdmin,
+      async (parent, { id }, { models }) => await models.User.findById(id)
+    ),
 
     me: async (parent, args, { models, me }) => {
       if (!me) {
@@ -100,9 +107,7 @@ export default {
       setTimeout(async () => {
         const user = await models.User.findOne({ email })
         if (!user.isActivated) {
-          await models.User.deleteOne({ email }, () =>
-            console.log(`Deleted user: ${username}`)
-          )
+          await models.User.deleteOne({ email }, () => console.log(`Deleted user: ${username}`))
         }
       }, recheckTime)
 
@@ -128,16 +133,13 @@ export default {
       return { token: createToken(models, user, secret) }
     },
 
-    updateUser: combineResolvers(
-      isAuthenticated,
-      async (parent, { username }, { models, me }) => {
-        const user = await models.User.findById(me.id)
-        if (!user) {
-          throw new UserInputError('No user found with this login credentials.')
-        }
-        return await models.User.findByIdAndUpdate(me.id, { username }, { new: true })
+    updateUser: combineResolvers(isAuthenticated, async (parent, { username }, { models, me }) => {
+      const user = await models.User.findById(me.id)
+      if (!user) {
+        throw new UserInputError('No user found with this login credentials.')
       }
-    ),
+      return await models.User.findByIdAndUpdate(me.id, { username }, { new: true })
+    }),
 
     deleteUser: combineResolvers(isAdmin, async (parent, { id }, { models }) => {
       await models.User.findByIdAndRemove(id)
