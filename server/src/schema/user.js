@@ -14,6 +14,8 @@ export default gql`
     events: [Event!]
     departments: [Department]
     isActivated: Boolean
+    createdAt: Date
+    updatedAt: Date
   }
 
   type Token {
@@ -27,16 +29,9 @@ export default gql`
   }
 
   extend type Mutation {
-    signUp(
-      username: String!
-      email: String!
-      password: String!
-    ): Boolean
+    signUp(username: String!, email: String!, password: String!): Boolean
 
-    signIn(
-      username: String!,
-      password: String!
-    ): Token!
+    signIn(username: String!, password: String!): Token!
 
     updateUser(
       id: ID!
@@ -50,9 +45,7 @@ export default gql`
       role: [String]
     ): User!
 
-    activateUser(
-      token: String
-    ): Boolean
+    activateUser(token: String): Boolean
 
     deleteUser(id: ID!): Boolean!
   }

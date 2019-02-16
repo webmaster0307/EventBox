@@ -8,7 +8,8 @@
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
-    "test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
+    "mocha-test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
+    "test": "dotenv -e .env.test npm run mocha-test",
     "test-cov": "nyc npm run test"
   },
   "keywords": [],
@@ -30,8 +31,8 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "graphql": "^14.0.2",
-    "graphql-iso-date": "^3.6.1",
     "graphql-depth-limit": "^1.1.0",
+    "graphql-iso-date": "^3.6.1",
     "graphql-redis-subscriptions": "^2.0.0",
     "graphql-resolvers": "^0.2.2",
     "ioredis": "^4.3.0",
@@ -46,9 +47,11 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "async": "^2.6.2",
     "axios": "^0.18.0",
     "chai": "^4.1.2",
     "chalk": "^2.4.2",
+    "dotenv-cli": "^1.4.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.0",
     "nyc": "^13.1.0"
