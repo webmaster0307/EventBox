@@ -9,21 +9,17 @@ describe('departments', () => {
         data: {
           departments: [
             {
-              description: null,
-              name: 'LKT'
-            },
-            {
-              name: 'LKT',
-              description: null
+              name: 'Khoa CNTT',
+              description: 'Khoa CNTT'
             }
           ]
         }
       }
 
       const { token } = await adminLogin()
-      const result = await departmentApi.departments({ limit: 2 }, token)
+      const { data } = await departmentApi.departments({ limit: 2 }, token)
 
-      expect(result.data).to.eql(expectedResult)
+      expect(data).to.eql(expectedResult)
     })
   })
 })
