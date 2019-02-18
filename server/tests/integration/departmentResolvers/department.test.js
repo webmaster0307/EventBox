@@ -30,7 +30,7 @@ describe('departments', () => {
 
 describe('createDepartment', () => {
   describe('createDepartment($name:String!,$description:String)', () => {
-    it('create Department successful', async () => {
+    it.only('create Department successful', async () => {
       let expectedResult = {
         data: {
           createDepartment: {
@@ -39,14 +39,7 @@ describe('createDepartment', () => {
         }
       }
 
-      const {
-        data: {
-          data: {
-            signIn: { token }
-          }
-        }
-      } = await userApi.signIn({ username: 'vinh', password: '123' })
-
+      const { token } = await adminLogin()
       let result
       try {
         result = await departmentApi.createDepartment(
