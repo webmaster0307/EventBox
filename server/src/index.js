@@ -17,6 +17,7 @@ import resolvers from './resolvers'
 import models, { connect } from './models/index'
 import loaders from './loaders'
 
+import { PubSub } from 'apollo-server'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
 
@@ -36,10 +37,13 @@ const options = {
   }
 }
 
-const pubsub = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options)
-})
+const pubsub =
+  process.env.NODE_ENV !== 'test'
+    ? new RedisPubSub({
+        publisher: new Redis(options),
+        subscriber: new Redis(options)
+      })
+    : new PubSub()
 
 // const corsOptions = {
 //   origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`],

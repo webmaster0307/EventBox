@@ -1,0 +1,22 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: test
+    image: node:8
+    environment:
+      NODE_ENV:
+        from_secret: NODE_ENV
+      TOKEN_SECRET:
+        from_secret: TOKEN_SECRET
+      SERVER_PORT:
+        from_secret: SERVER_PORT
+      MONGODB_URI:
+        from_secret: MONGODB_URI
+    when:
+      event:
+        - pull_request
+    commands:
+      - cd /drone/src/server
+      - yarn install
+      - yarn mocha-test
