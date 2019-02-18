@@ -12,5 +12,27 @@ describe.only('User Resolver Mutation', () => {
       const [{ message }] = errors
       expect(message).to.eql(expectedResult)
     })
+
+    it('Should throw Error() if password is not valid', async () => {
+      const expectedResult = 'Invalid password.'
+      const {
+        data: { errors }
+      } = await userApi.signIn({ username: 'user', password: '1234' })
+      const [{ message }] = errors
+      expect(message).to.eql(expectedResult)
+    })
+
+    it('Should get token after logging sucessfully', async () => {
+      const {
+        data: {
+          data: {
+            signIn: { token }
+          }
+        }
+      } = await userApi.signIn({ username: 'user', password: '123' })
+      if (!token) {
+        throw new Error('Token undefined')
+      }
+    })
   })
 })
