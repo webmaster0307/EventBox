@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import { isAuthenticated, isEventOwner } from './authorization'
 
 import { EVENTS } from '../subscription'
+import { ApolloError } from 'apollo-server'
 
 const toCursorHash = string => Buffer.from(string).toString('base64')
 
@@ -31,7 +32,6 @@ export default {
           status
         }
       }
-      
 
       const events = await models.Event.find({
         ...cursorOptions,
@@ -94,7 +94,7 @@ export default {
         }
       })
       // console.log("departmentIds: ", departmentIds)
-      
+
       return {
         edges,
         departmentIds: departmentIds.map(item => item.toString())
@@ -127,8 +127,8 @@ export default {
       async (parent, args, { models, me }) => {
         const { id, thumbnail, ...rest } = args
         const event = await models.Event.findByIdAndUpdate(
-          id, 
-          { 
+          id,
+          {
             ...rest,
             images: {
               thumbnail
@@ -163,8 +163,8 @@ export default {
         try {
           console.log('departmentIds: ',departmentIds);
           const event = await models.Event.findByIdAndUpdate(
-            id, 
-            { 
+            id,
+            {
               status: 'in-review',
               departments: departmentIds
             },
@@ -185,7 +185,7 @@ export default {
     ),
 
     approveEvent: combineResolvers(
-      // TODO: authenticate by review-er role 
+      // TODO: authenticate by review-er role
       // isEventOwner,
       async (parent, { id }, { models }) => {
         try {
@@ -200,7 +200,7 @@ export default {
       }
     ),
     rejectEvent: combineResolvers(
-      // TODO: authenticate by review-er role 
+      // TODO: authenticate by review-er role
       // isEventOwner,
       async (parent, { id }, { models }) => {
         try {
@@ -213,13 +213,45 @@ export default {
         }
         return true
       }
-    )
+    ),
+    joinEvent: async (parent, { userId, eventId }, { models, pubsub }) => {
+      try {
+        const usr = await models.User.findById(userId)
+        const evt = await models.Event.findById(eventId)
+        if (usr && evt && !evt.participants.some(usrId => usrId === userId)) {
+          evt.participants.push(userId)
+          const participants = evt.participants
+          await models.Event.updateOne({ _id: eventId }, { $set: { participants }})
+          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, { eventUpdate: { type: 'join', _id: eventId, participants } })
+          return true
+        }
+        return false
+      } catch (err) {
+        throw new ApolloError(err, '400')
+      }
+    },
+    unjoinEvent: async (parent, { userId, eventId }, { models, pubsub }) => {
+      try {
+        const usr = await models.User.findById(userId)
+        const evt = await models.Event.findById(eventId)
+        if (usr && evt && !evt.participants.some(usrId => usrId === userId)) {
+          evt.participants.filter(usrId => usrId !== userId)
+          const participants = evt.participants
+          await models.Event.updateOne({ _id: eventId }, { $set: { participants }})
+          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, { eventUpdate: { type: 'unjoin', _id: eventId, participants } })
+          return true
+        }
+        return false
+      } catch (err) {
+        throw new ApolloError(err, '400')
+      }
+    },
   },
 
   Event: {
     user: async (event, args, { loaders }) =>
       await loaders.user.load(event.userId),
-    
+
     departments: async (event, args, { models }) => {
       const ids = event.departments.map(id => mongoose.Types.ObjectId(id))
       const departments = await models.Department.find({
@@ -250,6 +282,10 @@ export default {
         const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
         return pubsub.asyncIterator(arrIterator)
       }
+    },
+    eventUpdate: {
+      subscribe: (parent, args, { pubsub }) =>
+        pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
     }
   }
 }
