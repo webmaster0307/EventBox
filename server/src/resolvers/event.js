@@ -1,10 +1,49 @@
-import { combineResolvers } from 'graphql-resolvers'
+import {
+  combineResolvers
+} from 'graphql-resolvers'
 import mongoose from 'mongoose'
 
-import { isAuthenticated, isEventOwner } from './authorization'
+import {
+  isAuthenticated,
+  isEventOwner
+} from './authorization'
 
-import { EVENTS } from '../subscription'
-import { ApolloError } from 'apollo-server'
+import {
+  EVENTS
+} from '../subscription'
+import {
+  ApolloError
+} from 'apollo-server'
+
+const qr = require('qr-image')
+import nodemailer from 'nodemailer'
+import fs from 'fs'
+import registerForm from './mailTemplate/registerEvent'
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.NODEMAILER_USERNAME,
+    pass: process.env.NODEMAILER_PASSWORD
+  }
+})
+
+const mailOptions = ({
+  receiver,
+  cid
+}) => {
+  return {
+    from: process.env.NODEMAILER_USERNAME,
+    to: receiver,
+    subject: 'VLU EventBox',
+    html: registerForm(receiver, cid),
+    attachments: [{
+      filename: `${cid}.png`,
+      path: `${process.cwd()}/${cid}.png`,
+      cid: `${cid}@xyz.s`
+    }]
+  }
+}
 
 const toCursorHash = string => Buffer.from(string).toString('base64')
 
@@ -13,21 +52,26 @@ const fromCursorHash = string =>
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
-      const cursorOptions = cursor
-      ? {
+    events: async (parent, {
+      status,
+      cursor,
+      limit = 50
+    }, {
+      models,
+      me,
+      isAdmin
+    }) => {
+      const cursorOptions = cursor ? {
         createdAt: {
           '$lt': fromCursorHash(cursor)
         }
-      }
-      : {}
+      } : {}
       let selfEventsCondition
-      if(!status){
+      if (!status) {
         selfEventsCondition = !isAdmin ? {
           userId: me.id
         } : {}
-      }
-      else{
+      } else {
         selfEventsCondition = {
           status
         }
@@ -50,11 +94,16 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: events.length > 0 ? toCursorHash( edges[edges.length - 1].createdAt.toString() ) : ''
+          endCursor: events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
         }
       }
     },
-    eventsHome: async (parent, { limit = 8 }, { me, models }) =>{
+    eventsHome: async (parent, {
+      limit = 8
+    }, {
+      me,
+      models
+    }) => {
       const events = await models.Event.find({
         status: 'active'
       }, null, {
@@ -68,18 +117,34 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { me, models }) =>{
+      async (parent, {
+        id
+      }, {
+        me,
+        models
+      }) => {
         return await models.Event.findById(id)
       }
     ),
 
-    eventsInReview: async (parent, { status, page = 0, limit = 10 }, { models, me, isAdmin }) => {
+    eventsInReview: async (parent, {
+      status,
+      page = 0,
+      limit = 10
+    }, {
+      models,
+      me,
+      isAdmin
+    }) => {
 
       // const departmentIds = await models.DepartmentUser
       //   .find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
       //   .map(doc => doc.departmentId.toString())
 
-      const departments = await models.DepartmentUser.find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
+      const departments = await models.DepartmentUser.find({
+        userId: me.id,
+        departmentRole: 'reviewer'
+      }, 'departmentId')
       const departmentIds = departments.map(doc => doc.departmentId)
       const edges = await models.Event.find({
         status: 'in-review',
@@ -105,8 +170,14 @@ export default {
   Mutation: {
     createEvent: combineResolvers(
       isAuthenticated,
-      async (parent, args, { models, me }) => {
-        const { thumbnail, ...rest } = args
+      async (parent, args, {
+        models,
+        me
+      }) => {
+        const {
+          thumbnail,
+          ...rest
+        } = args
         const event = await models.Event.create({
           ...rest,
           images: {
@@ -124,18 +195,25 @@ export default {
     ),
     updateEvent: combineResolvers(
       isEventOwner,
-      async (parent, args, { models, me }) => {
-        const { id, thumbnail, ...rest } = args
-        const event = await models.Event.findByIdAndUpdate(
+      async (parent, args, {
+        models,
+        me
+      }) => {
+        const {
           id,
-          {
+          thumbnail,
+          ...rest
+        } = args
+        const event = await models.Event.findByIdAndUpdate(
+          id, {
             ...rest,
             images: {
               thumbnail
             },
             status: 'draft'
-          },
-          { new: true }
+          }, {
+            new: true
+          }
         )
 
         return event
@@ -144,9 +222,15 @@ export default {
 
     deleteEvent: combineResolvers(
       isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, {
+        id
+      }, {
+        models
+      }) => {
         try {
-          const { errors } = await models.Event.findByIdAndDelete(id)
+          const {
+            errors
+          } = await models.Event.findByIdAndDelete(id)
           if (errors) {
             return false
           }
@@ -159,20 +243,28 @@ export default {
 
     publishEvent: combineResolvers(
       isEventOwner,
-      async (parent, { id, departmentIds }, { models, pubsub }) => {
+      async (parent, {
+        id,
+        departmentIds
+      }, {
+        models,
+        pubsub
+      }) => {
         try {
-          console.log('departmentIds: ',departmentIds);
+          console.log('departmentIds: ', departmentIds);
           const event = await models.Event.findByIdAndUpdate(
-            id,
-            {
+            id, {
               status: 'in-review',
               departments: departmentIds
-            },
-            { new: true }
+            }, {
+              new: true
+            }
           )
           // console.log('event: ',event);
           departmentIds.forEach(id => {
-            pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, { eventSubmited: event })
+            pubsub.publish(`${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`, {
+              eventSubmited: event
+            })
           })
           // const thumbnail = event?.images?.thumbnail
           // console.log('thumbnail: ',thumbnail);
@@ -187,9 +279,17 @@ export default {
     approveEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, {
+        id
+      }, {
+        models
+      }) => {
         try {
-          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'active' })
+          const {
+            errors
+          } = await models.Event.findByIdAndUpdate(id, {
+            status: 'active'
+          })
           if (errors) {
             return false
           }
@@ -202,9 +302,17 @@ export default {
     rejectEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, {
+        id
+      }, {
+        models
+      }) => {
         try {
-          const { errors } = await models.Event.findByIdAndUpdate(id, { status: 'rejected' })
+          const {
+            errors
+          } = await models.Event.findByIdAndUpdate(id, {
+            status: 'rejected'
+          })
           if (errors) {
             return false
           }
@@ -214,15 +322,55 @@ export default {
         return true
       }
     ),
-    joinEvent: async (parent, { userId, eventId }, { models, pubsub }) => {
+    joinEvent: async (parent, {
+      userId,
+      eventId
+    }, {
+      models,
+      pubsub
+    }) => {
       try {
         const usr = await models.User.findById(userId)
         const evt = await models.Event.findById(eventId)
         if (usr && evt && !evt.participants.some(usrId => usrId === userId)) {
+          const qr_svg = qr.image(usr.email)
+          qr_svg.pipe(fs.createWriteStream(`${usr._id}.png`))
+
+          fs.stat(`${process.cwd()}/${usr._id}.png`, function (err) {
+            if (err) throw new ApolloError('File not found!', '403')
+            transporter.sendMail(
+              mailOptions({
+                receiver: usr.email,
+                cid: usr._id
+              }),
+              (err) => {
+                if (err) throw new ApolloError('An error occurred when mail is sending!', '403')
+                fs.unlink(`${process.cwd()}/${usr._id}.png`, function (err) {
+                  if (err) throw new ApolloError('Cannot delete deprecated QR image!', '403')
+                })
+              }
+            )
+          })
+
           evt.participants.push(userId)
           const participants = evt.participants
-          await models.Event.updateOne({ _id: eventId }, { $set: { participants }})
-          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, { eventUpdate: { type: 'join', _id: eventId, participants } })
+          await models.Event.updateOne({
+            _id: eventId
+          }, {
+            $set: {
+              participants
+            }
+          }, (err) => {
+            if (err) throw new ApolloError('An error occurred when updating event!', '403')
+          })
+          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, {
+            eventUpdate: {
+              type: 'join',
+              _id: eventId,
+              participants
+            }
+          })
+
           return true
         }
         return false
@@ -230,15 +378,33 @@ export default {
         throw new ApolloError(err, '400')
       }
     },
-    unjoinEvent: async (parent, { userId, eventId }, { models, pubsub }) => {
+    unjoinEvent: async (parent, {
+      userId,
+      eventId
+    }, {
+      models,
+      pubsub
+    }) => {
       try {
         const usr = await models.User.findById(userId)
         const evt = await models.Event.findById(eventId)
         if (usr && evt && !evt.participants.some(usrId => usrId === userId)) {
           evt.participants.filter(usrId => usrId !== userId)
           const participants = evt.participants
-          await models.Event.updateOne({ _id: eventId }, { $set: { participants }})
-          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, { eventUpdate: { type: 'unjoin', _id: eventId, participants } })
+          await models.Event.updateOne({
+            _id: eventId
+          }, {
+            $set: {
+              participants
+            }
+          })
+          pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, {
+            eventUpdate: {
+              type: 'unjoin',
+              _id: eventId,
+              participants
+            }
+          })
           return true
         }
         return false
@@ -249,10 +415,14 @@ export default {
   },
 
   Event: {
-    user: async (event, args, { loaders }) =>
+    user: async (event, args, {
+        loaders
+      }) =>
       await loaders.user.load(event.userId),
 
-    departments: async (event, args, { models }) => {
+    departments: async (event, args, {
+      models
+    }) => {
       const ids = event.departments.map(id => mongoose.Types.ObjectId(id))
       const departments = await models.Department.find({
         _id: {
@@ -270,7 +440,10 @@ export default {
     eventSubmited: {
       resolve: (payload, args, context, info) => {
         // Manipulate and return the new value
-        const { description, ...eventSubmited } = payload.eventSubmited
+        const {
+          description,
+          ...eventSubmited
+        } = payload.eventSubmited
         // console.log('rest: ',eventSubmited)
         // console.log('typeof: ',typeof eventSubmited)
         return {
@@ -278,13 +451,20 @@ export default {
           id: mongoose.Types.ObjectId(eventSubmited._id)
         }
       },
-      subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
+      subscribe: (parent, {
+        departmentIds
+      }, {
+        models,
+        pubsub
+      }, info) => {
         const arrIterator = departmentIds.map(id => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
         return pubsub.asyncIterator(arrIterator)
       }
     },
     eventUpdate: {
-      subscribe: (parent, args, { pubsub }) =>
+      subscribe: (parent, args, {
+          pubsub
+        }) =>
         pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
     }
   }
