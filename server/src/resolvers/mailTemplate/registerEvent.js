@@ -1,4 +1,4 @@
-export default (receiver, cid) => `
+export default (receiver, ticketSvgSrc) => `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -702,7 +702,7 @@ export default (receiver, cid) => `
                                           <tr>
                                             <td class="esd-block-button es-p20t es-p15b es-p10r es-p10l" align="center">
                                               <span class="es-button-border">
-                                                <img src="cid:${cid}@xyz.s"/>
+                                                <img src="${ticketSvgSrc}" alt="QR-Code" style="display: block; background: #fff;" title="Image" width="260"/>
                                               </span>
                                             </td>
                                           </tr>

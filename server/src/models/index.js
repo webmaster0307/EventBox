@@ -6,6 +6,7 @@ import Contact from './contact'
 import Department from './department'
 import Event from './event'
 import DepartmentUser from './departmentUser'
+import EventUser from './eventUser'
 
 export const connect = function(cb) {
   if (process.env.MONGODB_URI) {
@@ -38,5 +39,6 @@ export default {
   Department,
   Event,
   User,
-  DepartmentUser
+  DepartmentUser,
+  EventUser
 }

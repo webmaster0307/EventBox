@@ -7,7 +7,7 @@
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/server.js",
+    "serve": "npm run build && node dist/server.js",
     "mocha-test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
     "test": "dotenv -e .env.test npm run mocha-test",
     "test-cov": "nyc npm run test"

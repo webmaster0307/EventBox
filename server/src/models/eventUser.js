@@ -2,22 +2,25 @@ import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
-let departmentUserSchema = new Schema(
+let eventUserSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'user'
     },
-    departmentId: {
+    eventId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'department'
+      ref: 'event'
     },
-    departmentRole: {
+    code: {
       type: String,
-      enum: ['member', 'reviewer', 'head'],
-      default: 'reviewer'
+      default: ''
+    },
+    ticketSvgSrc: {
+      type: String,
+      default: ''
     }
   },
   {
@@ -25,4 +28,4 @@ let departmentUserSchema = new Schema(
   }
 )
 
-export default mongoose.model('departmentuser', departmentUserSchema)
+export default mongoose.model('eventuser', eventUserSchema)

@@ -107,7 +107,7 @@ export default gql`
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
 
-    joinEvent(userId: ID!, eventId: ID!): Boolean!
+    joinEvent(eventId: ID!): Boolean!
     unjoinEvent(userId: ID!, eventId: ID!): Event!
   }
 
