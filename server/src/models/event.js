@@ -78,6 +78,9 @@ let eventSchema = new Schema({
     enum: ['draft', 'in-review', 'rejected', 'active'],
     default: 'draft'
   },
+  participants: {
+    type: Array
+  },
   isEnabled: {
     type: Boolean,
     required: true,
