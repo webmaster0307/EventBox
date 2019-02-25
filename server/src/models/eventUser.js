@@ -21,6 +21,13 @@ let eventUserSchema = new Schema(
     ticketSvgSrc: {
       type: String,
       default: ''
+    },
+    checkedIn: {
+      type: Boolean,
+      default: false
+    },
+    checkedInTime: {
+      type: Date
     }
   },
   {

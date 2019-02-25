@@ -282,50 +282,55 @@ export default {
         const code = uuidV4()
         const imgSvg = qr.image(code, { type: 'svg' })
         const buffer = []
-        imgSvg.on('data', (chunk) => {
-          buffer.push(chunk)
-        })
-        imgSvg.on('end', async () => {
-          const imgBuffer = Buffer.concat(buffer)
-          const imgName = `${me.username}_${eventExisted.slug}.svg`
-          try {
-            const options = {
-              method: 'POST',
-              uri: `${UPLOAD_HOST}/upload`,
-              formData: {
-                file: {
-                  value: imgBuffer,
-                  options: {
-                    filename: imgName,
-                    contentType: 'image/svg+xml'
-                  }
-                }
-              },
-              json: true
-            }
-
-            const {
-              file: { filename }
-            } = await rp(options)
-            const ticket = await models.EventUser.create({
-              userId: me.id,
-              eventId,
-              code,
-              ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
+        const result = () => {
+          return new Promise((resolve) => {
+            imgSvg.on('data', (chunk) => {
+              buffer.push(chunk)
             })
-            transporter.sendMail(
-              mailOptions({
-                receiver: me.email,
-                imgName,
-                ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
-              })
-            )
-            return true
-          } catch (error) {
-            throw new ApolloError(error, '400')
-          }
-        })
-
+            imgSvg.on('end', async () => {
+              const imgBuffer = Buffer.concat(buffer)
+              const imgName = `${me.username}_${eventExisted.slug}.svg`
+              const options = {
+                method: 'POST',
+                uri: `${UPLOAD_HOST}/upload`,
+                formData: {
+                  file: {
+                    value: imgBuffer,
+                    options: {
+                      filename: imgName,
+                      contentType: 'image/svg+xml'
+                    }
+                  }
+                },
+                json: true
+              }
+              try {
+                const {
+                  file: { filename }
+                } = await rp(options)
+                const ticket = await models.EventUser.create({
+                  userId: me.id,
+                  eventId,
+                  code,
+                  ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
+                })
+                transporter.sendMail(
+                  mailOptions({
+                    receiver: me.email,
+                    imgName,
+                    ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
+                  })
+                )
+                // console.log('done end')
+                resolve()
+              } catch (error) {
+                throw new ApolloError(error, '400')
+              }
+            })
+          })
+        }
+        await result()
+        return true
         // try {
         //   const usr = await models.User.findById(userId)
         //   const evt = await models.Event.findById(eventId)

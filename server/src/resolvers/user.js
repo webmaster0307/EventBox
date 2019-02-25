@@ -8,6 +8,7 @@ import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
 
 const tokenExpired = 60 * 60 * 8 // 8 hours
+// const tokenExpired = 15 // 8 hours
 const EVENTBOX_HOST = process.env.EVENTBOX_HOST || 'http://localhost:8000'
 
 const createToken = async (models, user, secret) => {
