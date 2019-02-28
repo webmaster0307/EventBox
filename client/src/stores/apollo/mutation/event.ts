@@ -107,11 +107,18 @@ const REJECT_EVENT_BYID = gql`
   }
 `
 
+const JOIN_EVENT = gql`
+  mutation ($userId: ID!, $eventId: ID!) {
+    joinEvent (userId: $userId, eventId: $eventId)
+  }
+`
+
 export {
   CREATE_EVENT,
   UPDATE_EVENT_BYID,
   DELETE_EVENT_BYID,
   PUBLISH_EVENT_BYID,
   APPROVE_EVENT_BYID,
-  REJECT_EVENT_BYID
+  REJECT_EVENT_BYID,
+  JOIN_EVENT
 }

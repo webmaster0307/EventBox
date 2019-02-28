@@ -1,15 +1,11 @@
 import React from 'react'
 import { enquireScreen } from 'enquire-js'
 import { inject, observer } from 'mobx-react'
+import { toJS } from 'mobx'
 
 import SignInModal from './components/Authentication/SignIn'
 import SignUpModal from './components/Authentication/SignUp'
-
 import Nav from './components/Nav'
-// import Banner from './components/Banner'
-// import FirstSection from './components/FirstSection'
-// import SecondSection from './components/SecondSection'
-// import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
 import { withRouter } from 'react-router-dom'
@@ -29,7 +25,6 @@ const { location } = window
 
 let isMobile
 enquireScreen((b) => {
-  // console.log(b)
   isMobile = b
 })
 
@@ -84,6 +79,7 @@ class EventItem extends React.Component {
   }
 
   componentDidMount = async () => {
+    await this.props.stores.me.getMe()
     const { eventId: slug } = this.props.match.params
     const eventId = slug.split('-')[slug.split('-').length - 1]
     let result
@@ -100,13 +96,9 @@ class EventItem extends React.Component {
       loading: false
     })
 
-    Events.scrollEvent.register('begin', function() {
-      // console.log('begin', arguments)
-    })
+    Events.scrollEvent.register('begin')
 
-    Events.scrollEvent.register('end', function() {
-      // console.log('end', arguments)
-    })
+    Events.scrollEvent.register('end')
   }
 
   scrollTo = () => {
@@ -145,8 +137,18 @@ class EventItem extends React.Component {
     Events.scrollEvent.remove('end')
   }
 
+  async joinEvent () {
+    const userId = toJS(this.props.stores.me.me).id
+    if (userId) {
+      const eventId = this.state.event.id
+      const res = await this.props.stores.event.joinEvent(userId, eventId)
+      if (res) {
+        message.success('Successfully registered!')
+      }
+    } else message.error('Login required!')
+  }
+
   render() {
-    // console.log('event: ',this.state.event)
     const { event, loading } = this.state
 
     return (
@@ -156,7 +158,7 @@ class EventItem extends React.Component {
             <Row className='event-image-thumbnail__wrapper'>
               <img src={event && event.images.thumbnail} alt='thumbnail' />
             </Row>
-            <Header event={event} className='event-header-info__wrapper' />
+            <Header event={event} joineve={this.joinEvent.bind(this)} className='event-header-info__wrapper' />
             <HeaderNav className='event-header-nav__wrapper' />
             <AboutEvent event={event} className='event-description__wrapper' />
             <AboutOrganization event={event} className='event-organization__wrapper' />
@@ -171,9 +173,6 @@ class EventItem extends React.Component {
 const Header = (props) => {
   const { event } = props
   const time = moment(Number(event.startTime))
-  // console.log('time: ', time.format('MMMM') )
-  // console.log('time: ', time.format('dddd') )
-  // console.log('time: ', time.format('DD') )
 
   return (
     <Row {...props}>
@@ -196,6 +195,15 @@ const Header = (props) => {
         </div>
         <div className='address'>{event.address}</div>
       </Col>
+      <Col span={6}>
+        <Button
+          type='primary'
+          icon='fire'
+          onClick={() => props.joineve()}
+        >
+          Đăng ký ngay
+        </Button>
+      </Col>
     </Row>
   )
 }
@@ -208,11 +216,6 @@ const HeaderNav = (props) => {
           <div className='item'>
             <Link to='inTroduce' offset={-56} spy smooth duration={600}>
               Giới thiệu
-            </Link>
-          </div>
-          <div className='item'>
-            <Link to='ticket' spy smooth duration={600}>
-              Thông tin vé
             </Link>
           </div>
           <div className='item'>

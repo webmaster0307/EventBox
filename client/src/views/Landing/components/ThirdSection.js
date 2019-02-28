@@ -1,5 +1,4 @@
 import React, { Component, createElement } from 'react'
-import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
 import { Row, Col, Tag } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
@@ -9,14 +8,11 @@ import entertainment from '../images/section3/Entertainment.png'
 import studying from '../images/section3/Studying.png'
 import other from '../images/section3/Other.png'
 
-@inject('stores')
-@observer
 class ThirdSection extends Component {
   title = () => [{ name: 'title', text: '3rd-title' }, { name: 'content', text: '3rd-subtitle' }]
 
   block = () => {
     const { i18n } = this.props
-    // const { eventList } = this.props.stores.landing
 
     return [
       {

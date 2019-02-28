@@ -67,6 +67,19 @@ class Event {
     this.eventsLoading = false
     return true
   }
+
+  @action
+  async joinEvent(userId, eventId) {
+    try {
+      const { data: { joinEvent } } = await client.mutate({
+        mutation: event.JOIN_EVENT,
+        variables: { userId, eventId }
+      })
+      return joinEvent
+    } catch (error) {
+      console.log('graphQLErrors: ', error)
+    }
+  }
 }
 
 export default Event

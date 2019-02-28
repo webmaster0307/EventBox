@@ -74,6 +74,7 @@ const GET_EVENT_DETAIL = gql`
         email
       }
       status
+      participants
     }
   }
 `
