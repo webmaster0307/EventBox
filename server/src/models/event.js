@@ -26,9 +26,9 @@ let eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
-  categoryId: {
-    type: Schema.Types.ObjectId,
-    ref: 'category'
+  categories: {
+    type: Array,
+    default: []
   },
   images: {
     type: Object

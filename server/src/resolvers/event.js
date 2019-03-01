@@ -138,12 +138,28 @@ export default {
           }
         }
       )
-      // console.log("departmentIds: ", departmentIds)
 
       return {
         edges,
         departmentIds: departmentIds.map((item) => item.toString())
       }
+    },
+
+    countEventByType: async (parent, args, { models }) => {
+      const entertainment = [
+        'livemusic', 'artnculture', 'theaternplays', 'nightlife', 'outdoor'
+      ]
+      const learning = ['conference', 'seminarsncourses']
+      const others = ['exhibitions', 'meetups', 'sports', 'community', 'attractions']
+      return {
+        entertainment: await models.Event.count({ categories: { $in: entertainment } }),
+        learning: await models.Event.count({ categories: { $in: learning } }),
+        others: await models.Event.count({ categories: { $in: others } })
+      }
+    },
+
+    eventsForSearch: async (parent, args, { models }) => {
+
     }
   },
 

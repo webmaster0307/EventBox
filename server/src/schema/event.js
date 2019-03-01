@@ -9,7 +9,7 @@ export default gql`
     shortDescription: String!
     user: User
     departments: [Department]
-    categoryId: String
+    categories: [String]
     images: EventImages!
     regFrom: String
     regTo: String
@@ -55,11 +55,19 @@ export default gql`
     participants: [ID]
   }
 
+  type countResult {
+    entertainment: Int
+    learning: Int
+    others: Int
+  }
+
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
     eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
+    countEventByType: countResult
+    eventsForSearch: [String]
   }
 
   extend type Mutation {

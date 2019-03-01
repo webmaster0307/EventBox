@@ -4,10 +4,16 @@ const Schema = mongoose.Schema
 
 let categorySchema = new Schema({
   name: {
-    type: String
+    type: String,
+    required: true
+  },
+  code: {
+    type: String,
+    required: true
   },
   description: {
-    type: String
+    type: String,
+    default: ''
   },
   isEnabled: {
     type: Boolean,
