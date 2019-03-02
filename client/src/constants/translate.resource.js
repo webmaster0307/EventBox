@@ -79,7 +79,8 @@ export default {
       faq: 'Frequently Asked Questions',
       'Subscribe us': 'Subscribe us',
       'sb-inp-ph': 'Enter your email here',
-      'Follow us': 'Follow us'
+      'Follow us': 'Follow us',
+      registerEvent: 'Register Event'
     }
   },
   vn: {
@@ -161,7 +162,8 @@ export default {
       faq: 'Các câu hỏi thường gặp',
       'Subscribe us': 'Theo dõi chúng tôi',
       'sb-inp-ph': 'Nhập Email của bạn',
-      'Follow us': 'Theo dõi'
+      'Follow us': 'Theo dõi',
+      registerEvent: 'Tham gia sự kiện'
     }
   }
 }
