@@ -1,4 +1,4 @@
-import { observable, action, toJS, computed } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import { client } from '@client'
 import { event } from '@gqlQueries'
 import i18n from '../constants/i18n'
@@ -12,9 +12,6 @@ class Landing {
   @observable isSigningIn = false
   // For sign up modal
   @observable isSigningUp = false
-  // Search bar
-  @observable allSuggestion = []
-  @observable suggestion = []
   // Event list
   @observable eventList = []
 
@@ -39,11 +36,6 @@ class Landing {
 
   @action
   changeLanguage() {
-    // if (this.isEnglish) {
-    //   this.buttonText = 'English'
-    // } else {
-    //   this.buttonText = 'Tiếng Việt'
-    // }
     this.isEnglish = !this.isEnglish
   }
 
@@ -85,22 +77,6 @@ class Landing {
     }
 
     this.eventList = eventsHome
-  }
-
-  @action
-  handleAutoCompleteSelect(value) {
-    console.log(value)
-  }
-
-  @action
-  handleAutoCompleteSearch = (words) => {
-    if (words) {
-      this.suggestion = toJS(this.allSuggestion).filter((title) => {
-        return title.toLowerCase().indexOf(words.toLowerCase()) !== -1
-      })
-    } else {
-      this.suggestion = []
-    }
   }
 
   @computed get buttonText() {

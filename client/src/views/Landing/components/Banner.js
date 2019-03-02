@@ -67,7 +67,7 @@ class Banner extends Component {
           delay={200}
         >
           <div className='banner0-title' key='title'>
-            {isMobile ? null : <LogoBlur />}
+            {!isMobile && <LogoBlur />}
             <span className='banner0-text'>{i18n.t('banner title')}</span>
           </div>
           <div className='banner0-content' key='content'>

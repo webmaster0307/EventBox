@@ -8,8 +8,8 @@ import rp from 'request-promise'
 
 const qr = require('qr-image')
 import nodemailer from 'nodemailer'
-import fs from 'fs'
 import registerForm from './mailTemplate/registerEvent'
+import moment from 'moment'
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -159,7 +159,8 @@ export default {
     },
 
     eventsForSearch: async (parent, args, { models }) => {
-
+      return await models.Event.find({ startTime: { $gte: new Date() } })
+        .then(data => data.map(e => e.title))
     }
   },
 
@@ -215,7 +216,6 @@ export default {
       isEventOwner,
       async (parent, { id, departmentIds }, { models, pubsub }) => {
         try {
-          console.log('departmentIds: ', departmentIds)
           const event = await models.Event.findByIdAndUpdate(
             id,
             {
