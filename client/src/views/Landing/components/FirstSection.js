@@ -17,8 +17,6 @@ const Option = Select.Option
 @inject('stores')
 @observer
 class FirstSection extends Component {
-  // title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
-
   handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
@@ -60,21 +58,6 @@ class FirstSection extends Component {
       <div className='home-page-wrapper content0-wrapper'>
         <div className='home-page content0'>
           <div className='title-wrapper'>
-            {/* {this.title().map(item =>
-              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
-                {
-                  key: item.key,
-                  className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
-                },
-                typeof item.text === 'string' && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-                  ? createElement('img', {
-                    src: item.text,
-                    height: '100%',
-                    alt: 'img'
-                  })
-                  : item.text
-                )
-            )} */}
             <Tabs defaultActiveKey='1'>
               <TabPane
                 tab={

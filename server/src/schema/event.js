@@ -9,7 +9,7 @@ export default gql`
     shortDescription: String!
     user: User
     departments: [Department]
-    categoryId: String
+    categories: [String]
     images: EventImages!
     regFrom: String
     regTo: String
@@ -19,6 +19,7 @@ export default gql`
     organizationDescription: String
     startTime: String
     endTime: String
+    participants: [String]
     location: String
     address: String
     status: String!
@@ -49,11 +50,24 @@ export default gql`
     event: Event!
   }
 
+  type EventUpdate {
+    _id: ID
+    participants: [ID]
+  }
+
+  type countResult {
+    entertainment: Int
+    learning: Int
+    others: Int
+  }
+
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
     eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
+    countEventByType: countResult
+    eventsForSearch: [String]
   }
 
   extend type Mutation {
@@ -100,10 +114,14 @@ export default gql`
 
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
+
+    joinEvent(eventId: ID!): Boolean!
+    unjoinEvent(userId: ID!, eventId: ID!): Event!
   }
 
   extend type Subscription {
     eventCreated: EventCreated!
     eventSubmited(departmentIds: [ID]!): Event
+    eventUpdate: EventUpdate
   }
 `
