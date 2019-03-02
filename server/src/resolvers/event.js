@@ -33,6 +33,30 @@ const mailOptions = ({ receiver, ticketSvgSrc }) => {
   }
 }
 
+const slackSendQRCode = ({ userRegister, eventName, ticketPng }) => {
+  rp({
+    method: 'POST',
+    uri: 'https://hooks.slack.com/services/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',
+    body: JSON.stringify({
+      attachments: [
+        {
+          fallback: 'Required plain-text summary of the attachment.',
+          color: '#36a64f',
+          pretext: 'Optional text that appears above the attachment block',
+          author_name: 'Vinh Nguyễn',
+          author_link: 'https://github.com/legend1250',
+          title: 'User register an event',
+          text: `${userRegister} \n${eventName}`,
+          image_url: ticketPng,
+          footer: 'Event ticket',
+          footer_icon: 'https://avatars1.githubusercontent.com/u/15612361?s=460&v=4',
+          ts: new Date().getTime() / 1000
+        }
+      ]
+    })
+  })
+}
+
 const toCursorHash = (string) => Buffer.from(string).toString('base64')
 
 const fromCursorHash = (string) => Buffer.from(string, 'base64').toString('ascii')
@@ -146,9 +170,7 @@ export default {
     },
 
     countEventByType: async (parent, args, { models }) => {
-      const entertainment = [
-        'livemusic', 'artnculture', 'theaternplays', 'nightlife', 'outdoor'
-      ]
+      const entertainment = ['livemusic', 'artnculture', 'theaternplays', 'nightlife', 'outdoor']
       const learning = ['conference', 'seminarsncourses']
       const others = ['exhibitions', 'meetups', 'sports', 'community', 'attractions']
       return {
@@ -158,9 +180,7 @@ export default {
       }
     },
 
-    eventsForSearch: async (parent, args, { models }) => {
-
-    }
+    eventsForSearch: async (parent, args, { models }) => {}
   },
 
   Mutation: {
@@ -330,23 +350,30 @@ export default {
                   code,
                   ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
                 })
-                transporter.sendMail(
-                  mailOptions({
-                    receiver: me.email,
-                    imgName,
-                    ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
+                if (process.env.NODE_ENV === 'production') {
+                  transporter.sendMail(
+                    mailOptions({
+                      receiver: me.email,
+                      imgName,
+                      ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
+                    })
+                  )
+                } else {
+                  slackSendQRCode({
+                    userRegister: `${me.username} | ${me.email} | ${me.id}`,
+                    eventName: eventExisted.title,
+                    ticketPng: `${UPLOAD_HOST}/ticket/${filename}/1`
                   })
-                )
-                // console.log('done end')
-                resolve()
+                }
+                resolve(ticket)
               } catch (error) {
                 throw new ApolloError(error, '400')
               }
             })
           })
         }
-        await result()
-        return true
+        const ticket = await result()
+        return ticket
         // try {
         //   const usr = await models.User.findById(userId)
         //   const evt = await models.Event.findById(eventId)

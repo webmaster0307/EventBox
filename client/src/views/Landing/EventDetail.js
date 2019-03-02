@@ -1,7 +1,6 @@
 import React from 'react'
 import { enquireScreen } from 'enquire-js'
 import { inject, observer } from 'mobx-react'
-import { toJS } from 'mobx'
 
 import SignInModal from './components/Authentication/SignIn'
 import SignUpModal from './components/Authentication/SignUp'
@@ -18,6 +17,7 @@ import moment from 'moment'
 import 'moment/locale/vi'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
+import { RegisterButton } from './EventDetailComps'
 
 import './less/antMotionStyle.less'
 import './eventdetail.scss'
@@ -137,17 +137,6 @@ class EventItem extends React.Component {
     Events.scrollEvent.remove('end')
   }
 
-  async joinEvent() {
-    const userId = toJS(this.props.stores.me.me).id
-    if (userId) {
-      const eventId = this.state.event.id
-      const res = await this.props.stores.event.joinEvent(userId, eventId)
-      if (res) {
-        message.success('Successfully registered!')
-      }
-    } else message.error('Login required!')
-  }
-
   render() {
     const { event, loading } = this.state
 
@@ -158,11 +147,7 @@ class EventItem extends React.Component {
             <Row className='event-image-thumbnail__wrapper'>
               <img src={event && event.images.thumbnail} alt='thumbnail' />
             </Row>
-            <Header
-              event={event}
-              joineve={this.joinEvent.bind(this)}
-              className='event-header-info__wrapper'
-            />
+            <Header event={event} className='event-header-info__wrapper' />
             <HeaderNav className='event-header-nav__wrapper' />
             <AboutEvent event={event} className='event-description__wrapper' />
             <AboutOrganization event={event} className='event-organization__wrapper' />
@@ -175,7 +160,7 @@ class EventItem extends React.Component {
 }
 
 const Header = (props) => {
-  const { event, joineve, ...rest } = props
+  const { event, ...rest } = props
   const time = moment(Number(event.startTime))
 
   return (
@@ -200,9 +185,10 @@ const Header = (props) => {
         <div className='address'>{event.address}</div>
       </Col>
       <Col span={6}>
-        <Button type='primary' icon='fire' onClick={() => props.joineve()}>
+        {/* <Button type='primary' icon='fire' onClick={() => console.log('event: ', event)}>
           Đăng ký ngay
-        </Button>
+        </Button> */}
+        <RegisterButton eventId={event.id} />
       </Col>
     </Row>
   )
