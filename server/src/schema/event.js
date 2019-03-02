@@ -55,6 +55,16 @@ export default gql`
     participants: [ID]
   }
 
+  type EventTicket {
+    id: ID!
+    code: String!
+    ticketSvgSrc: String!
+    checkedIn: Boolean!
+    userId: ID!
+    eventId: ID!
+    checkedInTime: Date
+  }
+
   type countResult {
     entertainment: Int
     learning: Int
@@ -115,7 +125,7 @@ export default gql`
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
 
-    joinEvent(eventId: ID!): Boolean!
+    joinEvent(eventId: ID!): EventTicket!
     unjoinEvent(userId: ID!, eventId: ID!): Event!
   }
 
