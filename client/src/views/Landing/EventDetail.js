@@ -137,7 +137,7 @@ class EventItem extends React.Component {
     Events.scrollEvent.remove('end')
   }
 
-  async joinEvent () {
+  async joinEvent() {
     const userId = toJS(this.props.stores.me.me).id
     if (userId) {
       const eventId = this.state.event.id
@@ -158,7 +158,11 @@ class EventItem extends React.Component {
             <Row className='event-image-thumbnail__wrapper'>
               <img src={event && event.images.thumbnail} alt='thumbnail' />
             </Row>
-            <Header event={event} joineve={this.joinEvent.bind(this)} className='event-header-info__wrapper' />
+            <Header
+              event={event}
+              joineve={this.joinEvent.bind(this)}
+              className='event-header-info__wrapper'
+            />
             <HeaderNav className='event-header-nav__wrapper' />
             <AboutEvent event={event} className='event-description__wrapper' />
             <AboutOrganization event={event} className='event-organization__wrapper' />
@@ -171,11 +175,11 @@ class EventItem extends React.Component {
 }
 
 const Header = (props) => {
-  const { event } = props
+  const { event, joineve, ...rest } = props
   const time = moment(Number(event.startTime))
 
   return (
-    <Row {...props}>
+    <Row {...rest}>
       <Col offset={4} span={2}>
         {/* {new Date(Number(event.startTime)).toDateString()} */}
         <div className='calendar-fake'>
@@ -196,11 +200,7 @@ const Header = (props) => {
         <div className='address'>{event.address}</div>
       </Col>
       <Col span={6}>
-        <Button
-          type='primary'
-          icon='fire'
-          onClick={() => props.joineve()}
-        >
+        <Button type='primary' icon='fire' onClick={() => props.joineve()}>
           Đăng ký ngay
         </Button>
       </Col>

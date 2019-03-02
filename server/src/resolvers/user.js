@@ -8,10 +8,10 @@ import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
 
 const tokenExpired = 60 * 60 * 8 // 8 hours
-// const tokenExpired = 15 // 8 hours
+const tokenExpiredMobile = '7d' // 7 days
 const EVENTBOX_HOST = process.env.EVENTBOX_HOST || 'http://localhost:8000'
 
-const createToken = async (models, user, secret) => {
+const createToken = async (models, user, secret, type = 0) => {
   const { id, email, username, role } = user
   const jti = uuidV4()
   const payLoad = {
@@ -22,8 +22,10 @@ const createToken = async (models, user, secret) => {
     role,
     jti
   }
+  // type = 0 => web
+  // type = 1 => mobile
   return await jwt.sign(payLoad, secret, {
-    expiresIn: tokenExpired
+    expiresIn: type === 0 ? tokenExpired : tokenExpiredMobile
   })
 }
 
@@ -115,7 +117,7 @@ export default {
       return true
     },
 
-    signIn: async (parent, { username, password }, { models, secret }) => {
+    signIn: async (parent, { username, password, type }, { models, secret }) => {
       const user = await models.User.findByLogin(username)
 
       if (!user) {
@@ -131,7 +133,7 @@ export default {
         throw new UserInputError('Your account not yet activated!')
       }
 
-      return { token: createToken(models, user, secret) }
+      return { token: createToken(models, user, secret, type) }
     },
 
     updateUser: combineResolvers(isAuthenticated, async (parent, { username }, { models, me }) => {
