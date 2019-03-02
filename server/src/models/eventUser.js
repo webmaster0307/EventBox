@@ -27,7 +27,8 @@ let eventUserSchema = new Schema(
       default: false
     },
     checkedInTime: {
-      type: Date
+      type: Date,
+      default: null
     }
   },
   {

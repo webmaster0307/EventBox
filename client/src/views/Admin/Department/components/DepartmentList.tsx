@@ -39,7 +39,7 @@ class DepartmentList extends Component<any> {
 
   render() {
     const { departments, listLoading: loading } = this.props.stores.admin.departmentStore
-    console.log('departments: ', toJS(departments))
+    // console.log('departments: ', toJS(departments))
 
     return (
       <Table
