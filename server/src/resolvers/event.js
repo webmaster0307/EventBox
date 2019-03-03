@@ -180,7 +180,16 @@ export default {
       }
     },
 
-    eventsForSearch: async (parent, args, { models }) => {}
+    eventsForSearch: async (parent, args, { models }) => {},
+
+    eventsForCheckin: combineResolvers(isAuthenticated, async (parent, args, { me, models }) => {
+      // console.log('me: ', me)
+      const events = await models.Event.find({
+        userId: mongoose.Types.ObjectId(me.id),
+        status: 'active'
+      })
+      return events
+    })
   },
 
   Mutation: {

@@ -8,7 +8,8 @@ export default gql`
     firstname: String
     lastname: String
     department: String
-    phoneNumber: Int
+    phoneNumber: String
+    photo: String
     secret: String
     role: [String]
     events: [Event!]
@@ -40,7 +41,7 @@ export default gql`
       firstname: String
       lastname: String
       department: String
-      phoneNumber: Int
+      phoneNumber: String
       secret: String
       role: [String]
     ): User!

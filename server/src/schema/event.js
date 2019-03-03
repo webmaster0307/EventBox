@@ -78,6 +78,7 @@ export default gql`
     event(id: ID!): Event
     countEventByType: countResult
     eventsForSearch: [String]
+    eventsForCheckin: [Event]
   }
 
   extend type Mutation {
