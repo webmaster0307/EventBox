@@ -5,6 +5,7 @@ const CREATE_EVENT = gql`
     $title: String!
     $thumbnail: String!
     $description: String!
+    $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
     $organizationLogo: String!
@@ -18,6 +19,7 @@ const CREATE_EVENT = gql`
       title: $title
       thumbnail: $thumbnail
       description: $description
+      rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName
       organizationLogo: $organizationLogo
@@ -50,6 +52,7 @@ const UPDATE_EVENT_BYID = gql`
     $title: String!
     $thumbnail: String!
     $description: String!
+    $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
     $organizationLogo: String!
@@ -64,6 +67,7 @@ const UPDATE_EVENT_BYID = gql`
       title: $title
       thumbnail: $thumbnail
       description: $description
+      rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName
       organizationLogo: $organizationLogo

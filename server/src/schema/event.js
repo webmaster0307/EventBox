@@ -6,6 +6,7 @@ export default gql`
     title: String!
     slug: String!
     description: String!
+    rawHtmlContent: String!
     shortDescription: String!
     user: User
     departments: [Department]
@@ -86,6 +87,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       regFrom: String
@@ -105,6 +107,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       location: String
