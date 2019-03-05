@@ -34,22 +34,22 @@ const httpLink = new HttpLink({
 })
 
 const WS_ENDPOINT = process.env.REACT_APP_GRAPHQL_SUBSCRIPTION || 'ws://localhost:8000/graphql'
-const ws_client = new SubscriptionClient(WS_ENDPOINT,{
+const ws_client = new SubscriptionClient(WS_ENDPOINT, {
   reconnect: true
 })
 const wsLink = new WebSocketLink(ws_client)
 
-const terminatingLink = split(({ query }) => {
-  const { kind, operation } = getMainDefinition(query)
-  return (
-    kind === 'OperationDefinition' && operation === 'subscription'
-  )
-},
-wsLink,
-httpLink,)
+const terminatingLink = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  },
+  wsLink,
+  httpLink
+)
 
 const authLink = new ApolloLink((operation, forward: any) => {
-  operation.setContext(({ headers = ({} as any), localToken = localStorage.getItem('token') }) => {
+  operation.setContext(({ headers = {} as any, localToken = localStorage.getItem('token') }) => {
     if (localToken) {
       headers['x-token'] = localToken
     }
@@ -99,7 +99,7 @@ export const stateLink = withClientState({
   },
   resolvers: {
     Mutation: {
-      toggleLoading: ( _: any, variables: any, { cache } : { cache: any } )  => {
+      toggleLoading: (_: any, variables: any, { cache }: { cache: any }) => {
         const query = gql`
           query {
             loading @client
@@ -112,10 +112,10 @@ export const stateLink = withClientState({
         cache.writeData({ data })
         return null
       },
-      setSession: ( _: any, variables: any, { cache } : { cache: any } ) => {
+      setSession: (_: any, variables: any, { cache }: { cache: any }) => {
         const { session } = variables
         const data = {
-          session : {
+          session: {
             me: {
               ...session.me,
               __typename: 'User'
@@ -149,7 +149,8 @@ const link = ApolloLink.from([stateLink, authLink, errorLink, terminatingLink])
 
 export const client = new ApolloClient({
   link,
-  cache
+  cache,
+  resolvers: {}
 })
 
 const stores = {

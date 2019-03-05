@@ -7,7 +7,7 @@
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
-    "serve": "npm run build && node dist/server.js",
+    "serve": "npm run build && node dist/index.js",
     "mocha-test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
     "test": "dotenv -e .env.test npm run mocha-test",
     "test-cov": "nyc npm run test"
@@ -17,13 +17,13 @@
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
+    "@babel/core": "^7.3.4",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-env": "^7.3.4",
     "@sindresorhus/slugify": "^0.8.0",
-    "apollo-server": "^2.2.2",
-    "apollo-server-express": "^2.2.2",
+    "apollo-server": "^2.4.8",
+    "apollo-server-express": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "connect-history-api-fallback": "^1.5.0",
     "cors": "^2.8.4",
@@ -34,17 +34,17 @@
     "graphql-depth-limit": "^1.1.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-redis-subscriptions": "^2.0.0",
-    "graphql-resolvers": "^0.2.2",
+    "graphql-resolvers": "^0.3.2",
     "ioredis": "^4.3.0",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.5.0",
     "moment": "^2.22.2",
-    "mongoose": "^5.3.6",
+    "mongoose": "^5.4.17",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",
     "pm2": "^3.2.2",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2",
+    "request-promise": "^4.2.4",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -53,9 +53,9 @@
     "chai": "^4.1.2",
     "chalk": "^2.4.2",
     "dotenv-cli": "^1.4.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.0",
-    "nyc": "^13.1.0"
+    "nyc": "^13.3.0"
   },
   "nodemonConfig": {
     "ignore": [
