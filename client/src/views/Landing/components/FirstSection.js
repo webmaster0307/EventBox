@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import QueueAnim from 'rc-queue-anim'
 import { Row, Col, AutoComplete, Form, Button, Tabs, Icon, Select, Skeleton, message } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 import { event } from '@gqlQueries'
@@ -33,8 +33,9 @@ class FirstSection extends Component {
 
   handleAutoCompleteSearch = (eventsForSearch, words) => {
     if (words) {
-      const suggestions = eventsForSearch.filter(title =>
-        title.toLowerCase().indexOf(words.toLowerCase()) !== -1)
+      const suggestions = eventsForSearch.filter(
+        (title) => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      )
       this.setState({ suggestions })
     } else this.setState({ suggestions: [] })
   }
@@ -94,12 +95,12 @@ class FirstSection extends Component {
                   }}
                 >
                   <Query query={event.EVENTS_FOR_SEARCH}>
-                    {({loading, error, data: { eventsForSearch }}) => {
+                    {({ loading, error, data: { eventsForSearch } }) => {
                       if (loading) return <Skeleton />
                       if (error) return message.error(error)
                       return (
                         <FormItem {...formInputLayout}>
-                          {getFieldDecorator('searchbar', { rules: [] }) (
+                          {getFieldDecorator('searchbar', { rules: [] })(
                             <AutoComplete
                               id='searchbar'
                               dataSource={suggestions}
@@ -185,4 +186,4 @@ class FirstSection extends Component {
   }
 }
 
-export default translate('translations')(Form.create()(FirstSection))
+export default withTranslation('translations')(Form.create()(FirstSection))

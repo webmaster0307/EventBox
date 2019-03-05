@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { Modal, Divider, Row, Col, Icon, Button } from 'antd'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { SignInFormWrapped as SignInForm } from '../../../Authorizing/SignIn/SignIn'
 
 @inject('stores')
@@ -108,4 +108,4 @@ class SignInModal extends Component {
   }
 }
 
-export default translate('translations')(SignInModal)
+export default withTranslation('translations')(SignInModal)

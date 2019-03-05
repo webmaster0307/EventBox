@@ -2,7 +2,7 @@ import React, { Component, createElement } from 'react'
 import { Row } from 'antd'
 import QueueAnim from 'rc-queue-anim'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import EventList from './EventList'
 
 class SecondSection extends Component {
@@ -52,4 +52,4 @@ class SecondSection extends Component {
   }
 }
 
-export default translate('translations')(SecondSection)
+export default withTranslation('translations')(SecondSection)

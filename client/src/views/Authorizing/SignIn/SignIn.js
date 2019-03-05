@@ -6,7 +6,7 @@ import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
 import queryString from 'query-string'
 import { observer, inject } from 'mobx-react'
 import { user as userMutations } from '@gqlQueries'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 const FormItem = Form.Item
 
@@ -123,6 +123,6 @@ class SignInForm extends React.Component {
   }
 }
 
-const SignInFormWrapped = translate('translations')(Form.create()(withRouter(SignInForm)))
+const SignInFormWrapped = withTranslation('translations')(Form.create()(withRouter(SignInForm)))
 
 export { SignInFormWrapped }

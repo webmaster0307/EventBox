@@ -3,10 +3,10 @@ import { observer, inject } from 'mobx-react'
 import { Button, Icon } from 'antd'
 import QueueAnim from 'rc-queue-anim'
 import TweenOne from 'rc-tween-one'
-import { Link , Events, scrollSpy, scroller } from 'react-scroll'
+import { Link, Events, scrollSpy, scroller } from 'react-scroll'
 
 import LogoBlur from './LogoBlur'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 @inject('stores')
 @observer
@@ -50,12 +50,12 @@ class Banner extends Component {
     )
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
   }
 
-  render () {
+  render() {
     const { isMobile } = this.props.stores.landing
     const { i18n } = this.props
     return (
@@ -96,4 +96,4 @@ class Banner extends Component {
   }
 }
 
-export default translate('translations')(Banner)
+export default withTranslation('translations')(Banner)

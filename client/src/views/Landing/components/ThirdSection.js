@@ -2,7 +2,7 @@ import React, { Component, createElement } from 'react'
 import QueueAnim from 'rc-queue-anim'
 import { Row, Col, Tag, message } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { Query } from 'react-apollo'
 import { event } from '@gqlQueries'
 
@@ -12,7 +12,7 @@ import othersIcon from '../images/section3/Other.png'
 
 class ThirdSection extends Component {
   title = () => [{ name: 'title', text: '3rd-title' }, { name: 'content', text: '3rd-subtitle' }]
-  block = ({entertainment, learning, others}) => {
+  block = ({ entertainment, learning, others }) => {
     const { i18n } = this.props
     return [
       {
@@ -85,7 +85,7 @@ class ThirdSection extends Component {
               component={Row}
             >
               <Query query={event.COUNT_EVENT_BY_TYPE}>
-                {({loading, error, data: { countEventByType }}) => {
+                {({ loading, error, data: { countEventByType } }) => {
                   if (loading) return 'loading...'
                   if (error) return message.error(error)
 
@@ -110,4 +110,4 @@ class ThirdSection extends Component {
   }
 }
 
-export default translate('translations')(ThirdSection)
+export default withTranslation('translations')(ThirdSection)
