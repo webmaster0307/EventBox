@@ -1,17 +1,8 @@
-import {
-  combineResolvers
-} from 'graphql-resolvers'
+import { combineResolvers } from 'graphql-resolvers'
 import mongoose from 'mongoose'
-import {
-  isAuthenticated,
-  isEventOwner
-} from './authorization'
-import {
-  EVENTS
-} from '../subscription'
-import {
-  ApolloError
-} from 'apollo-server'
+import { isAuthenticated, isEventOwner } from './authorization'
+import { EVENTS } from '../subscription'
+import { ApolloError } from 'apollo-server'
 import uuidV4 from 'uuid/v4'
 import rp from 'request-promise'
 
@@ -28,10 +19,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-const mailOptions = ({
-  receiver,
-  ticketSvgSrc
-}) => {
+const mailOptions = ({ receiver, ticketSvgSrc }) => {
   return {
     from: process.env.NODEMAILER_USERNAME,
     to: receiver,
@@ -45,28 +33,26 @@ const mailOptions = ({
   }
 }
 
-const slackSendQRCode = ({
-  userRegister,
-  eventName,
-  ticketPng
-}) => {
+const slackSendQRCode = ({ userRegister, eventName, ticketPng }) => {
   rp({
     method: 'POST',
     uri: 'https://hooks.slack.com/services/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',
     body: JSON.stringify({
-      attachments: [{
-        fallback: 'Required plain-text summary of the attachment.',
-        color: '#36a64f',
-        pretext: 'Optional text that appears above the attachment block',
-        author_name: 'Vinh Nguyễn',
-        author_link: 'https://github.com/legend1250',
-        title: 'User register an event',
-        text: `${userRegister} \n${eventName}`,
-        image_url: ticketPng,
-        footer: 'Event ticket',
-        footer_icon: 'https://avatars1.githubusercontent.com/u/15612361?s=460&v=4',
-        ts: new Date().getTime() / 1000
-      }]
+      attachments: [
+        {
+          fallback: 'Required plain-text summary of the attachment.',
+          color: '#36a64f',
+          pretext: 'Optional text that appears above the attachment block',
+          author_name: 'Vinh Nguyễn',
+          author_link: 'https://github.com/legend1250',
+          title: 'User register an event',
+          text: `${userRegister} \n${eventName}`,
+          image_url: ticketPng,
+          footer: 'Event ticket',
+          footer_icon: 'https://avatars1.githubusercontent.com/u/15612361?s=460&v=4',
+          ts: new Date().getTime() / 1000
+        }
+      ]
     })
   })
 }
@@ -77,40 +63,34 @@ const fromCursorHash = (string) => Buffer.from(string, 'base64').toString('ascii
 
 export default {
   Query: {
-    events: async (parent, {
-      status,
-      cursor,
-      limit = 50
-    }, {
-      models,
-      me,
-      isAdmin
-    }) => {
-      const cursorOptions = cursor ?
-        {
-          createdAt: {
-            $lt: fromCursorHash(cursor)
+    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
+      const cursorOptions = cursor
+        ? {
+            createdAt: {
+              $lt: fromCursorHash(cursor)
+            }
           }
-        } :
-        {}
+        : {}
       let selfEventsCondition
       if (!status) {
-        selfEventsCondition = !isAdmin ?
-          {
-            userId: me.id
-          } :
-          {}
+        selfEventsCondition = !isAdmin
+          ? {
+              userId: me.id
+            }
+          : {}
       } else {
         selfEventsCondition = {
           status
         }
       }
 
-      const events = await models.Event.find({
+      const events = await models.Event.find(
+        {
           ...cursorOptions,
           ...selfEventsCondition
         },
-        null, {
+        null,
+        {
           limit: limit + 1,
           sort: {
             createdAt: -1
@@ -125,20 +105,18 @@ export default {
         edges,
         pageInfo: {
           hasNextPage,
-          endCursor: events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
+          endCursor:
+            events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
         }
       }
     },
-    eventsHome: async (parent, {
-      limit = 8
-    }, {
-      me,
-      models
-    }) => {
-      const events = await models.Event.find({
+    eventsHome: async (parent, { limit = 8 }, { me, models }) => {
+      const events = await models.Event.find(
+        {
           status: 'active'
         },
-        null, {
+        null,
+        {
           limit,
           sort: {
             createdAt: -1
@@ -150,43 +128,33 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, {
-        id
-      }, {
-        me,
-        models
-      }) => {
+      async (parent, { id }, { me, models }) => {
         return await models.Event.findById(id)
       }
     ),
 
-    eventsInReview: async (parent, {
-      status,
-      page = 0,
-      limit = 10
-    }, {
-      models,
-      me,
-      isAdmin
-    }) => {
+    eventsInReview: async (parent, { status, page = 0, limit = 10 }, { models, me, isAdmin }) => {
       // const departmentIds = await models.DepartmentUser
       //   .find({ userId: me.id, departmentRole: 'reviewer' }, 'departmentId')
       //   .map(doc => doc.departmentId.toString())
 
-      const departments = await models.DepartmentUser.find({
+      const departments = await models.DepartmentUser.find(
+        {
           userId: me.id,
           departmentRole: 'reviewer'
         },
         'departmentId'
       )
       const departmentIds = departments.map((doc) => doc.departmentId)
-      const edges = await models.Event.find({
+      const edges = await models.Event.find(
+        {
           status: 'in-review',
           departments: {
             $in: departmentIds
           }
         },
-        null, {
+        null,
+        {
           skip: page * limit,
           limit: limit + 1,
           sort: {
@@ -201,9 +169,7 @@ export default {
       }
     },
 
-    countEventByType: async (parent, args, {
-      models
-    }) => {
+    countEventByType: async (parent, args, { models }) => {
       const entertainment = ['livemusic', 'artnculture', 'theaternplays', 'nightlife', 'outdoor']
       const learning = ['conference', 'seminarsncourses']
       const others = ['exhibitions', 'meetups', 'sports', 'community', 'attractions']
@@ -226,27 +192,27 @@ export default {
       }
     },
 
-    eventsForSearch: async (parent, args, {
-      models
-    }) => {
+    eventsForSearch: async (parent, args, { models }) => {
       return await models.Event.find({
-          startTime: {
-            $gte: new Date()
-          }
-        })
-        .then(data => data.map(e => e.title))
-    }
+        startTime: {
+          $gte: new Date()
+        }
+      }).then((data) => data.map((e) => e.title))
+    },
+
+    eventsForCheckin: combineResolvers(isAuthenticated, async (parent, args, { me, models }) => {
+      // console.log('me: ', me)
+      const events = await models.Event.find({
+        userId: mongoose.Types.ObjectId(me.id),
+        status: 'active'
+      })
+      return events
+    })
   },
 
   Mutation: {
-    createEvent: combineResolvers(isAuthenticated, async (parent, args, {
-      models,
-      me
-    }) => {
-      const {
-        thumbnail,
-        ...rest
-      } = args
+    createEvent: combineResolvers(isAuthenticated, async (parent, args, { models, me }) => {
+      const { thumbnail, ...rest } = args
       const event = await models.Event.create({
         ...rest,
         images: {
@@ -261,23 +227,18 @@ export default {
 
       return event
     }),
-    updateEvent: combineResolvers(isEventOwner, async (parent, args, {
-      models,
-      me
-    }) => {
-      const {
-        id,
-        thumbnail,
-        ...rest
-      } = args
+    updateEvent: combineResolvers(isEventOwner, async (parent, args, { models, me }) => {
+      const { id, thumbnail, ...rest } = args
       const event = await models.Event.findByIdAndUpdate(
-        id, {
+        id,
+        {
           ...rest,
           images: {
             thumbnail
           },
           status: 'draft'
-        }, {
+        },
+        {
           new: true
         }
       )
@@ -285,15 +246,9 @@ export default {
       return event
     }),
 
-    deleteEvent: combineResolvers(isEventOwner, async (parent, {
-      id
-    }, {
-      models
-    }) => {
+    deleteEvent: combineResolvers(isEventOwner, async (parent, { id }, { models }) => {
       try {
-        const {
-          errors
-        } = await models.Event.findByIdAndDelete(id)
+        const { errors } = await models.Event.findByIdAndDelete(id)
         if (errors) {
           return false
         }
@@ -305,19 +260,15 @@ export default {
 
     publishEvent: combineResolvers(
       isEventOwner,
-      async (parent, {
-        id,
-        departmentIds
-      }, {
-        models,
-        pubsub
-      }) => {
+      async (parent, { id, departmentIds }, { models, pubsub }) => {
         try {
           const event = await models.Event.findByIdAndUpdate(
-            id, {
+            id,
+            {
               status: 'in-review',
               departments: departmentIds
-            }, {
+            },
+            {
               new: true
             }
           )
@@ -339,15 +290,9 @@ export default {
     approveEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, {
-        id
-      }, {
-        models
-      }) => {
+      async (parent, { id }, { models }) => {
         try {
-          const {
-            errors
-          } = await models.Event.findByIdAndUpdate(id, {
+          const { errors } = await models.Event.findByIdAndUpdate(id, {
             status: 'active'
           })
           if (errors) {
@@ -362,15 +307,9 @@ export default {
     rejectEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, {
-        id
-      }, {
-        models
-      }) => {
+      async (parent, { id }, { models }) => {
         try {
-          const {
-            errors
-          } = await models.Event.findByIdAndUpdate(id, {
+          const { errors } = await models.Event.findByIdAndUpdate(id, {
             status: 'rejected'
           })
           if (errors) {
@@ -384,13 +323,7 @@ export default {
     ),
     joinEvent: combineResolvers(
       isAuthenticated,
-      async (parent, {
-        eventId
-      }, {
-        me,
-        models,
-        pubsub
-      }) => {
+      async (parent, { eventId }, { me, models, pubsub }) => {
         // upload svg host
         const UPLOAD_HOST = process.env.EVENTBOX_UPLOAD
         if (!UPLOAD_HOST) {
@@ -437,9 +370,7 @@ export default {
               }
               try {
                 const {
-                  file: {
-                    filename
-                  }
+                  file: { filename }
                 } = await rp(options)
                 const ticket = await models.EventUser.create({
                   userId: me.id,
@@ -525,26 +456,23 @@ export default {
         // }
       }
     ),
-    unjoinEvent: async (parent, {
-      userId,
-      eventId
-    }, {
-      models,
-      pubsub
-    }) => {
+    unjoinEvent: async (parent, { userId, eventId }, { models, pubsub }) => {
       try {
         const usr = await models.User.findById(userId)
         const evt = await models.Event.findById(eventId)
         if (usr && evt && !evt.participants.some((usrId) => usrId === userId)) {
           evt.participants.filter((usrId) => usrId !== userId)
           const participants = evt.participants
-          await models.Event.updateOne({
-            _id: eventId
-          }, {
-            $set: {
-              participants
+          await models.Event.updateOne(
+            {
+              _id: eventId
+            },
+            {
+              $set: {
+                participants
+              }
             }
-          })
+          )
           pubsub.publish(EVENTS.EVENT.EVENT_UPDATE, {
             eventUpdate: {
               type: 'unjoin',
@@ -562,13 +490,9 @@ export default {
   },
 
   Event: {
-    user: async (event, args, {
-      loaders
-    }) => await loaders.user.load(event.userId),
+    user: async (event, args, { loaders }) => await loaders.user.load(event.userId),
 
-    departments: async (event, args, {
-      models
-    }) => {
+    departments: async (event, args, { models }) => {
       const ids = event.departments.map((id) => mongoose.Types.ObjectId(id))
       const departments = await models.Department.find({
         _id: {
@@ -586,10 +510,7 @@ export default {
     eventSubmited: {
       resolve: (payload, args, context, info) => {
         // Manipulate and return the new value
-        const {
-          description,
-          ...eventSubmited
-        } = payload.eventSubmited
+        const { description, ...eventSubmited } = payload.eventSubmited
         // console.log('rest: ',eventSubmited)
         // console.log('typeof: ',typeof eventSubmited)
         return {
@@ -597,20 +518,13 @@ export default {
           id: mongoose.Types.ObjectId(eventSubmited._id)
         }
       },
-      subscribe: (parent, {
-        departmentIds
-      }, {
-        models,
-        pubsub
-      }, info) => {
+      subscribe: (parent, { departmentIds }, { models, pubsub }, info) => {
         const arrIterator = departmentIds.map((id) => `${EVENTS.EVENT.SUBMITED_REVIEW} ${id}`)
         return pubsub.asyncIterator(arrIterator)
       }
     },
     eventUpdate: {
-      subscribe: (parent, args, {
-        pubsub
-      }) => pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
+      subscribe: (parent, args, { pubsub }) => pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
     }
   }
 }

@@ -6,6 +6,7 @@ export default gql`
     title: String!
     slug: String!
     description: String!
+    rawHtmlContent: String!
     shortDescription: String!
     user: User
     departments: [Department]
@@ -78,6 +79,7 @@ export default gql`
     event(id: ID!): Event
     countEventByType: countResult
     eventsForSearch: [String]
+    eventsForCheckin: [Event]
   }
 
   extend type Mutation {
@@ -85,6 +87,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       regFrom: String
@@ -104,6 +107,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       location: String

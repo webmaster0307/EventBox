@@ -6,6 +6,7 @@ import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
+import { stateToHTML } from 'draft-js-export-html'
 import { event as eventQueries } from '@gqlQueries'
 import * as routes from '@routes'
 
@@ -59,6 +60,7 @@ class EventUpdate extends Component {
           id: eventId,
           ...values,
           description: JSON.stringify(convertToRaw(event.editorEventCreate.getCurrentContent())),
+          rawHtmlContent: stateToHTML(event.editorEventCreate.getCurrentContent()),
           startTime: values.startTime._d,
           endTime: values.endTime._d
         }

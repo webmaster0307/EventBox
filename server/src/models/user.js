@@ -24,12 +24,12 @@ let userSchema = new Schema(
       type: String,
       default: ''
     },
-    department: {
-      type: Schema.Types.ObjectId,
-      ref: 'department'
-    },
     phoneNumber: {
-      type: Number
+      type: String
+    },
+    photo: {
+      type: String,
+      default: ''
     },
     secret: {
       type: String
@@ -37,10 +37,6 @@ let userSchema = new Schema(
     role: {
       type: Array,
       default: ['user']
-    },
-    events: {
-      type: Schema.Types.ObjectId,
-      ref: 'event'
     },
     isActivated: {
       type: Boolean,
