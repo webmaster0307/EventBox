@@ -3,75 +3,71 @@ services:
   redis:
     image: 'redis:5.0.3'
     container_name: eventbox-redis
-    env_file: 
+    env_file:
       - .env
     expose:
       - ${REDIS_PUBSUB_PORT}
     networks:
-    - eventbox-net
+      - eventbox-net
   nginx:
     build:
       context: ./client
       dockerfile: ./Dockerfile
-    image:
-      eventbox-server-nginx:v1
+    image: eventbox-server-nginx:v1
     depends_on:
       - redis
       - server1
       - server2
       - server3
     ports:
-      - "8080:80"
+      - '8080:80'
     networks:
       - eventbox-net
   server1:
     build:
       context: ./server
       dockerfile: ./Dockerfile
-    image:
-      eventbox-server:v2
-    env_file: 
+    image: eventbox-server:v2
+    env_file:
       - .env
     environment:
       - INSTANCE=server1
     expose:
       - ${SERVER_PORT}
     networks:
-    - eventbox-net
+      - eventbox-net
     restart: always
-    command: npm run start-prod
+    command: npm run serve
   server2:
     build:
       context: ./server
       dockerfile: ./Dockerfile
-    image:
-      eventbox-server:v2
-    env_file: 
+    image: eventbox-server:v2
+    env_file:
       - .env
     environment:
       - INSTANCE=server2
     expose:
       - ${SERVER_PORT}
     networks:
-    - eventbox-net
+      - eventbox-net
     restart: always
-    command: npm run start-prod
+    command: npm run serve
   server3:
     build:
       context: ./server
       dockerfile: ./Dockerfile
-    image:
-      eventbox-server:v2
-    env_file: 
+    image: eventbox-server:v2
+    env_file:
       - .env
     environment:
       - INSTANCE=server3
     expose:
       - ${SERVER_PORT}
     networks:
-    - eventbox-net
+      - eventbox-net
     restart: always
-    command: npm run start-prod
+    command: npm run serve
 networks:
   eventbox-net:
     driver: bridge

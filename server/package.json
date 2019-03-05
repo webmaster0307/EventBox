@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "start-prod": "pm2-docker start --interpreter babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "serve": "npm run build && node dist/index.js",
     "mocha-test": "node ./node_modules/mocha/bin/mocha --require @babel/register tests/lifecycle.test.js tests/integration/**/*.test.js --exit",
@@ -41,7 +40,6 @@
     "mongoose": "^5.4.17",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",
-    "pm2": "^3.2.2",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
