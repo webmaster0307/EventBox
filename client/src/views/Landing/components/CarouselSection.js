@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Carousel, Icon, Card, Button, message } from 'antd'
 import TweenOne from 'rc-tween-one'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { Query } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 
@@ -34,10 +34,7 @@ class CarouselSection extends Component {
             </TweenOne>
           </div>
           <div key='content'>
-            <Query
-              query={event.GET_EVENTS_HOMEPAGE}
-              fetchPolicy='network-only'
-            >
+            <Query query={event.GET_EVENTS_HOMEPAGE} fetchPolicy='network-only'>
               {({ loading, error, data: { eventsHome } }) => {
                 if (loading) return 'Loading...'
                 if (error) return message.error(error)
@@ -69,15 +66,17 @@ class CarouselSection extends Component {
                           >
                             <Card.Meta
                               title={
-                                <span style={{
-                                  fontSize: 19,
-                                  fontFamily: 'Monsterat',
-                                  borderRadius: 4,
-                                  background: 'rgba(255, 255, 255, .8)',
-                                  color: '#618692',
-                                  padding: 4,
-                                  userSelect: 'none'
-                                }}>
+                                <span
+                                  style={{
+                                    fontSize: 19,
+                                    fontFamily: 'Monsterat',
+                                    borderRadius: 4,
+                                    background: 'rgba(255, 255, 255, .8)',
+                                    color: '#618692',
+                                    padding: 4,
+                                    userSelect: 'none'
+                                  }}
+                                >
                                   <Icon type='tag' theme='twoTone' twoToneColor='#52c41a' />
                                   <i>
                                     {item.title.length > 30
@@ -95,8 +94,7 @@ class CarouselSection extends Component {
                             />
                           </Card>
                         </div>
-                      ))
-                    }
+                      ))}
                   </Carousel>
                 )
               }}
@@ -120,4 +118,4 @@ class CarouselSection extends Component {
   }
 }
 
-export default translate('translations')(CarouselSection)
+export default withTranslation('translations')(CarouselSection)

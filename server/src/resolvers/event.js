@@ -8,8 +8,8 @@ import rp from 'request-promise'
 
 const qr = require('qr-image')
 import nodemailer from 'nodemailer'
-import fs from 'fs'
 import registerForm from './mailTemplate/registerEvent'
+import moment from 'moment'
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -174,13 +174,31 @@ export default {
       const learning = ['conference', 'seminarsncourses']
       const others = ['exhibitions', 'meetups', 'sports', 'community', 'attractions']
       return {
-        entertainment: await models.Event.count({ categories: { $in: entertainment } }),
-        learning: await models.Event.count({ categories: { $in: learning } }),
-        others: await models.Event.count({ categories: { $in: others } })
+        entertainment: await models.Event.count({
+          categories: {
+            $in: entertainment
+          }
+        }),
+        learning: await models.Event.count({
+          categories: {
+            $in: learning
+          }
+        }),
+        others: await models.Event.count({
+          categories: {
+            $in: others
+          }
+        })
       }
     },
 
-    eventsForSearch: async (parent, args, { models }) => {},
+    eventsForSearch: async (parent, args, { models }) => {
+      return await models.Event.find({
+        startTime: {
+          $gte: new Date()
+        }
+      }).then((data) => data.map((e) => e.title))
+    },
 
     eventsForCheckin: combineResolvers(isAuthenticated, async (parent, args, { me, models }) => {
       // console.log('me: ', me)
@@ -244,7 +262,6 @@ export default {
       isEventOwner,
       async (parent, { id, departmentIds }, { models, pubsub }) => {
         try {
-          console.log('departmentIds: ', departmentIds)
           const event = await models.Event.findByIdAndUpdate(
             id,
             {
@@ -325,7 +342,9 @@ export default {
           throw new ApolloError('User already registered this event', '400')
         }
         const code = uuidV4()
-        const imgSvg = qr.image(code, { type: 'svg' })
+        const imgSvg = qr.image(code, {
+          type: 'svg'
+        })
         const buffer = []
         const result = () => {
           return new Promise((resolve) => {

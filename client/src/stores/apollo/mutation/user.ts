@@ -7,3 +7,9 @@ export const SIGN_IN = gql`
     }
   }
 `
+
+export const DELETE_USER = gql`
+  mutation ($id: ID!) {
+    deleteUser (id: $id)
+  }
+`

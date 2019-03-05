@@ -5,7 +5,7 @@ import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 import QueueAnim from 'rc-queue-anim'
 import logo from '../images/vanlang_logo.png'
 import { Row, Col, Icon, Input, Button } from 'antd'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 @inject('stores')
 @observer
@@ -207,4 +207,4 @@ class Footer extends Component {
   }
 }
 
-export default translate('translations')(Footer)
+export default withTranslation('translations')(Footer)

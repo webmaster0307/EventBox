@@ -11,7 +11,7 @@ import { Query } from 'react-apollo'
 import { signOut } from '@components'
 import { session } from '@gqlQueries'
 
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 const { Item, SubMenu } = Menu
 
@@ -200,4 +200,4 @@ const LanguageSelected = ({ isEnglish }) =>
     </span>
   )
 
-export default translate('translations')(Header)
+export default withTranslation('translations')(Header)

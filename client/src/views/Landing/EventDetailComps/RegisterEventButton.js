@@ -2,7 +2,7 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import { event } from '@gqlQueries'
 import { Button, Modal, notification } from 'antd'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 // handle logging state before request
 const RegisterButton = ({ i18n, eventId }) => {
@@ -30,7 +30,7 @@ const RegisterButton = ({ i18n, eventId }) => {
   )
 }
 
-export default translate('translations')(RegisterButton)
+export default withTranslation('translations')(RegisterButton)
 
 const showError = ({ title = 'Something wrong', message }) => {
   notification.error({
