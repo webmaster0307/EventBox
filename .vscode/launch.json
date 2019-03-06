@@ -10,10 +10,14 @@
       "name": "express-graphql",
       "program": "${workspaceFolder}/server/src/index.js",
       "runtimeExecutable": "${workspaceFolder}/server/node_modules/.bin/babel-node",
-      "runtimeArgs": ["--nolazy"],
+      "runtimeArgs": [
+        "--nolazy",
+        "--require",
+        "${workspaceFolder}/server/node_modules/@babel/register"
+      ],
       "envFile": "${workspaceFolder}/server/.env",
-      "env":{
-        "NODE_ENV":"development",
+      "env": {
+        "NODE_ENV": "development",
         "BABEL_ENV": "debug"
       }
     }
