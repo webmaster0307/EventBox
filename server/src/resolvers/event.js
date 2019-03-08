@@ -525,6 +525,10 @@ export default {
     },
     eventUpdate: {
       subscribe: (parent, args, { pubsub }) => pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
+    },
+    eventCheckedIn: {
+      subscribe: (parent, { eventId }, { pubsub }) =>
+        pubsub.asyncIterator(`${EVENTS.EVENT.CHECKIN} ${eventId}`)
     }
   }
 }

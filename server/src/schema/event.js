@@ -137,5 +137,6 @@ export default gql`
     eventCreated: EventCreated!
     eventSubmited(departmentIds: [ID]!): Event
     eventUpdate: EventUpdate
+    eventCheckedIn(eventId: ID!): EventUser
   }
 `

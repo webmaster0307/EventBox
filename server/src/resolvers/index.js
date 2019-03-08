@@ -4,6 +4,7 @@ import departmentResolvers from './department'
 import userResolvers from './user'
 import eventResolvers from './event'
 import departmentuserResolvers from './departmentUser'
+import eventUserResolvers from './eventUser'
 import scalarCustom from './scalarCustom'
 
 export default [
@@ -13,5 +14,6 @@ export default [
   departmentResolvers,
   eventResolvers,
   userResolvers,
-  departmentuserResolvers
+  departmentuserResolvers,
+  eventUserResolvers
 ]
