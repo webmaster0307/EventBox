@@ -15,7 +15,11 @@ export default gql`
     updatedAt: Date
   }
 
+  extend type Query {
+    checkTicket(code: String!, eventId: ID!): EventUser
+  }
+
   extend type Mutation {
-    checkinEvent(code: String!, eventId: ID!): EventUser
+    submitTicket(code: String!, eventId: ID!): EventUser
   }
 `
