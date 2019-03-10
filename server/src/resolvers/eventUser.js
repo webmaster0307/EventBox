@@ -23,15 +23,19 @@ export default {
     submitTicket: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {
-        const ticket = await models.EventUser.findOne({ code, eventId })
-        // TODO: handle update ticket
-        const result = {
-          ...ticket.toObject(),
-          checkedIn: true,
-          checkedInTime: new Date()
-        }
-        pubsub.publish(`${EVENTS.EVENT.CHECKIN} ${eventId}`, { eventCheckedIn: result })
-        return result
+        const ticket = await models.EventUser.findOneAndUpdate(
+          { code, eventId },
+          {
+            checkedIn: true,
+            checkedInTime: new Date()
+          },
+          {
+            new: true
+          }
+        )
+
+        pubsub.publish(`${EVENTS.EVENT.CHECKIN} ${eventId}`, { eventCheckedIn: ticket })
+        return ticket
       }
     )
   }
