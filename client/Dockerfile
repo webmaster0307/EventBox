@@ -20,8 +20,6 @@ RUN yarn build
 #------------------------------------------------------
 #               Nginx serving begin
 #------------------------------------------------------
-FROM nginx
-
 FROM nginx:latest
 
 LABEL maintainer="vinh_nguyen1211@yahoo.com.vn"
