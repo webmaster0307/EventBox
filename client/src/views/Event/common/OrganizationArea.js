@@ -1,32 +1,37 @@
 import React, { Component } from 'react'
 import { Input, Form, Row, Col, Divider } from 'antd'
 import { formRuleNotEmpty, formItemLayout } from './constants'
+import UploadDragger from './UploadDragger'
 
 const FormItem = Form.Item
 
 class OrganizationArea extends Component {
-  formFields = () => [
-    {
-      name: 'organizationName',
-      title: 'Organization Name',
-      customRender: <Input placeholder='Organization' />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'organizationLogo',
-      title: 'Organization Logo',
-      customRender: <Input placeholder='Organization logo' />,
-      rules: [formRuleNotEmpty]
-    },
-    {
-      name: 'organizationDescription',
-      title: 'About organization',
-      customRender: (
-        <Input.TextArea placeholder='About organization' autosize={{ minRows: 2, maxRows: 6 }} />
-      ),
-      rules: [formRuleNotEmpty]
-    }
-  ]
+  formFields = () => {
+    const orgLogo = this.props.form.getFieldValue('organizationLogo')
+
+    return [
+      {
+        name: 'organizationName',
+        title: 'Organization Name',
+        customRender: <Input placeholder='Organization' />,
+        rules: [formRuleNotEmpty]
+      },
+      {
+        name: 'organizationLogo',
+        title: 'Organization Logo',
+        customRender: <UploadDragger imageSrc={orgLogo} />,
+        rules: [formRuleNotEmpty]
+      },
+      {
+        name: 'organizationDescription',
+        title: 'About organization',
+        customRender: (
+          <Input.TextArea placeholder='About organization' autosize={{ minRows: 2, maxRows: 6 }} />
+        ),
+        rules: [formRuleNotEmpty]
+      }
+    ]
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form

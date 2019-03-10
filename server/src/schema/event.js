@@ -124,7 +124,7 @@ export default gql`
 
     deleteEvent(id: ID!): Boolean!
 
-    publishEvent(id: ID!, departmentIds: [ID]!): Boolean!
+    publishEvent(id: ID!, departmentIds: [ID]!): Event
 
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
@@ -137,5 +137,6 @@ export default gql`
     eventCreated: EventCreated!
     eventSubmited(departmentIds: [ID]!): Event
     eventUpdate: EventUpdate
+    eventCheckedIn(eventId: ID!): EventUser
   }
 `

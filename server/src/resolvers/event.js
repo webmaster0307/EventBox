@@ -280,7 +280,7 @@ export default {
           })
           // const thumbnail = event?.images?.thumbnail
           // console.log('thumbnail: ',thumbnail);
-          return true
+          return event
         } catch (error) {
           throw new Error('Failed to publish event')
         }
@@ -525,6 +525,10 @@ export default {
     },
     eventUpdate: {
       subscribe: (parent, args, { pubsub }) => pubsub.asyncIterator(EVENTS.EVENT.EVENT_UPDATE)
+    },
+    eventCheckedIn: {
+      subscribe: (parent, { eventId }, { pubsub }) =>
+        pubsub.asyncIterator(`${EVENTS.EVENT.CHECKIN} ${eventId}`)
     }
   }
 }
