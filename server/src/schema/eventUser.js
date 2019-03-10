@@ -6,7 +6,7 @@ export default gql`
     userId: ID!
     eventId: ID!
     code: String
-    ticketSvgrc: String
+    ticketSvgSrc: String
     checkedIn: Boolean
     checkedInTime: Date
     userInfo: User
@@ -16,6 +16,7 @@ export default gql`
   }
 
   extend type Query {
+    tickets(eventId: ID!): [EventUser]
     checkTicket(code: String!, eventId: ID!): EventUser
   }
 

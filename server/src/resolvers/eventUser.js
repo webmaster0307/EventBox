@@ -6,6 +6,13 @@ import { ApolloError } from 'apollo-server'
 
 export default {
   Query: {
+    tickets: combineResolvers(
+      // isAuthenticated,
+      async (parent, { code, eventId }, { models, pubsub }) => {
+        const tickets = await models.EventUser.find({ eventId })
+        return tickets
+      }
+    ),
     checkTicket: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {

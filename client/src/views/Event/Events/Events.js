@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Table, Icon, message, Popconfirm, Tooltip } from 'antd'
+import { Table, Icon, message, Popconfirm, Tooltip, Button } from 'antd'
 import { DASHBOARD_EVENT } from '@routes'
 import { Query, Mutation } from 'react-apollo'
 import { event } from '@gqlQueries'
@@ -92,6 +92,21 @@ class EventList extends Component {
         title: 'Last updated',
         dataIndex: 'updatedAt',
         render: (updatedAt) => <div>{new Date(updatedAt).toLocaleString()}</div>
+      },
+      {
+        title: 'Checkin',
+        render: (text, record) => (
+          <Link
+            to={{
+              pathname: `${DASHBOARD_EVENT}/checkin/${record.id}`,
+              state: { eventTitle: record.title }
+            }}
+          >
+            <Tooltip title='Check-in reviews'>
+              <Button shape='round' type='primary' icon='audit' />
+            </Tooltip>
+          </Link>
+        )
       },
       {
         title: 'Action',

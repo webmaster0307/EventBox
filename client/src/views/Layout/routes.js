@@ -1,5 +1,5 @@
 import Home from '../Account/Home'
-import { Events, EventCreate, EventDetail, EventUpdate } from '../Event'
+import { Events, EventCreate, EventDetail, EventUpdate, EventCheckin } from '../Event'
 import AccountPage from '../Account'
 import { AdminPage, Department, DepartmentDetail } from '../Admin'
 import { EventsReview, EventDetailReview } from '../EventReview'
@@ -70,6 +70,12 @@ export const routesComp = [
     exact: true,
     path: routes.DB_EVENT_DETAIL_REVIEW,
     component: EventDetailReview,
+    roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: routes.DASHBOARD_EVENT_CHECKIN,
+    component: EventCheckin,
     roles: ['admin', 'user']
   }
 ]

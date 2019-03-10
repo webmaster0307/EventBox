@@ -13,6 +13,7 @@ export const DASHBOARD_EVENT_CREATE = `${DASHBOARD_EVENT}/create`
 export const DASHBOARD_EVENT_REVIEW = `${DASHBOARD_EVENT}/review`
 export const DASHBOARD_EVENT_DETAIL = `${DASHBOARD_EVENT}/detail/:eventId`
 export const DASHBOARD_EVENT_UPDATE = `${DASHBOARD_EVENT}/update/:eventId`
+export const DASHBOARD_EVENT_CHECKIN = `${DASHBOARD_EVENT}/checkin/:eventId`
 //
 export const DB_ADMIN = `${DASHBOARD}/admin`
 export const DB_ADMIN_DEPARTMENT = `${DB_ADMIN}/departments`

@@ -120,11 +120,20 @@ const EVENTS_FOR_SEARCH = gql`
   }
 `
 
+const GET_EVENT_TITLE = gql`
+  query($eventId: ID!) {
+    event(id: $eventId) {
+      title
+    }
+  }
+`
+
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
   GET_EVENTS_HOMEPAGE,
   GET_EVENT_DETAIL,
   GET_EVENTS_INREVIEW,
   COUNT_EVENT_BY_TYPE,
-  EVENTS_FOR_SEARCH
+  EVENTS_FOR_SEARCH,
+  GET_EVENT_TITLE
 }
