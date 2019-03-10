@@ -30,6 +30,10 @@ export default {
     submitTicket: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {
+        const existed = await models.EventUser.findOne({ code, eventId })
+        if (existed && existed.checkedIn) {
+          return null
+        }
         const ticket = await models.EventUser.findOneAndUpdate(
           { code, eventId },
           {
@@ -40,8 +44,10 @@ export default {
             new: true
           }
         )
-
-        pubsub.publish(`${EVENTS.EVENT.CHECKIN} ${eventId}`, { eventCheckedIn: ticket })
+        // console.log('object: ', ticket.toObject())
+        pubsub.publish(`${EVENTS.EVENT.CHECKIN} ${eventId}`, {
+          eventCheckedIn: { ...ticket.toObject(), id: ticket.toObject()._id }
+        })
         return ticket
       }
     )
