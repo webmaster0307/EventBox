@@ -59,10 +59,10 @@ export default class SelectDepartments extends Component {
                     // return alert('Failed to delete')
                   }
                   const dpmsName = publishEvent.departments.map((d) => d.name).join(', ')
-                  message.success(`Published event to [${dpmsName}] successfully!`, 3000)
+                  message.success(`Published event to [${dpmsName}] successfully!`, 3)
                   setTimeout(() => {
                     close && close()
-                  }, 2000)
+                  }, 1200)
                   try {
                     const data = cache.readQuery({
                       query: event.GET_PAGINATED_EVENTS_WITH_USERS
