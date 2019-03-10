@@ -11,6 +11,9 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
         images {
           thumbnail
         }
+        departments {
+          id
+        }
         createdAt
         updatedAt
         user {

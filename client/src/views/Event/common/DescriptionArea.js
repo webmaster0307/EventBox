@@ -3,7 +3,6 @@ import { Input, Form, Row, Col, Divider } from 'antd'
 import { formRuleNotEmpty, formItemLayout } from './constants'
 import { Editor } from 'react-draft-wysiwyg'
 import { inject, observer } from 'mobx-react'
-import DepartmentSelection from './DepartmentSelection'
 import UploadDragger from './UploadDragger'
 
 const FormItem = Form.Item
@@ -20,13 +19,6 @@ class DescriptionArea extends Component {
         title: 'Title',
         customRender: <Input placeholder='Title' />,
         rules: [formRuleNotEmpty]
-      },
-      {
-        name: 'departments',
-        title: 'Thuộc về Khoa',
-        customRender: (
-          <DepartmentSelection placeholder='Title' updateStage={this.props.updateStage} />
-        )
       },
       {
         name: 'thumbnail',

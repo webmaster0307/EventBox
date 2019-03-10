@@ -95,7 +95,14 @@ const DELETE_EVENT_BYID = gql`
 
 const PUBLISH_EVENT_BYID = gql`
   mutation($id: ID!, $departmentIds: [ID]!) {
-    publishEvent(id: $id, departmentIds: $departmentIds)
+    publishEvent(id: $id, departmentIds: $departmentIds) {
+      departments {
+        id
+        name
+      }
+      status
+      updatedAt
+    }
   }
 `
 

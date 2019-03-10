@@ -180,7 +180,6 @@ class EventUpdate extends Component {
 
   render() {
     const { loading, buttonLoading } = this.state
-    const { event } = this.props.stores.event
 
     return (
       <Spin spinning={loading}>
@@ -198,7 +197,7 @@ class EventUpdate extends Component {
             >
               Update Event
             </Button>
-            <Button
+            {/* <Button
               type='primary'
               loading={buttonLoading}
               icon='form'
@@ -206,7 +205,7 @@ class EventUpdate extends Component {
               disabled={event && event.status === 'in-review'}
             >
               PUBLISH
-            </Button>
+            </Button> */}
           </FormItem>
         </Form>
         <BackTop />
