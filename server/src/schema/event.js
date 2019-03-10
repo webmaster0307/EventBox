@@ -6,10 +6,11 @@ export default gql`
     title: String!
     slug: String!
     description: String!
+    rawHtmlContent: String!
     shortDescription: String!
     user: User
     departments: [Department]
-    categoryId: String
+    categories: [String]
     images: EventImages!
     regFrom: String
     regTo: String
@@ -19,6 +20,7 @@ export default gql`
     organizationDescription: String
     startTime: String
     endTime: String
+    participants: [String]
     location: String
     address: String
     status: String!
@@ -49,11 +51,35 @@ export default gql`
     event: Event!
   }
 
+  type EventUpdate {
+    _id: ID
+    participants: [ID]
+  }
+
+  type EventTicket {
+    id: ID!
+    code: String!
+    ticketSvgSrc: String!
+    checkedIn: Boolean!
+    userId: ID!
+    eventId: ID!
+    checkedInTime: Date
+  }
+
+  type countResult {
+    entertainment: Int
+    learning: Int
+    others: Int
+  }
+
   extend type Query {
     events(status: String, cursor: String, limit: Int): EventConnection!
     eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
+    countEventByType: countResult
+    eventsForSearch: [String]
+    eventsForCheckin: [Event]
   }
 
   extend type Mutation {
@@ -61,6 +87,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       regFrom: String
@@ -80,6 +107,7 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      rawHtmlContent: String!
       shortDescription: String
       categoryId: String
       location: String
@@ -96,14 +124,19 @@ export default gql`
 
     deleteEvent(id: ID!): Boolean!
 
-    publishEvent(id: ID!, departmentIds: [ID]!): Boolean!
+    publishEvent(id: ID!, departmentIds: [ID]!): Event
 
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
+
+    joinEvent(eventId: ID!): EventTicket!
+    unjoinEvent(userId: ID!, eventId: ID!): Event!
   }
 
   extend type Subscription {
     eventCreated: EventCreated!
     eventSubmited(departmentIds: [ID]!): Event
+    eventUpdate: EventUpdate
+    eventCheckedIn(eventId: ID!): EventUser
   }
 `

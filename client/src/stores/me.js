@@ -14,7 +14,6 @@ class Me {
       fetchPolicy: 'network-only'
     })
     this.me = { ...me }
-    // console.log(toJS(this.me))
   }
 }
 

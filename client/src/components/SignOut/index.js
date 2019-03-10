@@ -1,8 +1,8 @@
 import React from 'react'
 import { ApolloConsumer } from 'react-apollo'
 
-import * as routes from '@routes'
-import history from '../../constants/history'
+// import * as routes from '@routes'
+// import history from '../../constants/history'
 
 import { stateLink } from '../../'
 
@@ -19,9 +19,9 @@ const SignOutButton = () => (
 const signOut = async (client) => {
   localStorage.setItem('token', '')
   await client.resetStore(stateLink.writeDefaults())
-  if (history.location.pathname !== routes.HOME) {
-    history.push(routes.HOME)
-  }
+  // if (history.location.pathname !== routes.HOME) {
+  //   history.push(routes.HOME)
+  // }
 }
 
 export { signOut }

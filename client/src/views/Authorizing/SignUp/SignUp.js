@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Card, Form, Input, Icon, Button, message, Skeleton } from 'antd'
 import gql from 'graphql-tag'
 import { inject, observer } from 'mobx-react'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 const FormItem = Form.Item
 
@@ -166,4 +166,4 @@ class SignUpForm extends React.Component {
   }
 }
 
-const SignUpFormWrapped = translate('translations')(Form.create()(withRouter(SignUpForm)))
+const SignUpFormWrapped = withTranslation('translations')(Form.create()(withRouter(SignUpForm)))

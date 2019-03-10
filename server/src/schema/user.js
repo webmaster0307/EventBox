@@ -8,7 +8,8 @@ export default gql`
     firstname: String
     lastname: String
     department: String
-    phoneNumber: Int
+    phoneNumber: String
+    photo: String
     secret: String
     role: [String]
     events: [Event!]
@@ -31,7 +32,7 @@ export default gql`
   extend type Mutation {
     signUp(username: String!, email: String!, password: String!): Boolean
 
-    signIn(username: String!, password: String!): Token!
+    signIn(username: String!, password: String!, type: Int): Token!
 
     updateUser(
       id: ID!
@@ -40,7 +41,7 @@ export default gql`
       firstname: String
       lastname: String
       department: String
-      phoneNumber: Int
+      phoneNumber: String
       secret: String
       role: [String]
     ): User!

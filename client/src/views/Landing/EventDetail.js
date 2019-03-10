@@ -4,12 +4,7 @@ import { inject, observer } from 'mobx-react'
 
 import SignInModal from './components/Authentication/SignIn'
 import SignUpModal from './components/Authentication/SignUp'
-
 import Nav from './components/Nav'
-// import Banner from './components/Banner'
-// import FirstSection from './components/FirstSection'
-// import SecondSection from './components/SecondSection'
-// import ThirdSection from './components/ThirdSection'
 import Footer from './components/Footer'
 
 import { withRouter } from 'react-router-dom'
@@ -22,6 +17,7 @@ import moment from 'moment'
 import 'moment/locale/vi'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
+import { RegisterButton } from './EventDetailComps'
 
 import './less/antMotionStyle.less'
 import './eventdetail.scss'
@@ -29,7 +25,6 @@ const { location } = window
 
 let isMobile
 enquireScreen((b) => {
-  // console.log(b)
   isMobile = b
 })
 
@@ -84,6 +79,7 @@ class EventItem extends React.Component {
   }
 
   componentDidMount = async () => {
+    await this.props.stores.me.getMe()
     const { eventId: slug } = this.props.match.params
     const eventId = slug.split('-')[slug.split('-').length - 1]
     let result
@@ -100,13 +96,9 @@ class EventItem extends React.Component {
       loading: false
     })
 
-    Events.scrollEvent.register('begin', function() {
-      // console.log('begin', arguments)
-    })
+    Events.scrollEvent.register('begin')
 
-    Events.scrollEvent.register('end', function() {
-      // console.log('end', arguments)
-    })
+    Events.scrollEvent.register('end')
   }
 
   scrollTo = () => {
@@ -146,7 +138,6 @@ class EventItem extends React.Component {
   }
 
   render() {
-    // console.log('event: ',this.state.event)
     const { event, loading } = this.state
 
     return (
@@ -169,14 +160,11 @@ class EventItem extends React.Component {
 }
 
 const Header = (props) => {
-  const { event } = props
+  const { event, ...rest } = props
   const time = moment(Number(event.startTime))
-  // console.log('time: ', time.format('MMMM') )
-  // console.log('time: ', time.format('dddd') )
-  // console.log('time: ', time.format('DD') )
 
   return (
-    <Row {...props}>
+    <Row {...rest}>
       <Col offset={4} span={2}>
         {/* {new Date(Number(event.startTime)).toDateString()} */}
         <div className='calendar-fake'>
@@ -196,6 +184,12 @@ const Header = (props) => {
         </div>
         <div className='address'>{event.address}</div>
       </Col>
+      <Col span={6}>
+        {/* <Button type='primary' icon='fire' onClick={() => console.log('event: ', event)}>
+          Đăng ký ngay
+        </Button> */}
+        <RegisterButton eventId={event.id} />
+      </Col>
     </Row>
   )
 }
@@ -208,11 +202,6 @@ const HeaderNav = (props) => {
           <div className='item'>
             <Link to='inTroduce' offset={-56} spy smooth duration={600}>
               Giới thiệu
-            </Link>
-          </div>
-          <div className='item'>
-            <Link to='ticket' spy smooth duration={600}>
-              Thông tin vé
             </Link>
           </div>
           <div className='item'>

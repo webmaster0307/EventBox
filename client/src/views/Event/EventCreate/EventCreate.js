@@ -6,6 +6,7 @@ import { DescriptionArea, OriganizationArea, DateHoldingArea } from '../common'
 import { EditorState, convertToRaw } from 'draft-js'
 import { inject } from 'mobx-react'
 import { event as eventQueries } from '@gqlQueries'
+import { stateToHTML } from 'draft-js-export-html'
 import * as routes from '@routes'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import './styles.scss'
@@ -110,6 +111,7 @@ class EventCreate extends Component {
     const dataSubmit = {
       ...values,
       description: JSON.stringify(convertToRaw(event.editorEventCreate.getCurrentContent())),
+      rawHtmlContent: stateToHTML(event.editorEventCreate.getCurrentContent()),
       startTime: values.startTime._d,
       endTime: values.endTime._d
     }

@@ -1,13 +1,10 @@
 import React, { Component, createElement } from 'react'
-import { inject, observer } from 'mobx-react'
 import { Row } from 'antd'
 import QueueAnim from 'rc-queue-anim'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import EventList from './EventList'
 
-@inject('stores')
-@observer
 class SecondSection extends Component {
   title = () => [
     { key: '0', name: 'title', text: 'Hot Events' },
@@ -55,4 +52,4 @@ class SecondSection extends Component {
   }
 }
 
-export default translate('translations')(SecondSection)
+export default withTranslation('translations')(SecondSection)

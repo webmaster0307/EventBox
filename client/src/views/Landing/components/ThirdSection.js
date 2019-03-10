@@ -1,62 +1,59 @@
 import React, { Component, createElement } from 'react'
-import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
-import { Row, Col, Tag } from 'antd'
+import { Row, Col, Tag, message } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
+import { Query } from 'react-apollo'
+import { event } from '@gqlQueries'
 
-import entertainment from '../images/section3/Entertainment.png'
-import studying from '../images/section3/Studying.png'
-import other from '../images/section3/Other.png'
+import entertainmentIcon from '../images/section3/Entertainment.png'
+import learningIcon from '../images/section3/Studying.png'
+import othersIcon from '../images/section3/Other.png'
 
-@inject('stores')
-@observer
 class ThirdSection extends Component {
   title = () => [{ name: 'title', text: '3rd-title' }, { name: 'content', text: '3rd-subtitle' }]
-
-  block = () => {
+  block = ({ entertainment, learning, others }) => {
     const { i18n } = this.props
-    // const { eventList } = this.props.stores.landing
-
     return [
       {
-        key: '0',
-        icon: entertainment,
+        icon: entertainmentIcon,
         title: i18n.t('Entertainment'),
-        content: <Tag color='green'>10 {i18n.t('events')}</Tag>
+        content: (
+          <Tag color='green'>
+            <span className='none-user-select'>
+              {entertainment} {i18n.t('events')}
+            </span>
+          </Tag>
+        )
       },
       {
-        key: '1',
-        icon: studying,
+        icon: learningIcon,
         title: i18n.t('Studying'),
-        content: <Tag color='green'>4 {i18n.t('events')}</Tag>
+        content: (
+          <Tag color='green'>
+            <span className='none-user-select'>
+              {learning} {i18n.t('events')}
+            </span>
+          </Tag>
+        )
       },
       {
-        key: '2',
-        icon: other,
+        icon: othersIcon,
         title: i18n.t('Others'),
-        content: <Tag color='green'>8 {i18n.t('events')}</Tag>
+        content: (
+          <Tag color='green'>
+            <span className='none-user-select'>
+              {others} {i18n.t('events')}
+            </span>
+          </Tag>
+        )
       }
     ]
   }
-
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100
 
   render() {
     const { i18n } = this.props
-    const childrenToRender = this.block().map((item, i) => {
-      return (
-        <Col key={i.toString()} className='block' md={8} sm={24} xs={24}>
-          <div className='icon'>
-            <img src={item.icon} width='100%' alt='img' />
-          </div>
-          <h3 className='content0-title'>
-            <b>{item.title}</b>
-          </h3>
-          <div>{item.content}</div>
-        </Col>
-      )
-    })
     return (
       <div className='home-page-wrapper content0-wrapper' style={{ minHeight: 485 }}>
         <div className='home-page content0'>
@@ -87,7 +84,24 @@ class ThirdSection extends Component {
               leaveReverse
               component={Row}
             >
-              {childrenToRender}
+              <Query query={event.COUNT_EVENT_BY_TYPE}>
+                {({ loading, error, data: { countEventByType } }) => {
+                  if (loading) return 'loading...'
+                  if (error) return message.error(error)
+
+                  return this.block(countEventByType).map((item, i) => (
+                    <Col key={i.toString()} className='block' md={8} sm={24} xs={24}>
+                      <div className='icon'>
+                        <img src={item.icon} width='100%' alt='img' className='none-user-select' />
+                      </div>
+                      <h3 className='content0-title'>
+                        <b className='none-user-select'>{item.title}</b>
+                      </h3>
+                      <div>{item.content}</div>
+                    </Col>
+                  ))
+                }}
+              </Query>
             </QueueAnim>
           </OverPack>
         </div>
@@ -96,4 +110,4 @@ class ThirdSection extends Component {
   }
 }
 
-export default translate('translations')(ThirdSection)
+export default withTranslation('translations')(ThirdSection)

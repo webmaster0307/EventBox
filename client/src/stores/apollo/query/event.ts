@@ -11,6 +11,9 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
         images {
           thumbnail
         }
+        departments {
+          id
+        }
         createdAt
         updatedAt
         user {
@@ -74,6 +77,7 @@ const GET_EVENT_DETAIL = gql`
         email
       }
       status
+      participants
     }
   }
 `
@@ -100,9 +104,27 @@ const GET_EVENTS_INREVIEW = gql`
   }
 `
 
+const COUNT_EVENT_BY_TYPE = gql`
+  query {
+    countEventByType {
+      entertainment
+      learning
+      others
+    }
+  }
+`
+
+const EVENTS_FOR_SEARCH = gql`
+  query {
+    eventsForSearch
+  }
+`
+
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
   GET_EVENTS_HOMEPAGE,
   GET_EVENT_DETAIL,
-  GET_EVENTS_INREVIEW
+  GET_EVENTS_INREVIEW,
+  COUNT_EVENT_BY_TYPE,
+  EVENTS_FOR_SEARCH
 }

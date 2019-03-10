@@ -5,6 +5,7 @@ const CREATE_EVENT = gql`
     $title: String!
     $thumbnail: String!
     $description: String!
+    $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
     $organizationLogo: String!
@@ -18,6 +19,7 @@ const CREATE_EVENT = gql`
       title: $title
       thumbnail: $thumbnail
       description: $description
+      rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName
       organizationLogo: $organizationLogo
@@ -50,6 +52,7 @@ const UPDATE_EVENT_BYID = gql`
     $title: String!
     $thumbnail: String!
     $description: String!
+    $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
     $organizationLogo: String!
@@ -64,6 +67,7 @@ const UPDATE_EVENT_BYID = gql`
       title: $title
       thumbnail: $thumbnail
       description: $description
+      rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName
       organizationLogo: $organizationLogo
@@ -91,7 +95,14 @@ const DELETE_EVENT_BYID = gql`
 
 const PUBLISH_EVENT_BYID = gql`
   mutation($id: ID!, $departmentIds: [ID]!) {
-    publishEvent(id: $id, departmentIds: $departmentIds)
+    publishEvent(id: $id, departmentIds: $departmentIds) {
+      departments {
+        id
+        name
+      }
+      status
+      updatedAt
+    }
   }
 `
 
@@ -107,11 +118,21 @@ const REJECT_EVENT_BYID = gql`
   }
 `
 
+const JOIN_EVENT = gql`
+  mutation($eventId: ID!) {
+    joinEvent(eventId: $eventId) {
+      code
+      ticketSvgSrc
+    }
+  }
+`
+
 export {
   CREATE_EVENT,
   UPDATE_EVENT_BYID,
   DELETE_EVENT_BYID,
   PUBLISH_EVENT_BYID,
   APPROVE_EVENT_BYID,
-  REJECT_EVENT_BYID
+  REJECT_EVENT_BYID,
+  JOIN_EVENT
 }

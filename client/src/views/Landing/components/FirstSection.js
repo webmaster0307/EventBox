@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { inject, observer } from 'mobx-react'
 import QueueAnim from 'rc-queue-anim'
-import { Row, Col, AutoComplete, Form, Button, Tabs, Icon, Select } from 'antd'
+import { Row, Col, AutoComplete, Form, Button, Tabs, Icon, Select, Skeleton, message } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
+import { event } from '@gqlQueries'
+import { Query } from 'react-apollo'
 
 import { categoryOpts, selectTimeOpts } from '../../../constants/options'
 
@@ -14,17 +15,33 @@ const TabPane = Tabs.TabPane
 const Option = Select.Option
 
 @withRouter
-@inject('stores')
-@observer
 class FirstSection extends Component {
-  // title = () => [{ key: '0', name: 'title', text: 'Products and Services' }]
+  constructor(props) {
+    super(props)
+    this.state = {
+      suggestions: []
+    }
+  }
 
   handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
 
+  handleAutoCompleteSelect(value) {
+    console.log(value)
+  }
+
+  handleAutoCompleteSearch = (eventsForSearch, words) => {
+    if (words) {
+      const suggestions = eventsForSearch.filter(
+        (title) => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      )
+      this.setState({ suggestions })
+    } else this.setState({ suggestions: [] })
+  }
+
   render() {
-    const { suggestion } = this.props.stores.landing
+    const { suggestions } = this.state
     const { i18n } = this.props
     const { getFieldDecorator } = this.props.form
     const formInputLayout = {
@@ -60,21 +77,6 @@ class FirstSection extends Component {
       <div className='home-page-wrapper content0-wrapper'>
         <div className='home-page content0'>
           <div className='title-wrapper'>
-            {/* {this.title().map(item =>
-              createElement(item.name.indexOf('title') === 0 ? 'h1' : 'div',
-                {
-                  key: item.key,
-                  className: item.name.indexOf('title') === 0 ? 'title-h1' : 'title-content'
-                },
-                typeof item.text === 'string' && item.text.match(/\.(svg|gif|jpg|jpeg|png|JPG|PNG|GIF|JPEG)$/)
-                  ? createElement('img', {
-                    src: item.text,
-                    height: '100%',
-                    alt: 'img'
-                  })
-                  : item.text
-                )
-            )} */}
             <Tabs defaultActiveKey='1'>
               <TabPane
                 tab={
@@ -92,18 +94,26 @@ class FirstSection extends Component {
                     padding: 10
                   }}
                 >
-                  <FormItem {...formInputLayout}>
-                    {getFieldDecorator('searchbar', { rules: [] })(
-                      <AutoComplete
-                        id='searchbar'
-                        dataSource={suggestion}
-                        onSelect={(v) => this.props.stores.landing.handleAutoCompleteSelect(v)}
-                        onSearch={(v) => this.props.stores.landing.handleAutoCompleteSearch(v)}
-                        placeholder='Search events...'
-                        style={{ width: '60%' }}
-                      />
-                    )}
-                  </FormItem>
+                  <Query query={event.EVENTS_FOR_SEARCH}>
+                    {({ loading, error, data: { eventsForSearch } }) => {
+                      if (loading) return <Skeleton />
+                      if (error) return message.error(error)
+                      return (
+                        <FormItem {...formInputLayout}>
+                          {getFieldDecorator('searchbar', { rules: [] })(
+                            <AutoComplete
+                              id='searchbar'
+                              dataSource={suggestions}
+                              onSelect={(v) => this.handleAutoCompleteSelect(v)}
+                              onSearch={(v) => this.handleAutoCompleteSearch(eventsForSearch, v)}
+                              placeholder='Search for events...'
+                              style={{ width: '60%' }}
+                            />
+                          )}
+                        </FormItem>
+                      )
+                    }}
+                  </Query>
                   <FormItem {...formButtonLayout}>
                     <Button
                       style={{
@@ -176,4 +186,4 @@ class FirstSection extends Component {
   }
 }
 
-export default translate('translations')(Form.create()(FirstSection))
+export default withTranslation('translations')(Form.create()(FirstSection))

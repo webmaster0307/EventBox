@@ -6,6 +6,7 @@ import { OriganizationArea, DateHoldingArea, DescriptionArea } from '../common'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
+import { stateToHTML } from 'draft-js-export-html'
 import { event as eventQueries } from '@gqlQueries'
 import * as routes from '@routes'
 
@@ -59,6 +60,7 @@ class EventUpdate extends Component {
           id: eventId,
           ...values,
           description: JSON.stringify(convertToRaw(event.editorEventCreate.getCurrentContent())),
+          rawHtmlContent: stateToHTML(event.editorEventCreate.getCurrentContent()),
           startTime: values.startTime._d,
           endTime: values.endTime._d
         }
@@ -178,7 +180,6 @@ class EventUpdate extends Component {
 
   render() {
     const { loading, buttonLoading } = this.state
-    const { event } = this.props.stores.event
 
     return (
       <Spin spinning={loading}>
@@ -196,7 +197,7 @@ class EventUpdate extends Component {
             >
               Update Event
             </Button>
-            <Button
+            {/* <Button
               type='primary'
               loading={buttonLoading}
               icon='form'
@@ -204,7 +205,7 @@ class EventUpdate extends Component {
               disabled={event && event.status === 'in-review'}
             >
               PUBLISH
-            </Button>
+            </Button> */}
           </FormItem>
         </Form>
         <BackTop />
