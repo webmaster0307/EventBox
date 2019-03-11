@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { List, Tooltip, notification } from 'antd'
 import './styles.scss'
 import { Query } from 'react-apollo'
-import { eventUser } from '@gqlQueries'
+import { ticket } from '@gqlQueries'
 import moment from 'moment'
 import gql from 'graphql-tag'
 
@@ -21,7 +21,7 @@ const EventCheckinWrapper = (props) => {
           <div>
             <TitleWrapper event={data.event} />
             <EventCheckin {...props} />
-            <Query query={eventUser.TICKETS} variables={{ eventId }}>
+            <Query query={ticket.TICKETS} variables={{ eventId }}>
               {({ data, loading, subscribeToMore }) => (
                 <EventCheckin
                   eventId={eventId}
@@ -39,7 +39,7 @@ const EventCheckinWrapper = (props) => {
     return (
       <div>
         <TitleWrapper event={{ title: state.eventTitle }} />
-        <Query query={eventUser.TICKETS} variables={{ eventId }}>
+        <Query query={ticket.TICKETS} variables={{ eventId }}>
           {({ data, loading, subscribeToMore }) => (
             <EventCheckin
               eventId={eventId}
@@ -68,7 +68,7 @@ class EventCheckin extends Component {
   subscribeToMoreTicket = () => {
     const { eventId } = this.props
     this.props.subscribeToMore({
-      document: eventUser.SUBSCRIBE_TICKET_CHECKIN,
+      document: ticket.SUBSCRIBE_TICKET_CHECKIN,
       variables: { eventId },
       updateQuery: (previousResult, { subscriptionData }) => {
         if (!subscriptionData.data) {

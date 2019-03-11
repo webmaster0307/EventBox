@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express'
 
 export default gql`
-  type EventUser {
+  type Ticket {
     id: ID!
     userId: ID!
     eventId: ID!
@@ -16,11 +16,11 @@ export default gql`
   }
 
   extend type Query {
-    tickets(eventId: ID!): [EventUser]
-    checkTicket(code: String!, eventId: ID!): EventUser
+    tickets(eventId: ID!): [Ticket]
+    checkTicket(code: String!, eventId: ID!): Ticket
   }
 
   extend type Mutation {
-    submitTicket(code: String!, eventId: ID!): EventUser
+    submitTicket(code: String!, eventId: ID!): Ticket
   }
 `

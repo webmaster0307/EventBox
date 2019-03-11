@@ -2,26 +2,26 @@ import { combineResolvers } from 'graphql-resolvers'
 import mongoose from 'mongoose'
 import { isAuthenticated, isEventOwner } from './authorization'
 import { EVENTS } from '../subscription'
-import { ApolloError } from 'apollo-server'
+import { ApolloError, UserInputError } from 'apollo-server'
 
 export default {
   Query: {
     tickets: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {
-        const tickets = await models.EventUser.find({ eventId })
+        const tickets = await models.Ticket.find({ eventId })
         return tickets
       }
     ),
     checkTicket: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {
-        const ticket = await models.EventUser.findOne({ code, eventId })
+        const ticket = await models.Ticket.findOne({ code, eventId })
         return ticket
       }
     )
   },
-  EventUser: {
+  Ticket: {
     userInfo: async ({ userId }, args, { models, loaders }) => {
       return await models.User.findById(userId)
     }
@@ -30,11 +30,14 @@ export default {
     submitTicket: combineResolvers(
       // isAuthenticated,
       async (parent, { code, eventId }, { models, pubsub }) => {
-        const existed = await models.EventUser.findOne({ code, eventId })
+        const existed = await models.Ticket.findOne({ code, eventId })
+        if (!existed) {
+          throw new UserInputError('Ticket is not recognized!')
+        }
         if (existed && existed.checkedIn) {
           return null
         }
-        const ticket = await models.EventUser.findOneAndUpdate(
+        const ticket = await models.Ticket.findOneAndUpdate(
           { code, eventId },
           {
             checkedIn: true,

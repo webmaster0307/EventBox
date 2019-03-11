@@ -334,7 +334,7 @@ export default {
         if (!eventExisted) {
           throw new ApolloError('Event is not recognized', '400')
         }
-        const isJoined = await models.EventUser.findOne({
+        const isJoined = await models.Ticket.findOne({
           userId: me.id,
           eventId
         })
@@ -372,7 +372,7 @@ export default {
                 const {
                   file: { filename }
                 } = await rp(options)
-                const ticket = await models.EventUser.create({
+                const ticket = await models.Ticket.create({
                   userId: me.id,
                   eventId,
                   code,

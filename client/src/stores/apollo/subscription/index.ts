@@ -1,4 +1,4 @@
 import * as event from './event'
-import * as eventUser from './eventUser'
+import * as ticket from './ticket'
 
-export { event, eventUser }
+export { event, ticket }
