@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
-let eventUserSchema = new Schema(
+let ticketSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -36,4 +36,4 @@ let eventUserSchema = new Schema(
   }
 )
 
-export default mongoose.model('eventuser', eventUserSchema)
+export default mongoose.model('ticket', ticketSchema)

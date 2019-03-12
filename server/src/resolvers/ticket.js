@@ -1,0 +1,58 @@
+import { combineResolvers } from 'graphql-resolvers'
+import mongoose from 'mongoose'
+import { isAuthenticated, isEventOwner } from './authorization'
+import { EVENTS } from '../subscription'
+import { ApolloError, UserInputError } from 'apollo-server'
+
+export default {
+  Query: {
+    tickets: combineResolvers(
+      // isAuthenticated,
+      async (parent, { code, eventId }, { models, pubsub }) => {
+        const tickets = await models.Ticket.find({ eventId })
+        return tickets
+      }
+    ),
+    checkTicket: combineResolvers(
+      // isAuthenticated,
+      async (parent, { code, eventId }, { models, pubsub }) => {
+        const ticket = await models.Ticket.findOne({ code, eventId })
+        return ticket
+      }
+    )
+  },
+  Ticket: {
+    userInfo: async ({ userId }, args, { models, loaders }) => {
+      return await models.User.findById(userId)
+    }
+  },
+  Mutation: {
+    submitTicket: combineResolvers(
+      // isAuthenticated,
+      async (parent, { code, eventId }, { models, pubsub }) => {
+        const existed = await models.Ticket.findOne({ code, eventId })
+        if (!existed) {
+          throw new UserInputError('Ticket is not recognized!')
+        }
+        if (existed && existed.checkedIn) {
+          return null
+        }
+        const ticket = await models.Ticket.findOneAndUpdate(
+          { code, eventId },
+          {
+            checkedIn: true,
+            checkedInTime: new Date()
+          },
+          {
+            new: true
+          }
+        )
+        // console.log('object: ', ticket.toObject())
+        pubsub.publish(`${EVENTS.EVENT.CHECKIN} ${eventId}`, {
+          eventCheckedIn: { ...ticket.toObject(), id: ticket.toObject()._id }
+        })
+        return ticket
+      }
+    )
+  }
+}

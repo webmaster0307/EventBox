@@ -77,11 +77,7 @@ const UPDATE_EVENT_BYID = gql`
       location: $location
       address: $address
     ) {
-      title
-      images {
-        thumbnail
-      }
-      createdAt
+      status
       updatedAt
     }
   }

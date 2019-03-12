@@ -62,7 +62,7 @@ export default class SelectDepartments extends Component {
                   message.success(`Published event to [${dpmsName}] successfully!`, 3)
                   setTimeout(() => {
                     close && close()
-                  }, 1200)
+                  }, 500)
                   try {
                     const data = cache.readQuery({
                       query: event.GET_PAGINATED_EVENTS_WITH_USERS

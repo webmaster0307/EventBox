@@ -1,0 +1,44 @@
+.tag-custom-type {
+  font-size: 0.9em;
+  font-weight: bold;
+  background-color: #bdbaba;
+  color: #0e0e0e;
+  padding: 5px 15px;
+  display: inline;
+  border-radius: 25px;
+  border: 0;
+  margin: 0;
+  line-height: 1.2em;
+  box-sizing: content-box;
+  // &-admin {
+  //   background-color: #cbddfd;
+  //   color: #0752d3;
+  // }
+  // &-operator,
+  // &-developer {
+  //   background-color: #caf8d2;
+  //   color: #0c4616;
+  // }
+  // &-user,
+  // &-tester {
+  //   background-color: #ffdca2;
+  //   color: #7a4f09;
+  // }
+  &-active,
+  &-success {
+    background-color: #f1f8e9;
+    color: #0c4616;
+  }
+  &-inactive,
+  &-error {
+    background-color: #ffebee;
+    color: #70000d;
+  }
+  &-notcheked {
+    background-color: #ffcdd2;
+    color: #70000d;
+  }
+  &-unknown {
+    background-color: #707070;
+  }
+}

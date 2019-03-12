@@ -8,7 +8,7 @@ import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html'
 import { event as eventQueries } from '@gqlQueries'
-import * as routes from '@routes'
+// import * as routes from '@routes'
 
 const FormItem = Form.Item
 
@@ -92,8 +92,7 @@ class EventUpdate extends Component {
                           } else {
                             return node
                           }
-                        }),
-                        pageInfo: data.events.pageInfo
+                        })
                       }
                     }
                   })
@@ -104,7 +103,6 @@ class EventUpdate extends Component {
             })
             .then(({ data, errors }) => {
               this.setState({ buttonLoading: false })
-              this.props.stores.event.event.status = 'draft'
               if (errors) {
                 return message.error('Failed to update event')
               }
@@ -122,61 +120,60 @@ class EventUpdate extends Component {
     })
   }
 
-  handlePublishEvent = async () => {
-    const { eventId } = this.props.match.params
-    let result
-    try {
-      result = await client.mutate({
-        mutation: eventQueries.PUBLISH_EVENT_BYID,
-        variables: { id: eventId },
-        update: (cache, { data: { publishEvent } }) => {
-          if (!publishEvent) {
-            // return alert('Failed to delete')
-          }
-          try {
-            const data = cache.readQuery({
-              query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
-            })
-            cache.writeQuery({
-              query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
-              data: {
-                ...data,
-                events: {
-                  ...data.events,
-                  edges: data.events.edges.map((node) => {
-                    if (node.id === eventId) {
-                      return {
-                        ...node,
-                        status: 'in-review'
-                      }
-                    } else {
-                      return node
-                    }
-                  }),
-                  pageInfo: data.events.pageInfo
-                }
-              }
-            })
-          } catch (error) {
-            // console.log('error: ',error)
-          }
-        }
-      })
-    } catch ({ graphQLErrors }) {
-      const msg =
-        (graphQLErrors && graphQLErrors.map((err) => err.message).join(', ')) ||
-        'Failed to update event'
-      return message.error(msg)
-    }
-    const {
-      data: { publishEvent }
-    } = result
-    if (publishEvent) {
-      // console.log('result: ',result)
-      message.success('Xuất bản sự kiện thành công')
-      this.props.history.push(`${routes.DASHBOARD}/events`)
-    }
-  }
+  // handlePublishEvent = async () => {
+  //   const { eventId } = this.props.match.params
+  //   let result
+  //   try {
+  //     result = await client.mutate({
+  //       mutation: eventQueries.PUBLISH_EVENT_BYID,
+  //       variables: { id: eventId },
+  //       update: (cache, { data: { publishEvent } }) => {
+  //         if (!publishEvent) {
+  //           // return alert('Failed to delete')
+  //         }
+  //         try {
+  //           const data = cache.readQuery({
+  //             query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+  //           })
+  //           cache.writeQuery({
+  //             query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
+  //             data: {
+  //               ...data,
+  //               events: {
+  //                 ...data.events,
+  //                 edges: data.events.edges.map((node) => {
+  //                   if (node.id === eventId) {
+  //                     return {
+  //                       ...node,
+  //                       ...publishEvent
+  //                     }
+  //                   } else {
+  //                     return node
+  //                   }
+  //                 })
+  //               }
+  //             }
+  //           })
+  //         } catch (error) {
+  //           // console.log('error: ',error)
+  //         }
+  //       }
+  //     })
+  //   } catch ({ graphQLErrors }) {
+  //     const msg =
+  //       (graphQLErrors && graphQLErrors.map((err) => err.message).join(', ')) ||
+  //       'Failed to update event'
+  //     return message.error(msg)
+  //   }
+  //   const {
+  //     data: { publishEvent }
+  //   } = result
+  //   if (publishEvent) {
+  //     // console.log('result: ',result)
+  //     message.success('Xuất bản sự kiện thành công')
+  //     this.props.history.push(`${routes.DASHBOARD}/events`)
+  //   }
+  // }
 
   render() {
     const { loading, buttonLoading } = this.state
