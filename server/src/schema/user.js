@@ -36,19 +36,17 @@ export default gql`
 
     updateUser(
       id: ID!
-      username: String!
-      password: String
       firstname: String
       lastname: String
-      department: String
       phoneNumber: String
-      secret: String
       role: [String]
     ): User!
 
     activateUser(token: String): Boolean
 
     deleteUser(id: ID!): Boolean!
+
+    photoUpload(file: Upload!): String
   }
 
   extend type Subscription {

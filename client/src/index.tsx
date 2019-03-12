@@ -136,11 +136,17 @@ export const stateLink = withClientState({
     Session {
       me: User
     }
+    Department {
+      id: ID!
+      name: String
+    }
     User {
       id: ID!
       username: String!
       email: String!
       role: [String]
+      departments: [Department]
+      createdAt: String
     }
   `
 })
