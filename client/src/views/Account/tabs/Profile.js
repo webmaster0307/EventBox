@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Divider, Input, Button } from 'antd'
 import { AvatarPicker, ReadonlyFields } from './components'
+import { Query } from 'react-apollo'
+import { session } from '@gqlQueries'
 
 // const roleColor = (role) => {
 //   switch (role) {
@@ -32,12 +34,16 @@ const formItemLayout = {
 }
 
 const LeftWrapper = () => (
-  <>
-    <AvatarPicker />
-    <Divider />
-    <ReadonlyFields />
-    <Divider />
-  </>
+  <Query query={session.GET_LOCAL_SESSION}>
+    {({ data }) => (
+      <>
+        <AvatarPicker avatar={data.me && data.me.photo} />
+        <Divider />
+        <ReadonlyFields data={data.me} />
+        <Divider />{' '}
+      </>
+    )}
+  </Query>
 )
 
 class Profile extends Component {

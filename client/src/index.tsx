@@ -11,11 +11,13 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
+const { createUploadLink } = require('apollo-upload-client')
 
 import { Provider } from 'mobx-react'
 
 import App from './App'
 import { signOut } from '@components'
+import { session as sessionQueries } from '@gqlQueries'
 // import registerServiceWorker from './registerServiceWorker';
 import gql from 'graphql-tag'
 
@@ -29,9 +31,10 @@ import i18n from './constants/i18n'
 
 // const prodMode = process.env.NODE_ENV === 'production'
 
-const httpLink = new HttpLink({
-  uri: '/graphql'
-})
+// const httpLink = new HttpLink({
+//   uri: '/graphql'
+// })
+const httpLink = createUploadLink({ uri: '/graphql' })
 
 const WS_ENDPOINT = process.env.REACT_APP_GRAPHQL_SUBSCRIPTION || 'ws://localhost:8000/graphql'
 const ws_client = new SubscriptionClient(WS_ENDPOINT, {
@@ -125,6 +128,24 @@ export const stateLink = withClientState({
         }
         cache.writeData({ data })
         return null
+      },
+      updateAvatar: (_: any, variables: any, { cache }: { cache: any }) => {
+        const { photo } = variables
+        const current = cache.readQuery({
+          query: sessionQueries.GET_LOCAL_SESSION
+        })
+        const data = {
+          session: {
+            me: {
+              ...current.me,
+              photo
+            },
+            __typename: 'Session'
+          }
+        }
+        cache.writeData({ data })
+
+        return true
       }
     }
   },
@@ -146,6 +167,7 @@ export const stateLink = withClientState({
       email: String!
       role: [String]
       departments: [Department]
+      photo: String
       createdAt: String
     }
   `
@@ -155,8 +177,7 @@ const link = ApolloLink.from([stateLink, authLink, errorLink, terminatingLink])
 
 export const client = new ApolloClient({
   link,
-  cache,
-  resolvers: {}
+  cache
 })
 
 const stores = {

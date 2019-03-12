@@ -7,6 +7,7 @@ const GET_ME = gql`
       username
       email
       role
+      photo
       departments {
         id
         name
@@ -23,6 +24,7 @@ const GET_LOCAL_SESSION = gql`
       username
       email
       role
+      photo
       departments {
         id
         name

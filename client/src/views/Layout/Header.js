@@ -3,8 +3,8 @@ import { Layout, Avatar, Menu, Dropdown, notification, Icon } from 'antd'
 import { client } from '@client'
 import { signOut } from '@components'
 import { Link, withRouter } from 'react-router-dom'
-import { Subscription } from 'react-apollo'
-import { event } from '@gqlQueries'
+import { Subscription, Query } from 'react-apollo'
+import { event, session } from '@gqlQueries'
 import { DB_EVENT_REVIEW } from '@routes'
 
 const { Header } = Layout
@@ -23,7 +23,7 @@ class LayoutHeader extends Component {
 
           return (
             <Header style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}>
-              <UserAvatar {...this.props} />
+              <UserAvatar />
             </Header>
           )
         }}
@@ -52,15 +52,17 @@ const ShowNotification = (event, router) =>
 
 class UserAvatar extends Component {
   render() {
-    const { user } = this.props
-
     return (
-      <div className='layout-header-useravatar__wrapper'>
-        <span style={{ marginRight: 12 }}>{user.username}</span>
-        <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']}>
-          <Avatar size='large' style={{ cursor: 'pointer' }} />
-        </Dropdown>
-      </div>
+      <Query query={session.GET_LOCAL_SESSION}>
+        {({ data }) => (
+          <div className='layout-header-useravatar__wrapper'>
+            <span style={{ marginRight: 12 }}>{data.me.username}</span>
+            <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']}>
+              <Avatar size='large' src={data.me.photo} style={{ cursor: 'pointer' }} />
+            </Dropdown>
+          </div>
+        )}
+      </Query>
     )
   }
 }
