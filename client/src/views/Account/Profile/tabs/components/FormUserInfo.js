@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { withTranslation } from 'react-i18next'
 import { RULE_NOT_EMPTY } from '@formRules'
+import { Mutation } from 'react-apollo'
+import { user } from '@gqlQueries'
 
 const { Item: FormItem } = Form
 const formItemLayout = {
@@ -20,6 +22,14 @@ const formItemLayout = {
 }
 
 class FormUserInfo extends Component {
+  componentDidMount = () => {
+    const {
+      data: { firstname, lastname, phoneNumber },
+      form: { setFieldsValue }
+    } = this.props
+    setFieldsValue({ firstname, lastname, phoneNumber })
+  }
+
   formFields = () => {
     const { t: trans } = this.props
 
@@ -28,13 +38,13 @@ class FormUserInfo extends Component {
         name: 'firstname',
         label: trans('First name'),
         customRender: <Input placeholder={trans('Your first name')} />,
-        rules: [RULE_NOT_EMPTY]
+        rules: [RULE_NOT_EMPTY, { min: 1, max: 50 }]
       },
       {
-        name: 'lastnanme',
+        name: 'lastname',
         label: trans('Last name'),
         customRender: <Input placeholder={trans('Your last name')} />,
-        rules: [RULE_NOT_EMPTY]
+        rules: [RULE_NOT_EMPTY, { min: 1, max: 50 }]
       },
       {
         name: 'phoneNumber',
@@ -49,7 +59,7 @@ class FormUserInfo extends Component {
     const {
       formFields,
       props: {
-        form: { getFieldDecorator },
+        form: { getFieldDecorator, getFieldsValue },
         t: trans
       }
     } = this
@@ -67,9 +77,30 @@ class FormUserInfo extends Component {
           )
         })}
         <FormItem style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button htmlType='submit' type='primary'>
-            {trans('Update Profile')}
-          </Button>
+          {
+            <Mutation
+              mutation={user.USER_UPDATE_PROFILE}
+              variables={{ ...getFieldsValue() }}
+              onCompleted={({ updateProfie }) => {
+                if (updateProfie) {
+                  message.success(trans('Updated user profile successfully!'))
+                } else {
+                  message.success(trans('Updated user profile failed!'))
+                }
+              }}
+            >
+              {(updateProfie, { loading }) => (
+                <Button
+                  htmlType='submit'
+                  type='primary'
+                  loading={loading}
+                  onClick={() => updateProfie()}
+                >
+                  {trans('Update Profile')}
+                </Button>
+              )}
+            </Mutation>
+          }
         </FormItem>
       </Form>
     )

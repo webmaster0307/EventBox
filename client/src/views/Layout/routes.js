@@ -1,6 +1,6 @@
-import Home from '../Account/Home'
+import Home from '../Account/legacy/Home'
 import { Events, EventCreate, EventDetail, EventUpdate, EventCheckin } from '../Event'
-import AccountPage from '../Account'
+import { AccountProfile, AccountTickets } from '../Account/'
 import { AdminPage, Department, DepartmentDetail } from '../Admin'
 import { EventsReview, EventDetailReview } from '../EventReview'
 import * as routes from '@routes'
@@ -33,7 +33,7 @@ export const routesComp = [
   {
     exact: true,
     path: routes.DASHBOARD_MYACCOUNT,
-    component: AccountPage,
+    component: AccountProfile,
     roles: ['admin', 'user']
   },
   {
@@ -77,6 +77,12 @@ export const routesComp = [
     path: routes.DASHBOARD_EVENT_CHECKIN,
     component: EventCheckin,
     roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: routes.DASHBOARD_MYTICKETS,
+    component: AccountTickets,
+    roles: ['admin', 'user']
   }
 ]
 
@@ -113,9 +119,15 @@ export const routesMenu = [
     icon: 'user',
     subComponent: [
       {
-        title: 'Information',
+        title: 'Profile',
         path: routes.DASHBOARD_MYACCOUNT,
-        icon: 'idcard',
+        icon: 'profile',
+        breadcumbs: ['Account', 'Account information']
+      },
+      {
+        title: 'Tickets',
+        path: routes.DASHBOARD_MYTICKETS,
+        icon: 'file-search',
         breadcumbs: ['Account', 'Account information']
       }
     ]
@@ -123,7 +135,7 @@ export const routesMenu = [
   {
     title: 'Events',
     roles: ['admin', 'user'],
-    icon: 'file',
+    icon: 'project',
     subComponent: [
       {
         title: 'List',

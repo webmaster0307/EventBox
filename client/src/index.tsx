@@ -167,7 +167,10 @@ export const stateLink = withClientState({
       email: String!
       role: [String]
       departments: [Department]
+      firstname: String
+      lastname: String
       photo: String
+      phoneNumber: String
       createdAt: String
     }
   `

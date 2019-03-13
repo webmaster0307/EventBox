@@ -1,30 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Row, Col, Divider } from 'antd'
 import { AvatarPicker, ReadonlyFields } from './components'
 import { Query } from 'react-apollo'
 import { session } from '@gqlQueries'
 import FormUserInfo from './components/FormUserInfo'
 
-const LeftWrapper = () => (
+const Profile = () => (
   <Query query={session.GET_LOCAL_SESSION}>
     {({ data }) => (
-      <>
-        <AvatarPicker avatar={data.me && data.me.photo} />
-        <Divider />
-        <ReadonlyFields data={data.me} />
-        <Divider />{' '}
-      </>
-    )}
-  </Query>
-)
-
-class Profile extends Component {
-  render() {
-    return (
       <div>
         <Row gutter={20}>
           <Col xs={24} sm={24} md={12} lg={9}>
-            <LeftWrapper />
+            <AvatarPicker avatar={data.me && data.me.photo} />
+            <Divider />
+            <ReadonlyFields data={data.me} />
+            <Divider />
           </Col>
           <Col xs={24} sm={24} md={12} lg={12}>
             <div
@@ -34,14 +24,14 @@ class Profile extends Component {
                 padding: 20
               }}
             >
-              <FormUserInfo />
+              <FormUserInfo data={data.me} />
             </div>
             <Divider />
           </Col>
         </Row>
       </div>
-    )
-  }
-}
+    )}
+  </Query>
+)
 
 export default Profile

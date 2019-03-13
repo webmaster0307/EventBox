@@ -19,3 +19,9 @@ export const USER_UPLOAD_AVATAR = gql`
     photoUpload(file: $file)
   }
 `
+
+export const USER_UPDATE_PROFILE = gql`
+  mutation($firstname: String!, $lastname: String!, $phoneNumber: String!) {
+    updateProfie(firstname: $firstname, lastname: $lastname, phoneNumber: $phoneNumber)
+  }
+`

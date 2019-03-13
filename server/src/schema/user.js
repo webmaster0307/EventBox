@@ -47,6 +47,7 @@ export default gql`
     deleteUser(id: ID!): Boolean!
 
     photoUpload(file: Upload!): String
+    updateProfie(firstname: String!, lastname: String!, phoneNumber: String!): Boolean
   }
 
   extend type Subscription {

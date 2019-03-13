@@ -150,6 +150,18 @@ export default {
       return true
     }),
 
+    updateProfie: combineResolvers(
+      isAuthenticated,
+      async (parent, { firstname, lastname, phoneNumber }, { models, me }) => {
+        const updated = await models.User.findByIdAndUpdate(me.id, {
+          firstname,
+          lastname,
+          phoneNumber
+        })
+        return !!updated
+      }
+    ),
+
     photoUpload: combineResolvers(isAuthenticated, async (parent, { file }, { me, models }) => {
       const { stream, filename, mimetype, encoding } = await file
       const UPLOAD_HOST = process.env.EVENTBOX_UPLOAD
