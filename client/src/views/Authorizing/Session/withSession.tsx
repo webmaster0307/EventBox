@@ -2,7 +2,8 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import { session } from '@gqlQueries'
 import Page404 from '../../../Page/404'
-import Loading from '../../../Page/Loading'
+// import Loading from '../../../Page/Loading'
+import { Skeleton } from 'antd'
 
 const withSession = (Component: React.ComponentType<any>) => (props: any) => (
   <Query query={session.GET_ME}>
@@ -12,7 +13,11 @@ const withSession = (Component: React.ComponentType<any>) => (props: any) => (
       }
       // console.log('error: ' ,error);
       if (loading) {
-        return <Loading />
+        return (
+          <div style={{ padding: 50 }}>
+            <Skeleton active title={{ width: '100%' }} />
+          </div>
+        )
       }
       return <Component {...props} session={data} refetch={refetch} />
     }}
