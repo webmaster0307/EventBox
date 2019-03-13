@@ -30,8 +30,13 @@ export default class AvatarPicker extends Component {
       accept: '.png, .jpg, .jpeg',
       showUploadList: false,
       // action: `${process.env.REACT_APP_EVENTBOX_UPLOAD}/upload`,
-      customRequest: async ({ file }) => {
+      customRequest: ({ file }) => {
         this.handleUpload(file)
+        return {
+          abort() {
+            console.log('upload progress is aborted.')
+          }
+        }
       },
       onChange(info) {
         const status = info.file.status

@@ -67,7 +67,7 @@ class Header extends React.Component {
           if (me && !error) {
             const userTitle = (
               <div>
-                <Avatar size={36} alt='img' />
+                <Avatar size={36} alt='img' src={me.photo} />
                 <span>
                   {me.username} | {me.email}
                 </span>
