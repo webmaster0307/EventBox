@@ -107,6 +107,7 @@ class EventCheckin extends Component {
         // footer={<div>Footer</div>}
         bordered
         dataSource={loading ? [] : tickets}
+        className='event-checkin-list__wrapper'
         renderItem={(item, index) => (
           <List.Item
             className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} `}
@@ -116,7 +117,7 @@ class EventCheckin extends Component {
                   {moment(item.checkedInTime).fromNow()}
                 </Tooltip>
               ) : (
-                'Not checked-in yet'
+                'Ticket available'
               )
             ]}
           >
