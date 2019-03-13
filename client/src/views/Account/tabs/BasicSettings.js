@@ -1,21 +1,19 @@
 import React, { Component } from 'react'
 import { Row, Col, Avatar, Switch, Divider } from 'antd'
+import { withTranslation } from 'react-i18next'
 
 class BasicSettings extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isEnglish: true
+  changeLanguage(checked) {
+    const { i18n } = this.props
+    if (checked) {
+      i18n.changeLanguage('vn')
+    } else {
+      i18n.changeLanguage('en')
     }
   }
 
-  changeLanguage() {
-    this.setState({
-      isEnglish: !this.state.isEnglish
-    })
-  }
-
   render() {
+    const { i18n } = this.props
     return (
       <div>
         <Divider>General settings</Divider>
@@ -26,7 +24,7 @@ class BasicSettings extends Component {
           <Col lg={18}>
             <b style={{ fontSize: 18, marginBottom: 0 }}>Current language</b>
             <p style={{ fontSize: 14, marginBottom: 0, color: 'green' }}>
-              {this.state.isEnglish ? 'English' : 'Tiếng Việt'}
+              {i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
             </p>
           </Col>
           <Col
@@ -40,9 +38,9 @@ class BasicSettings extends Component {
           >
             <Switch
               size='default'
-              checkedChildren='English'
-              unCheckedChildren='Tiếng Việt'
-              defaultChecked
+              checkedChildren='Tiếng Việt'
+              unCheckedChildren='English'
+              defaultChecked={i18n.language === 'vn'}
               onChange={this.changeLanguage.bind(this)}
             />
           </Col>
@@ -52,4 +50,4 @@ class BasicSettings extends Component {
   }
 }
 
-export default BasicSettings
+export default withTranslation('translations')(BasicSettings)
