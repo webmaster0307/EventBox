@@ -56,9 +56,9 @@ class UserAvatar extends Component {
       <Query query={session.GET_LOCAL_SESSION}>
         {({ data }) => (
           <div className='layout-header-useravatar__wrapper'>
-            <span style={{ marginRight: 12 }}>{data.me.username}</span>
+            <span style={{ marginRight: 12 }}>{data.me && data.me.username}</span>
             <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']}>
-              <Avatar size='large' src={data.me.photo} style={{ cursor: 'pointer' }} />
+              <Avatar size='large' src={data.me && data.me.photo} style={{ cursor: 'pointer' }} />
             </Dropdown>
           </div>
         )}
