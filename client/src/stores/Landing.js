@@ -1,12 +1,10 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import { client } from '@client'
 import { event } from '@gqlQueries'
-import i18n from '../constants/i18n'
 
 class Landing {
   @observable isShow = true
-  @observable isEnglish = false
-  // @observable buttonText = 'Tiếng Việt'
+  //
   @observable isMobile = false
   // For sign in modal
   @observable isSigningIn = false
@@ -14,12 +12,6 @@ class Landing {
   @observable isSigningUp = false
   // Event list
   @observable eventList = []
-
-  constructor() {
-    if (i18n.language === 'en') {
-      this.isEnglish = true
-    }
-  }
 
   @action
   checkScreen(r) {
@@ -32,11 +24,6 @@ class Landing {
   @action
   checkShow(r) {
     this.isShow = r
-  }
-
-  @action
-  changeLanguage() {
-    this.isEnglish = !this.isEnglish
   }
 
   @action
@@ -77,14 +64,6 @@ class Landing {
     }
 
     this.eventList = eventsHome
-  }
-
-  @computed get buttonText() {
-    if (this.isEnglish) {
-      return 'Tiếng Việt'
-    } else {
-      return 'English'
-    }
   }
 }
 

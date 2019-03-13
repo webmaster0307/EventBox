@@ -18,7 +18,8 @@ function webpack(config, env) {
       '@components': path.resolve(__dirname, './src/components'),
       '@client': path.resolve(__dirname, './src'),
       '@routes': path.resolve(__dirname, './src/constants/routes.js'),
-      '@gqlQueries': path.resolve(__dirname, './src/stores/apollo')
+      '@gqlQueries': path.resolve(__dirname, './src/stores/apollo'),
+      '@formRules': path.resolve(__dirname, './src/constants/form_rules.ts')
     },
     extensions: ['.js', 'jsx', '.json', '.ts', '.tsx']
   }

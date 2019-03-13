@@ -7,10 +7,15 @@ const GET_ME = gql`
       username
       email
       role
+      photo
+      firstname
+      lastname
+      phoneNumber
       departments {
         id
         name
       }
+      createdAt
     }
   }
 `
@@ -22,11 +27,17 @@ const GET_LOCAL_SESSION = gql`
       username
       email
       role
+      photo
+      firstname
+      lastname
+      phoneNumber
+      departments {
+        id
+        name
+      }
+      createdAt
     }
   }
 `
 
-export {
-  GET_ME,
-  GET_LOCAL_SESSION
-}
+export { GET_ME, GET_LOCAL_SESSION }

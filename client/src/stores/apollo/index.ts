@@ -7,6 +7,7 @@ import {
   ticket as ticketQueries
 } from './query'
 import {
+  session as sessionMutations,
   user as userMutations,
   event as eventMutations,
   department as departmentMutations,
@@ -31,7 +32,8 @@ const department = {
 }
 
 const session = {
-  ...sessionQueries
+  ...sessionQueries,
+  ...sessionMutations
 }
 
 const departmentUser = {

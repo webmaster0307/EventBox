@@ -1,5 +1,8 @@
+# folders
 /build
 /node_modules
+translation
+# files
 registerServiceWorker.js
 package.json
 tsconfig.json

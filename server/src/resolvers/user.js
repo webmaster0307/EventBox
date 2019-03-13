@@ -3,6 +3,7 @@ import uuidV4 from 'uuid/v4'
 import { combineResolvers } from 'graphql-resolvers'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { isAuthenticated, isAdmin } from './authorization'
+import rp from 'request-promise'
 
 import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
@@ -147,6 +148,62 @@ export default {
     deleteUser: combineResolvers(isAdmin, async (parent, { id }, { models }) => {
       await models.User.findByIdAndRemove(id)
       return true
+    }),
+
+    updateProfie: combineResolvers(
+      isAuthenticated,
+      async (parent, { firstname, lastname, phoneNumber }, { models, me }) => {
+        const updated = await models.User.findByIdAndUpdate(me.id, {
+          firstname,
+          lastname,
+          phoneNumber
+        })
+        return !!updated
+      }
+    ),
+
+    photoUpload: combineResolvers(isAuthenticated, async (parent, { file }, { me, models }) => {
+      const { stream, filename, mimetype, encoding } = await file
+      const UPLOAD_HOST = process.env.EVENTBOX_UPLOAD
+      const result = () => {
+        return new Promise((resolve) => {
+          const buffer = []
+          stream.on('data', (chunk) => {
+            buffer.push(chunk)
+          })
+          stream.on('end', async () => {
+            const imgBuffer = Buffer.concat(buffer)
+            const options = {
+              method: 'POST',
+              uri: `${UPLOAD_HOST}/upload`,
+              formData: {
+                file: {
+                  value: imgBuffer,
+                  options: {
+                    filename,
+                    contentType: mimetype
+                  }
+                }
+              },
+              json: true
+            }
+            try {
+              const {
+                file: { filename }
+              } = await rp(options)
+
+              resolve(filename)
+            } catch (error) {
+              throw new ApolloError(error, '400')
+            }
+          })
+        })
+      }
+      const source = await result()
+      const photo = `${UPLOAD_HOST}/image/${source}`
+      await models.User.findByIdAndUpdate(me.id, { photo })
+
+      return photo
     })
   },
 
