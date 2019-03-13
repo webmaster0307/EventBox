@@ -1,5 +1,5 @@
-import vietnamese from './vn.json'
-import english from './en.json'
+import vietnamese from './languages/vn.json'
+import english from './languages/en.json'
 
 export default {
   vn: {
