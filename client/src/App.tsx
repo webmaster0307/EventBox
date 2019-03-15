@@ -9,7 +9,8 @@ import * as routes from '@routes'
 import withSession, { withSessionProps } from './views/Authorizing/Session/withSession'
 
 import { SignUpPage, SignInPage } from './views/Authorizing'
-import { Page404 } from './views/ErrorPage'
+// import { Page404 } from './views/ErrorPage'
+import Page404 from './Page/404'
 
 import Landing from './views/Landing'
 import LandingEventDetail from './views/Landing/EventDetail'

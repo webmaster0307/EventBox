@@ -9,26 +9,28 @@ const Profile = () => (
   <Query query={session.GET_LOCAL_SESSION}>
     {({ data }) => (
       <div>
-        <Row gutter={20}>
-          <Col xs={24} sm={24} md={12} lg={9}>
-            <AvatarPicker avatar={data.me && data.me.photo} />
-            <Divider />
-            <ReadonlyFields data={data.me} />
-            <Divider />
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12}>
-            <div
-              style={{
-                borderRadius: 10,
-                background: 'rgba(214, 229, 255, 0.4)',
-                padding: 20
-              }}
-            >
-              <FormUserInfo data={data.me} />
-            </div>
-            <Divider />
-          </Col>
-        </Row>
+        {data.me && (
+          <Row gutter={20}>
+            <Col xs={24} sm={24} md={12} lg={9}>
+              <AvatarPicker avatar={data.me && data.me.photo} />
+              <Divider />
+              <ReadonlyFields data={data.me} />
+              <Divider />
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12}>
+              <div
+                style={{
+                  borderRadius: 10,
+                  background: 'rgba(214, 229, 255, 0.4)',
+                  padding: 20
+                }}
+              >
+                <FormUserInfo data={data.me} />
+              </div>
+              <Divider />
+            </Col>
+          </Row>
+        )}
       </div>
     )}
   </Query>
