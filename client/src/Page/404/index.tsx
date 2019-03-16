@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './css/style.css'
 
-const { particlesJS } = window
+const { particlesJS } = window as any
 
 const particles = {
   particles: {

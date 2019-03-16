@@ -4,7 +4,7 @@ import { ApolloConsumer } from 'react-apollo'
 // import * as routes from '@routes'
 // import history from '../../constants/history'
 
-import { stateLink } from '../../'
+import { stateLink } from '../../apollo'
 
 const SignOutButton = () => (
   <ApolloConsumer>
