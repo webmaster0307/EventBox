@@ -46,16 +46,15 @@ class Header extends React.Component {
       this.props.stores.landing.ocSignUpModal('o')
     } else if (key === 'vnFlag') {
       i18n.changeLanguage('vn')
-      this.props.stores.landing.isEnglish = false
     } else if (key === 'usFlag') {
       i18n.changeLanguage('en')
-      this.props.stores.landing.isEnglish = true
     }
   }
 
   render() {
     const { i18n } = this.props
-    const { isMobile, isEnglish } = this.props.stores.landing
+    const isEnglish = i18n.language === 'en'
+    const { isMobile } = this.props.stores.landing
     const { menuHeight, phoneOpen } = this.state
     return (
       <Query query={session.GET_LOCAL_SESSION}>
@@ -67,7 +66,7 @@ class Header extends React.Component {
           if (me && !error) {
             const userTitle = (
               <div>
-                <Avatar size={36} alt='img' />
+                <Avatar size={36} alt='img' src={me.photo} />
                 <span>
                   {me.username} | {me.email}
                 </span>

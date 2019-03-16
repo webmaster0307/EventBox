@@ -7,6 +7,7 @@ export const EVENT = '/event'
 export const DASHBOARD = '/dashboard'
 //
 export const DASHBOARD_MYACCOUNT = `${DASHBOARD}/myaccount`
+export const DASHBOARD_MYTICKETS = `${DASHBOARD}/mytickets`
 //
 export const DASHBOARD_EVENT = `${DASHBOARD}/events`
 export const DASHBOARD_EVENT_CREATE = `${DASHBOARD_EVENT}/create`

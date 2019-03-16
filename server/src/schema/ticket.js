@@ -18,6 +18,7 @@ export default gql`
   extend type Query {
     tickets(eventId: ID!): [Ticket]
     checkTicket(code: String!, eventId: ID!): Ticket
+    myTickets(limit: Int): [Ticket]
   }
 
   extend type Mutation {

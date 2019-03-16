@@ -3,8 +3,8 @@ import { Layout, Avatar, Menu, Dropdown, notification, Icon } from 'antd'
 import { client } from '@client'
 import { signOut } from '@components'
 import { Link, withRouter } from 'react-router-dom'
-import { Subscription } from 'react-apollo'
-import { event } from '@gqlQueries'
+import { Subscription, Query } from 'react-apollo'
+import { event, session } from '@gqlQueries'
 import { DB_EVENT_REVIEW } from '@routes'
 
 const { Header } = Layout
@@ -15,18 +15,21 @@ class LayoutHeader extends Component {
     const departmentIds = user && user.departments.map((item) => item.id)
 
     return (
-      <Subscription subscription={event.SUBCRIBE_EVENT_REVIEW} variables={{ departmentIds }}>
-        {({ data }) => {
-          if (data && data.eventSubmited) {
-            ShowNotification(data.eventSubmited, this.props)
+      <Subscription
+        subscription={event.SUBCRIBE_EVENT_REVIEW}
+        variables={{ departmentIds }}
+        onSubscriptionData={({ subscriptionData: { data } }) => {
+          const { eventSubmited } = data
+          if (eventSubmited) {
+            ShowNotification(eventSubmited, this.props)
           }
-
-          return (
-            <Header style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}>
-              <UserAvatar {...this.props} />
-            </Header>
-          )
         }}
+      >
+        {() => (
+          <Header style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}>
+            <UserAvatar />
+          </Header>
+        )}
       </Subscription>
     )
   }
@@ -39,6 +42,7 @@ const ShowNotification = (event, router) =>
     description: (
       <div>
         New event is waiting for approval.
+        <div style={{ fontStyle: 'italic', color: '#404142' }}>{event.title}</div>
         <div
           className='fake-link'
           onClick={() => router.history.push(`${DB_EVENT_REVIEW}/${event.id}`)}
@@ -52,15 +56,17 @@ const ShowNotification = (event, router) =>
 
 class UserAvatar extends Component {
   render() {
-    const { user } = this.props
-
     return (
-      <div className='layout-header-useravatar__wrapper'>
-        <span style={{ marginRight: 12 }}>{user.username}</span>
-        <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']}>
-          <Avatar size='large' style={{ cursor: 'pointer' }} />
-        </Dropdown>
-      </div>
+      <Query query={session.GET_LOCAL_SESSION}>
+        {({ data }) => (
+          <div className='layout-header-useravatar__wrapper'>
+            <span style={{ marginRight: 12 }}>{data.me && data.me.username}</span>
+            <Dropdown overlay={actions} placement='bottomCenter' trigger={['click']}>
+              <Avatar size='large' src={data.me && data.me.photo} style={{ cursor: 'pointer' }} />
+            </Dropdown>
+          </div>
+        )}
+      </Query>
     )
   }
 }

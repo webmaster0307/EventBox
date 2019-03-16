@@ -15,4 +15,20 @@ const TICKETS = gql`
     }
   }
 `
-export { TICKETS }
+
+const MY_TICKETS = gql`
+  query($limit: Int) {
+    myTickets(limit: $limit) {
+      code
+      ticketSvgSrc
+      checkedIn
+      checkedInTime
+      eventInfo {
+        title
+      }
+      createdAt
+    }
+  }
+`
+
+export { TICKETS, MY_TICKETS }
