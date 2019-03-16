@@ -186,4 +186,4 @@ class FirstSection extends Component {
   }
 }
 
-export default withTranslation('translations')(Form.create()(FirstSection))
+export default withTranslation()(Form.create()(FirstSection))

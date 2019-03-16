@@ -166,4 +166,4 @@ class SignUpForm extends React.Component {
   }
 }
 
-const SignUpFormWrapped = withTranslation('translations')(Form.create()(withRouter(SignUpForm)))
+const SignUpFormWrapped = withTranslation()(Form.create()(withRouter(SignUpForm)))

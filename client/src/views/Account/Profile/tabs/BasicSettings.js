@@ -50,4 +50,4 @@ class BasicSettings extends Component {
   }
 }
 
-export default withTranslation('translations')(BasicSettings)
+export default withTranslation()(BasicSettings)

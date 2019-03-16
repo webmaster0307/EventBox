@@ -60,7 +60,7 @@ const Tickets = ({ setTicket }) => (
   </Query>
 )
 
-const TicketInfo = withTranslation('translations')(
+const TicketInfo = withTranslation()(
   ({ t: trans, ticket }) =>
     Object.keys(ticket).length > 0 && (
       <Card>

@@ -78,4 +78,4 @@ class SignUpModal extends Component {
   }
 }
 
-export default withTranslation('translations')(SignUpModal)
+export default withTranslation()(SignUpModal)
