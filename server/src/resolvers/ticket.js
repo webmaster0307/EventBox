@@ -19,11 +19,23 @@ export default {
         const ticket = await models.Ticket.findOne({ code, eventId })
         return ticket
       }
-    )
+    ),
+    myTickets: combineResolvers(isAuthenticated, async (parent, { limit = 20 }, { models, me }) => {
+      const tickets = await models.Ticket.find({ userId: me.id }, null, {
+        limit,
+        sort: {
+          createdAt: -1
+        }
+      })
+      return tickets
+    })
   },
   Ticket: {
     userInfo: async ({ userId }, args, { models, loaders }) => {
       return await models.User.findById(userId)
+    },
+    eventInfo: async ({ eventId }, args, { models, loaders }) => {
+      return await models.Event.findById(eventId)
     }
   },
   Mutation: {

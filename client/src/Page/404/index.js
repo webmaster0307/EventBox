@@ -356,7 +356,7 @@ export default class Page404 extends Component {
               />
             </g>
           </svg>
-          <a href='#'>
+          <a href='/'>
             <button className='denied__link'>Go Home</button>
           </a>
         </div>

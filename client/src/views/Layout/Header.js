@@ -15,18 +15,21 @@ class LayoutHeader extends Component {
     const departmentIds = user && user.departments.map((item) => item.id)
 
     return (
-      <Subscription subscription={event.SUBCRIBE_EVENT_REVIEW} variables={{ departmentIds }}>
-        {({ data }) => {
-          if (data && data.eventSubmited) {
-            ShowNotification(data.eventSubmited, this.props)
+      <Subscription
+        subscription={event.SUBCRIBE_EVENT_REVIEW}
+        variables={{ departmentIds }}
+        onSubscriptionData={({ subscriptionData: { data } }) => {
+          const { eventSubmited } = data
+          if (eventSubmited) {
+            ShowNotification(eventSubmited, this.props)
           }
-
-          return (
-            <Header style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}>
-              <UserAvatar />
-            </Header>
-          )
         }}
+      >
+        {() => (
+          <Header style={{ background: '#fff', padding: '0 16px', textAlign: 'right' }}>
+            <UserAvatar />
+          </Header>
+        )}
       </Subscription>
     )
   }
@@ -39,6 +42,7 @@ const ShowNotification = (event, router) =>
     description: (
       <div>
         New event is waiting for approval.
+        <div style={{ fontStyle: 'italic', color: '#404142' }}>{event.title}</div>
         <div
           className='fake-link'
           onClick={() => router.history.push(`${DB_EVENT_REVIEW}/${event.id}`)}
