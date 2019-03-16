@@ -81,9 +81,9 @@ const App = (props: withSessionProps) => {
 
   useEffect(() => {
     // TODO: handle VL auth
-    // const { code } = queryString.parse(window.location.search)
+    // const { code, state } = queryString.parse(window.location.search)
+    // console.log('code: ', { code, state })
     // if (code) {
-    //   console.log('a: ', code)
     //   var formData = new FormData()
     //   formData.append('code', code.toString())
     //   fetch('https://cntttest.vanlanguni.edu.vn:18081/Cap21T4/LoginManagement/Account/GetInfo', {
