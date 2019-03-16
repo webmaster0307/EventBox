@@ -1,17 +1,16 @@
 import { ApolloClient } from 'apollo-client'
 import { getMainDefinition } from 'apollo-utilities'
 import { ApolloLink, split } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
+// import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { withClientState } from 'apollo-link-state'
 const { createUploadLink } = require('apollo-upload-client')
 
 import { signOut } from '@components'
-import { session as sessionQueries } from '@gqlQueries'
-import gql from 'graphql-tag'
+import typeDefs from './typeDefs'
+import resolvers from './resolvers'
 
 // const prodMode = process.env.NODE_ENV === 'production'
 
@@ -70,97 +69,27 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const cache = new InMemoryCache()
 
-const stateLink = withClientState({
-  cache,
-  defaults: {
-    session: {
-      me: null,
-      __typename: 'User'
-    },
-    loading: false
+const defaultDataCache = {
+  session: {
+    me: null,
+    __typename: 'User'
   },
-  resolvers: {
-    Mutation: {
-      toggleLoading: (_: any, variables: any, { cache }: { cache: any }) => {
-        const query = gql`
-          query {
-            loading @client
-          }
-        `
-        const { loading } = cache.readQuery({ query })
-        const data = {
-          loading: !loading
-        }
-        cache.writeData({ data })
-        return null
-      },
-      setSession: (_: any, variables: any, { cache }: { cache: any }) => {
-        const { session } = variables
-        const data = {
-          session: {
-            me: {
-              ...session.me,
-              __typename: 'User'
-            },
-            __typename: 'Session'
-          }
-        }
-        cache.writeData({ data })
-        return null
-      },
-      updateAvatar: (_: any, variables: any, { cache }: { cache: any }) => {
-        const { photo } = variables
-        const current = cache.readQuery({
-          query: sessionQueries.GET_LOCAL_SESSION
-        })
-        const data = {
-          session: {
-            me: {
-              ...current.me,
-              photo
-            },
-            __typename: 'Session'
-          }
-        }
-        cache.writeData({ data })
-
-        return true
-      }
-    }
-  },
-  typeDefs: `
-    extend type Query {
-      loading: Bool
-      getSession: Session!
-    }
-    Session {
-      me: User
-    }
-    Department {
-      id: ID!
-      name: String
-    }
-    User {
-      id: ID!
-      username: String!
-      email: String!
-      role: [String]
-      departments: [Department]
-      firstname: String
-      lastname: String
-      photo: String
-      phoneNumber: String
-      createdAt: String
-    }
-  `
+  loading: false
+}
+cache.writeData({
+  data: defaultDataCache
 })
 
-const link = ApolloLink.from([stateLink, authLink, errorLink, terminatingLink])
+const link = ApolloLink.from([authLink, errorLink, terminatingLink])
 
 const client = new ApolloClient({
   link,
-  cache
+  cache,
+  resolvers,
+  typeDefs
 })
 
-export { client as default, client, stateLink }
+client.onResetStore(async () => await cache.writeData({ data: defaultDataCache }))
+
+export { client as default, client }
 // registerServiceWorker();
