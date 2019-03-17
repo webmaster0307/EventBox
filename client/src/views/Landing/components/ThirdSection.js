@@ -110,4 +110,4 @@ class ThirdSection extends Component {
   }
 }
 
-export default withTranslation('translations')(ThirdSection)
+export default withTranslation()(ThirdSection)

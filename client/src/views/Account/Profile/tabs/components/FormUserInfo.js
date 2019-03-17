@@ -107,4 +107,4 @@ class FormUserInfo extends Component {
   }
 }
 
-export default Form.create()(withTranslation('translations')(FormUserInfo))
+export default Form.create()(withTranslation()(FormUserInfo))

@@ -118,4 +118,4 @@ class CarouselSection extends Component {
   }
 }
 
-export default withTranslation('translations')(CarouselSection)
+export default withTranslation()(CarouselSection)

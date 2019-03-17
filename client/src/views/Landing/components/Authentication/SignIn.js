@@ -108,4 +108,4 @@ class SignInModal extends Component {
   }
 }
 
-export default withTranslation('translations')(SignInModal)
+export default withTranslation()(SignInModal)

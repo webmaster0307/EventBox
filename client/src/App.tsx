@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { client } from './'
+import { client } from '@client'
 import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
 import queryString from 'query-string'

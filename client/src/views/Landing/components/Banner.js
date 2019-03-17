@@ -96,4 +96,4 @@ class Banner extends Component {
   }
 }
 
-export default withTranslation('translations')(Banner)
+export default withTranslation()(Banner)
