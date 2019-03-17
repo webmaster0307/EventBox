@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import uuidV4 from 'uuid/v4'
 import { combineResolvers } from 'graphql-resolvers'
 import { AuthenticationError, UserInputError } from 'apollo-server'
-import { isAuthenticated, isAdmin } from './authorization'
+import { isAuthenticated, isAdmin, isDepartmentMember } from './authorization'
 import rp from 'request-promise'
 
 import nodemailer from 'nodemailer'
@@ -77,7 +77,15 @@ export default {
       // console.log('current: ',currentUser);
 
       return currentUser
-    }
+    },
+
+    myDepartment: combineResolvers(
+      isDepartmentMember,
+      async (parent, { departmentId }, { models, me }) => {
+        const department = await models.DepartmentUser.findOne({ departmentId, userId: me.id })
+        return department
+      }
+    )
   },
 
   Mutation: {

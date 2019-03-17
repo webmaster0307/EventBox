@@ -40,7 +40,7 @@ class UserList extends Component {
       return message.error('Failed to get users from department')
     }
     this.setState({
-      users: result.data.userOfDepartments,
+      users: result.data.usersOfDepartment,
       loading: false
     })
     // console.log('result: ',result.data)

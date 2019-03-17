@@ -1,7 +1,8 @@
 import Home from '../Account/legacy/Home'
-import { Events, EventCreate, EventDetail, EventUpdate, EventCheckin } from '../Event'
-import { AccountProfile, AccountTickets } from '../Account/'
 import { AdminPage, Department, DepartmentDetail } from '../Admin'
+import { AccountProfile, AccountTickets } from '../Account/'
+import MyDepartment from '../Departments'
+import { Events, EventCreate, EventDetail, EventUpdate, EventCheckin } from '../Event'
 import { EventsReview, EventDetailReview } from '../EventReview'
 import * as routes from '@routes'
 
@@ -83,6 +84,12 @@ export const routesComp = [
     path: routes.DASHBOARD_MYTICKETS,
     component: AccountTickets,
     roles: ['admin', 'user']
+  },
+  {
+    exact: true,
+    path: routes.DASHBOARD_MYDEPARTMENT,
+    component: MyDepartment,
+    roles: ['admin', 'user']
   }
 ]
 
@@ -131,6 +138,12 @@ export const routesMenu = [
         breadcumbs: ['Account', 'Account information']
       }
     ]
+  },
+  {
+    title: 'Departments',
+    roles: ['admin', 'user'],
+    icon: 'home',
+    subComponent: []
   },
   {
     title: 'Events',

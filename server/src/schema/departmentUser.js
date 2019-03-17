@@ -14,7 +14,7 @@ export default gql`
   extend type Query {
     departmentuserList(page: Int, limit: Int!): [DepartmentUser]
     departmentuser(id: ID!): DepartmentUser
-    userOfDepartments(departmentId: ID!): [User]
+    usersOfDepartment(departmentId: ID!): [User]
   }
 
   extend type Mutation {

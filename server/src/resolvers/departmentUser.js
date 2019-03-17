@@ -4,12 +4,12 @@ import { UserInputError } from 'apollo-server'
 export default {
   Query: {
     // TODO: authentication
-    userOfDepartments: combineResolvers(
+    usersOfDepartment: combineResolvers(
       // isEventOwner,
       async (root, { departmentId }, { models }) => {
         const dpmUsers = await models.DepartmentUser.find({ departmentId }).populate('userId')
-        const users = dpmUsers.map((item) => item.userId)
-        // console.log('users: ',users)
+        const users = dpmUsers.filter((item) => !!item.userId).map((item) => item.userId)
+        // console.log('users: ', users)
 
         return users
       }
@@ -67,7 +67,7 @@ export default {
     },
 
     department: async (dpuser, args, { models }) => {
-      return {}
+      return await models.Department.findById(dpuser.departmentId)
     }
   }
 }

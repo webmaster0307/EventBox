@@ -27,6 +27,7 @@ export default gql`
     me: User
     user(id: ID!): User
     users: [User!]
+    myDepartment(departmentId: ID!): DepartmentUser
   }
 
   extend type Mutation {
