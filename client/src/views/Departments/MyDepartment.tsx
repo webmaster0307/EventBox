@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 import { user } from '@gqlQueries'
-import { Spin, Tabs } from 'antd'
+import { Spin, Tabs, Card } from 'antd'
 import DepartmentUsers from './DepartmetUsers'
 const { TabPane } = Tabs
 
@@ -12,14 +12,17 @@ const MyDepartment = ({ departmentId }: { departmentId: string }) => {
     return <Spin />
   }
   const { myDepartment } = data
+  if (!myDepartment) {
+    return null
+  }
 
   return (
     <Tabs defaultActiveKey='1'>
       <TabPane tab='Thông tin' key='1'>
-        <DepartmentInfo department={myDepartment && myDepartment.department} />
+        <DepartmentInfo department={myDepartment.department} />
       </TabPane>
       <TabPane tab='Thành viên' key='2'>
-        <DepartmentUsers />
+        <DepartmentUsers selfRole={myDepartment.departmentRole} departmentId={departmentId} />
       </TabPane>
     </Tabs>
   )
@@ -27,7 +30,12 @@ const MyDepartment = ({ departmentId }: { departmentId: string }) => {
 
 export default MyDepartment
 
-const DepartmentInfo = ({ department: { name, description } }: any) => (
+interface department {
+  name: string
+  description: string
+}
+
+const DepartmentInfo = ({ department: { name, description } }: { department: department }) => (
   <div>
     <h2>{name}</h2>
     <div>{description}</div>

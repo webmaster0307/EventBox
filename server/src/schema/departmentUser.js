@@ -12,9 +12,14 @@ export default gql`
   }
 
   extend type Query {
-    departmentuserList(page: Int, limit: Int!): [DepartmentUser]
-    departmentuser(id: ID!): DepartmentUser
     usersOfDepartment(departmentId: ID!): [User]
+    departmentUsers(
+      cursor: String
+      limit: Int
+      userId: ID
+      departmentId: ID
+      role: String
+    ): [DepartmentUser]
   }
 
   extend type Mutation {

@@ -1,17 +1,32 @@
 import { combineResolvers } from 'graphql-resolvers'
 import { UserInputError } from 'apollo-server'
+import { isDepartmentMember } from './authorization'
+
+const toCursorHash = (string) => Buffer.from(string).toString('base64')
+
+const fromCursorHash = (string) => Buffer.from(string, 'base64').toString('ascii')
 
 export default {
   Query: {
     // TODO: authentication
     usersOfDepartment: combineResolvers(
-      // isEventOwner,
+      isDepartmentMember,
       async (root, { departmentId }, { models }) => {
         const dpmUsers = await models.DepartmentUser.find({ departmentId }).populate('userId')
-        const users = dpmUsers.filter((item) => !!item.userId).map((item) => item.userId)
+        const users = dpmUsers.map((item) => item.userId)
         // console.log('users: ', users)
 
         return users
+      }
+    ),
+    departmentUsers: combineResolvers(
+      async (root, { cursor, limit = 50, userId, departmentId, role }, { models }) => {
+        if (role) {
+          return await models.DepartmentUser.find({ departmentId, departmentRole: role })
+        }
+        const dpmUsers = await models.DepartmentUser.find({ departmentId })
+
+        return dpmUsers
       }
     )
   },
