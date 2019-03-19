@@ -12,7 +12,6 @@ export default gql`
   }
 
   extend type Query {
-    usersOfDepartment(departmentId: ID!): [User]
     departmentUsers(
       cursor: String
       limit: Int

@@ -68,4 +68,23 @@ export const isDepartmentMember = combineResolvers(
   }
 )
 
+export const isDepartmentOperator = combineResolvers(
+  isAuthenticated,
+  async (parent, { departmentId }, { models, me }) => {
+    if (isAdminRole(me)) {
+      return skip
+    }
+    const isChief = await models.DepartmentUser.findOne({
+      departmentId,
+      userId: me.id,
+      departmentRole: 'chief'
+    })
+    if (isChief) {
+      return skip
+    } else {
+      throw new ForbiddenError("Not authenticated as department's operator")
+    }
+  }
+)
+
 const isAdminRole = (me) => me.role.includes('admin')
