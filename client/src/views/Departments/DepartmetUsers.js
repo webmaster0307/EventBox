@@ -1,10 +1,11 @@
 import React from 'react'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { useQuery } from 'react-apollo-hooks'
 import { departmentUser } from '@gqlQueries'
 import { Spin, List, Skeleton, Avatar, Button, Divider, Tag, Popconfirm, message } from 'antd'
 import { withTranslation, useTranslation } from 'react-i18next'
 import { withModal } from '@components'
 import FormAddUser from './FormAddUser'
+import { Mutation } from 'react-apollo'
 
 const DepartmentUsers = ({ t, selfRole, departmentId }) => {
   const { data, loading } = useQuery(departmentUser.GET_DEPARTMENT_USERS, {
@@ -77,11 +78,11 @@ const ButtonAdd = withModal(({ modal, departmentId }) => {
   )
 })
 
-const ButtonDelete = ({ departmentId, userId }) => {
-  const [t] = useTranslation()
-  const removeUser = useMutation(departmentUser.REMOVE_FROM_DEPARTMENT, {
-    variables: { departmentId, userId },
-    update: (cache, { data: { removeMember } }) => {
+const ButtonDelete = ({ departmentId, userId }) => (
+  <Mutation
+    mutation={departmentUser.REMOVE_FROM_DEPARTMENT}
+    variables={{ departmentId, userId }}
+    update={(cache, { data: { removeMember } }) => {
       if (!removeMember) {
         return
       }
@@ -98,21 +99,68 @@ const ButtonDelete = ({ departmentId, userId }) => {
             departmentUsers: data.departmentUsers.filter((item) => item.user.id !== userId)
           }
         })
-        message.success(t('Remove user from department successfully!'))
       } catch (error) {
         // console.log('error: ', error)
       }
-    }
-  })
-  return (
-    <Popconfirm
-      placement='topRight'
-      title='Are you sure to remove user from department?'
-      onConfirm={removeUser}
-      okText='Yes'
-      cancelText='No'
-    >
-      <Button type='danger'>Xóa</Button>
-    </Popconfirm>
-  )
-}
+    }}
+    onCompleted={() => {
+      message.success('Remove user from department successfully!')
+    }}
+    onError={({ graphQLErrors }) => {
+      const errMsg = graphQLErrors.map((item) => item.message).join(',')
+      message.error(errMsg)
+    }}
+  >
+    {(removeUser, { data, loading }) => (
+      <Popconfirm
+        placement='topRight'
+        title='Are you sure to remove user from department?'
+        onConfirm={removeUser}
+        okText='Yes'
+        cancelText='No'
+      >
+        <Button type='danger'>Xóa</Button>
+      </Popconfirm>
+    )}
+  </Mutation>
+)
+
+// const ButtonDelete = ({ departmentId, userId }) => {
+//   const [t] = useTranslation()
+//   const removeUser = useMutation(departmentUser.REMOVE_FROM_DEPARTMENT, {
+//     variables: { departmentId, userId },
+//     update: (cache, { data: { removeMember } }) => {
+//       if (!removeMember) {
+//         return
+//       }
+//       try {
+//         const data = cache.readQuery({
+//           query: departmentUser.GET_DEPARTMENT_USERS,
+//           variables: { departmentId }
+//         })
+//         cache.writeQuery({
+//           query: departmentUser.GET_DEPARTMENT_USERS,
+//           variables: { departmentId },
+//           data: {
+//             ...data,
+//             departmentUsers: data.departmentUsers.filter((item) => item.user.id !== userId)
+//           }
+//         })
+//         message.success(t('Remove user from department successfully!'))
+//       } catch (error) {
+//         // console.log('error: ', error)
+//       }
+//     }
+//   })
+//   return (
+//     <Popconfirm
+//       placement='topRight'
+//       title='Are you sure to remove user from department?'
+//       onConfirm={removeUser}
+//       okText='Yes'
+//       cancelText='No'
+//     >
+//       <Button type='danger'>Xóa</Button>
+//     </Popconfirm>
+//   )
+// }
