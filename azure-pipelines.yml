@@ -16,7 +16,8 @@ steps:
     displayName: 'Install Node.js'
 
   - script: |
-      npm install
-      npm run build
+      npm install -g yarn
+      yarn
+      yarn build
     workingDirectory: client
     displayName: 'npm install and build'
