@@ -123,6 +123,6 @@ class SignInForm extends React.Component {
   }
 }
 
-const SignInFormWrapped = withTranslation('translations')(Form.create()(withRouter(SignInForm)))
+const SignInFormWrapped = withTranslation()(Form.create()(withRouter(SignInForm)))
 
 export { SignInFormWrapped }

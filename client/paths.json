@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["./src/components/"],
-      "@client": ["./src/index.tsx"],
+      "@client": ["./src/apollo/index.ts"],
       "@routes": ["./src/constants/routes.js"],
       "@gqlQueries": ["./src/stores/apollo/index.ts"],
       "@formRules": ["./src/constants/form_rules.ts"]

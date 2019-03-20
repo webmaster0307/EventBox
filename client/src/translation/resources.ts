@@ -3,9 +3,9 @@ import english from './languages/en.json'
 
 export default {
   vn: {
-    translations: vietnamese
+    translation: vietnamese
   },
   en: {
-    translations: english
+    translation: english
   }
 }

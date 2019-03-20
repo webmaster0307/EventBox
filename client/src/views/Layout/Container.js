@@ -1,9 +1,8 @@
 import React from 'react'
-import { client } from '../../'
+import client from '../../apollo'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
 import { routesComp, routesMenu } from './routes'
-// import { Page404 } from '../ErrorPage'
 import Page404 from '../../Page/404'
 import Header from './Header'
 import * as routes from '@routes'
@@ -37,6 +36,7 @@ class Container extends React.Component {
 
   render() {
     const { me } = this.props.session
+    // console.log('me: ', me)
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -50,6 +50,9 @@ class Container extends React.Component {
           <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu
               .filter((route) => {
+                if (route.title === 'Departments') {
+                  return me.departments.length > 0
+                }
                 for (let role of me.role) {
                   if (route.roles.includes(role)) {
                     return true
@@ -59,26 +62,49 @@ class Container extends React.Component {
               })
               .map((item) => {
                 if (item.subComponent) {
-                  return (
-                    <SubMenu
-                      key={item.title}
-                      title={
-                        <span>
-                          <Icon type={item.icon} />
-                          <span>{item.title}</span>
-                        </span>
-                      }
-                    >
-                      {item.subComponent.map((it) => (
-                        <Menu.Item key={it.path}>
-                          <Link to={it.path}>
-                            <Icon type={it.icon} />
-                            <span>{it.title}</span>
-                          </Link>
-                        </Menu.Item>
-                      ))}
-                    </SubMenu>
-                  )
+                  if (item.title === 'Departments') {
+                    return (
+                      <SubMenu
+                        key={item.title}
+                        title={
+                          <span>
+                            <Icon type={item.icon} />
+                            <span>{item.title}</span>
+                          </span>
+                        }
+                      >
+                        {me.departments.map((it) => (
+                          <Menu.Item key={`department-${it.id}`}>
+                            <Link to={`${routes.DASHBOARD}/mydepartment/${it.id}`}>
+                              {/* <Icon type={it.icon} /> */}
+                              <span>{it.name}</span>
+                            </Link>
+                          </Menu.Item>
+                        ))}
+                      </SubMenu>
+                    )
+                  } else {
+                    return (
+                      <SubMenu
+                        key={item.title}
+                        title={
+                          <span>
+                            <Icon type={item.icon} />
+                            <span>{item.title}</span>
+                          </span>
+                        }
+                      >
+                        {item.subComponent.map((it) => (
+                          <Menu.Item key={it.path}>
+                            <Link to={it.path}>
+                              <Icon type={it.icon} />
+                              <span>{it.title}</span>
+                            </Link>
+                          </Menu.Item>
+                        ))}
+                      </SubMenu>
+                    )
+                  }
                 } else {
                   return (
                     <Menu.Item key={item.title}>

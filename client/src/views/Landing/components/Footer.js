@@ -207,4 +207,4 @@ class Footer extends Component {
   }
 }
 
-export default withTranslation('translations')(Footer)
+export default withTranslation()(Footer)

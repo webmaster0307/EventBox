@@ -59,7 +59,7 @@ class FormUserInfo extends Component {
     const {
       formFields,
       props: {
-        form: { getFieldDecorator, getFieldsValue },
+        form: { getFieldDecorator, getFieldsValue, validateFields },
         t: trans
       }
     } = this
@@ -94,7 +94,13 @@ class FormUserInfo extends Component {
                   htmlType='submit'
                   type='primary'
                   loading={loading}
-                  onClick={() => updateProfie()}
+                  onClick={() => {
+                    validateFields((err, values) => {
+                      if (!err) {
+                        updateProfie()
+                      }
+                    })
+                  }}
                 >
                   {trans('Update Profile')}
                 </Button>
@@ -107,4 +113,4 @@ class FormUserInfo extends Component {
   }
 }
 
-export default Form.create()(withTranslation('translations')(FormUserInfo))
+export default Form.create()(withTranslation()(FormUserInfo))

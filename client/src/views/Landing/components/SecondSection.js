@@ -52,4 +52,4 @@ class SecondSection extends Component {
   }
 }
 
-export default withTranslation('translations')(SecondSection)
+export default withTranslation()(SecondSection)

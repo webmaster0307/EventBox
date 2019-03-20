@@ -30,7 +30,7 @@ const RegisterButton = ({ i18n, eventId }) => {
   )
 }
 
-export default withTranslation('translations')(RegisterButton)
+export default withTranslation()(RegisterButton)
 
 const showError = ({ title = 'Something wrong', message }) => {
   notification.error({

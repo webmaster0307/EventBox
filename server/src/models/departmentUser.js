@@ -16,7 +16,7 @@ let departmentUserSchema = new Schema(
     },
     departmentRole: {
       type: String,
-      enum: ['member', 'reviewer', 'head'],
+      enum: ['member', 'reviewer', 'chief'],
       default: 'reviewer'
     }
   },

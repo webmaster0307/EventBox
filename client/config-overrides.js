@@ -16,8 +16,8 @@ function webpack(config, env) {
   config.resolve = {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
-      '@client': path.resolve(__dirname, './src'),
-      '@routes': path.resolve(__dirname, './src/constants/routes.js'),
+      '@client': path.resolve(__dirname, './src/apollo'),
+      '@routes': path.resolve(__dirname, './src/constants/routes.ts'),
       '@gqlQueries': path.resolve(__dirname, './src/stores/apollo'),
       '@formRules': path.resolve(__dirname, './src/constants/form_rules.ts')
     },

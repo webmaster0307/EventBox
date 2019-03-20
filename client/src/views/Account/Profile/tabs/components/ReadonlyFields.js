@@ -13,7 +13,7 @@ const fsFormLayout = {
   }
 }
 
-export default withTranslation('translations')(({ t: translate, data }) => {
+export default withTranslation()(({ t: translate, data }) => {
   const { username, email, role, departments } = data
   const formFields = [
     {

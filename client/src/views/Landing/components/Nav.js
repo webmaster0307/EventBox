@@ -199,4 +199,4 @@ const LanguageSelected = ({ isEnglish }) =>
     </span>
   )
 
-export default withTranslation('translations')(Header)
+export default withTranslation()(Header)
