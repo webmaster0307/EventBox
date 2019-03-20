@@ -1,11 +1,12 @@
 import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 import { departmentUser } from '@gqlQueries'
-import { Spin, List, Skeleton, Avatar, Button, Divider, Tag, Popconfirm, message } from 'antd'
+import { List, Skeleton, Avatar, Button, Divider, Tag, Popconfirm, message } from 'antd'
 import { withTranslation, useTranslation } from 'react-i18next'
 import { withModal } from '@components'
 import FormAddUser from './FormAddUser'
 import { Mutation } from 'react-apollo'
+import FakeLoading from './ListLoading'
 
 const DepartmentUsers = ({ t, selfRole, departmentId }) => {
   const { data, loading } = useQuery(departmentUser.GET_DEPARTMENT_USERS, {
@@ -13,7 +14,7 @@ const DepartmentUsers = ({ t, selfRole, departmentId }) => {
   })
 
   if (loading) {
-    return <Spin />
+    return <FakeLoading />
   }
   const { departmentUsers } = data
   if (!departmentUsers) {

@@ -1,18 +1,19 @@
 import React from 'react'
-import { List, Avatar, Divider, Skeleton, Spin, Tag, Popconfirm, Button, message } from 'antd'
+import { List, Avatar, Divider, Skeleton, Tag, Popconfirm, Button, message } from 'antd'
 import { departmentUser } from '@gqlQueries'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { useTranslation } from 'react-i18next'
+import FakeLoading from '../../../Departments/ListLoading'
 
 const role = 'chief'
 
 const Operators = ({ departmentId }) => {
   const { data, loading } = useQuery(departmentUser.GET_DEPARTMENT_USERS, {
-    variables: { departmentId, role: 'chief' }
+    variables: { departmentId, role }
   })
 
   if (loading) {
-    return <Spin />
+    return <FakeLoading />
   }
   //
   const { departmentUsers } = data

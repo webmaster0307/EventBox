@@ -1,8 +1,9 @@
 import React from 'react'
-import { List, Avatar, Divider, Skeleton, Spin, Tag, Button, Popconfirm, message } from 'antd'
+import { List, Avatar, Divider, Skeleton, Tag, Button, Popconfirm, message } from 'antd'
 import { departmentUser } from '@gqlQueries'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { useTranslation } from 'react-i18next'
+import FakeLoading from '../../../Departments/ListLoading'
 
 const role = 'reviewer'
 
@@ -12,7 +13,7 @@ const Reviewers = ({ departmentId }) => {
   })
 
   if (loading) {
-    return <Spin />
+    return <FakeLoading />
   }
   //
   const { departmentUsers } = data
