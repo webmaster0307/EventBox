@@ -1,6 +1,6 @@
 # eventbox-dashboard
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e75cb98a3564e8fb98206f6697bd6cd)](https://app.codacy.com/app/legend1250/eventbox-dashboard?utm_source=github.com&utm_medium=referral&utm_content=legend1250/eventbox-dashboard&utm_campaign=Badge_Grade_Settings) [![Build Status](https://drone.eventvlu.tk/api/badges/legend1250/eventbox-dashboard/status.svg)](https://drone.eventvlu.tk/legend1250/eventbox-dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e75cb98a3564e8fb98206f6697bd6cd)](https://app.codacy.com/app/legend1250/eventbox-dashboard?utm_source=github.com&utm_medium=referral&utm_content=legend1250/eventbox-dashboard&utm_campaign=Badge_Grade_Settings) [![Build Status](https://drone.eventvlu.tk/api/badges/legend1250/eventbox-dashboard/status.svg)](https://drone.eventvlu.tk/legend1250/eventbox-dashboard) [![Build Status](https://dev.azure.com/legend12500/legend12500/_apis/build/status/legend1250.eventbox-dashboard?branchName=dev)](https://dev.azure.com/legend12500/legend12500/_build/latest?definitionId=1&branchName=dev)
 
 
 A dashboard for Events management
