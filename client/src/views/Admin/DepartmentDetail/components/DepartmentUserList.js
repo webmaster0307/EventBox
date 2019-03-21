@@ -1,23 +1,26 @@
 import React from 'react'
-import Reviewers from './Reviewers'
-import Operators from './Operators'
+// import Reviewers from './Reviewers'
+// import Operators from './Operators'
 import { Row, Col, Button } from 'antd'
 import { withModal } from '@components'
 import { useTranslation } from 'react-i18next'
 import FormAddUser from './FormAddUser'
+import Member from './Members'
 
 const DepartmentUsers = (props) => {
   const { departmentId } = props.match.params
+  const Reviewers = new Member(departmentId, 'reviewer').render()
+  const ChiefOperators = new Member(departmentId, 'chief').render()
 
   return (
     <Row>
       <AddMember departmentId={departmentId} />
       <Row>
         <Col span={11}>
-          <Reviewers departmentId={departmentId} />
+          <Reviewers />
         </Col>
         <Col offset={2} span={11}>
-          <Operators departmentId={departmentId} />
+          <ChiefOperators />
         </Col>
       </Row>
     </Row>
