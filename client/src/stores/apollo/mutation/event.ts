@@ -7,6 +7,8 @@ const CREATE_EVENT = gql`
     $description: String!
     $rawHtmlContent: String!
     $shortDescription: String
+    $maxTickets: Int!
+    $registerEndAt: String!
     $organizationName: String!
     $organizationLogo: String!
     $organizationDescription: String!
@@ -21,6 +23,8 @@ const CREATE_EVENT = gql`
       description: $description
       rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
+      maxTickets: $maxTickets
+      registerEndAt: $registerEndAt
       organizationName: $organizationName
       organizationLogo: $organizationLogo
       organizationDescription: $organizationDescription

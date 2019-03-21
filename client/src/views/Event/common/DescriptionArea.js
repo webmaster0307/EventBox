@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Form, Row, Col, Divider } from 'antd'
+import { Input, Form, Row, Col, Divider, InputNumber, DatePicker } from 'antd'
 import { formRuleNotEmpty, formItemLayout } from './constants'
 import { Editor } from 'react-draft-wysiwyg'
 import { inject, observer } from 'mobx-react'
@@ -27,6 +27,26 @@ class DescriptionArea extends Component {
         rules: [formRuleNotEmpty]
       },
       {
+        name: 'maxTickets',
+        title: 'Max number of tickets',
+        customRender: <InputNumber min={1} max={100} />,
+        rules: [formRuleNotEmpty],
+        initialValue: 20
+      },
+      {
+        name: 'registerEndAt',
+        title: 'Close registration by',
+        customRender: (
+          <DatePicker
+            showTime={{ format: 'HH:mm' }}
+            format='YYYY-MM-DD HH:mm'
+            placeholder='Select Time'
+            allowClear={false}
+          />
+        ),
+        rules: [formRuleNotEmpty]
+      },
+      {
         name: 'shortDescription',
         title: 'Short Description',
         customRender: <Input placeholder='Short description' />
@@ -40,11 +60,12 @@ class DescriptionArea extends Component {
     return (
       <>
         {this.formFields().map((field) => {
-          const { name, title, rules, customRender } = field
+          const { name, title, rules, initialValue, customRender } = field
           return (
             <FormItem key={name} label={title} colon={false} {...formItemLayout}>
               {getFieldDecorator(name, {
-                rules
+                rules,
+                initialValue
               })(customRender)}
             </FormItem>
           )

@@ -49,13 +49,17 @@ let eventSchema = new Schema(
       type: String,
       default: ''
     },
-    regFrom: {
+    registerStartAt: {
       type: Date,
       default: ''
     },
-    regTo: {
+    registerEndAt: {
       type: Date,
       default: ''
+    },
+    maxTickets: {
+      type: Number,
+      default: 20
     },
     approvedBy: {
       type: Schema.Types.ObjectId,
