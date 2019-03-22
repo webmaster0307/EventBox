@@ -7,7 +7,8 @@ import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html'
-import { event as eventQueries } from '@gqlQueries'
+import { event as eventQueries, session } from '@gqlQueries'
+import { Query, Mutation } from 'react-apollo'
 // import * as routes from '@routes'
 
 const FormItem = Form.Item
@@ -35,11 +36,13 @@ class EventUpdate extends Component {
       title: eventDetail.title,
       thumbnail: eventDetail.images.thumbnail,
       shortDescription: eventDetail.shortDescription,
+      maxTickets: eventDetail.maxTickets,
+      registerEndAt: moment(eventDetail.registerEndAt),
       organizationName: eventDetail.organizationName,
       organizationLogo: eventDetail.organizationLogo,
       organizationDescription: eventDetail.organizationDescription,
-      startTime: moment(parseInt(eventDetail.startTime)),
-      endTime: moment(parseInt(eventDetail.endTime)),
+      startTime: moment(eventDetail.startTime),
+      endTime: moment(eventDetail.endTime),
       location: eventDetail.location,
       address: eventDetail.address
     })
@@ -177,6 +180,7 @@ class EventUpdate extends Component {
 
   render() {
     const { loading, buttonLoading } = this.state
+    const { eventId } = this.props.match.params
 
     return (
       <Spin spinning={loading}>
@@ -194,15 +198,62 @@ class EventUpdate extends Component {
             >
               Update Event
             </Button>
-            {/* <Button
-              type='primary'
-              loading={buttonLoading}
-              icon='form'
-              onClick={this.handlePublishEvent}
-              disabled={event && event.status === 'in-review'}
-            >
-              PUBLISH
-            </Button> */}
+            <Query query={session.GET_LOCAL_SESSION}>
+              {({ data }) =>
+                data &&
+                data.me &&
+                data.me.role.includes('admin') && (
+                  <Mutation
+                    mutation={eventQueries.PUBLISH_DIRECTLY}
+                    variables={{ eventId }}
+                    update={(cache, { data: { publishDirectly } }) => {
+                      if (!publishDirectly) {
+                        return alert('Failed to publish')
+                      }
+                      const data = cache.readQuery({
+                        query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
+                      })
+                      console.log('publishDirectly: ', publishDirectly)
+                      try {
+                        cache.writeQuery({
+                          query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,
+                          data: {
+                            ...data,
+                            events: {
+                              ...data.events,
+                              edges: data.events.edges.map((node) => {
+                                if (node.id !== eventId) {
+                                  return node
+                                } else {
+                                  return {
+                                    ...node,
+                                    ...publishDirectly
+                                  }
+                                }
+                              }),
+                              pageInfo: data.events.pageInfo
+                            }
+                          }
+                        })
+                      } catch (error) {
+                        console.log('error: ', error)
+                      }
+                    }}
+                  >
+                    {(publishDirectly, { data, loading }) => (
+                      <Button
+                        type='primary'
+                        loading={loading}
+                        icon='thunderbold'
+                        onClick={publishDirectly}
+                      >
+                        Publish (by Admin)
+                      </Button>
+                    )}
+                  </Mutation>
+                )
+              }
+            </Query>
           </FormItem>
         </Form>
         <BackTop />

@@ -19,8 +19,8 @@ export default gql`
     organizationName: String!
     organizationLogo: String
     organizationDescription: String
-    startTime: String
-    endTime: String
+    startTime: Date
+    endTime: Date
     participants: [String]
     location: String
     address: String
@@ -97,8 +97,8 @@ export default gql`
       organizationName: String!
       organizationLogo: String
       organizationDescription: String
-      startTime: String
-      endTime: String
+      startTime: Date
+      endTime: Date
       location: String
       address: String
       departments: [ID]
@@ -109,6 +109,9 @@ export default gql`
       title: String!
       thumbnail: String!
       description: String!
+      maxTickets: Int!
+      registerStartAt: Date
+      registerEndAt: Date!
       rawHtmlContent: String!
       shortDescription: String
       categoryId: String
@@ -118,8 +121,8 @@ export default gql`
       organizationName: String!
       organizationLogo: String
       organizationDescription: String
-      startTime: String
-      endTime: String
+      startTime: Date
+      endTime: Date
       location: String
       address: String
     ): Event!
@@ -133,6 +136,8 @@ export default gql`
 
     joinEvent(eventId: ID!): EventTicket!
     unjoinEvent(userId: ID!, eventId: ID!): Event!
+
+    publishDirectly(eventId: ID!): Event
   }
 
   extend type Subscription {

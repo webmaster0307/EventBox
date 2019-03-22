@@ -56,13 +56,16 @@ const UPDATE_EVENT_BYID = gql`
     $title: String!
     $thumbnail: String!
     $description: String!
+    $maxTickets: Int!
+    $registerStartAt: Date
+    $registerEndAt: Date!
     $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
     $organizationLogo: String!
     $organizationDescription: String!
-    $startTime: String!
-    $endTime: String!
+    $startTime: Date!
+    $endTime: Date!
     $location: String!
     $address: String!
   ) {
@@ -71,6 +74,9 @@ const UPDATE_EVENT_BYID = gql`
       title: $title
       thumbnail: $thumbnail
       description: $description
+      maxTickets: $maxTickets
+      registerStartAt: $registerStartAt
+      registerEndAt: $registerEndAt
       rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName
@@ -127,6 +133,15 @@ const JOIN_EVENT = gql`
   }
 `
 
+const PUBLISH_DIRECTLY = gql`
+  mutation($eventId: ID!) {
+    publishDirectly(eventId: $eventId) {
+      id
+      status
+    }
+  }
+`
+
 export {
   CREATE_EVENT,
   UPDATE_EVENT_BYID,
@@ -134,5 +149,6 @@ export {
   PUBLISH_EVENT_BYID,
   APPROVE_EVENT_BYID,
   REJECT_EVENT_BYID,
-  JOIN_EVENT
+  JOIN_EVENT,
+  PUBLISH_DIRECTLY
 }

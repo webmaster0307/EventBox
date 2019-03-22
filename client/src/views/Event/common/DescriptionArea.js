@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Form, Row, Col, Divider, InputNumber, DatePicker } from 'antd'
-import { formRuleNotEmpty, formItemLayout } from './constants'
+import { formRuleNotEmpty, formItemLayout, inputNumberNotEmpty } from './constants'
 import { Editor } from 'react-draft-wysiwyg'
 import { inject, observer } from 'mobx-react'
 import UploadDragger from './UploadDragger'
@@ -30,7 +30,7 @@ class DescriptionArea extends Component {
         name: 'maxTickets',
         title: 'Max number of tickets',
         customRender: <InputNumber min={1} max={100} />,
-        rules: [formRuleNotEmpty],
+        rules: [inputNumberNotEmpty],
         initialValue: 20
       },
       {
@@ -44,7 +44,7 @@ class DescriptionArea extends Component {
             allowClear={false}
           />
         ),
-        rules: [formRuleNotEmpty]
+        rules: [{ required: true, message: 'Event must have close registration day' }]
       },
       {
         name: 'shortDescription',

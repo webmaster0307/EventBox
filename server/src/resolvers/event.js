@@ -1,6 +1,6 @@
 import { combineResolvers } from 'graphql-resolvers'
 import mongoose from 'mongoose'
-import { isAuthenticated, isEventOwner } from './authorization'
+import { isAuthenticated, isEventOwner, isAdmin } from './authorization'
 import { EVENTS } from '../subscription'
 import { ApolloError } from 'apollo-server'
 import uuidV4 from 'uuid/v4'
@@ -324,22 +324,32 @@ export default {
     joinEvent: combineResolvers(
       isAuthenticated,
       async (parent, { eventId }, { me, models, pubsub }) => {
+        //
+        const eventExisted = await models.Event.findById(eventId)
+        if (!eventExisted) {
+          throw new ApolloError('Event is not recognized', '400')
+        }
+        const count = await models.Ticket.countDocuments({ eventId: eventExisted.id })
+        if (count >= eventExisted.maxTickets) {
+          throw new ApolloError('Ticket is sold out', '400')
+        }
+        const closeTime = new Date(eventExisted.registerEndAt).getTime()
+        const now = new Date().getTime()
+        if (now >= closeTime) {
+          throw new ApolloError('Event was close, cannot register ticket', '400')
+        }
         // upload svg host
         const UPLOAD_HOST = process.env.EVENTBOX_UPLOAD
         if (!UPLOAD_HOST) {
           throw new ApolloError('Missing upload hosting', '400')
         }
         //
-        const eventExisted = await models.Event.findById(eventId)
-        if (!eventExisted) {
-          throw new ApolloError('Event is not recognized', '400')
-        }
         const isJoined = await models.Ticket.findOne({
           userId: me.id,
           eventId
         })
         if (isJoined) {
-          throw new ApolloError('User already registered this event', '400')
+          throw new ApolloError('You are already registered this event', '400')
         }
         const code = uuidV4()
         const imgSvg = qr.image(code, {
@@ -389,7 +399,7 @@ export default {
                 } else {
                   slackSendQRCode({
                     userRegister: `${me.username} | ${me.email} | ${me.id}`,
-                    eventName: eventExisted.title,
+                    eventName: `${eventExisted.title} ${eventExisted.id}`,
                     ticketPng: `${UPLOAD_HOST}/ticket/${filename}/1`
                   })
                 }
@@ -486,7 +496,22 @@ export default {
       } catch (err) {
         throw new ApolloError(err, '400')
       }
-    }
+    },
+
+    publishDirectly: combineResolvers(isAdmin, async (parent, { eventId }, { models }) => {
+      try {
+        const updated = await models.Event.findByIdAndUpdate(
+          eventId,
+          {
+            status: 'active'
+          },
+          { new: true }
+        )
+        return updated
+      } catch (err) {
+        throw new ApolloError(err, '400')
+      }
+    })
   },
 
   Event: {

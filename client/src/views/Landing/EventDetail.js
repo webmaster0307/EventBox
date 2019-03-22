@@ -161,7 +161,8 @@ class EventItem extends React.Component {
 
 const Header = (props) => {
   const { event, ...rest } = props
-  const time = moment(Number(event.startTime))
+  const time = moment(event.startTime)
+  const explicitTime = moment(event.startTime).format('LLLL')
 
   return (
     <Row {...rest}>
@@ -177,7 +178,7 @@ const Header = (props) => {
         <div className='title'>{event.title}</div>
         <div className='start-time'>
           <Icon type='calendar' style={{ fontSize: 16, marginRight: 16 }} />{' '}
-          {new Date(Number(event.startTime)).toLocaleString()}
+          {`${explicitTime.charAt(0).toUpperCase()}${explicitTime.substring(1)}`}
         </div>
         <div className='location'>
           <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} /> {event.location}
