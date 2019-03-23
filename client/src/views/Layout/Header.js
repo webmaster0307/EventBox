@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
-import { Layout, Avatar, Menu, Dropdown, notification, Icon } from 'antd'
+import { Layout, Avatar, Menu, Dropdown, notification, Icon, Row } from 'antd'
 import { client } from '@client'
 import { signOut } from '@components'
 import { Link, withRouter } from 'react-router-dom'
 import { Subscription, Query } from 'react-apollo'
 import { event, session } from '@gqlQueries'
 import { DB_EVENT_REVIEW } from '@routes'
+import { withTranslation } from 'react-i18next'
 
 const { Header } = Layout
+const languages = [
+  {
+    title: 'English',
+    lang_id: 'en',
+    flag:
+      'https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/gb_flag.png'
+  },
+  {
+    title: 'Tiếng Việt',
+    lang_id: 'vn',
+    flag:
+      'https://res.cloudinary.com/ddfez1a0x/image/upload/c_scale,q_100,w_173/v1547734591/vn_flag.png'
+  }
+]
 
 class LayoutHeader extends Component {
   render() {
@@ -71,16 +86,39 @@ class UserAvatar extends Component {
   }
 }
 
+const Languages = withTranslation()(
+  ({ i18n, tReady, t, ...rest }) =>
+    languages.map((item) => (
+      <Menu.Item key={item.lang_id} {...rest}>
+        <span onClick={() => i18n.changeLanguage(item.lang_id)}>
+          <Row type='flex' align='middle' style={{ minWidth: 104 }}>
+            <div style={{ marginRight: 6 }}>
+              <img src={item.flag} style={{ width: 25 }} alt={item.lang_id} />
+            </div>
+            <div style={{ fontWeight: `${i18n.language === item.lang_id ? 600 : 500}` }}>
+              {item.title}
+            </div>
+          </Row>
+        </span>
+      </Menu.Item>
+    ))
+  /* eslint-disable */
+)
+
 const actions = (
   <Menu>
     <Menu.Item>
-      <span>
-        <Link to='/'>Home</Link>
-      </span>
+      <div>
+        <Link to='/' style={{ display: 'block' }}>
+          Home
+        </Link>
+      </div>
     </Menu.Item>
     <Menu.Divider />
+    <Languages />
+    <Menu.Divider />
     <Menu.Item onClick={() => signOut(client)}>
-      <span>Logout</span>
+      <div style={{ display: 'block' }}>Logout</div>
     </Menu.Item>
   </Menu>
 )

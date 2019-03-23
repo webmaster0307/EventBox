@@ -10,7 +10,8 @@
     margin: auto;
     will-change: transform;
   }
-  .title-wrapper > h1, > h1 {
+  .title-wrapper > h1,
+  > h1 {
     font-size: 32px;
     color: @text-color;
     margin-bottom: 16px;
@@ -22,21 +23,21 @@
 }
 
 .@{homepage} {
-  padding: 128px 24px;
+  padding: 48px 24px;
 }
 
 @media screen and (max-width: 767px) {
   .@{homepage}-wrapper {
     .@{homepage} {
       padding: 56px 24px;
-      >h1 {
+      > h1 {
         font-size: 24px;
         margin: 0 auto 32px;
         &.title-h1 {
           margin-bottom: 8px;
         }
       }
-      >p {
+      > p {
         margin-bottom: 32px;
       }
     }
