@@ -12,8 +12,8 @@ const CREATE_EVENT = gql`
     $organizationName: String!
     $organizationLogo: String!
     $organizationDescription: String!
-    $startTime: String!
-    $endTime: String!
+    $startTime: Date!
+    $endTime: Date!
     $location: String!
     $address: String
   ) {
