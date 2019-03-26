@@ -38,6 +38,7 @@ class EventUpdate extends Component {
       shortDescription: eventDetail.shortDescription,
       maxTickets: eventDetail.maxTickets,
       registerEndAt: moment(eventDetail.registerEndAt),
+      categories: eventDetail.categories.map(({ id }) => id),
       organizationName: eventDetail.organizationName,
       organizationLogo: eventDetail.organizationLogo,
       organizationDescription: eventDetail.organizationDescription,

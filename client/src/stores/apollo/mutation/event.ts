@@ -8,6 +8,7 @@ const CREATE_EVENT = gql`
     $rawHtmlContent: String!
     $shortDescription: String
     $maxTickets: Int!
+    $categories: [ID]
     $registerEndAt: String!
     $organizationName: String!
     $organizationLogo: String!
@@ -25,6 +26,7 @@ const CREATE_EVENT = gql`
       shortDescription: $shortDescription
       maxTickets: $maxTickets
       registerEndAt: $registerEndAt
+      categories: $categories
       organizationName: $organizationName
       organizationLogo: $organizationLogo
       organizationDescription: $organizationDescription
@@ -59,6 +61,7 @@ const UPDATE_EVENT_BYID = gql`
     $maxTickets: Int!
     $registerStartAt: Date
     $registerEndAt: Date!
+    $categories: [ID]
     $rawHtmlContent: String!
     $shortDescription: String
     $organizationName: String!
@@ -77,6 +80,7 @@ const UPDATE_EVENT_BYID = gql`
       maxTickets: $maxTickets
       registerStartAt: $registerStartAt
       registerEndAt: $registerEndAt
+      categories: $categories
       rawHtmlContent: $rawHtmlContent
       shortDescription: $shortDescription
       organizationName: $organizationName

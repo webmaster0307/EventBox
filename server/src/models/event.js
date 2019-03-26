@@ -34,10 +34,12 @@ let eventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user'
     },
-    categories: {
-      type: Array,
-      default: []
-    },
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'category'
+      }
+    ],
     images: {
       type: Object
     },

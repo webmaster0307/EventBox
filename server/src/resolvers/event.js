@@ -525,6 +525,16 @@ export default {
         }
       })
       return departments
+    },
+
+    categories: async (event, args, { models }) => {
+      const ids = event.categories.map((id) => mongoose.Types.ObjectId(id))
+      const categories = await models.Category.find({
+        _id: {
+          $in: ids
+        }
+      })
+      return categories
     }
   },
 

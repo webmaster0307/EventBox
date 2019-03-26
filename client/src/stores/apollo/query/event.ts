@@ -62,6 +62,9 @@ const GET_EVENT_DETAIL = gql`
       shortDescription
       maxTickets
       registerEndAt
+      categories {
+        id
+      }
       images {
         thumbnail
       }

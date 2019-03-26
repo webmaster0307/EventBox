@@ -10,7 +10,7 @@ export default gql`
     shortDescription: String!
     user: User
     departments: [Department]
-    categories: [String]
+    categories: [Category]
     images: EventImages!
     registerStartAt: Date
     registerEndAt: Date
@@ -94,6 +94,7 @@ export default gql`
       registerStartAt: String
       registerEndAt: String!
       maxTickets: Int!
+      categories: [ID]
       organizationName: String!
       organizationLogo: String
       organizationDescription: String
@@ -112,6 +113,7 @@ export default gql`
       maxTickets: Int!
       registerStartAt: Date
       registerEndAt: Date!
+      categories: [ID]
       rawHtmlContent: String!
       shortDescription: String
       categoryId: String
