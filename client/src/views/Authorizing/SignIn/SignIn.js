@@ -43,6 +43,11 @@ class SignInForm extends React.Component {
     }
   }
 
+  loginFromVL = () => {
+    const url = `${process.env.REACT_APP_HOST}/api/login/oauthVL`
+    window.open(url, '_self')
+  }
+
   _handleSubmit = (event) => {
     event.preventDefault()
     const { form } = this.props
@@ -113,6 +118,12 @@ class SignInForm extends React.Component {
                 <Button type='primary' block htmlType='submit'>
                   <Icon type='login' />
                   {i18n.t('Login')}
+                </Button>
+              </FormItem>
+              <FormItem>
+                <Button type='primary' block onClick={this.loginFromVL}>
+                  <Icon type='login' />
+                  {i18n.t('Using VanLang Account')}
                 </Button>
               </FormItem>
             </Form>

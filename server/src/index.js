@@ -21,6 +21,8 @@ import { PubSub } from 'apollo-server'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
 
+import uuidV4 from 'uuid/v4'
+
 const PORT = process.env.SERVER_PORT || 8000
 const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
 
@@ -211,6 +213,13 @@ app.get('/api/verify', async (req, res) => {
   } else {
     res.sendFile(templateError)
   }
+})
+
+app.get('/api/login/oauthVL', async (req, res) => {
+  const VL_OAUTH = process.env.VL_OAUTH || ''
+  const EB_HOST = encodeURIComponent(process.env.EVENTBOX_HOST || '')
+  const redirectUrl = `${VL_OAUTH}?redirect_uri=${EB_HOST}&state=${uuidV4()}`
+  return res.status(200).redirect(redirectUrl)
 })
 
 const errorLogger = async (error) => {
