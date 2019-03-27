@@ -12,7 +12,7 @@ i18n
   .init({
     // we init with resources
     resources,
-    fallbackLng: 'vn',
+    fallbackLng: 'en',
 
     keySeparator: false, // we use content as keys
 

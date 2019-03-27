@@ -34,10 +34,12 @@ let eventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user'
     },
-    categories: {
-      type: Array,
-      default: []
-    },
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'category'
+      }
+    ],
     images: {
       type: Object
     },
@@ -49,13 +51,17 @@ let eventSchema = new Schema(
       type: String,
       default: ''
     },
-    regFrom: {
+    registerStartAt: {
       type: Date,
       default: ''
     },
-    regTo: {
+    registerEndAt: {
       type: Date,
       default: ''
+    },
+    maxTickets: {
+      type: Number,
+      default: 20
     },
     approvedBy: {
       type: Schema.Types.ObjectId,

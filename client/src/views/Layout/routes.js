@@ -94,13 +94,13 @@ export const routesComp = [
 ]
 
 export const routesMenu = [
-  // {
-  //   title: 'Admin',
-  //   path: `${basename}/admin`,
-  //   roles: ['admin'],
-  //   icon: 'star',
-  //   breadcumbs: ['Administration']
-  // },
+  {
+    title: 'Announcement',
+    path: routes.DASHBOARD,
+    roles: ['user', 'admin'],
+    icon: 'layout',
+    breadcumbs: ['Announcement']
+  },
   {
     title: 'Admin',
     roles: ['admin'],

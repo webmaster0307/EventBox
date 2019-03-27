@@ -1,6 +1,6 @@
 import React from 'react'
 import client from '../../apollo'
-import { Route, Switch, Link, withRouter } from 'react-router-dom'
+import { Route, Switch, Link } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
 import { routesComp, routesMenu } from './routes'
 import Page404 from '../../Page/404'
@@ -8,6 +8,7 @@ import Header from './Header'
 import * as routes from '@routes'
 import './styles.scss'
 import { session } from '@gqlQueries'
+import { withTranslation } from 'react-i18next'
 
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
@@ -35,8 +36,11 @@ class Container extends React.Component {
   }
 
   render() {
-    const { me } = this.props.session
-    // console.log('me: ', me)
+    const {
+      session: { me },
+      t
+    } = this.props
+    // console.log('t: ', t)
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -90,7 +94,7 @@ class Container extends React.Component {
                         title={
                           <span>
                             <Icon type={item.icon} />
-                            <span>{item.title}</span>
+                            <span>{t(item.title)}</span>
                           </span>
                         }
                       >
@@ -98,7 +102,7 @@ class Container extends React.Component {
                           <Menu.Item key={it.path}>
                             <Link to={it.path}>
                               <Icon type={it.icon} />
-                              <span>{it.title}</span>
+                              <span>{t(it.title)}</span>
                             </Link>
                           </Menu.Item>
                         ))}
@@ -110,7 +114,7 @@ class Container extends React.Component {
                     <Menu.Item key={item.title}>
                       <Link to={item.path}>
                         <Icon type={item.icon} />
-                        <span>{item.title}</span>
+                        <span>{t(item.title)}</span>
                       </Link>
                     </Menu.Item>
                   )
@@ -150,4 +154,4 @@ class Container extends React.Component {
   }
 }
 
-export default withRouter(Container)
+export default withTranslation()(Container)

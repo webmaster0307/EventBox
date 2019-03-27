@@ -72,11 +72,11 @@ class Members {
           try {
             const data = cache.readQuery({
               query: departmentUser.GET_DEPARTMENT_USERS,
-              variables: { departmentId, role: this.role }
+              variables: { departmentId, role }
             })
             cache.writeQuery({
               query: departmentUser.GET_DEPARTMENT_USERS,
-              variables: { departmentId, role: this.role },
+              variables: { departmentId, role },
               data: {
                 ...data,
                 departmentUsers: data.departmentUsers.filter((item) => item.user.id !== userId)
