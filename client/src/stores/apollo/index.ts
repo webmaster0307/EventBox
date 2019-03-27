@@ -4,7 +4,8 @@ import {
   department as departmentQueries,
   session as sessionQueries,
   departmentUser as departmentUserQueries,
-  ticket as ticketQueries
+  ticket as ticketQueries,
+  category as categoryQueries
 } from './query'
 import {
   session as sessionMutations,
@@ -46,4 +47,8 @@ const ticket = {
   ...ticketSubscriptions
 }
 
-export { event, user, department, session, departmentUser, ticket }
+const category = {
+  ...categoryQueries
+}
+
+export { event, user, department, session, departmentUser, ticket, category }

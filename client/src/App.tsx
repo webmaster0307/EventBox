@@ -124,9 +124,9 @@ const App = (props: withSessionProps) => {
         <Route
           exact
           path={`${routes.DASHBOARD}*`}
-          render={() =>
+          render={(props) =>
             session && session.me ? (
-              <DashboardContainer session={session} />
+              <DashboardContainer session={session} {...props} />
             ) : (
               <SignInPage refetch={refetch} session={session} />
             )

@@ -16,4 +16,10 @@ const formRuleNotEmpty = {
   message: 'Not correct format'
 }
 
-export { formItemLayout, formRuleNotEmpty }
+const inputNumberNotEmpty = {
+  type: 'number',
+  required: true,
+  message: 'Not a valid number'
+}
+
+export { formItemLayout, formRuleNotEmpty, inputNumberNotEmpty }

@@ -8,12 +8,8 @@ export default {
       }
     },
 
-    categories: (root, args, { models, newErr }) => {
-      try {
-        return models.Category.find({ isEnabled: true })
-      } catch (error) {
-        throw newErr(`An error occurred`, 404)
-      }
+    categories: async (root, { limit = 100 }, { models, newErr }) => {
+      return await models.Category.find({ isEnabled: true })
     }
   },
 
