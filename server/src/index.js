@@ -228,22 +228,22 @@ app.post('/api/login/oauthVL', bodyParser.json(), async (req, res) => {
   const getInfoEndpoint = `${process.env.VL_OAUTH}/GetInfo`
   const { code, state } = req.body
 
-  const { Email, DefaultUserName } = await rp({
-    uri: getInfoEndpoint,
-    method: 'POST',
-    formData: {
-      code
-    },
-    json: true
-  })
   let token
-  const secret = process.env.TOKEN_SECRET
-  const user = await models.User.findOne({
-    email: Email,
-    username: DefaultUserName
-  })
-  if (!user) {
-    try {
+  try {
+    const { Email, DefaultUserName } = await rp({
+      uri: getInfoEndpoint,
+      method: 'POST',
+      formData: {
+        code
+      },
+      json: true
+    })
+    const secret = process.env.TOKEN_SECRET
+    const user = await models.User.findOne({
+      email: Email,
+      username: DefaultUserName
+    })
+    if (!user) {
       const newUser = await models.User.create({
         email: Email,
         username: DefaultUserName,
@@ -251,15 +251,15 @@ app.post('/api/login/oauthVL', bodyParser.json(), async (req, res) => {
         isVanLangAccount: true
       })
       token = await createToken(models, newUser, secret)
-    } catch (error) {
-      console.log('error: ', error)
-      return res.status(400).json({
-        status: 'error',
-        data: 'Failed to login user'
-      })
+    } else {
+      token = await createToken(models, user, secret)
     }
-  } else {
-    token = await createToken(models, user, secret)
+  } catch (error) {
+    console.log('error: ', error)
+    return res.status(400).json({
+      status: 'error',
+      data: 'Failed to login user'
+    })
   }
 
   return res.status(200).json({
