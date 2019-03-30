@@ -22,6 +22,14 @@ let ticketSchema = new Schema(
       type: String,
       default: ''
     },
+    fullName: {
+      type: String,
+      default: ''
+    },
+    studentId: {
+      type: String,
+      default: ''
+    },
     checkedIn: {
       type: Boolean,
       default: false

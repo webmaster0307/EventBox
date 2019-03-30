@@ -118,10 +118,8 @@ class EventDetailReview extends Component {
 
 const Header = (props) => {
   const { event } = props
-  const time = moment(Number(event.startTime))
-  // console.log('time: ', time.format('MMMM') )
-  // console.log('time: ', time.format('dddd') )
-  // console.log('time: ', time.format('DD') )
+  const time = moment(event.startTime)
+  const explicitTime = moment(event.startTime).format('LLLL')
 
   return (
     <Row {...props}>
@@ -137,7 +135,7 @@ const Header = (props) => {
         <div className='title'>{event.title}</div>
         <div className='start-time'>
           <Icon type='calendar' style={{ fontSize: 16, marginRight: 16 }} />{' '}
-          {new Date(Number(event.startTime)).toLocaleString()}
+          {`${explicitTime.charAt(0).toUpperCase()}${explicitTime.substring(1)}`}
         </div>
         <div className='location'>
           <Icon type='environment' style={{ fontSize: 16, marginRight: 16 }} /> {event.location}
