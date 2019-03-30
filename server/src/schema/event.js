@@ -136,7 +136,7 @@ export default gql`
     approveEvent(id: ID!): Boolean!
     rejectEvent(id: ID!): Boolean!
 
-    joinEvent(eventId: ID!): EventTicket!
+    joinEvent(eventId: ID!, fullName: String!, studentId: String!): EventTicket!
     unjoinEvent(userId: ID!, eventId: ID!): Event!
 
     publishDirectly(eventId: ID!): Event

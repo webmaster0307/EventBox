@@ -12,7 +12,7 @@ const tokenExpired = 60 * 60 * 8 // 8 hours
 const tokenExpiredMobile = '7d' // 7 days
 const EVENTBOX_HOST = process.env.EVENTBOX_HOST || 'http://localhost:8000'
 
-const createToken = async (models, user, secret, type = 0) => {
+export const createToken = async (models, user, secret, type = 0) => {
   const { id, email, username, role } = user
   const jti = uuidV4()
   const payLoad = {

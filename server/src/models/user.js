@@ -50,6 +50,10 @@ let userSchema = new Schema(
       type: Boolean,
       required: true,
       default: true
+    },
+    isVanLangAccount: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -60,6 +64,9 @@ let userSchema = new Schema(
 // pre-hook
 userSchema.pre('save', async function(next) {
   if (process.env.NODE_ENV === 'test') {
+    return next()
+  }
+  if (this.isVanLangAccount) {
     return next()
   }
   this.password = await this.generatePasswordHash()

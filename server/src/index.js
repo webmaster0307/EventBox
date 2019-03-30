@@ -11,15 +11,19 @@ import { ApolloServer } from 'apollo-server-express'
 import { AuthenticationError } from 'apollo-server'
 import rp from 'request-promise'
 import depthLimit from 'graphql-depth-limit'
-
+// database connection
 import schema from './schema'
 import resolvers from './resolvers'
 import models, { connect } from './models/index'
 import loaders from './loaders'
-
+// Redis for PubSub
 import { PubSub } from 'apollo-server'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
+// oauth VL
+import uuidV4 from 'uuid/v4'
+import bodyParser from 'body-parser'
+import { createToken } from './resolvers/user'
 
 const PORT = process.env.SERVER_PORT || 8000
 const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
@@ -211,6 +215,57 @@ app.get('/api/verify', async (req, res) => {
   } else {
     res.sendFile(templateError)
   }
+})
+
+app.get('/api/login/oauthVL', async (req, res) => {
+  const VL_OAUTH = process.env.VL_OAUTH || ''
+  const EB_HOST = encodeURIComponent(process.env.EVENTBOX_HOST || '')
+  const redirectUrl = `${VL_OAUTH}/LoginVL?redirect_uri=${EB_HOST}&state=${uuidV4()}`
+  return res.status(200).redirect(redirectUrl)
+})
+
+app.post('/api/login/oauthVL', bodyParser.json(), async (req, res) => {
+  const getInfoEndpoint = `${process.env.VL_OAUTH}/GetInfo`
+  const { code, state } = req.body
+
+  let token
+  try {
+    const { Email, DefaultUserName } = await rp({
+      uri: getInfoEndpoint,
+      method: 'POST',
+      formData: {
+        code
+      },
+      json: true
+    })
+    const secret = process.env.TOKEN_SECRET
+    const user = await models.User.findOne({
+      email: Email,
+      username: DefaultUserName
+    })
+    if (!user) {
+      const newUser = await models.User.create({
+        email: Email,
+        username: DefaultUserName,
+        isActivated: true,
+        isVanLangAccount: true
+      })
+      token = await createToken(models, newUser, secret)
+    } else {
+      token = await createToken(models, user, secret)
+    }
+  } catch (error) {
+    console.log('error: ', error)
+    return res.status(400).json({
+      status: 'error',
+      data: 'Failed to login user'
+    })
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    data: token
+  })
 })
 
 const errorLogger = async (error) => {

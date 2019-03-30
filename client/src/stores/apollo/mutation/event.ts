@@ -129,8 +129,8 @@ const REJECT_EVENT_BYID = gql`
 `
 
 const JOIN_EVENT = gql`
-  mutation($eventId: ID!) {
-    joinEvent(eventId: $eventId) {
+  mutation($eventId: ID!, $fullName: String!, $studentId: String!) {
+    joinEvent(eventId: $eventId, fullName: $fullName, studentId: $studentId) {
       code
       ticketSvgSrc
     }

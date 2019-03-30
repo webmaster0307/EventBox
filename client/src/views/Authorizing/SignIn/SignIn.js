@@ -2,7 +2,7 @@ import React from 'react'
 import { client } from '@client'
 import * as routes from '@routes'
 import { withRouter, Redirect } from 'react-router-dom'
-import { Card, Form, Button, Input, Icon, Skeleton, message } from 'antd'
+import { Card, Form, Button, Input, Icon, Skeleton, message, Row, Col } from 'antd'
 import queryString from 'query-string'
 import { observer, inject } from 'mobx-react'
 import { user as userMutations } from '@gqlQueries'
@@ -41,6 +41,11 @@ class SignInForm extends React.Component {
           console.log('res: ', res)
         })
     }
+  }
+
+  loginFromVL = () => {
+    const url = `${process.env.REACT_APP_HOST}/api/login/oauthVL`
+    window.open(url, '_self')
   }
 
   _handleSubmit = (event) => {
@@ -110,10 +115,19 @@ class SignInForm extends React.Component {
                 )}
               </FormItem>
               <FormItem>
-                <Button type='primary' block htmlType='submit'>
-                  <Icon type='login' />
-                  {i18n.t('Login')}
-                </Button>
+                <Row>
+                  <Col span={11}>
+                    <Button type='primary' block htmlType='submit'>
+                      <Icon type='login' />
+                      {i18n.t('Login')}
+                    </Button>
+                  </Col>
+                  <Col span={11} offset={2}>
+                    <Button type='primary' block onClick={this.loginFromVL}>
+                      {i18n.t('Using VanLang Account')}
+                    </Button>
+                  </Col>
+                </Row>
               </FormItem>
             </Form>
           </Skeleton>

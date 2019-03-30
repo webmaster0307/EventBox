@@ -323,7 +323,7 @@ export default {
     ),
     joinEvent: combineResolvers(
       isAuthenticated,
-      async (parent, { eventId }, { me, models, pubsub }) => {
+      async (parent, { eventId, fullName, studentId }, { me, models, pubsub }) => {
         //
         const eventExisted = await models.Event.findById(eventId)
         if (!eventExisted) {
@@ -384,6 +384,8 @@ export default {
                 } = await rp(options)
                 const ticket = await models.Ticket.create({
                   userId: me.id,
+                  fullName,
+                  studentId,
                   eventId,
                   code,
                   ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
