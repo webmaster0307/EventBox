@@ -94,7 +94,7 @@ class FirstSection extends Component {
                     padding: 10
                   }}
                 >
-                  <Query query={event.EVENTS_FOR_SEARCH}>
+                  <Query query={event.EVENTS_FOR_SEARCH} fetchPolicy='cache-first'>
                     {({ loading, error, data: { eventsForSearch } }) => {
                       if (loading) return <Skeleton />
                       if (error) return message.error(error)

@@ -33,6 +33,7 @@
     "history": "^4.9.0",
     "i18next": "^15.0.7",
     "i18next-browser-languagedetector": "^3.0.1",
+    "js-cookie": "^2.2.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mobx": "^5.9.0",
