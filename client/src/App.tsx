@@ -16,6 +16,7 @@ import Landing from './views/Landing'
 import LandingEventDetail from './views/Landing/EventDetail'
 import DashboardContainer from './views/Layout/Container'
 import { Skeleton, message } from 'antd'
+const Cookies = require('js-cookie')
 
 const setSession = gql`
   mutation($session: Session) {
@@ -78,52 +79,21 @@ const setSession = gql`
 // }
 
 const App = (props: withSessionProps) => {
+  // cookie from oauth
+  const jwtCookie = Cookies.get('_session_')
+  // console.log('jwtCookie: ', jwtCookie)
+  //
   const { refetch, session } = props
   // loading oauth
-  const { code, state } = queryString.parse(window.location.search)
-  const [oauthLoading, setLoading] = useState(!!code && !!state)
+  // const { code, state } = queryString.parse(window.location.search)
+  const [oauthLoading, setLoading] = useState(!!jwtCookie)
 
   useEffect(() => {
-    // TODO: handle VL auth
-    // console.log('code: ', { code, state })
-    // if (code) {
-    //   var formData = new FormData()
-    //   formData.append('code', code.toString())
-    //   fetch('https://cntttest.vanlanguni.edu.vn:18081/Cap21T4/LoginManagement/Account/GetInfo', {
-    //     method: 'POST',
-    //     body: formData
-    //   })
-    //     .then((res) => res.json())
-    //     .then((res) => {
-    //       console.log('res: ', res)
-    //     })
-    //     .catch((err) => {
-    //       console.log('err: ', err)
-    //     })
-    // }
-    if (code && state) {
-      fetch('/api/login/oauthVL', {
-        headers: {
-          'Content-type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({ code, state })
+    if (jwtCookie) {
+      localStorage.setItem('token', jwtCookie)
+      refetch().then((res) => {
+        setLoading(false)
       })
-        .then((res) => res.json())
-        .then(async ({ data, status }) => {
-          if (status === 'success') {
-            localStorage.setItem('token', data)
-            await refetch()
-          } else {
-            message.error(data)
-          }
-          history.replace('/')
-          setLoading(false)
-        })
-        .catch((err) => {
-          console.log('error: ', err)
-          history.replace('/')
-        })
     }
     client.mutate({ mutation: setSession, variables: { session } })
     // console.log('session: ', session)

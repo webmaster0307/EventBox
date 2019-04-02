@@ -25,8 +25,9 @@ import uuidV4 from 'uuid/v4'
 import bodyParser from 'body-parser'
 import { createToken } from './resolvers/user'
 
+const PROD_MODE = process.env.NODE_ENV === 'production'
 const PORT = process.env.SERVER_PORT || 8000
-const HOST = process.env.NODE_ENV === 'production' ? process.env.HOST_NAME : 'localhost'
+const HOST = PROD_MODE ? process.env.HOST_NAME : 'localhost'
 
 const app = express()
 
@@ -218,54 +219,61 @@ app.get('/api/verify', async (req, res) => {
 })
 
 app.get('/api/login/oauthVL', async (req, res) => {
-  const VL_OAUTH = process.env.VL_OAUTH || ''
-  const EB_HOST = encodeURIComponent(process.env.EVENTBOX_HOST || '')
-  const redirectUrl = `${VL_OAUTH}/LoginVL?redirect_uri=${EB_HOST}&state=${uuidV4()}`
-  return res.status(200).redirect(redirectUrl)
-})
+  const { code, state } = req.query
 
-app.post('/api/login/oauthVL', bodyParser.json(), async (req, res) => {
-  const getInfoEndpoint = `${process.env.VL_OAUTH}/GetInfo`
-  const { code, state } = req.body
-
-  let token
-  try {
-    const { Email, DefaultUserName } = await rp({
-      uri: getInfoEndpoint,
-      method: 'POST',
-      formData: {
-        code
-      },
-      json: true
-    })
-    const secret = process.env.TOKEN_SECRET
-    const user = await models.User.findOne({
-      email: Email,
-      username: DefaultUserName
-    })
-    if (!user) {
-      const newUser = await models.User.create({
-        email: Email,
-        username: DefaultUserName,
-        isActivated: true,
-        isVanLangAccount: true
+  if (code && state) {
+    try {
+      let token
+      const { Email, DefaultUserName } = await rp({
+        uri: `${process.env.VL_OAUTH}/GetInfo`,
+        method: 'POST',
+        formData: {
+          code
+        },
+        json: true
       })
-      token = await createToken(models, newUser, secret)
-    } else {
-      token = await createToken(models, user, secret)
+      const secret = process.env.TOKEN_SECRET
+      const user = await models.User.findOne({
+        email: Email,
+        username: DefaultUserName
+      })
+      if (!user) {
+        const newUser = await models.User.create({
+          email: Email,
+          username: DefaultUserName,
+          isActivated: true,
+          isVanLangAccount: true
+        })
+        token = await createToken(models, newUser, secret)
+      } else {
+        token = await createToken(models, user, secret)
+      }
+      // set cookie
+      res.cookie('_session_', token, {
+        secure: PROD_MODE,
+        maxAge: 10000,
+        domain: PROD_MODE ? 'eventvlu.tk' : ''
+      })
+      if (!PROD_MODE) {
+        return res.redirect('http://localhost:3000')
+      }
+      return res.redirect(process.env.EVENTBOX_HOST)
+    } catch (error) {
+      // console.log('error: ', error)
+      errorLogger(error)
+      if (!PROD_MODE) {
+        return res.redirect('http://localhost:3000')
+      }
+      return res.redirect(process.env.EVENTBOX_HOST)
     }
-  } catch (error) {
-    console.log('error: ', error)
-    return res.status(400).json({
-      status: 'error',
-      data: 'Failed to login user'
-    })
+  } else {
+    const VL_OAUTH = process.env.VL_OAUTH || ''
+    const EB_HOST = process.env.EVENTBOX_HOST
+      ? encodeURIComponent(`${process.env.EVENTBOX_HOST}/api/login/oauthVL`)
+      : ''
+    const redirectUrl = `${VL_OAUTH}/LoginVL?redirect_uri=${EB_HOST}&state=${uuidV4()}`
+    return res.status(200).redirect(redirectUrl)
   }
-
-  return res.status(200).json({
-    status: 'success',
-    data: token
-  })
 })
 
 const errorLogger = async (error) => {
