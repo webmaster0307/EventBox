@@ -5,10 +5,29 @@ import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 import moment from 'moment'
 import 'moment/locale/vi'
+import { withTranslation } from 'react-i18next'
+
 @withRouter
+@withTranslation()
 @inject('stores')
 @observer
 class EventList extends Component {
+  componentDidUpdate(prevProps, prevState) {
+    const { language } = prevProps.i18n
+    switch (language) {
+      case 'en':
+        moment.locale('en')
+        break
+      case 'vn':
+        moment.locale('vi')
+        break
+      default:
+        moment.locale('en')
+        break
+    }
+    // console.log('language: ', language)
+  }
+
   handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
@@ -17,7 +36,7 @@ class EventList extends Component {
     const events = this.props.stores.landing.eventList || []
     // console.log(events)
     const time = moment(events.startTime)
-    console.log(time)
+
     return (
       <div>
         {events &&
@@ -42,13 +61,14 @@ class EventList extends Component {
                         ? item.title.substring(0, 60).concat('...')
                         : item.title}
                     </p>
-                    <p> {item.categories} </p>
                   </div>
                   <div className='categoRies' />
-                  <div className='fake-calendar'>
-                    <div className='month'>{time.format('MMMM')}</div>
-                    <div className='date'>{time.format('DD')}</div>
-                    <div className='weekDate'>{time.format('dddd')}</div>
+                  <div style={{ paddingTop: 10 }}>
+                    <div className='fake-calendar'>
+                      <div className='month'>{time.format('MMMM')}</div>
+                      <div className='date'>{time.format('DD')}</div>
+                      <div className='weekDate'>{time.format('dddd')}</div>
+                    </div>
                   </div>
                 </div>
               </div>
