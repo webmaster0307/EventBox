@@ -15,6 +15,7 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
           id
         }
         createdAt
+        startTime
         updatedAt
         user {
           id
