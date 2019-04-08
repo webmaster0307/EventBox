@@ -12,8 +12,16 @@ import { withTranslation } from 'react-i18next'
 @inject('stores')
 @observer
 class EventList extends Component {
-  componentDidUpdate(prevProps, prevState) {
-    const { language } = prevProps.i18n
+  componentDidMount() {
+    this.updateLanguage()
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateLanguage()
+  }
+
+  updateLanguage = () => {
+    const { language } = this.props.i18n
     switch (language) {
       case 'en':
         moment.locale('en')
@@ -36,6 +44,7 @@ class EventList extends Component {
     const events = this.props.stores.landing.eventList || []
     // console.log(events)
     const time = moment(events.startTime)
+    console.log('rerender')
 
     return (
       <div>
@@ -56,11 +65,11 @@ class EventList extends Component {
                 </div>
                 <div className='info'>
                   <div className='nameTitle'>
-                    <p>
+                    <span>
                       {item.title.length > 63
                         ? item.title.substring(0, 60).concat('...')
                         : item.title}
-                    </p>
+                    </span>
                   </div>
                   <div className='categoRies' />
                   <div style={{ paddingTop: 10 }}>
