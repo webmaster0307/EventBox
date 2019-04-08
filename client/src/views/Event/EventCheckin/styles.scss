@@ -1,5 +1,8 @@
 .event-checkin-list {
   &__wrapper {
+    &:hover {
+      cursor: pointer;
+    }
     .tag-custom-type {
       font-size: 0.9em;
       font-weight: bold;
@@ -27,14 +30,35 @@
       //   color: #7a4f09;
       // }
       &-active,
-      &-success {
+      &-success,
+      &-available {
         background-color: #f1f8e9;
         color: #0c4616;
+        text-decoration: none;
+        outline: none;
+        transition: color 0.3s ease 0s;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba($color: #c8e6c9, $alpha: 0.7);
+          outline: 0px;
+          text-decoration: none;
+          color: rgba($color: #0c4616, $alpha: 0.7);
+        }
       }
       &-inactive,
       &-error {
         background-color: #ffebee;
         color: #70000d;
+        text-decoration: none;
+        outline: none;
+        transition: color 0.3s ease 0s;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba($color: #ffcdd2, $alpha: 0.7);
+          outline: 0px;
+          text-decoration: none;
+          color: rgba($color: #70000d, $alpha: 0.7);
+        }
       }
       &-notcheked {
         background-color: #ffcdd2;
