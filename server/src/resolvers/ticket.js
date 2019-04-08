@@ -32,7 +32,6 @@ export default {
   },
   Ticket: {
     userInfo: async ({ userId }, args, { models, loaders }) => {
-      console.log('userId: ', userId)
       return await models.User.findById(userId)
     },
     eventInfo: async ({ eventId }, args, { models, loaders }) => {

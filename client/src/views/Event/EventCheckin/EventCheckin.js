@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
-import { List, Tooltip, notification, Row, Col, Card, Affix } from 'antd'
+import {
+  List,
+  Tooltip,
+  notification,
+  Row,
+  Col,
+  Card,
+  Affix,
+  Popconfirm,
+  Button,
+  message
+} from 'antd'
 import './styles.scss'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { ticket } from '@gqlQueries'
 import moment from 'moment'
 import gql from 'graphql-tag'
@@ -67,6 +78,7 @@ const TitleWrapper = ({ event }) => (
 
 export default EventCheckinWrapper
 
+@withTranslation()
 class EventCheckin extends Component {
   @observable ticket
 
@@ -103,7 +115,7 @@ class EventCheckin extends Component {
 
   @observer
   render() {
-    const { tickets, loading } = this.props
+    const { tickets, loading, t, eventId } = this.props
 
     return (
       <Row>
@@ -126,13 +138,61 @@ class EventCheckin extends Component {
                     </Tooltip>
                   ) : (
                     'Ticket available'
-                  )
+                  ),
+                  <Mutation
+                    mutation={ticket.DELETE_TICKET}
+                    variables={{ eventId, ticketId: item.id }}
+                    update={(cache, { data: { deleteTicket } }) => {
+                      if (!deleteTicket) {
+                        return
+                      }
+                      try {
+                        const data = cache.readQuery({
+                          query: ticket.TICKETS,
+                          variables: { eventId }
+                        })
+                        cache.writeQuery({
+                          query: ticket.TICKETS,
+                          variables: { eventId },
+                          data: {
+                            ...data,
+                            tickets: data.tickets.filter((t) => t.id !== item.id)
+                          }
+                        })
+                      } catch (error) {
+                        // console.log('error: ', error)
+                      }
+                    }}
+                    onCompleted={() => {
+                      message.success('Remove ticket successfully!')
+                    }}
+                  >
+                    {(deleteTicket, { data, loading, error }) => (
+                      <Popconfirm
+                        placement='topRight'
+                        title={t('Are you sure to remove this ticket?')}
+                        onConfirm={deleteTicket}
+                        okText='Yes'
+                        cancelText='No'
+                      >
+                        <Button type='danger' loading={loading}>
+                          {t('Remove')}
+                        </Button>
+                      </Popconfirm>
+                    )}
+                  </Mutation>
                 ]}
-                onClick={() => {
-                  this.ticket = item
-                }}
               >
-                <List.Item.Meta title={`${index + 1}. ${item.userInfo && item.userInfo.email}`} />
+                <List.Item.Meta
+                  title={`${index + 1}. ${item.userInfo && item.userInfo.email}`}
+                  onClick={() => {
+                    if (this.ticket && this.ticket.id === item.id) {
+                      this.ticket = undefined
+                    } else {
+                      this.ticket = item
+                    }
+                  }}
+                />
               </List.Item>
             )}
           />
