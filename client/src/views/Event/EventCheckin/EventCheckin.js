@@ -130,7 +130,9 @@ class EventCheckin extends Component {
             className='event-checkin-list__wrapper'
             renderItem={(item, index) => (
               <List.Item
-                className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} `}
+                className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} ${
+                  item.id === (this.ticket && this.ticket.id) ? 'selected' : ''
+                }`}
                 actions={[
                   item.checkedInTime ? (
                     <Tooltip title={moment(item.checkedInTime).format('DD/MM/YYYY HH:mm:ss')}>

@@ -44,6 +44,10 @@
           text-decoration: none;
           color: rgba($color: #0c4616, $alpha: 0.7);
         }
+
+        &.selected {
+          background-color: #bdbdbd;
+        }
       }
       &-inactive,
       &-error {
@@ -58,6 +62,10 @@
           outline: 0px;
           text-decoration: none;
           color: rgba($color: #70000d, $alpha: 0.7);
+        }
+
+        &.selected {
+          background-color: #bdbdbd;
         }
       }
       &-notcheked {
