@@ -40,8 +40,7 @@ const GET_EVENTS_HOMEPAGE = gql`
       images {
         thumbnail
       }
-      createdAt
-      updatedAt
+      startTime
       user {
         id
         username

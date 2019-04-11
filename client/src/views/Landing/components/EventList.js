@@ -43,8 +43,8 @@ class EventList extends Component {
   render() {
     const events = this.props.stores.landing.eventList || []
     // console.log(events)
-    const time = moment(events.startTime)
-    console.log('rerender')
+    // const time = moment(events.startTime)
+    // console.log('rerender')
 
     return (
       <div>
@@ -74,9 +74,9 @@ class EventList extends Component {
                   <div className='categoRies' />
                   <div style={{ paddingTop: 10 }}>
                     <div className='fake-calendar'>
-                      <div className='month'>{time.format('MMMM')}</div>
-                      <div className='date'>{time.format('DD')}</div>
-                      <div className='weekDate'>{time.format('dddd')}</div>
+                      <div className='month'>{moment(item.startTime).format('MMMM')}</div>
+                      <div className='date'>{moment(item.startTime).format('DD')}</div>
+                      <div className='weekDate'>{moment(item.startTime).format('dddd')}</div>
                     </div>
                   </div>
                 </div>
