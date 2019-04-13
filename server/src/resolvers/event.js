@@ -513,6 +513,19 @@ export default {
       } catch (err) {
         throw new ApolloError(err, '400')
       }
+    }),
+
+    deleteTicket: combineResolvers(isEventOwner, async (parent, { ticketId }, { models }) => {
+      console.log('ticketId: ', ticketId)
+      try {
+        const { errors } = await models.Ticket.findByIdAndDelete(ticketId)
+        if (errors) {
+          return false
+        }
+        return true
+      } catch (error) {
+        return false
+      }
     })
   },
 
