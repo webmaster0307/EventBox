@@ -1,71 +1,106 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { toJS } from 'mobx'
-import { Row, Col, Card, Icon } from 'antd'
+import { Col } from 'antd'
 import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 import moment from 'moment'
-
-
-import '../eventdetail.scss'
+import 'moment/locale/vi'
+import { withTranslation } from 'react-i18next'
 
 @withRouter
+@withTranslation()
 @inject('stores')
 @observer
 class EventList extends Component {
-  handleGoToEventDetail = event => {
+  componentDidMount() {
+    this.updateLanguage()
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateLanguage()
+  }
+
+  updateLanguage = () => {
+    const { language } = this.props.i18n
+    switch (language) {
+      case 'en':
+        moment.locale('en')
+        break
+      case 'vn':
+        moment.locale('vi')
+        break
+      default:
+        moment.locale('en')
+        break
+    }
+    // console.log('language: ', language)
+  }
+
+  handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
 
   render() {
     const events = this.props.stores.landing.eventList || []
-
-    console.log(toJS(events))
+    // console.log(events)
 
     return (
-      <Card>
+      <div>
         {events &&
-          events.map((item, index) => {
-            const time = moment(item.startTime)
-            const createdAt = moment(item.createdAt)
-            return (
-              <Col
-                key={index.toString()}
-                className='block'
-                md={12}
-                xs={24}
-                onClick={() => this.handleGoToEventDetail(item)}
-              >
-                <div className='content5-block-content'>
-                  <span>
-                    <img src={item.images.thumbnail} height='100%' alt='img' />
-                  </span>
-                  <p style={{ textAlign: 'left', padding: 5, fontWeight: 600 }}>
-                    {item.title.length > 63 ? item.title.substring(0, 60).concat('...') : item.title}
-                  </p>
-                  <Row>
-                    <Col span={18}>
-                      <p style={{ textAlign: 'left', padding: 5 }}>
-                        <Icon type='file-text' /> <b>Ngày tạo:</b> {createdAt.format('LL')}
-                      </p>
-                      <p style={{ textAlign: 'left', padding: 5 }}>
-                        <Icon type='project' /> <b>Danh mục:</b> Sự kiện
-                      </p>
-                    </Col>
-                    <Col span={6}>
-                      <div className='calendar-fake'>
-                        <div className='month'>{time.format('MMMM')}</div>
-                        <div className='date'>{time.format('DD')}</div>
-                        <div className='weekdate'>{time.format('dddd')}</div>
-                      </div>
-                    </Col>
-                  </Row>
+          events.map((item, index) => (
+            <Col
+              xs={24}
+              lg={12}
+              sm={24}
+              md={12}
+              key={index.toString()}
+              className='block'
+              onClick={() => this.handleGoToEventDetail(item)}
+            >
+              <div className='content5-block-content'>
+                <div className='coverEvent'>
+                  <img src={item.images.thumbnail} alt='img' />
                 </div>
-              </Col>
-            )
-          })
-        }
-      </Card>
+                <div className='info'>
+                  <div className='nameTitle'>
+                    <span>
+                      {item.title.length > 63
+                        ? item.title.substring(0, 60).concat('...')
+                        : item.title}
+                    </span>
+                  </div>
+                  <div className='categoRies' />
+                  <div style={{ paddingTop: 10 }}>
+                    <div className='fake-calendar'>
+                      <div className='month'>{moment(item.startTime).format('MMMM')}</div>
+                      <div className='date'>{moment(item.startTime).format('DD')}</div>
+                      <div className='weekDate'>{moment(item.startTime).format('dddd')}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+
+            // <div
+            //   key={index.toString()}
+            //   className='block'
+            //   onClick={() => this.handleGoToEventDetail(item)}
+            // >
+            //   <Col xs={24} md={12}>
+            //     <div className='content5-block-content'>
+            //       <div>
+            //         <img src={item.images.thumbnail} width='100%' alt='img' />
+            //       </div>
+            //       <p>
+            // {item.title.length > 63
+            //   ? item.title.substring(0, 60).concat('...')
+            //   : item.title}
+            //       </p>
+            //     </div>
+            //   </Col>
+            // </Card>
+          ))}
+      </div>
     )
   }
 }

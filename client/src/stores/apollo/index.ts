@@ -12,7 +12,8 @@ import {
   user as userMutations,
   event as eventMutations,
   department as departmentMutations,
-  departmentUser as departmentUserMutations
+  departmentUser as departmentUserMutations,
+  ticket as ticketMutations
 } from './mutation'
 import { event as eventSubscriptions, ticket as ticketSubscriptions } from './subscription'
 
@@ -44,7 +45,8 @@ const departmentUser = {
 
 const ticket = {
   ...ticketQueries,
-  ...ticketSubscriptions
+  ...ticketSubscriptions,
+  ...ticketMutations
 }
 
 const category = {

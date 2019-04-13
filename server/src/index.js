@@ -234,8 +234,7 @@ app.get('/api/login/oauthVL', async (req, res) => {
       })
       const secret = process.env.TOKEN_SECRET
       const user = await models.User.findOne({
-        email: Email,
-        username: DefaultUserName
+        email: Email
       })
       if (!user) {
         const newUser = await models.User.create({

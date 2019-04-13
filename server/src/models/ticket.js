@@ -37,6 +37,10 @@ let ticketSchema = new Schema(
     checkedInTime: {
       type: Date,
       default: null
+    },
+    active: {
+      type: Boolean,
+      default: true
     }
   },
   {

@@ -10,6 +10,8 @@ const TICKETS = gql`
       checkedInTime
       userInfo {
         email
+        username
+        phoneNumber
       }
       createdAt
     }

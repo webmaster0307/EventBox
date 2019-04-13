@@ -39,9 +39,9 @@ class SecondSection extends Component {
               )
             )}
           </div>
-          <OverPack>
+          <OverPack className={'content-template'} playScale={0.1}>
             <QueueAnim key='u' type='bottom'>
-              <Row key='ul' className='content5-img-wrapper' gutter={16}>
+              <Row key='ul' className='content5-img-wrapper' type='flex' gutter={24}>
                 <EventList />
               </Row>
             </QueueAnim>

@@ -140,6 +140,8 @@ export default gql`
     unjoinEvent(userId: ID!, eventId: ID!): Event!
 
     publishDirectly(eventId: ID!): Event
+
+    deleteTicket(eventId: ID!, ticketId: ID!): Boolean!
   }
 
   extend type Subscription {
