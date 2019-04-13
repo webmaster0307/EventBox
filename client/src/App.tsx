@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { client } from '@client'
 import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
@@ -15,6 +15,8 @@ import Page404 from './Page/404'
 import Landing from './views/Landing'
 import LandingEventDetail from './views/Landing/EventDetail'
 import DashboardContainer from './views/Layout/Container'
+import { Skeleton, message } from 'antd'
+const Cookies = require('js-cookie')
 
 const setSession = gql`
   mutation($session: Session) {
@@ -77,30 +79,33 @@ const setSession = gql`
 // }
 
 const App = (props: withSessionProps) => {
+  // cookie from oauth
+  const jwtCookie = Cookies.get('_session_')
+  // console.log('jwtCookie: ', jwtCookie)
+  //
   const { refetch, session } = props
+  // loading oauth
+  // const { code, state } = queryString.parse(window.location.search)
+  const [oauthLoading, setLoading] = useState(!!jwtCookie)
 
   useEffect(() => {
-    // TODO: handle VL auth
-    // const { code, state } = queryString.parse(window.location.search)
-    // console.log('code: ', { code, state })
-    // if (code) {
-    //   var formData = new FormData()
-    //   formData.append('code', code.toString())
-    //   fetch('https://cntttest.vanlanguni.edu.vn:18081/Cap21T4/LoginManagement/Account/GetInfo', {
-    //     method: 'POST',
-    //     body: formData
-    //   })
-    //     .then((res) => res.json())
-    //     .then((res) => {
-    //       console.log('res: ', res)
-    //     })
-    //     .catch((err) => {
-    //       console.log('err: ', err)
-    //     })
-    // }
+    if (jwtCookie) {
+      localStorage.setItem('token', jwtCookie)
+      refetch().then((res) => {
+        setLoading(false)
+      })
+    }
     client.mutate({ mutation: setSession, variables: { session } })
     // console.log('session: ', session)
-  })
+  }, [])
+
+  if (oauthLoading) {
+    return (
+      <div style={{ padding: 50 }}>
+        <Skeleton active title={{ width: '100%' }} />
+      </div>
+    )
+  }
 
   return (
     <Router history={history}>

@@ -3,7 +3,7 @@
   background-color: #fafafa;
   min-height: 720px;
   .@{content5} {
-    >p {
+    > p {
       text-align: center;
     }
     &-img-wrapper {
@@ -12,60 +12,140 @@
       right: 0;
       .block {
         margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
         .content5-block-content {
           display: block;
+          margin-bottom: 24px;
           background: #fff;
           border-radius: 4px;
           padding: 10px;
-          text-align: center;
+          text-align: left;
           position: relative;
           overflow: hidden;
           .page-pro();
           border: none;
-          transition: box-shadow .3s @ease-out, transform .3s @ease-out;
-          & > span {
+          transition: box-shadow 0.3s @ease-out, transform 0.3s @ease-out;
+          img {
             width: 100%;
-            height: 160px;
-            display: block;
-            background: @line-color;
-            padding: 5%;
-            img {
-              max-width: 216px;
-            }
+            height: 202px;
           }
           & p {
             width: 100%;
             line-height: 30px;
-            height: 60px;
           }
-          &:hover {
-            & p {
-              bottom: 0;
+          .coverEvent {
+            &:hover {
+              cursor: pointer;
             }
-            cursor: pointer;
+          }
+          .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .nameTitle {
+              & > span {
+                font-family: 'Open Sans', sans-serif;
+                width: 100%;
+                line-height: 30px;
+                max-height: 60px;
+                padding-top: 10px;
+                font-weight: 700;
+                color: #333333;
+                // letter-spacing: -0.47px;
+                font-size: 16px;
+                white-space: initial;
+              }
+            }
+            .fake-calendar {
+              width: 87px;
+              height: 100px;
+              @media (min-width: 768px) {
+                width: 67px;
+                height: auto;
+              }
+              display: flex;
+              flex-direction: column;
+              border: 1px solid #ccc;
+              text-align: center;
+              word-wrap: break-word;
+              border-bottom: 5px solid #ccc;
+              .month {
+                padding: 4px 0;
+                text-transform: uppercase;
+                font-weight: bold;
+                color: #fff;
+                font-size: 14px;
+                @media (min-width: 768px) {
+                  padding: 2px 0;
+                  font-size: 10px;
+                }
+                background-color: #eb1212;
+              }
+              .date {
+                font-size: 20px;
+                font-weight: normal;
+                color: #666666;
+              }
+              .weekDate {
+                margin: 0;
+                color: rgb(115, 104, 104);
+                font-size: 18px;
+                font-weight: normal;
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+                @media (min-width: 768px) {
+                  font-size: 10px;
+                }
+              }
+            }
+            & > span {
+              width: 100%;
+              height: 160px;
+              display: block;
+              background: @line-color;
+              padding: 5%;
+              img {
+                max-width: 216px;
+              }
+            }
+            & p {
+              width: 100%;
+              line-height: 30px;
+              height: 60px;
+              font-weight: 800;
+              color: #333333;
+            }
+            &:hover {
+              & p {
+                bottom: 0;
+              }
+              cursor: pointer;
+            }
           }
         }
       }
     }
   }
-}
 
-@media screen and (max-width: 767px) {
-  .@{content5}-wrapper {
-    height: 2000px;
-    overflow: hidden;
-    .@{content5} {
-      ul {
-        li {
-          display: block;
-          width: 100%;
-          padding: 2%;
-          span {
-            height: 168px;
-          }
-          p {
-            position: relative;
-            bottom: 0;
+  @media screen and (max-width: 767px) {
+    .@{content5}-wrapper {
+      height: 2000px;
+      overflow: hidden;
+      .@{content5} {
+        ul {
+          li {
+            display: block;
+            width: 100%;
+            padding: 2%;
+            span {
+              height: 168px;
+            }
+            p {
+              position: relative;
+              bottom: 0;
+            }
           }
         }
       }

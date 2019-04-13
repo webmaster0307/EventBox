@@ -8,6 +8,8 @@ const SUBSCRIBE_TICKET_CHECKIN = gql`
       checkedInTime
       userInfo {
         email
+        lastname
+        phoneNumber
       }
     }
   }

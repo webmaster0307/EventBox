@@ -1,10 +1,24 @@
 import React, { Component } from 'react'
-import { List, Tooltip, notification } from 'antd'
+import {
+  List,
+  Tooltip,
+  notification,
+  Row,
+  Col,
+  Card,
+  Affix,
+  Popconfirm,
+  Button,
+  message
+} from 'antd'
 import './styles.scss'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { ticket } from '@gqlQueries'
 import moment from 'moment'
 import gql from 'graphql-tag'
+import { observable } from 'mobx'
+import { withTranslation } from 'react-i18next'
+import { observer } from 'mobx-react'
 
 const EventCheckinWrapper = (props) => {
   const { eventId } = props.match.params
@@ -64,7 +78,10 @@ const TitleWrapper = ({ event }) => (
 
 export default EventCheckinWrapper
 
+@withTranslation()
 class EventCheckin extends Component {
+  @observable ticket
+
   subscribeToMoreTicket = () => {
     const { eventId } = this.props
     this.props.subscribeToMore({
@@ -96,35 +113,151 @@ class EventCheckin extends Component {
     this.subscribeToMoreTicket()
   }
 
+  @observer
   render() {
-    const { tickets, loading } = this.props
+    const { tickets, loading, t, eventId } = this.props
 
     return (
-      <List
-        size='large'
-        loading={loading}
-        // header={<div>Header</div>}
-        // footer={<div>Footer</div>}
-        bordered
-        dataSource={loading ? [] : tickets}
-        className='event-checkin-list__wrapper'
-        renderItem={(item, index) => (
-          <List.Item
-            className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} `}
-            actions={[
-              item.checkedInTime ? (
-                <Tooltip title={moment(item.checkedInTime).format('DD/MM/YYYY HH:mm:ss')}>
-                  {moment(item.checkedInTime).fromNow()}
-                </Tooltip>
-              ) : (
-                'Ticket available'
-              )
-            ]}
-          >
-            {index + 1}. {item.userInfo && item.userInfo.email}
-          </List.Item>
-        )}
-      />
+      <Row>
+        <Col span={14}>
+          <List
+            size='large'
+            loading={loading}
+            // header={<div>Header</div>}
+            // footer={<div>Footer</div>}
+            bordered
+            dataSource={loading ? [] : tickets}
+            className='event-checkin-list__wrapper'
+            renderItem={(item, index) => (
+              <List.Item
+                className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} ${
+                  item.id === (this.ticket && this.ticket.id) ? 'selected' : ''
+                }`}
+                actions={[
+                  item.checkedInTime ? (
+                    <Tooltip title={moment(item.checkedInTime).format('DD/MM/YYYY HH:mm:ss')}>
+                      {moment(item.checkedInTime).fromNow()}
+                    </Tooltip>
+                  ) : (
+                    'Ticket available'
+                  ),
+                  <Mutation
+                    mutation={ticket.DELETE_TICKET}
+                    variables={{ eventId, ticketId: item.id }}
+                    update={(cache, { data: { deleteTicket } }) => {
+                      if (!deleteTicket) {
+                        return
+                      }
+                      try {
+                        const data = cache.readQuery({
+                          query: ticket.TICKETS,
+                          variables: { eventId }
+                        })
+                        cache.writeQuery({
+                          query: ticket.TICKETS,
+                          variables: { eventId },
+                          data: {
+                            ...data,
+                            tickets: data.tickets.filter((t) => t.id !== item.id)
+                          }
+                        })
+                      } catch (error) {
+                        // console.log('error: ', error)
+                      }
+                    }}
+                    onCompleted={() => {
+                      message.success('Remove ticket successfully!')
+                    }}
+                  >
+                    {(deleteTicket, { data, loading, error }) => (
+                      <Popconfirm
+                        placement='topRight'
+                        title={t('Are you sure to remove this ticket?')}
+                        onConfirm={deleteTicket}
+                        okText='Yes'
+                        cancelText='No'
+                      >
+                        <Button type='danger' loading={loading}>
+                          {t('Remove')}
+                        </Button>
+                      </Popconfirm>
+                    )}
+                  </Mutation>
+                ]}
+              >
+                <List.Item.Meta
+                  title={`${index + 1}. ${item.userInfo && item.userInfo.email}`}
+                  onClick={() => {
+                    if (this.ticket && this.ticket.id === item.id) {
+                      this.ticket = undefined
+                    } else {
+                      this.ticket = item
+                    }
+                  }}
+                />
+              </List.Item>
+            )}
+          />
+        </Col>
+        <Col span={10} style={{ paddingLeft: 14 }}>
+          <Affix offsetTop={30}>
+            <TicketInfo ticket={this.ticket || {}} />
+          </Affix>
+        </Col>
+      </Row>
     )
   }
 }
+
+const TicketInfo = withTranslation()(
+  observer(
+    ({ t: trans, ticket }) =>
+      Object.keys(ticket).length > 0 && (
+        <Card>
+          <div>
+            <label style={{ color: '#616161' }}>{trans('Ticket Email')}: </label>
+            <span style={{ color: '#424242' }}>{ticket.userInfo && ticket.userInfo.email}</span>
+          </div>
+          <div>
+            <label style={{ color: '#616161' }}>{trans('Ticket username')}: </label>
+            <span style={{ color: '#424242' }}>{ticket.userInfo && ticket.userInfo.username}</span>
+          </div>
+          <div>
+            <label style={{ color: '#616161' }}>{trans('Ticket status')}: </label>
+            <span
+              style={{
+                color: `${ticket.checkedIn ? '#757575' : '#388e3c'}`,
+                fontStyle: `${ticket.checkedIn ? 'italic' : 'normal'}`
+              }}
+            >
+              {' '}
+              {/* eslint-disable */}
+              {ticket.checkedIn
+                ? `${trans('Ticket is used')} - ${moment(ticket.checkedInTime).format(
+                    'DD/MM/YYYY HH:mm:ss'
+                  )}`
+                : trans('Ticket is available')}
+            </span>
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <img
+              src={ticket.ticketSvgSrc}
+              style={{ backgroundColor: '#fff' }}
+              width={280}
+              alt='ticket_qrcode'
+            />
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <label style={{ color: '#616161' }}>{trans('Ticket code')}: </label>
+            <span style={{ color: '#424242' }}>{ticket.code}</span>
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <label style={{ color: '#616161' }}>{trans('Ticket registered at')}: </label>
+            <span style={{ color: '#424242' }}>
+              {moment(ticket.createdAt).format('DD/MM/YYYY HH:mm:ss')}
+            </span>
+          </div>
+        </Card>
+      )
+  )
+)

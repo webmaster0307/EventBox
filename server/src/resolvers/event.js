@@ -323,7 +323,7 @@ export default {
     ),
     joinEvent: combineResolvers(
       isAuthenticated,
-      async (parent, { eventId }, { me, models, pubsub }) => {
+      async (parent, { eventId, fullName, studentId }, { me, models, pubsub }) => {
         //
         const eventExisted = await models.Event.findById(eventId)
         if (!eventExisted) {
@@ -384,6 +384,8 @@ export default {
                 } = await rp(options)
                 const ticket = await models.Ticket.create({
                   userId: me.id,
+                  fullName,
+                  studentId,
                   eventId,
                   code,
                   ticketSvgSrc: `${UPLOAD_HOST}/ticket/${filename}`
@@ -510,6 +512,19 @@ export default {
         return updated
       } catch (err) {
         throw new ApolloError(err, '400')
+      }
+    }),
+
+    deleteTicket: combineResolvers(isEventOwner, async (parent, { ticketId }, { models }) => {
+      console.log('ticketId: ', ticketId)
+      try {
+        const { errors } = await models.Ticket.findByIdAndDelete(ticketId)
+        if (errors) {
+          return false
+        }
+        return true
+      } catch (error) {
+        return false
       }
     })
   },

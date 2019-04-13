@@ -214,7 +214,7 @@ class EventUpdate extends Component {
                       const data = cache.readQuery({
                         query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS
                       })
-                      console.log('publishDirectly: ', publishDirectly)
+                      // console.log('publishDirectly: ', publishDirectly)
                       try {
                         cache.writeQuery({
                           query: eventQueries.GET_PAGINATED_EVENTS_WITH_USERS,

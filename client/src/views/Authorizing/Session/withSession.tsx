@@ -34,7 +34,7 @@ export interface withSessionProps {
       readonly __typename: 'User'
     }
   }
-  refetch: () => void
+  refetch: () => Promise<{}>
 }
 
 export default withSession

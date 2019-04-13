@@ -1,10 +1,10 @@
 import React, { Component, createElement } from 'react'
 import QueueAnim from 'rc-queue-anim'
-import { Row, Col, Tag, message } from 'antd'
+import { Row, Col, Tag } from 'antd'
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack'
 import { withTranslation } from 'react-i18next'
-import { Query } from 'react-apollo'
-import { event } from '@gqlQueries'
+// import { Query } from 'react-apollo'
+// import { event } from '@gqlQueries'
 
 import entertainmentIcon from '../images/section3/Entertainment.png'
 import learningIcon from '../images/section3/Studying.png'
@@ -84,7 +84,7 @@ class ThirdSection extends Component {
               leaveReverse
               component={Row}
             >
-              <Query query={event.COUNT_EVENT_BY_TYPE}>
+              {/* <Query query={event.COUNT_EVENT_BY_TYPE}>
                 {({ loading, error, data: { countEventByType } }) => {
                   if (loading) return 'loading...'
                   if (error) return message.error(error)
@@ -101,7 +101,18 @@ class ThirdSection extends Component {
                     </Col>
                   ))
                 }}
-              </Query>
+              </Query> */}
+              {this.block({ entertainment: 3, learning: 5, others: 7 }).map((item, i) => (
+                <Col key={i.toString()} className='block' md={8} sm={24} xs={24}>
+                  <div className='icon'>
+                    <img src={item.icon} width='100%' alt='img' className='none-user-select' />
+                  </div>
+                  <h3 className='content0-title'>
+                    <b className='none-user-select'>{item.title}</b>
+                  </h3>
+                  <div>{item.content}</div>
+                </Col>
+              ))}
             </QueueAnim>
           </OverPack>
         </div>

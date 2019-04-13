@@ -15,6 +15,7 @@ const GET_PAGINATED_EVENTS_WITH_USERS = gql`
           id
         }
         createdAt
+        startTime
         updatedAt
         user {
           id
@@ -39,8 +40,7 @@ const GET_EVENTS_HOMEPAGE = gql`
       images {
         thumbnail
       }
-      createdAt
-      updatedAt
+      startTime
       user {
         id
         username
