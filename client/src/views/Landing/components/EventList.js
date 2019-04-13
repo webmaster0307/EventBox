@@ -43,8 +43,6 @@ class EventList extends Component {
   render() {
     const events = this.props.stores.landing.eventList || []
     // console.log(events)
-    // const time = moment(events.startTime)
-    // console.log('rerender')
 
     return (
       <div>
