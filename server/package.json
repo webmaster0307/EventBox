@@ -39,7 +39,7 @@
     "ioredis": "^4.9.1",
     "jsonwebtoken": "^8.5.0",
     "moment": "^2.22.2",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",
     "qr-image": "^3.2.0",
