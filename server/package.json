@@ -22,7 +22,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/preset-env": "^7.4.2",
     "@sindresorhus/slugify": "^0.8.0",
-    "apollo-server": "^2.4.8",
+    "apollo-server": "^2.14.2",
     "apollo-server-express": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
